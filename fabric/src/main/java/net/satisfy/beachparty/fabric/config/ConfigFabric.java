@@ -11,10 +11,6 @@ public class ConfigFabric implements ConfigData {
 
     @ConfigEntry.Category("worldgen")
     public WorldgenSettings worldgen = new WorldgenSettings();
-
-    @ConfigEntry.Category("effects")
-    public EffectsSettings effects = new EffectsSettings();
-
     public static class WorldgenSettings {
         @ConfigEntry.Gui.Tooltip
         public boolean spawnSeashells = true;
@@ -24,18 +20,5 @@ public class ConfigFabric implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         public boolean destroySandcastle = true;
-    }
-
-    public static class EffectsSettings {
-        @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
-        public double swimSpeedBoost = 0.10;
-
-        @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
-        public double rubberRingSwimSpeedBoost = 0.25;
-
-        @ConfigEntry.Gui.Tooltip
-        public double diveSpeedBoost = -0.05;
     }
 }
