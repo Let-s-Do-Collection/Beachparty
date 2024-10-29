@@ -14,7 +14,6 @@ import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.block.furniture.BeachTowelBlock;
 import net.satisfy.beachparty.fabric.compat.trinkets.TrinketsCompatibility;
 import net.satisfy.beachparty.fabric.config.ConfigFabric;
-import net.satisfy.beachparty.fabric.event.BeachpartyEvents;
 import net.satisfy.beachparty.registry.CompostablesRegistry;
 import net.satisfy.beachparty.util.BeachpartyIdentifier;
 import net.satisfy.beachparty.world.PlacedFeatures;
