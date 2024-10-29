@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.block.furniture.BeachTowelBlock;
+import net.satisfy.beachparty.fabric.compat.BeachpartyTrinket;
 import net.satisfy.beachparty.fabric.compat.trinkets.TrinketsCompatibility;
 import net.satisfy.beachparty.fabric.config.ConfigFabric;
 import net.satisfy.beachparty.registry.CompostablesRegistry;
@@ -29,6 +30,7 @@ public class BeachpartyFabric implements ModInitializer {
         Beachparty.init();
         CompostablesRegistry.init();
         addBiomeModification();
+        BeachpartyTrinket.SwimWingsTrinket.registerKeybind();
         EntitySleepEvents.ALLOW_SETTING_SPAWN.register((player, sleepingPos) -> {
             boolean onClient = player.level().isClientSide;
             BlockState blockState = player.level().getBlockState(sleepingPos);
@@ -40,8 +42,6 @@ public class BeachpartyFabric implements ModInitializer {
         if (trinketsLoaded) {
             TrinketsCompatibility.load();
         }
-
-        BeachpartyEvents.registerEvents();
     }
 
     private void addBiomeModification() {

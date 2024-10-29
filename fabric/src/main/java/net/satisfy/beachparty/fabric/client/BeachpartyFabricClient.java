@@ -29,13 +29,13 @@ public class BeachpartyFabricClient implements ClientModInitializer {
 
         TrinketRendererRegistry.registerRenderer(BEACH_HAT.get(), new HelmetTrinketRenderer());
         TrinketRendererRegistry.registerRenderer(SUNGLASSES.get(), new HelmetTrinketRenderer());
+        TrinketRendererRegistry.registerRenderer(BIKINI.get(), new DyeableChestplateTrinketRenderer());
+        TrinketRendererRegistry.registerRenderer(SWIM_WINGS.get(), new DyeableChestplateTrinketRenderer());
         TrinketRendererRegistry.registerRenderer(RUBBER_RING_PELICAN.get(), new ChestplateTrinketRenderer());
         TrinketRendererRegistry.registerRenderer(RUBBER_RING_AXOLOTL.get(), new ChestplateTrinketRenderer());
         TrinketRendererRegistry.registerRenderer(RUBBER_RING_STRIPPED.get(), new ChestplateTrinketRenderer());
         TrinketRendererRegistry.registerRenderer(RUBBER_RING_BLUE.get(), new ChestplateTrinketRenderer());
         TrinketRendererRegistry.registerRenderer(RUBBER_RING_PINK.get(), new ChestplateTrinketRenderer());
-        TrinketRendererRegistry.registerRenderer(BIKINI.get(), new DyeableChestplateTrinketRenderer());
-        TrinketRendererRegistry.registerRenderer(SWIM_WINGS.get(), new DyeableChestplateTrinketRenderer());
         TrinketRendererRegistry.registerRenderer(TRUNKS.get(), new DyeableLeggingsTrinketRenderer());
         TrinketRendererRegistry.registerRenderer(CROCS.get(), new DyeableLeggingsTrinketRenderer());
 

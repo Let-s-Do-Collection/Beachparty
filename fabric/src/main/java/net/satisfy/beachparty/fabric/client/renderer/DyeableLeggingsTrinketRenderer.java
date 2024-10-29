@@ -9,10 +9,12 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.satisfy.beachparty.item.DyeableBeachpartyArmorItem;
 import net.satisfy.beachparty.registry.ArmorRegistry;
+import net.satisfy.beachparty.util.BeachpartyIdentifier;
 
 public class DyeableLeggingsTrinketRenderer implements TrinketRenderer {
     @Override
@@ -25,13 +27,15 @@ public class DyeableLeggingsTrinketRenderer implements TrinketRenderer {
 
         if (entityModel instanceof HumanoidModel<?> humanoidModel) {
             Model model = ArmorRegistry.LeggingsModel(armorItem, humanoidModel.body, humanoidModel.leftLeg, humanoidModel.rightLeg);
-
             int color = armorItem.getColor(itemStack);
             float red = (color >> 16 & 255) / 255.0F;
             float green = (color >> 8 & 255) / 255.0F;
             float blue = (color & 255) / 255.0F;
 
             model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(armorItem.getTexture())), i, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+
+            ResourceLocation overlayTexture = new BeachpartyIdentifier("textures/models/armor/trunks_overlay.png");
+            model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(overlayTexture)), i, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 }

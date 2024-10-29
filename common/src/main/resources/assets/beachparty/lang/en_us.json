@@ -28,14 +28,12 @@
   "block.beachparty.sand_bucket_block": "Sand Bucket",
   "block.beachparty.sand_pile": "Sand Pile",
   "block.beachparty.sandcastle": "Sandcastle",
-  "block.beachparty.sandwaves": "Sandwaves",
   "block.beachparty.sweetberries_cocktail": "Sweetberry Cocktail",
   "block.beachparty.table": "Tiki Table",
   "block.beachparty.tiki_bar": "Tiki Bar",
   "block.beachparty.tiki_chair": "Tiki Chair",
   "block.beachparty.tiki_torch": "Tiki Torch",
   "block.beachparty.tall_tiki_torch": "Tall Tiki Torch",
-
   "config.beachparty.subCategory.beach": "Beachparty Armor Set",
   "creativetab.beachparty.tab": "[Let's Do] Beachparty",
   "gui.beachparty.recipebook.toggleRecipes.refridgable": "Refridgable",
@@ -88,7 +86,21 @@
   "tooltip.beachparty.message": "Right-Click to Open",
   "effect.beachparty.never_melt": "Never Melt",
 
+  "tooltip.beachparty.trinketsslot": "When equipped in Trinket Slot:",
+  "tooltip.beachparty.effect.item.beachparty.rubber_ring_blue": "Grants Dolphin's Grace I",
+  "tooltip.beachparty.effect.item.beachparty.rubber_ring_stripped": "Grants Dolphin's Grace I",
+  "tooltip.beachparty.effect.item.beachparty.rubber_ring_pink": "Grants Dolphin's Grace I",
+  "tooltip.beachparty.effect.item.beachparty.rubber_ring_axolotl": "Grants Dolphin's Grace I",
+  "tooltip.beachparty.effect.item.beachparty.rubber_ring_pelican": "Grants Dolphin's Grace I",
+  "tooltip.beachparty.effect.item.beachparty.sunglasses": "Reduces Fire Damage by 12%",
+  "tooltip.beachparty.effect.item.beachparty.beach_hat": "Reduces Fire Damage by 8%",
+  "tooltip.beachparty.effect.item.beachparty.swim_wings": "Press % to dash forward in water",
+  "tooltip.beachparty.effect.item.beachparty.bikini": "Grants Dolphin's Grace",
+  "tooltip.beachparty.effect.item.beachparty.trunks": "Grants Dolphin's Grace",
+  "tooltip.beachparty.effect.item.beachparty.crocs": "Grants the ability to walk on Water",
 
+  "tooltip.beachparty.canbetoggled": "§e[Right-Click]§r to toggle 3D Model on/off.",
+  "tooltip.beachparty.coconut_icecream": "Especially refreshing Ice Cream with a tingling touch...",
   "text.autoconfig.beachparty.title": "Beachparty Config",
   "text.autoconfig.beachparty.category.worldgen": "World Generation",
   "text.autoconfig.beachparty.category.default": "Gameplay",
@@ -98,8 +110,9 @@
   "text.autoconfig.beachparty.option.spawnMessageInABottle": "Generate Messages in Bottles",
   "text.autoconfig.beachparty.option.destroySandcastle": "Sandcastle Behaviour",
   "text.autoconfig.beachparty.option.destroySandcastle.@Tooltip": "Should the Sand Castle be destroyed upon contact?",
-  "text.autoconfig.beachparty.option.destroySandcastle.@PrefixText": "Miscellaneous"
+  "text.autoconfig.beachparty.option.destroySandcastle.@PrefixText": "Miscellaneous",
 
-
+  "key.categories.beachparty": "Beachparty",
+  "key.beachparty.dash": "Swim Wings Dashing"
 
 }
