@@ -58,6 +58,7 @@ public class RadioBlock extends Block {
             map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
         }
     });
+    private boolean newState;
 
     public RadioBlock(Properties settings) {
         super(settings);

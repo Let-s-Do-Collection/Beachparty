@@ -6,9 +6,7 @@
   "client": [
     "MouseMixin"
   ],
-  "mixins": [
-    "PotionItemMixin"
-  ],
+  "mixins": [],
   "injectors": {
     "defaultRequire": 1
   }

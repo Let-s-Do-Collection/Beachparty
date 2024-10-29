@@ -54,7 +54,7 @@ public class BeachpartyEvents {
                 ObjectRegistry.TRUNKS.get(),
                 ObjectRegistry.BIKINI.get()
         );
-        
+
         boolean hasRubberRing = BeachpartyTrinket.isTrinketEquipped(player,
                 ObjectRegistry.RUBBER_RING_AXOLOTL.get(),
                 ObjectRegistry.RUBBER_RING_BLUE.get(),
