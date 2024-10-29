@@ -10,15 +10,32 @@ import net.satisfy.beachparty.Beachparty;
 public class ConfigFabric implements ConfigData {
 
     @ConfigEntry.Category("worldgen")
-    public boolean spawnSeashells = true;
-    @ConfigEntry.Category("worldgen")
-    public boolean spawnSandwaves = true;
-    @ConfigEntry.Category("worldgen")
-    public boolean spawnMessageInABottle = true;
+    public WorldgenSettings worldgen = new WorldgenSettings();
 
-    @ConfigEntry.Gui.PrefixText
-    @ConfigEntry.Gui.Tooltip
-    public boolean destroySandcastle = true;
+    @ConfigEntry.Category("effects")
+    public EffectsSettings effects = new EffectsSettings();
 
+    public static class WorldgenSettings {
+        @ConfigEntry.Gui.Tooltip
+        public boolean spawnSeashells = true;
 
+        @ConfigEntry.Gui.Tooltip
+        public boolean spawnMessageInABottle = true;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean destroySandcastle = true;
+    }
+
+    public static class EffectsSettings {
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
+        public double swimSpeedBoost = 0.10;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
+        public double rubberRingSwimSpeedBoost = 0.25;
+
+        @ConfigEntry.Gui.Tooltip
+        public double diveSpeedBoost = -0.05;
+    }
 }

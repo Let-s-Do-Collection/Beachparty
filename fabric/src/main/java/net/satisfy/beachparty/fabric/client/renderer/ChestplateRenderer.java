@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.satisfy.beachparty.item.armor.BeachpartyArmorItem;
-import net.satisfy.beachparty.item.armor.DyeableBeachpartyArmorItem;
+import net.satisfy.beachparty.item.BeachpartyArmorItem;
+import net.satisfy.beachparty.item.DyeableBeachpartyArmorItem;
 import net.satisfy.beachparty.registry.ArmorRegistry;
 
 public class ChestplateRenderer implements ArmorRenderer {

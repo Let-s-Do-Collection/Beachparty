@@ -63,7 +63,7 @@ public class PlatformHelperImpl {
     }
 
     public static void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-        if (config.destroySandcastle) {
+        if (config.worldgen.destroySandcastle) {
             world.setBlock(pos, ObjectRegistry.SAND_PILE.get().defaultBlockState(), 3);
         }
     }

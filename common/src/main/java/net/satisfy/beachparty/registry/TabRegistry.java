@@ -27,7 +27,6 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.THATCH.get());
                 out.accept(ObjectRegistry.THATCH_STAIRS.get());
                 out.accept(ObjectRegistry.THATCH_SLAB.get());
-                out.accept(ObjectRegistry.SANDWAVES.get());
                 out.accept(ObjectRegistry.TIKI_TORCH_ITEM.get());
                 out.accept(ObjectRegistry.TALL_TIKI_TORCH.get());
                 out.accept(ObjectRegistry.MINI_FRIDGE.get());
