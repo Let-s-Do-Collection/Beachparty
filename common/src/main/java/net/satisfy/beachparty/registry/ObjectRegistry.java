@@ -112,9 +112,7 @@ public class ObjectRegistry {
      * Fix SandBucketBlock - Texture, Model
      * Fix BeachChairBlock - Voxelshape, connection
      * Fix BeachChair - Voxelshape, Top/Bottom Part
-     * Fix Coconut/ChocolateSundae break particles
      * Fix ForgeMixin
-     * Add NeverMelt Icon
      */
 
     static Item.Properties getSettings() {

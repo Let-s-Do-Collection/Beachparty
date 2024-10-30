@@ -19,7 +19,7 @@ public class NeverMeltEffect extends MobEffect {
             "NeverMelt Armor", 1.0, AttributeModifier.Operation.ADDITION);
 
     public NeverMeltEffect() {
-        super(MobEffectCategory.BENEFICIAL, 0x87CEEB);
+        super(MobEffectCategory.BENEFICIAL, 0);
     }
 
     @Override

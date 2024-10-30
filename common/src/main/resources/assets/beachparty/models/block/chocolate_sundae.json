@@ -3,7 +3,7 @@
 	"textures": {
 		"1": "beachparty:block/melon_cocktail",
 		"2": "beachparty:block/icecream",
-		"particle": "beachparty:block/melon_cocktail"
+		"particle": "beachparty:block/cocoa_cocktail"
 	},
 	"elements": [
 		{

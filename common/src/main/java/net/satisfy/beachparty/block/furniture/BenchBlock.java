@@ -127,12 +127,7 @@ public class BenchBlock extends LineConnectingBlock {
         BlockPos rightPos;
         DoubleBlockHalf half = state.getValue(HALF);
 
-        // Correct calculation of left and right positions
         switch (facing) {
-            case NORTH -> {
-                leftPos = pos.relative(Direction.WEST);
-                rightPos = pos.relative(Direction.EAST);
-            }
             case EAST -> {
                 leftPos = pos.relative(Direction.SOUTH);
                 rightPos = pos.relative(Direction.NORTH);
@@ -169,9 +164,9 @@ public class BenchBlock extends LineConnectingBlock {
         if (connectLeft && connectRight) {
             return BeachpartyUtil.LineConnectingType.MIDDLE;
         } else if (connectLeft) {
-            return BeachpartyUtil.LineConnectingType.RIGHT; // Swapped LEFT with RIGHT
+            return BeachpartyUtil.LineConnectingType.RIGHT;
         } else if (connectRight) {
-            return BeachpartyUtil.LineConnectingType.LEFT;  // Swapped RIGHT with LEFT
+            return BeachpartyUtil.LineConnectingType.LEFT;
         } else {
             return BeachpartyUtil.LineConnectingType.NONE;
         }

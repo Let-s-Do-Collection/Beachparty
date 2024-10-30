@@ -7,12 +7,12 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.satisfy.beachparty.registry.MobEffectRegistry;
 import net.satisfy.beachparty.registry.ObjectRegistry;
 import org.lwjgl.glfw.GLFW;
 
@@ -93,6 +93,32 @@ public class BeachpartyTrinket {
         public CrocsTrinket() {
             super(0, ObjectRegistry.CROCS.get());
         }
+
+        @Override
+        public void onEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
+            super.onEquip(stack, slot, entity);
+            if (entity instanceof Player player) {
+                player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), 0, 0, false, false));
+            }
+        }
+
+        @Override
+        public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
+            super.onUnequip(stack, slot, entity);
+            if (entity instanceof Player player) {
+                player.removeEffect(MobEffectRegistry.OCEAN_WALK.get());
+            }
+        }
+
+        @Override
+        public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
+            super.tick(stack, slot, entity);
+            if (entity instanceof Player player) {
+                if (!player.hasEffect(MobEffectRegistry.OCEAN_WALK.get())) {
+                    player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), 0, 0, false, false));
+                }
+            }
+        }
     }
 
     public static class RubberRingTrinket extends BaseTrinket {
@@ -110,7 +136,7 @@ public class BeachpartyTrinket {
         public void onEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.onEquip(stack, slot, entity);
             if (entity instanceof Player player) {
-                player.addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, -1, 0, false, false));
+                player.addEffect(new MobEffectInstance(MobEffectRegistry.AQUA_FLOAT.get(), 1, 0, false, false));
             }
         }
 
@@ -118,7 +144,7 @@ public class BeachpartyTrinket {
         public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.onUnequip(stack, slot, entity);
             if (entity instanceof Player player) {
-                player.removeEffect(MobEffects.DOLPHINS_GRACE);
+                player.removeEffect(MobEffectRegistry.AQUA_FLOAT.get());
             }
         }
 
@@ -126,8 +152,8 @@ public class BeachpartyTrinket {
         public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.tick(stack, slot, entity);
             if (entity instanceof Player player) {
-                if (!player.hasEffect(MobEffects.DOLPHINS_GRACE)) {
-                    player.addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, -1, 0, false, false));
+                if (!player.hasEffect(MobEffectRegistry.AQUA_FLOAT.get())) {
+                    player.addEffect(new MobEffectInstance(MobEffectRegistry.AQUA_FLOAT.get(), 1, 0, false, false));
                 }
             }
         }
@@ -151,7 +177,7 @@ public class BeachpartyTrinket {
         public void onEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.onEquip(stack, slot, entity);
             if (entity instanceof Player player) {
-                player.addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, -1, -1, false, false));
+                player.addEffect(new MobEffectInstance(MobEffectRegistry.TIDE_RUSH.get(), 0, 0, false, false));
             }
         }
 
@@ -159,7 +185,7 @@ public class BeachpartyTrinket {
         public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.onUnequip(stack, slot, entity);
             if (entity instanceof Player player) {
-                player.removeEffect(MobEffects.DOLPHINS_GRACE);
+                player.removeEffect(MobEffectRegistry.TIDE_RUSH.get());
             }
         }
 
@@ -167,8 +193,8 @@ public class BeachpartyTrinket {
         public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.tick(stack, slot, entity);
             if (entity instanceof Player player) {
-                if (!player.hasEffect(MobEffects.DOLPHINS_GRACE)) {
-                    player.addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, -1, -1, false, false));
+                if (!player.hasEffect(MobEffectRegistry.TIDE_RUSH.get())) {
+                    player.addEffect(new MobEffectInstance(MobEffectRegistry.TIDE_RUSH.get(), 0, 0, false, false));
                 }
             }
         }
