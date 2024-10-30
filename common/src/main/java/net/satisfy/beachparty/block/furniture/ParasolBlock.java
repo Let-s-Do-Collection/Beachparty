@@ -48,13 +48,36 @@ public class ParasolBlock extends Block {
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
     }
 
+    public static void placeAt(LevelAccessor levelAccessor, BlockState blockState, BlockPos blockPos, int i) {
+        BlockPos blockPos2 = blockPos.above();
+        levelAccessor.setBlock(blockPos, copyWaterloggedFrom(levelAccessor, blockPos, blockState.setValue(HALF, DoubleBlockHalf.LOWER)), i);
+        levelAccessor.setBlock(blockPos2, copyWaterloggedFrom(levelAccessor, blockPos2, blockState.setValue(HALF, DoubleBlockHalf.UPPER)), i);
+    }
+
+    private static BlockState copyWaterloggedFrom(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+        return blockState.hasProperty(BlockStateProperties.WATERLOGGED) ? blockState.setValue(BlockStateProperties.WATERLOGGED, levelReader.isWaterAt(blockPos)) : blockState;
+    }
+
+    protected static void preventCreativeDropFromBottomPart(Level level, BlockPos blockPos, BlockState blockState, Player player) {
+        DoubleBlockHalf doubleBlockHalf = blockState.getValue(HALF);
+        if (doubleBlockHalf == DoubleBlockHalf.UPPER) {
+            BlockPos blockPos2 = blockPos.below();
+            BlockState blockState2 = level.getBlockState(blockPos2);
+            if (blockState2.is(blockState.getBlock()) && blockState2.getValue(HALF) == DoubleBlockHalf.LOWER) {
+                BlockState blockState3 = blockState2.getFluidState().is(Fluids.WATER) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
+                level.setBlock(blockPos2, blockState3, 35);
+                level.levelEvent(player, 2001, blockPos2, Block.getId(blockState2));
+            }
+        }
+
+    }
+
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         VoxelShape shape = Shapes.empty();
         shape = Shapes.or(shape, Shapes.box(0.4375, 0, 0.4375, 0.5625, 1, 0.5625));
         return shape;
     }
-
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -125,30 +148,6 @@ public class ParasolBlock extends Block {
             BlockState blockState2 = levelReader.getBlockState(blockPos.below());
             return blockState2.is(this) && blockState2.getValue(HALF) == DoubleBlockHalf.LOWER;
         }
-    }
-
-    public static void placeAt(LevelAccessor levelAccessor, BlockState blockState, BlockPos blockPos, int i) {
-        BlockPos blockPos2 = blockPos.above();
-        levelAccessor.setBlock(blockPos, copyWaterloggedFrom(levelAccessor, blockPos, blockState.setValue(HALF, DoubleBlockHalf.LOWER)), i);
-        levelAccessor.setBlock(blockPos2, copyWaterloggedFrom(levelAccessor, blockPos2, blockState.setValue(HALF, DoubleBlockHalf.UPPER)), i);
-    }
-
-    private static BlockState copyWaterloggedFrom(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
-        return blockState.hasProperty(BlockStateProperties.WATERLOGGED) ? blockState.setValue(BlockStateProperties.WATERLOGGED, levelReader.isWaterAt(blockPos)) : blockState;
-    }
-
-    protected static void preventCreativeDropFromBottomPart(Level level, BlockPos blockPos, BlockState blockState, Player player) {
-        DoubleBlockHalf doubleBlockHalf = blockState.getValue(HALF);
-        if (doubleBlockHalf == DoubleBlockHalf.UPPER) {
-            BlockPos blockPos2 = blockPos.below();
-            BlockState blockState2 = level.getBlockState(blockPos2);
-            if (blockState2.is(blockState.getBlock()) && blockState2.getValue(HALF) == DoubleBlockHalf.LOWER) {
-                BlockState blockState3 = blockState2.getFluidState().is(Fluids.WATER) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
-                level.setBlock(blockPos2, blockState3, 35);
-                level.levelEvent(player, 2001, blockPos2, Block.getId(blockState2));
-            }
-        }
-
     }
 
     @Override

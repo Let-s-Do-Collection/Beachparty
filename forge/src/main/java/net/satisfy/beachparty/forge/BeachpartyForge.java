@@ -15,7 +15,6 @@ import net.minecraftforge.fml.loading.FMLPaths;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.block.furniture.BeachTowelBlock;
 import net.satisfy.beachparty.forge.registry.BeachpartyConfig;
-import net.satisfy.beachparty.platform.forge.PlatformHelperImpl;
 import net.satisfy.beachparty.registry.CompostablesRegistry;
 import net.satisfy.beachparty.registry.ObjectRegistry;
 
@@ -25,10 +24,6 @@ public class BeachpartyForge {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         EventBuses.registerModEventBus(Beachparty.MOD_ID, modEventBus);
         BeachpartyConfig.loadConfig(BeachpartyConfig.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("beachparty.toml").toString());
-        PlatformHelperImpl.BLOCKS.register(modEventBus);
-        PlatformHelperImpl.ITEMS.register(modEventBus);
-        PlatformHelperImpl.ENTITY_TYPES.register(modEventBus);
-        PlatformHelperImpl.BLOCK_ENTITY_TYPES.register(modEventBus);
 
         Beachparty.init();
         modEventBus.addListener(this::commonSetup);

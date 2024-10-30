@@ -1,6 +1,5 @@
 package net.satisfy.beachparty.block;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -30,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
 public class SandCastleBlock extends Block {
-    private static final VoxelShape BASE_SHAPE = Shapes.or(Block.box(1.0, 0.0, 1.0, 15.0, 1.0, 15.0), Block.box(2.0, 1.0, 2.0, 14.0, 6.0, 14.0));
     public static final BooleanProperty TALL_TOWER;
     public static final VoxelShape TALL_TOWER_SHAPE = Block.box(11.0, 0.0, 11.0, 15.0, 15.0, 15.0);
     public static final BooleanProperty RIGHT_TOWER;
@@ -39,7 +37,14 @@ public class SandCastleBlock extends Block {
     public static final VoxelShape TOP_TOWER_SHAPE = Block.box(5.0, 6.0, 5.0, 11.0, 9.0, 11.0);
     public static final BooleanProperty LEFT_TOWER;
     public static final VoxelShape LEFT_TOWER_SHAPE = Block.box(11.0, 1.0, 1.0, 15.0, 12.0, 5.0);
+    private static final VoxelShape BASE_SHAPE = Shapes.or(Block.box(1.0, 0.0, 1.0, 15.0, 1.0, 15.0), Block.box(2.0, 1.0, 2.0, 14.0, 6.0, 14.0));
 
+    static {
+        TALL_TOWER = BooleanProperty.create("tall");
+        RIGHT_TOWER = BooleanProperty.create("right");
+        TOP_TOWER = BooleanProperty.create("top");
+        LEFT_TOWER = BooleanProperty.create("left");
+    }
 
     public SandCastleBlock(Properties settings) {
         super(settings);
@@ -96,7 +101,6 @@ public class SandCastleBlock extends Block {
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
         PlatformHelper.stepOn(world, pos, state, entity);
     }
-
 
     private void exchangeStack(ItemStack handStack, Player player, ItemStack possibleReturnStack) {
         ItemStack returnStack = !player.getAbilities().instabuild ? possibleReturnStack : handStack;
@@ -179,12 +183,5 @@ public class SandCastleBlock extends Block {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(TALL_TOWER, RIGHT_TOWER, TOP_TOWER, LEFT_TOWER);
-    }
-
-    static {
-        TALL_TOWER = BooleanProperty.create("tall");
-        RIGHT_TOWER = BooleanProperty.create("right");
-        TOP_TOWER = BooleanProperty.create("top");
-        LEFT_TOWER = BooleanProperty.create("left");
     }
 }

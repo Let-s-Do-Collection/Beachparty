@@ -4,6 +4,7 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.satisfy.beachparty.Beachparty;
@@ -14,7 +15,7 @@ public class TabRegistry {
 
     public static final RegistrySupplier<CreativeModeTab> BEACHPARTY_TAB = BEACHPARTY_TABS.register("beachparty", () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .icon(() -> new ItemStack(ObjectRegistry.COCONUT_COCKTAIL.get()))
-            .title(Component.translatable("creativetab.beachparty.tab"))
+            .title(Component.translatable("creativetab.beachparty.tab").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))))
             .displayItems((parameters, out) -> {
                 out.accept(ObjectRegistry.CABINET.get());
                 out.accept(ObjectRegistry.TIKI_BAR.get());

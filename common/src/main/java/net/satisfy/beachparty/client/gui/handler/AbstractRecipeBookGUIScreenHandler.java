@@ -39,7 +39,6 @@ public abstract class AbstractRecipeBookGUIScreenHandler extends AbstractPrivate
         final int hotbarEnd = hotbarStart + 9;
 
 
-
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
         if (slot.hasItem()) {

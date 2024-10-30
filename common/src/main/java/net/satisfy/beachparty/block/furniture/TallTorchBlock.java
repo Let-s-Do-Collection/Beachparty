@@ -32,10 +32,17 @@ public class TallTorchBlock extends TorchBlock {
     private static final VoxelShape TOP_SHAPE = Block.box(5.0, 0.0, 5.0, 11.0, 11.0, 11.0);
     private static final VoxelShape BOTTOM_SHAPE = Block.box(6.0, 0.0, 6.0, 10.0, 16.0, 10.0);
 
+    static {
+        HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
+    }
 
     public TallTorchBlock(Properties settings, ParticleOptions particle) {
         super(settings, particle);
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER));
+    }
+
+    public static BlockState withWaterloggedState(LevelReader world, BlockPos pos, BlockState state) {
+        return state.hasProperty(BlockStateProperties.WATERLOGGED) ? state.setValue(BlockStateProperties.WATERLOGGED, world.isWaterAt(pos)) : state;
     }
 
     @Override
@@ -77,10 +84,6 @@ public class TallTorchBlock extends TorchBlock {
         }
     }
 
-    public static BlockState withWaterloggedState(LevelReader world, BlockPos pos, BlockState state) {
-        return state.hasProperty(BlockStateProperties.WATERLOGGED) ? state.setValue(BlockStateProperties.WATERLOGGED, world.isWaterAt(pos)) : state;
-    }
-
     @Override
     public void playerDestroy(Level world, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
         super.playerDestroy(world, player, pos, Blocks.AIR.defaultBlockState(), blockEntity, stack);
@@ -99,9 +102,5 @@ public class TallTorchBlock extends TorchBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(HALF);
-    }
-
-    static {
-        HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     }
 }

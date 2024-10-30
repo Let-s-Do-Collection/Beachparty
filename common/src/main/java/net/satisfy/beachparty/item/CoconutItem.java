@@ -1,6 +1,5 @@
 package net.satisfy.beachparty.item;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.sounds.SoundEvents;
@@ -19,8 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-
-import static net.minecraft.ChatFormatting.ITALIC;
 
 public class CoconutItem extends BlockItem {
     public CoconutItem(Block block, Properties settings) {

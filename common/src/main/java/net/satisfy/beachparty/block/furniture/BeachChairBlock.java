@@ -74,14 +74,23 @@ public class BeachChairBlock extends HorizontalDirectionalBlock {
     });
 
 
-    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        Direction direction = state.getValue(FACING);
-        return state.getValue(PART) == BedPart.HEAD ? HEAD_SHAPE.get(direction) : FOOD_SHAPE.get(direction);
-    }
-
     public BeachChairBlock(Properties settings) {
         super(settings);
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH).setValue(PART, BedPart.FOOT));
+    }
+
+    private static Direction getDirectionTowardsOtherPart(BedPart part, Direction direction) {
+        return part == BedPart.FOOT ? direction : direction.getOpposite();
+    }
+
+    public static Direction getOppositePartDirection(BlockState state) {
+        Direction direction = state.getValue(FACING);
+        return state.getValue(PART) == BedPart.HEAD ? direction.getOpposite() : direction;
+    }
+
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        Direction direction = state.getValue(FACING);
+        return state.getValue(PART) == BedPart.HEAD ? HEAD_SHAPE.get(direction) : FOOD_SHAPE.get(direction);
     }
 
     public @NotNull BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
@@ -92,10 +101,6 @@ public class BeachChairBlock extends HorizontalDirectionalBlock {
         }
     }
 
-    private static Direction getDirectionTowardsOtherPart(BedPart part, Direction direction) {
-        return part == BedPart.FOOT ? direction : direction.getOpposite();
-    }
-
     public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
         if (!world.isClientSide && player.isCreative()) {
             removeOtherPart(world, pos, state, player);
@@ -104,7 +109,6 @@ public class BeachChairBlock extends HorizontalDirectionalBlock {
         super.playerWillDestroy(world, pos, state, player);
     }
 
-
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
         Direction direction = ctx.getHorizontalDirection().getClockWise();
@@ -112,11 +116,6 @@ public class BeachChairBlock extends HorizontalDirectionalBlock {
         BlockPos blockPos2 = blockPos.relative(direction);
         Level world = ctx.getLevel();
         return world.getBlockState(blockPos2).canBeReplaced(ctx) && world.getWorldBorder().isWithinBounds(blockPos2) ? this.defaultBlockState().setValue(FACING, direction) : null;
-    }
-
-    public static Direction getOppositePartDirection(BlockState state) {
-        Direction direction = state.getValue(FACING);
-        return state.getValue(PART) == BedPart.HEAD ? direction.getOpposite() : direction;
     }
 
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {

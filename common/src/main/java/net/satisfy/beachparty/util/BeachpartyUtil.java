@@ -40,7 +40,12 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class BeachpartyUtil {
+    public static final EnumProperty<LineConnectingType> LINE_CONNECTING_TYPE;
     private static final Map<ResourceLocation, Map<BlockPos, Pair<ChairEntity, BlockPos>>> CHAIRS = new HashMap<>();
+
+    static {
+        LINE_CONNECTING_TYPE = EnumProperty.create("type", LineConnectingType.class);
+    }
 
     public static <T extends Block> RegistrySupplier<T> registerWithItem(DeferredRegister<Block> registerB, Registrar<Block> registrarB, DeferredRegister<Item> registerI, Registrar<Item> registrarI, ResourceLocation name, Supplier<T> block) {
         RegistrySupplier<T> toReturn = registerWithoutItem(registerB, registrarB, name, block);
@@ -169,30 +174,6 @@ public class BeachpartyUtil {
         return world.dimensionTypeId().location();
     }
 
-    public enum LineConnectingType implements StringRepresentable {
-        NONE("none"),
-        MIDDLE("middle"),
-        LEFT("left"),
-        RIGHT("right");
-
-        private final String name;
-
-        LineConnectingType(String type) {
-            this.name = type;
-        }
-
-        @Override
-        public @NotNull String getSerializedName() {
-            return this.name;
-        }
-    }
-
-    public static final EnumProperty<LineConnectingType> LINE_CONNECTING_TYPE;
-
-    static {
-        LINE_CONNECTING_TYPE = EnumProperty.create("type", LineConnectingType.class);
-    }
-
     public static boolean matchesRecipe(Container inventory, NonNullList<Ingredient> recipe, int startIndex, int endIndex) {
         final List<ItemStack> validStacks = new ArrayList<>();
         for (int i = startIndex; i <= endIndex; i++) {
@@ -225,5 +206,23 @@ public class BeachpartyUtil {
             }
         }
         return ingredients;
+    }
+
+    public enum LineConnectingType implements StringRepresentable {
+        NONE("none"),
+        MIDDLE("middle"),
+        LEFT("left"),
+        RIGHT("right");
+
+        private final String name;
+
+        LineConnectingType(String type) {
+            this.name = type;
+        }
+
+        @Override
+        public @NotNull String getSerializedName() {
+            return this.name;
+        }
     }
 }

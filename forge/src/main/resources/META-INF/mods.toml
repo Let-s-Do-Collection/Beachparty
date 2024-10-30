@@ -1,12 +1,15 @@
 modLoader = "javafml"
 loaderVersion = "[46,)"
+issueTrackerURL = "https://github.com/satisfyu/Let-s-Do-Hub"
 license = "Custom"
 
 [[mods]]
 modId = "beachparty"
 version = "${version}"
 displayName = "[Let's Do] Beachparty"
-authors = "Satisfy, Jason13"
+displayURL = "https://github.com/satisfyu/Beachparty"
+authors = "Satisfy, Jason13, Fej"
+credits = "MissLilitu, Cristelknight, BaumeisterJo"
 description = '''
 Take a break - build sandcastles, drink cocktails and enjoy your Minecraft Session.
 '''

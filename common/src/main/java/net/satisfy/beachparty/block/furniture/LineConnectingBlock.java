@@ -28,6 +28,11 @@ public class LineConnectingBlock extends Block {
     public static final DirectionProperty FACING;
     public static final EnumProperty<BeachpartyUtil.LineConnectingType> TYPE;
 
+    static {
+        FACING = BlockStateProperties.HORIZONTAL_FACING;
+        TYPE = BeachpartyUtil.LINE_CONNECTING_TYPE;
+    }
+
     public LineConnectingBlock(Properties settings) {
         super(settings);
         this.registerDefaultState(((this.stateDefinition.any().setValue(FACING, Direction.NORTH)).setValue(TYPE, BeachpartyUtil.LineConnectingType.NONE)));
@@ -96,8 +101,6 @@ public class LineConnectingBlock extends Block {
         return BeachpartyUtil.LineConnectingType.NONE;
     }
 
-
-
     protected boolean isConnectable(BlockState state1, BlockState state2) {
         return (state1.getBlock() == state2.getBlock() && state1.getValue(FACING) == state2.getValue(FACING));
 
@@ -116,10 +119,5 @@ public class LineConnectingBlock extends Block {
     @Override
     public @NotNull BlockState mirror(BlockState state, Mirror mirror) {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
-    }
-
-    static {
-        FACING = BlockStateProperties.HORIZONTAL_FACING;
-        TYPE = BeachpartyUtil.LINE_CONNECTING_TYPE;
     }
 }

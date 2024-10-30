@@ -1,6 +1,5 @@
 package net.satisfy.beachparty.block.furniture;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -42,23 +41,21 @@ import java.util.function.Supplier;
 @SuppressWarnings("deprecation")
 public class MiniFridgeBlock extends BaseEntityBlock implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-
-    public MiniFridgeBlock(Properties settings) {
-        super(settings);
-    }
-
     private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
         VoxelShape shape = Shapes.empty();
         shape = Shapes.or(shape, Shapes.box(0.125, 0, 0.0625, 0.875, 0.875, 0.9375));
 
         return shape;
     };
-
     public static final Map<Direction, VoxelShape> SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
             map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
         }
     });
+
+    public MiniFridgeBlock(Properties settings) {
+        super(settings);
+    }
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {

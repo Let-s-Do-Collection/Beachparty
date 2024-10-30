@@ -12,16 +12,15 @@ import org.jetbrains.annotations.Nullable;
 @FunctionalInterface
 public interface ImplementedInventory extends WorldlyContainer {
 
-    NonNullList<ItemStack> getItems();
-
     static ImplementedInventory of(NonNullList<ItemStack> items) {
         return () -> items;
     }
 
-
     static ImplementedInventory ofSize(int size) {
         return of(NonNullList.withSize(size, ItemStack.EMPTY));
     }
+
+    NonNullList<ItemStack> getItems();
 
     @Override
     default void setChanged() {

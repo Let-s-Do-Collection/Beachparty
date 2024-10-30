@@ -28,6 +28,55 @@ public class MessageInABottleItem extends BlockItem {
         super(block, settings);
     }
 
+    public static @Nullable ItemStack getRandomMap(Entity entity) {
+        int lootChest = entity.level().getRandom().nextInt(4);
+
+        ItemStack map = null;
+
+        switch (lootChest) {
+            case 0 -> // Buried Treasure
+                    map = createMansionMap(entity);
+            case 1 -> // Shipwreck Map
+                    map = createShipwreckMap(entity);
+            case 2 -> // Shipwreck Supply
+                    map = createMonumentMap(entity);
+            case 3 -> // Shipwreck Treasure
+                    map = createTreasureMap(entity);
+        }
+        return map;
+    }
+
+    public static ItemStack createMonumentMap(Entity entity) {
+        return createMap(entity, StructureTags.ON_OCEAN_EXPLORER_MAPS, "filled_map.monument", MapDecoration.Type.MONUMENT);
+    }
+
+    public static ItemStack createMansionMap(Entity entity) {
+        return createMap(entity, StructureTags.ON_WOODLAND_EXPLORER_MAPS, "filled_map.mansion", MapDecoration.Type.MANSION);
+    }
+
+    public static ItemStack createShipwreckMap(Entity entity) {
+        return createMap(entity, StructureTags.SHIPWRECK, "filled_map.shipwreck", MapDecoration.Type.RED_X);
+    }
+
+    public static ItemStack createTreasureMap(Entity entity) {
+        return createMap(entity, StructureTags.ON_TREASURE_MAPS, "filled_map.treasure", MapDecoration.Type.RED_X);
+    }
+
+    public static @Nullable ItemStack createMap(Entity entity, TagKey<Structure> structure, String nameKey, MapDecoration.Type iconType) {
+        if (!(entity.level() instanceof ServerLevel serverWorld)) {
+            return null;
+        }
+        BlockPos blockPos = serverWorld.findNearestMapStructure(structure, entity.blockPosition(), 100, true);
+        if (blockPos != null) {
+            ItemStack itemStack = MapItem.create(serverWorld, blockPos.getX(), blockPos.getZ(), (byte) 2, true, true);
+            MapItem.renderBiomePreviewMap(serverWorld, itemStack);
+            MapItemSavedData.addTargetDecoration(itemStack, blockPos, "+", iconType);
+            itemStack.setHoverName(Component.translatable(nameKey));
+            return itemStack;
+        }
+        return null;
+    }
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
         if (world.isClientSide()) {
@@ -57,58 +106,6 @@ public class MessageInABottleItem extends BlockItem {
         user.getItemInHand(hand).shrink(1);
 
         return InteractionResultHolder.success(user.getItemInHand(hand));
-    }
-
-
-    public static @Nullable ItemStack getRandomMap(Entity entity) {
-        int lootChest = entity.level().getRandom().nextInt(4);
-
-        ItemStack map = null;
-
-        switch (lootChest) {
-            case 0 -> // Buried Treasure
-                    map = createMansionMap(entity);
-            case 1 -> // Shipwreck Map
-                    map = createShipwreckMap(entity);
-            case 2 -> // Shipwreck Supply
-                    map = createMonumentMap(entity);
-            case 3 -> // Shipwreck Treasure
-                    map = createTreasureMap(entity);
-        }
-        return map;
-    }
-
-
-    public static ItemStack createMonumentMap(Entity entity) {
-        return createMap(entity, StructureTags.ON_OCEAN_EXPLORER_MAPS, "filled_map.monument", MapDecoration.Type.MONUMENT);
-    }
-
-    public static ItemStack createMansionMap(Entity entity) {
-        return createMap(entity, StructureTags.ON_WOODLAND_EXPLORER_MAPS, "filled_map.mansion", MapDecoration.Type.MANSION);
-    }
-
-    public static ItemStack createShipwreckMap(Entity entity) {
-        return createMap(entity, StructureTags.SHIPWRECK, "filled_map.shipwreck", MapDecoration.Type.RED_X);
-    }
-
-    public static ItemStack createTreasureMap(Entity entity) {
-        return createMap(entity, StructureTags.ON_TREASURE_MAPS, "filled_map.treasure", MapDecoration.Type.RED_X);
-    }
-
-
-    public static @Nullable ItemStack createMap(Entity entity, TagKey<Structure> structure, String nameKey, MapDecoration.Type iconType) {
-        if (!(entity.level() instanceof ServerLevel serverWorld)) {
-            return null;
-        }
-        BlockPos blockPos = serverWorld.findNearestMapStructure(structure, entity.blockPosition(), 100, true);
-        if (blockPos != null) {
-            ItemStack itemStack = MapItem.create(serverWorld, blockPos.getX(), blockPos.getZ(), (byte) 2, true, true);
-            MapItem.renderBiomePreviewMap(serverWorld, itemStack);
-            MapItemSavedData.addTargetDecoration(itemStack, blockPos, "+", iconType);
-            itemStack.setHoverName(Component.translatable(nameKey));
-            return itemStack;
-        }
-        return null;
     }
 
 }

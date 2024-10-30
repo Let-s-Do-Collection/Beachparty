@@ -29,16 +29,15 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 public class TikiBarBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
+    public static final int CAPACITY = 3;
     private static final int[] SLOTS_FOR_SIDE = new int[]{2};
     private static final int[] SLOTS_FOR_UP = new int[]{1};
     private static final int[] SLOTS_FOR_DOWN = new int[]{0};
-    private NonNullList<ItemStack> inventory;
-    public static final int CAPACITY = 3;
     private static final int OUTPUT_SLOT = 0;
+    protected float experience;
+    private NonNullList<ItemStack> inventory;
     private int shakingTime = 0;
     private int totalShakingTime;
-    protected float experience;
-
     private final ContainerData propertyDelegate = new ContainerData() {
 
         @Override
@@ -69,23 +68,6 @@ public class TikiBarBlockEntity extends BlockEntity implements WorldlyContainer,
         this.inventory = NonNullList.withSize(CAPACITY, ItemStack.EMPTY);
     }
 
-    @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
-        this.inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(nbt, this.inventory);
-        this.shakingTime = nbt.getShort("ShakingTime");
-        this.experience = nbt.getFloat("Experience");
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag nbt) {
-        super.saveAdditional(nbt);
-        ContainerHelper.saveAllItems(nbt, this.inventory);
-        nbt.putFloat("Experience", this.experience);
-        nbt.putShort("ShakingTime", (short) this.shakingTime);
-    }
-
     public static void tick(Level world, BlockPos pos, BlockState state, TikiBarBlockEntity blockEntity) {
         if (world.isClientSide) return;
 
@@ -111,6 +93,23 @@ public class TikiBarBlockEntity extends BlockEntity implements WorldlyContainer,
             blockEntity.setChanged();
             world.sendBlockUpdated(pos, state, state, 3);
         }
+    }
+
+    @Override
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
+        this.inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(nbt, this.inventory);
+        this.shakingTime = nbt.getShort("ShakingTime");
+        this.experience = nbt.getFloat("Experience");
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag nbt) {
+        super.saveAdditional(nbt);
+        ContainerHelper.saveAllItems(nbt, this.inventory);
+        nbt.putFloat("Experience", this.experience);
+        nbt.putShort("ShakingTime", (short) this.shakingTime);
     }
 
     private boolean canCraft(@Nullable TikiBarRecipe recipe, RegistryAccess access) {

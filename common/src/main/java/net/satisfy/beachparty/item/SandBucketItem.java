@@ -1,6 +1,5 @@
 package net.satisfy.beachparty.item;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -16,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -32,6 +30,10 @@ import java.util.Objects;
 public class SandBucketItem extends BlockItem {
     public SandBucketItem(Block block, Properties settings) {
         super(block, settings);
+    }
+
+    public static ItemStack getEmptiedStack(ItemStack stack, Player player) {
+        return !player.getAbilities().instabuild ? new ItemStack(ObjectRegistry.EMPTY_SAND_BUCKET.get()) : stack;
     }
 
     @Override
@@ -99,10 +101,6 @@ public class SandBucketItem extends BlockItem {
             }
         }
         return possibleReturnStack;
-    }
-
-    public static ItemStack getEmptiedStack(ItemStack stack, Player player) {
-        return !player.getAbilities().instabuild ? new ItemStack(ObjectRegistry.EMPTY_SAND_BUCKET.get()) : stack;
     }
 
     @Override

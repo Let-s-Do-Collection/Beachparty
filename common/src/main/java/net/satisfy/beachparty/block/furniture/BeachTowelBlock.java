@@ -55,6 +55,10 @@ public class BeachTowelBlock extends BedBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(PART, BedPart.FOOT).setValue(OCCUPIED, Boolean.FALSE).setValue(CAN_DROP, Boolean.TRUE));
     }
 
+    private static Direction getNeighbourDirection(BedPart part, Direction direction) {
+        return part == BedPart.FOOT ? direction : direction.getOpposite();
+    }
+
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
         return state.getValue(PART) == BedPart.HEAD ? rotateShape(Direction.NORTH, state.getValue(FACING), SLEEPING_BAG_SHAPE) : SLEEPING_BAG_SHAPE;
@@ -89,7 +93,6 @@ public class BeachTowelBlock extends BedBlock {
             return InteractionResult.SUCCESS;
         }
     }
-
 
     private boolean kickVillagerOutOfBed(Level level, BlockPos pos) {
         List<Villager> villagers = level.getEntitiesOfClass(Villager.class, new AABB(pos), LivingEntity::isSleeping);
@@ -130,10 +133,6 @@ public class BeachTowelBlock extends BedBlock {
         } else {
             return super.updateShape(state, direction, newState, accessor, pos, newPos);
         }
-    }
-
-    private static Direction getNeighbourDirection(BedPart part, Direction direction) {
-        return part == BedPart.FOOT ? direction : direction.getOpposite();
     }
 
     @Override

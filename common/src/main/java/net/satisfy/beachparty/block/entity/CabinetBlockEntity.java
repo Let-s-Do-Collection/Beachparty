@@ -25,8 +25,8 @@ import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class CabinetBlockEntity extends RandomizableContainerBlockEntity {
-    private NonNullList<ItemStack> inventory;
     private final ContainerOpenersCounter stateManager;
+    private NonNullList<ItemStack> inventory;
 
     public CabinetBlockEntity(BlockPos pos, BlockState state) {
         this(pos, state, SoundEvents.BAMBOO_WOOD_TRAPDOOR_OPEN, SoundEvents.BAMBOO_WOOD_TRAPDOOR_CLOSE);
@@ -36,10 +36,17 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity {
         super(EntityTypeRegistry.CABINET_BLOCK_ENTITY.get(), pos, state);
         this.inventory = NonNullList.withSize(36, ItemStack.EMPTY);
         this.stateManager = new ContainerOpenersCounter() {
+            static void playSound(Level level, BlockPos blockPos, SoundEvent soundEvent) {
+                double d = (double) blockPos.getX() + 0.5;
+                double e = (double) blockPos.getY() + 0.5;
+                double f = (double) blockPos.getZ() + 0.5;
+                level.playSound(null, d, e, f, soundEvent, SoundSource.BLOCKS, 0.7f, level.random.nextFloat() * 0.1f + 0.9f);
+            }
+
             @Override
             protected void onOpen(Level world, BlockPos pos, BlockState state) {
                 world.setBlock(pos, state.setValue(BlockStateProperties.OPEN, true), 3);
-                
+
                 assert CabinetBlockEntity.this.level != null;
 
                 playSound(CabinetBlockEntity.this.level, pos, openSound);
@@ -50,13 +57,6 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity {
                 world.setBlock(pos, state.setValue(BlockStateProperties.OPEN, false), 3);
                 assert CabinetBlockEntity.this.level != null;
                 playSound(CabinetBlockEntity.this.level, pos, closeSound);
-            }
-
-            static void playSound(Level level, BlockPos blockPos, SoundEvent soundEvent) {
-                double d = (double) blockPos.getX() + 0.5;
-                double e = (double) blockPos.getY() + 0.5;
-                double f = (double) blockPos.getZ() + 0.5;
-                level.playSound(null, d, e, f, soundEvent, SoundSource.BLOCKS, 0.7f, level.random.nextFloat() * 0.1f + 0.9f);
             }
 
             @Override

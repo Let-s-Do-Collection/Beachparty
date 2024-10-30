@@ -30,13 +30,7 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
 public class LoungeChairBlock extends Block {
-    public LoungeChairBlock(Properties settings) {
-        super(settings);
-    }
-
-
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-
     private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
         VoxelShape shape = Shapes.empty();
         shape = Shapes.or(shape, Shapes.box(0.8125, 0, 0.75, 0.875, 0.75, 0.875));
@@ -49,12 +43,15 @@ public class LoungeChairBlock extends Block {
 
         return shape;
     };
-
     public static final Map<Direction, VoxelShape> SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
             map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
         }
     });
+
+    public LoungeChairBlock(Properties settings) {
+        super(settings);
+    }
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {

@@ -14,13 +14,11 @@ import java.util.function.Supplier;
 
 public class RecipeRegistry {
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Beachparty.MOD_ID, Registries.RECIPE_SERIALIZER);
-    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Beachparty.MOD_ID, Registries.RECIPE_TYPE);
-
-    public static final RegistrySupplier<RecipeType<TikiBarRecipe>> TIKI_BAR_RECIPE_TYPE = create("tiki_bar_mixing");
     public static final RegistrySupplier<RecipeSerializer<TikiBarRecipe>> TIKI_BAR_RECIPE_SERIALIZER = create("tiki_bar_mixing", TikiBarRecipe.Serializer::new);
-    public static final RegistrySupplier<RecipeType<MiniFridgeRecipe>> MINI_FRIDGE_RECIPE_TYPE = create("mini_fridge_mixing");
     public static final RegistrySupplier<RecipeSerializer<MiniFridgeRecipe>> MINI_FRIDGE_RECIPE_SERIALIZER = create("mini_fridge_mixing", MiniFridgeRecipe.Serializer::new);
-
+    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Beachparty.MOD_ID, Registries.RECIPE_TYPE);
+    public static final RegistrySupplier<RecipeType<TikiBarRecipe>> TIKI_BAR_RECIPE_TYPE = create("tiki_bar_mixing");
+    public static final RegistrySupplier<RecipeType<MiniFridgeRecipe>> MINI_FRIDGE_RECIPE_TYPE = create("mini_fridge_mixing");
 
     private static <T extends Recipe<?>> RegistrySupplier<RecipeSerializer<T>> create(String name, Supplier<RecipeSerializer<T>> serializer) {
         return RECIPE_SERIALIZERS.register(name, serializer);

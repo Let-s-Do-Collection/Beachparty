@@ -24,8 +24,8 @@ import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
 public class CoconutBlock extends Block {
-    private final VoxelShape SHAPE = Shapes.box(0.2, 0, 0.2, 0.8, 0.9, 0.8);
     public static final IntegerProperty STACK = IntegerProperty.create("stack", 1, 3);
+    private final VoxelShape SHAPE = Shapes.box(0.2, 0, 0.2, 0.8, 0.9, 0.8);
 
     public CoconutBlock(Properties settings) {
         super(settings);

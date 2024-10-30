@@ -29,12 +29,7 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
 public class TikiChairBlock extends Block {
-    public TikiChairBlock(Properties settings) {
-        super(settings);
-    }
-
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-
     private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
         VoxelShape shape = Shapes.empty();
         shape = Shapes.or(shape, Shapes.box(0.3125, 0.1875, 0.375, 0.375, 0.25, 0.625));
@@ -53,12 +48,15 @@ public class TikiChairBlock extends Block {
 
         return shape;
     };
-
     public static final Map<Direction, VoxelShape> SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
             map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
         }
     });
+
+    public TikiChairBlock(Properties settings) {
+        super(settings);
+    }
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {

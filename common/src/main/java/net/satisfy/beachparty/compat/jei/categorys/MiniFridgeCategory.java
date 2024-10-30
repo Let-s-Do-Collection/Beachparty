@@ -1,23 +1,5 @@
 package net.satisfy.beachparty.compat.jei.categorys;
 
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.drawable.IDrawableAnimated;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
-import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.NonNullList;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.satisfy.beachparty.Beachparty;
-import net.satisfy.beachparty.recipe.MiniFridgeRecipe;
-import net.satisfy.beachparty.registry.ObjectRegistry;
 /*
 public class MiniFridgeCategory implements IRecipeCategory<MiniFridgeRecipe> {
     public static final RecipeType<MiniFridgeRecipe> MINI_FRIDGE = RecipeType.create(Beachparty.MOD_ID, "mini_fridge_mixing", MiniFridgeRecipe.class);

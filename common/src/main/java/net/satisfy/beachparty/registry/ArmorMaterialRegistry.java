@@ -14,6 +14,13 @@ public class ArmorMaterialRegistry {
     private static final SoundEvent EQUIP_SOUND = SoundEvents.ARMOR_EQUIP_LEATHER;
     private static final float TOUGHNESS = 0.0F;
     private static final float KNOCKBACK_RESISTANCE = 0.0F;
+    public static final ArmorMaterial TRUNKS = createMaterial("trunks", Ingredient.of(Items.STRING));
+    public static final ArmorMaterial BIKINI = createMaterial("bikini", Ingredient.of(Items.STRING));
+    public static final ArmorMaterial RING = createMaterial("ring", Ingredient.of(Items.DRIED_KELP));
+    public static final ArmorMaterial BEACH_HAT = createMaterial("beach_hat", Ingredient.of(Items.WHEAT));
+    public static final ArmorMaterial SUNGLASSES = createMaterial("sunglasses", Ingredient.of(Blocks.BLACK_STAINED_GLASS_PANE.asItem()));
+    public static final ArmorMaterial SWIM_WINGS = createMaterial("swim_wings", Ingredient.of(Items.DRIED_KELP));
+    public static final ArmorMaterial CROCS = createMaterial("crocs", Ingredient.of(Items.DRIED_KELP));
 
     private static ArmorMaterial createMaterial(String name, Ingredient repairIngredient) {
         return new ArmorMaterial() {
@@ -65,12 +72,4 @@ public class ArmorMaterialRegistry {
             }
         };
     }
-
-    public static final ArmorMaterial TRUNKS = createMaterial("trunks", Ingredient.of(Items.STRING));
-    public static final ArmorMaterial BIKINI = createMaterial("bikini", Ingredient.of(Items.STRING));
-    public static final ArmorMaterial RING = createMaterial("ring", Ingredient.of(Items.DRIED_KELP));
-    public static final ArmorMaterial BEACH_HAT = createMaterial("beach_hat", Ingredient.of(Items.WHEAT));
-    public static final ArmorMaterial SUNGLASSES = createMaterial("sunglasses", Ingredient.of(Blocks.BLACK_STAINED_GLASS_PANE.asItem()));
-    public static final ArmorMaterial SWIM_WINGS = createMaterial("swim_wings", Ingredient.of(Items.DRIED_KELP));
-    public static final ArmorMaterial CROCS = createMaterial("crocs", Ingredient.of(Items.DRIED_KELP));
 }

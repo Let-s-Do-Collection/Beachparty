@@ -5,13 +5,16 @@
   "name": "[Let's Do] Beachparty",
   "description": "Take a break - build sandcastles, drink cocktails and enjoy your Minecraft Session.",
   "authors": [
-    "Satisfy, Jason13"
+    "Jason13Official, Satisfy, Fej"
+  ],
+  "contributors": [
+    "MissLilitu, Cristelknight, BaumeisterJo"
   ],
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/lets-do-beachparty",
-    "sources": "https://github.com/satisfyu/Beachparty"
+    "homepage": "https://github.com/satisfyu/Beachparty",
+    "issues": "https://github.com/satisfyu/Let-s-Do-Hub"
   },
-  "license": "ARR",
+  "license": "Custom",
   "icon": "pack.png",
   "environment": "*",
   "entrypoints": {

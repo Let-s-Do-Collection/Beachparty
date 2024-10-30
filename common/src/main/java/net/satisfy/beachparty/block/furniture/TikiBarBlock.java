@@ -37,23 +37,21 @@ import java.util.function.Supplier;
 @SuppressWarnings("deprecation")
 public class TikiBarBlock extends BaseEntityBlock implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-
-    public TikiBarBlock(Properties settings) {
-        super(settings);
-    }
-
     private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
         VoxelShape shape = Shapes.empty();
         shape = Shapes.or(shape, Shapes.box(0, 0, 0.1875, 1, 1, 1));
         shape = Shapes.or(shape, Shapes.box(0, 0.8125, 0, 1, 1, 0.1875));
         return shape;
     };
-
     public static final Map<Direction, VoxelShape> SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
             map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
         }
     });
+
+    public TikiBarBlock(Properties settings) {
+        super(settings);
+    }
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {

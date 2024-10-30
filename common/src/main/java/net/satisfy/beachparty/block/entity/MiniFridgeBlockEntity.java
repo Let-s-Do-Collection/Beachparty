@@ -28,17 +28,15 @@ import org.jetbrains.annotations.Nullable;
 
 
 public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInventory, BlockEntityTicker<MiniFridgeBlockEntity>, MenuProvider {
+    public static final int CAPACITY = 3;
     private static final int[] SLOTS_FOR_SIDE = new int[]{2};
     private static final int[] SLOTS_FOR_UP = new int[]{1};
     private static final int[] SLOTS_FOR_DOWN = new int[]{0};
-
-    private NonNullList<ItemStack> inventory;
-    public static final int CAPACITY = 3;
     private static final int OUTPUT_SLOT = 0;
+    protected float experience;
+    private NonNullList<ItemStack> inventory;
     private int fermentationTime = 0;
     private int totalFermentationTime;
-    protected float experience;
-
     private final ContainerData propertyDelegate = new ContainerData() {
 
         @Override

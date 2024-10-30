@@ -1,27 +1,5 @@
 package net.satisfy.beachparty.compat.jei;
 
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
-import mezz.jei.api.registration.IRecipeTransferRegistration;
-import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeManager;
-import net.satisfy.beachparty.recipe.MiniFridgeRecipe;
-import net.satisfy.beachparty.recipe.TikiBarRecipe;
-import net.satisfy.beachparty.registry.ObjectRegistry;
-import net.satisfy.beachparty.registry.RecipeRegistry;
-import net.satisfy.beachparty.registry.ScreenHandlerTypesRegistry;
-import net.satisfy.beachparty.util.BeachpartyIdentifier;
-
-import java.util.List;
-import java.util.Objects;
-
 /*
 @JeiPlugin
 public class BeachpartyJEIPlugin implements IModPlugin {
