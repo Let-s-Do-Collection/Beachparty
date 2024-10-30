@@ -1,8 +1,6 @@
 package net.satisfy.beachparty.fabric.compat;
 
 import dev.emi.trinkets.api.*;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,9 +10,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.satisfy.beachparty.fabric.client.BeachpartyFabricClient;
 import net.satisfy.beachparty.registry.MobEffectRegistry;
 import net.satisfy.beachparty.registry.ObjectRegistry;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.Map;
 import java.util.Optional;
@@ -203,16 +201,9 @@ public class BeachpartyTrinket {
     public static class SwimWingsTrinket extends BaseTrinket {
         private static final int DASH_DISTANCE = 6;
         private static final int DASH_COOLDOWN_TICKS = 240;
-        private static KeyMapping dashKey;
 
         public SwimWingsTrinket() {
             super(0, ObjectRegistry.SWIM_WINGS.get());
-        }
-
-        public static void registerKeybind() {
-            dashKey = new KeyMapping("key.beachparty.dash", GLFW.GLFW_KEY_R, "key.categories.beachparty");
-
-            KeyBindingHelper.registerKeyBinding(dashKey);
         }
 
         @Override
@@ -220,7 +211,7 @@ public class BeachpartyTrinket {
             super.tick(stack, slot, entity);
 
             if (entity instanceof Player player) {
-                if (dashKey != null && player.isInWater() && dashKey.isDown() && !player.getCooldowns().isOnCooldown(stack.getItem())) {
+                if (player.isInWater() && BeachpartyFabricClient.isDashKeyPressed() && !player.getCooldowns().isOnCooldown(stack.getItem())) {
                     executeDash(player, stack);
                 } else {
                     player.setSwimming(false);

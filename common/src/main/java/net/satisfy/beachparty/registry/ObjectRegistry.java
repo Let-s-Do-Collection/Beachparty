@@ -21,7 +21,6 @@ import net.minecraft.world.level.material.PushReaction;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.block.*;
 import net.satisfy.beachparty.block.furniture.*;
-import net.satisfy.beachparty.entity.BeachpartyBoatEntity;
 import net.satisfy.beachparty.item.*;
 import net.satisfy.beachparty.item.BeachpartyArmorItem;
 import net.satisfy.beachparty.item.DyeableBeachpartyArmorItem;
@@ -102,9 +101,6 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> TIKI_TORCH_ITEM = registerItem("tiki_torch_item", () -> new StandingAndWallBlockItem(ObjectRegistry.TIKI_TORCH.get(), ObjectRegistry.TIKI_WALL_TORCH.get(), getSettings(), Direction.DOWN));
     public static final RegistrySupplier<Block> TALL_TIKI_TORCH = registerWithItem("tall_tiki_torch", () -> new TallTorchBlock(BlockBehaviour.Properties.copy(Blocks.TORCH).noCollission().instabreak().lightLevel((state) -> 14).sound(SoundType.WOOD), ParticleTypes.FLAME));
     public static final RegistrySupplier<Block> SANDCASTLE = registerWithoutItem("sandcastle", () -> new SandCastleBlock(BlockBehaviour.Properties.copy(Blocks.SAND)));
-    public static final Supplier<Item> FLOATY = registerItem("floaty", () -> new BeachpartyBoatItem(false, BeachpartyBoatEntity.Type.FLOATY, new Item.Properties().stacksTo(1)));
-    public static final Supplier<Item> FLOATY_CHEST_BOAT = registerItem("floaty_chest_boat", () -> new BeachpartyBoatItem(true, BeachpartyBoatEntity.Type.FLOATY, new Item.Properties().stacksTo(1)));
-
 
     /**
      //TODO

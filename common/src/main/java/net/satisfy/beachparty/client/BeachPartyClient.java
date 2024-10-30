@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.satisfy.beachparty.client.gui.MiniFridgeGui;
 import net.satisfy.beachparty.client.gui.TikiBarGui;
 import net.satisfy.beachparty.client.model.*;
-import net.satisfy.beachparty.client.renderer.BeachpartyBoatRenderer;
 import net.satisfy.beachparty.client.renderer.ChairRenderer;
 import net.satisfy.beachparty.networking.BeachpartyMessages;
 import net.satisfy.beachparty.registry.EntityTypeRegistry;
@@ -52,8 +51,6 @@ public class BeachPartyClient {
     public static void registerEntityRenderers() {
         EntityRendererRegistry.register(EntityTypeRegistry.CHAIR, ChairRenderer::new);
         EntityRendererRegistry.register(EntityTypeRegistry.COCONUT, ThrownItemRenderer::new);
-        EntityRendererRegistry.register(EntityTypeRegistry.BOAT, context -> new BeachpartyBoatRenderer<>(context, false));
-        EntityRendererRegistry.register(EntityTypeRegistry.CHEST_BOAT, context -> new BeachpartyBoatRenderer<>(context, true));
     }
 
     public static void registerEntityModelLayers() {

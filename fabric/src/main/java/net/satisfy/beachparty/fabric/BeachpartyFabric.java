@@ -30,7 +30,6 @@ public class BeachpartyFabric implements ModInitializer {
         Beachparty.init();
         CompostablesRegistry.init();
         addBiomeModification();
-        BeachpartyTrinket.SwimWingsTrinket.registerKeybind();
         EntitySleepEvents.ALLOW_SETTING_SPAWN.register((player, sleepingPos) -> {
             boolean onClient = player.level().isClientSide;
             BlockState blockState = player.level().getBlockState(sleepingPos);
