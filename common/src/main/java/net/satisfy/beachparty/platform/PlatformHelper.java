@@ -3,10 +3,12 @@ package net.satisfy.beachparty.platform;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class PlatformHelper {
@@ -15,8 +17,8 @@ public class PlatformHelper {
         throw new AssertionError();
     }
 
-    @FunctionalInterface
-    public interface BlockEntitySupplier<T extends BlockEntity> {
-        @NotNull T create(BlockPos pos, BlockState state);
+    @ExpectPlatform
+    public static <T extends Entity> Supplier<EntityType<T>> registerBoatType(String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height, int clientTrackingRange) {
+        throw new AssertionError();
     }
 }

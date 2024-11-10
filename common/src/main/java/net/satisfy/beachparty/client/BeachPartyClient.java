@@ -11,13 +11,15 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.satisfy.beachparty.client.gui.MiniFridgeGui;
 import net.satisfy.beachparty.client.gui.TikiBarGui;
 import net.satisfy.beachparty.client.model.*;
+import net.satisfy.beachparty.client.renderer.BeachBallRenderer;
+import net.satisfy.beachparty.client.renderer.BeachpartyBoatRenderer;
 import net.satisfy.beachparty.client.renderer.ChairRenderer;
-import net.satisfy.beachparty.networking.BeachpartyMessages;
-import net.satisfy.beachparty.registry.EntityTypeRegistry;
-import net.satisfy.beachparty.registry.ScreenHandlerTypesRegistry;
-import net.satisfy.beachparty.util.BeachpartyUtil;
+import net.satisfy.beachparty.core.networking.BeachpartyMessages;
+import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
+import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
+import net.satisfy.beachparty.core.util.BeachpartyUtil;
 
-import static net.satisfy.beachparty.registry.ObjectRegistry.*;
+import static net.satisfy.beachparty.core.registry.ObjectRegistry.*;
 
 @Environment(EnvType.CLIENT)
 public class BeachPartyClient {
@@ -27,7 +29,8 @@ public class BeachPartyClient {
                 MELON_COCKTAIL.get(), COCONUT_COCKTAIL.get(), HONEY_COCKTAIL.get(), THATCH_STAIRS.get(),
                 SWEETBERRIES_COCKTAIL.get(), PUMPKIN_COCKTAIL.get(), COCOA_COCKTAIL.get(), COCONUT_SUNDAE.get(),
                 SANDCASTLE.get(), MESSAGE_IN_A_BOTTLE.get(), BEACH_TOWEL.get(), CHOCOLATE_SUNDAE.get(),
-                DECK_CHAIR.get(), SEASHELL_BLOCK.get(), REFRESHING_DRINK.get(), SWEETBERRY_SUNDAE.get()
+                DECK_CHAIR.get(), SEASHELL_BLOCK.get(), REFRESHING_DRINK.get(), SWEETBERRY_SUNDAE.get(),
+                BEACH_GOAL.get()
         );
 
         MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.TIKI_BAR_GUI_HANDLER.get(), TikiBarGui::new);
@@ -49,8 +52,11 @@ public class BeachPartyClient {
     }
 
     public static void registerEntityRenderers() {
+        EntityRendererRegistry.register(EntityTypeRegistry.BEACH_BALL, BeachBallRenderer::new);
         EntityRendererRegistry.register(EntityTypeRegistry.CHAIR, ChairRenderer::new);
         EntityRendererRegistry.register(EntityTypeRegistry.COCONUT, ThrownItemRenderer::new);
+        EntityRendererRegistry.register(EntityTypeRegistry.FLOATY_BOAT, context -> new BeachpartyBoatRenderer<>(context, false));
+        EntityRendererRegistry.register(EntityTypeRegistry.FLOATY_CHEST_BOAT, context -> new BeachpartyBoatRenderer<>(context, true));
     }
 
     public static void registerEntityModelLayers() {
@@ -63,6 +69,6 @@ public class BeachPartyClient {
         EntityModelLayerRegistry.register(SwimWingsModel.LAYER_LOCATION, SwimWingsModel::createBodyLayer);
         EntityModelLayerRegistry.register(TrunksModel.LAYER_LOCATION, TrunksModel::createBodyLayer);
         EntityModelLayerRegistry.register(CrocsModel.LAYER_LOCATION, CrocsModel::createBodyLayer);
-
+        EntityModelLayerRegistry.register(BeachBallModel.LAYER_LOCATION, BeachBallModel::createBodyLayer);
     }
 }

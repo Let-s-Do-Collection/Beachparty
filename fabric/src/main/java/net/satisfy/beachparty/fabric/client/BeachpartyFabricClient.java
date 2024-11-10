@@ -12,10 +12,11 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.client.BeachPartyClient;
+import net.satisfy.beachparty.core.entity.BeachpartyBoatEntity;
 import net.satisfy.beachparty.fabric.client.renderer.*;
 import org.lwjgl.glfw.GLFW;
 
-import static net.satisfy.beachparty.registry.ObjectRegistry.*;
+import static net.satisfy.beachparty.core.registry.ObjectRegistry.*;
 
 public class BeachpartyFabricClient implements ClientModInitializer {
     private static KeyMapping dashKey;
@@ -25,6 +26,7 @@ public class BeachpartyFabricClient implements ClientModInitializer {
         BeachPartyClient.preInitClient();
         BeachPartyClient.initClient();
         registerKeybind();
+        registerBoatModels();
         ArmorRenderer.register(new HelmetRenderer(), BEACH_HAT.get(), SUNGLASSES.get());
         ArmorRenderer.register(new ChestplateRenderer(), RUBBER_RING_PINK.get(), RUBBER_RING_BLUE.get(), RUBBER_RING_STRIPPED.get(), RUBBER_RING_AXOLOTL.get(), RUBBER_RING_PELICAN.get(), BIKINI.get(), SWIM_WINGS.get());
         ArmorRenderer.register(new LeggingsRenderer(), TRUNKS.get(), CROCS.get());
@@ -40,8 +42,14 @@ public class BeachpartyFabricClient implements ClientModInitializer {
         TrinketRendererRegistry.registerRenderer(RUBBER_RING_PINK.get(), new ChestplateTrinketRenderer());
         TrinketRendererRegistry.registerRenderer(TRUNKS.get(), new DyeableLeggingsTrinketRenderer());
         TrinketRendererRegistry.registerRenderer(CROCS.get(), new DyeableLeggingsTrinketRenderer());
+    }
 
-
+    private void registerBoatModels() {
+        for (BeachpartyBoatEntity.Type type : BeachpartyBoatEntity.Type.values()) {
+            String modId = Beachparty.MOD_ID;
+            EntityModelLayerRegistry.registerModelLayer(new ModelLayerLocation(new ResourceLocation(modId, type.getModelLocation()), "main"), BoatModel::createBodyModel);
+            EntityModelLayerRegistry.registerModelLayer(new ModelLayerLocation(new ResourceLocation(modId, type.getChestModelLocation()), "main"), ChestBoatModel::createBodyModel);
+        }
     }
 
     public static void registerKeybind() {

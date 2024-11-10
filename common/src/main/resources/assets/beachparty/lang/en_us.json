@@ -33,6 +33,9 @@
   "block.beachparty.tiki_chair": "Tiki Chair",
   "block.beachparty.tiki_torch": "Tiki Torch",
   "block.beachparty.tall_tiki_torch": "Tall Tiki Torch",
+  "block.beachparty.beach_goal": "Beach Goal",
+  "item.beachparty.beach_ball": "Beach Ball",
+  "entity.beachparty.beach_ball": "Beach Ball",
   "creativetab.beachparty.tab": "[Let's Do] Beachparty",
   "gui.beachparty.recipebook.toggleRecipes.refridgable": "Refridgable",
   "gui.beachparty.recipebook.toggleRecipes.shakeable": "Shakeable",
@@ -57,8 +60,6 @@
   "block.beachparty.sweetberry_sundae": "Sweetberry Sundae",
   "block.beachparty.coconut_sundae": "Coconut Sundae",
   "block.beachparty.chocolate_sundae": "Chocolate Sundae",
-
-
   "item.beachparty.rubber_ring_axolotl": "Axolotl Rubber Ring",
   "item.beachparty.rubber_ring_blue": "Blue Rubber Ring",
   "item.beachparty.rubber_ring_pelican": "Pelican Rubber Ring",
@@ -86,7 +87,6 @@
   "effect.beachparty.tide_rush": "Tide Rush",
   "effect.beachparty.aqua_float": "Aqua Float",
   "effect.beachparty.ocean_walk": "Ocean Walk",
-
   "tooltip.beachparty.trinketsslot": "When equipped in Trinket Slot:",
   "tooltip.beachparty.effect.item.beachparty.rubber_ring_blue": "Increases Swim Speed by 15% and prevents Diving",
   "tooltip.beachparty.effect.item.beachparty.rubber_ring_stripped": "Increases Swim Speed by 15% and prevents Diving",
@@ -99,7 +99,6 @@
   "tooltip.beachparty.effect.item.beachparty.bikini": "Increases Swim Speed by 10%",
   "tooltip.beachparty.effect.item.beachparty.trunks": "Increases Swim Speed by 10%",
   "tooltip.beachparty.effect.item.beachparty.crocs": "Grants the ability to walk on Water",
-
   "tooltip.beachparty.canbetoggled": "§e[Right-Click]§r to toggle 3D Model on/off.",
   "tooltip.beachparty.coconut_icecream": "Especially refreshing Ice Cream with a tingling touch...",
   "text.autoconfig.beachparty.title": "Beachparty Config",
@@ -110,8 +109,6 @@
   "text.autoconfig.beachparty.option.destroySandcastle": "Sandcastle Behaviour",
   "text.autoconfig.beachparty.option.destroySandcastle.@Tooltip": "Should the Sand Castle be destroyed upon contact?",
   "text.autoconfig.beachparty.option.destroySandcastle.@PrefixText": "Miscellaneous",
-
   "key.categories.beachparty": "Beachparty",
   "key.beachparty.dash": "Swim Wings Dashing"
-
 }

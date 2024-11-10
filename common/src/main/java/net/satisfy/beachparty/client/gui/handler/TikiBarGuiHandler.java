@@ -10,8 +10,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.satisfy.beachparty.client.gui.handler.slot.IceSlot;
 import net.satisfy.beachparty.client.gui.handler.slot.TikiBarOutputSlot;
-import net.satisfy.beachparty.recipe.TikiBarRecipe;
-import net.satisfy.beachparty.registry.ScreenHandlerTypesRegistry;
+import net.satisfy.beachparty.core.recipe.TikiBarRecipe;
+import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
 
 
 public class TikiBarGuiHandler extends AbstractRecipeBookGUIScreenHandler {

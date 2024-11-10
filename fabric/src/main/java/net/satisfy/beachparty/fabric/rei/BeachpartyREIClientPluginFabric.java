@@ -3,7 +3,7 @@ package net.satisfy.beachparty.fabric.rei;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
-import net.satisfy.beachparty.compat.rei.BeachpartyREIClientPlugin;
+import net.satisfy.beachparty.core.compat.rei.BeachpartyREIClientPlugin;
 
 public class BeachpartyREIClientPluginFabric implements REIClientPlugin {
 

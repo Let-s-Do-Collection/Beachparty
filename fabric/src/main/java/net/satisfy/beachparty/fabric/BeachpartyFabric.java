@@ -11,12 +11,12 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.satisfy.beachparty.Beachparty;
-import net.satisfy.beachparty.block.furniture.BeachTowelBlock;
+import net.satisfy.beachparty.core.block.furniture.BeachTowelBlock;
+import net.satisfy.beachparty.core.registry.CompostablesRegistry;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
+import net.satisfy.beachparty.core.world.PlacedFeatures;
 import net.satisfy.beachparty.fabric.compat.trinkets.TrinketsCompatibility;
 import net.satisfy.beachparty.fabric.config.ConfigFabric;
-import net.satisfy.beachparty.registry.CompostablesRegistry;
-import net.satisfy.beachparty.util.BeachpartyIdentifier;
-import net.satisfy.beachparty.world.PlacedFeatures;
 
 import java.util.function.Predicate;
 

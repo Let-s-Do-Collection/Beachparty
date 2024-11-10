@@ -28,10 +28,12 @@ public class BeachpartyConfig {
     }
 
     @SubscribeEvent
-    public static void onLoad(final ModConfigEvent.Loading configEvent) { }
+    public static void onLoad(final ModConfigEvent.Loading configEvent) {
+    }
 
     @SubscribeEvent
-    public static void onReload(final ModConfigEvent.Reloading configEvent) { }
+    public static void onReload(final ModConfigEvent.Reloading configEvent) {
+    }
 
     public static void loadConfig(ForgeConfigSpec config, String path) {
         final CommentedFileConfig file = CommentedFileConfig.builder(new File(path)).sync().preserveInsertionOrder().autosave().writingMode(WritingMode.REPLACE).build();

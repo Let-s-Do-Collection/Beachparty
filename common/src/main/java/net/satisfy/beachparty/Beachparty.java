@@ -1,8 +1,8 @@
 package net.satisfy.beachparty;
 
-import net.satisfy.beachparty.event.CommonEvents;
-import net.satisfy.beachparty.networking.BeachpartyMessages;
-import net.satisfy.beachparty.registry.*;
+import net.satisfy.beachparty.core.event.CommonEvents;
+import net.satisfy.beachparty.core.networking.BeachpartyMessages;
+import net.satisfy.beachparty.core.registry.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

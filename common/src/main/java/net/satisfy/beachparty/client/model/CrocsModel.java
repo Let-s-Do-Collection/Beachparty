@@ -8,7 +8,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.Entity;
-import net.satisfy.beachparty.util.BeachpartyIdentifier;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 public class CrocsModel<T extends Entity> extends EntityModel<T> implements LeggingsModel {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new BeachpartyIdentifier("crocs"), "main");

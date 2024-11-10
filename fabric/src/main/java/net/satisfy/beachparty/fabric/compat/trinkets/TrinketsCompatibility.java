@@ -1,8 +1,8 @@
 package net.satisfy.beachparty.fabric.compat.trinkets;
 
 import dev.emi.trinkets.api.TrinketsApi;
-import net.satisfy.beachparty.fabric.compat.*;
-import net.satisfy.beachparty.registry.ObjectRegistry;
+import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.fabric.compat.BeachpartyTrinket;
 
 public class TrinketsCompatibility {
     public static void load() {

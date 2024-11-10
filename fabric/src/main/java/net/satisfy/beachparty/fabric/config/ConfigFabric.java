@@ -11,6 +11,7 @@ public class ConfigFabric implements ConfigData {
 
     @ConfigEntry.Category("worldgen")
     public WorldgenSettings worldgen = new WorldgenSettings();
+
     public static class WorldgenSettings {
         @ConfigEntry.Gui.Tooltip
         public boolean spawnSeashells = true;

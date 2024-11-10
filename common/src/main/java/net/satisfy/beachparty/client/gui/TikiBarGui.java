@@ -5,7 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.satisfy.beachparty.client.gui.handler.TikiBarGuiHandler;
-import net.satisfy.beachparty.util.BeachpartyIdentifier;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 public class TikiBarGui extends AbstractRecipeBookGUIScreen<TikiBarGuiHandler> {
     public static final ResourceLocation BG = new BeachpartyIdentifier("textures/gui/tiki_bar_gui.png");

@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.satisfy.beachparty.entity.ChairEntity;
+import net.satisfy.beachparty.core.entity.ChairEntity;
 
 public class ChairRenderer extends EntityRenderer<ChairEntity> {
     public ChairRenderer(EntityRendererProvider.Context ctx) {

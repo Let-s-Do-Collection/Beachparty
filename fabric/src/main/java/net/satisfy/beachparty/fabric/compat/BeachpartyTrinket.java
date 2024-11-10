@@ -1,18 +1,21 @@
 package net.satisfy.beachparty.fabric.compat;
 
 import dev.emi.trinkets.api.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.satisfy.beachparty.core.registry.MobEffectRegistry;
+import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.fabric.client.BeachpartyFabricClient;
-import net.satisfy.beachparty.registry.MobEffectRegistry;
-import net.satisfy.beachparty.registry.ObjectRegistry;
 
 import java.util.Map;
 import java.util.Optional;
@@ -80,7 +83,7 @@ public class BeachpartyTrinket {
             return !BeachpartyTrinket.isTrinketEquipped(player, conflictingItems);
         }
     }
-    
+
     public static class BeachhatTrinket extends BaseTrinket {
         public BeachhatTrinket() {
             super(0.10f, ObjectRegistry.BEACH_HAT.get());
@@ -96,7 +99,7 @@ public class BeachpartyTrinket {
         public void onEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.onEquip(stack, slot, entity);
             if (entity instanceof Player player) {
-                player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), 0, 0, false, false));
+                player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), -1, 0, false, false));
             }
         }
 
@@ -113,13 +116,22 @@ public class BeachpartyTrinket {
             super.tick(stack, slot, entity);
             if (entity instanceof Player player) {
                 if (!player.hasEffect(MobEffectRegistry.OCEAN_WALK.get())) {
-                    player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), 0, 0, false, false));
+                    player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), -1, 0, false, false));
                 }
             }
         }
     }
 
     public static class RubberRingTrinket extends BaseTrinket {
+        private static final int GLIDE_DURATION = 60;
+        private static final int COOLDOWN_DURATION = 200;
+        private boolean canGlide = true;
+        private int cooldown = 0;
+        private int glideTicks = 0;
+        private boolean jumpKeyPressed = false;
+        private boolean glideActivated = false;
+        private int jumpPressesInAir = 0;
+
         public RubberRingTrinket() {
             super(0,
                     ObjectRegistry.RUBBER_RING_AXOLOTL.get(),
@@ -131,31 +143,62 @@ public class BeachpartyTrinket {
         }
 
         @Override
-        public void onEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
-            super.onEquip(stack, slot, entity);
-            if (entity instanceof Player player) {
-                player.addEffect(new MobEffectInstance(MobEffectRegistry.AQUA_FLOAT.get(), 1, 0, false, false));
-            }
-        }
-
-        @Override
-        public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
-            super.onUnequip(stack, slot, entity);
-            if (entity instanceof Player player) {
-                player.removeEffect(MobEffectRegistry.AQUA_FLOAT.get());
-            }
-        }
-
-        @Override
         public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.tick(stack, slot, entity);
             if (entity instanceof Player player) {
-                if (!player.hasEffect(MobEffectRegistry.AQUA_FLOAT.get())) {
-                    player.addEffect(new MobEffectInstance(MobEffectRegistry.AQUA_FLOAT.get(), 1, 0, false, false));
+                if (cooldown > 0) {
+                    cooldown--;
+                } else {
+                    canGlide = true;
                 }
+
+                boolean isInAir = !player.onGround;
+                boolean jumpKeyCurrentlyPressed = false;
+
+                if (player instanceof LocalPlayer) {
+                    jumpKeyCurrentlyPressed = Minecraft.getInstance().options.keyJump.isDown();
+                }
+
+                if (!isInAir) {
+                    jumpPressesInAir = 0;
+                }
+
+                if (isInAir && jumpKeyCurrentlyPressed && !jumpKeyPressed) {
+                    jumpPressesInAir++;
+                }
+
+                if (jumpPressesInAir >= 2 && glideTicks == 0 && canGlide) {
+                    glideTicks = GLIDE_DURATION;
+                    canGlide = false;
+                    cooldown = COOLDOWN_DURATION;
+                    glideActivated = true;
+
+                    for (int i = 0; i < 20; i++) {
+                        double offsetX = (player.getRandom().nextDouble() - 0.5) * 0.5;
+                        double offsetY = player.getRandom().nextDouble() * 0.5;
+                        double offsetZ = (player.getRandom().nextDouble() - 0.5) * 0.5;
+                        player.level().addParticle(ParticleTypes.POOF,
+                                player.getX() + offsetX,
+                                player.getY() + offsetY,
+                                player.getZ() + offsetZ,
+                                0, 0, 0);
+                    }
+                    player.playSound(SoundEvents.WOOL_FALL, 0.75F, 0.75F);
+                }
+                if (glideTicks > 0 && glideActivated) {
+                    player.setDeltaMovement(player.getDeltaMovement().x, -0.05, player.getDeltaMovement().z);
+                    glideTicks--;
+
+                    if (glideTicks == 0) {
+                        player.setDeltaMovement(player.getDeltaMovement().x, -0.08, player.getDeltaMovement().z);
+                        glideActivated = false;
+                    }
+                }
+                jumpKeyPressed = jumpKeyCurrentlyPressed;
             }
         }
     }
+
 
     public static class SunglassesTrinket extends BaseTrinket {
         public SunglassesTrinket() {
@@ -166,8 +209,8 @@ public class BeachpartyTrinket {
     public static class SwimSuitTrinket extends BaseTrinket {
         public SwimSuitTrinket() {
             super(0,
-                ObjectRegistry.TRUNKS.get(),
-                ObjectRegistry.BIKINI.get()
+                    ObjectRegistry.TRUNKS.get(),
+                    ObjectRegistry.BIKINI.get()
             );
         }
 

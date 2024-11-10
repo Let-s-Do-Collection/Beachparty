@@ -13,10 +13,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.satisfy.beachparty.Beachparty;
-import net.satisfy.beachparty.block.furniture.BeachTowelBlock;
+import net.satisfy.beachparty.core.block.furniture.BeachTowelBlock;
+import net.satisfy.beachparty.core.registry.CompostablesRegistry;
+import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.forge.registry.BeachpartyConfig;
-import net.satisfy.beachparty.registry.CompostablesRegistry;
-import net.satisfy.beachparty.registry.ObjectRegistry;
 
 @Mod(Beachparty.MOD_ID)
 public class BeachpartyForge {
@@ -45,16 +45,13 @@ public class BeachpartyForge {
     public static class ForgeEventsHandler {
 
         @SubscribeEvent
-        public static void playerSetSpawn(PlayerSetSpawnEvent event)
-        {
+        public static void playerSetSpawn(PlayerSetSpawnEvent event) {
             Level level = event.getEntity().level();
 
-            if(event.getNewSpawn() != null)
-            {
+            if (event.getNewSpawn() != null) {
                 Block block = level.getBlockState(event.getNewSpawn()).getBlock();
 
-                if(!level.isClientSide && block instanceof BeachTowelBlock && !event.isForced())
-                {
+                if (!level.isClientSide && block instanceof BeachTowelBlock && !event.isForced()) {
                     event.setCanceled(true);
                 }
             }

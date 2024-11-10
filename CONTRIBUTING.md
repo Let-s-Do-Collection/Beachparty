@@ -1,6 +1,7 @@
 # 🏖️ Contributing to [Let's Do] Beachparty 🏖️
 
-Thanks for stopping by; i'm excited you’re here to help make this mod a beach party success! Pull Requests (PRs) are welcome - let’s keep the code clean and efficient.
+Thanks for stopping by; i'm excited you’re here to help make this mod a beach party success! Pull Requests (PRs) are
+welcome - let’s keep the code clean and efficient.
 
 ## How You Can Help
 
@@ -11,7 +12,8 @@ Thanks for stopping by; i'm excited you’re here to help make this mod a beach 
 ## Guidelines
 
 - **Clean Code**: Keeping the code clean and organized is key; please avoid leaving unused code.
-- **Commit Messages**: Make commit messages clear and concise. Although not required, using [Conventional Commits](https://www.conventionalcommits.org) is recommended for better tracking.
+- **Commit Messages**: Make commit messages clear and concise. Although not required,
+  using [Conventional Commits](https://www.conventionalcommits.org) is recommended for better tracking.
 
 ## Code Style
 
