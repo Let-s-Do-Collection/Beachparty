@@ -3,7 +3,7 @@ package net.satisfy.beachparty.core.networking.packet;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.satisfy.beachparty.core.block.furniture.RadioBlock;
+import net.satisfy.beachparty.core.block.RadioBlock;
 import net.satisfy.beachparty.core.util.RadioHelper;
 
 public class TurnRadioS2CPacket implements NetworkManager.NetworkReceiver {

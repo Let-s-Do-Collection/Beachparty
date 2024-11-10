@@ -1,14 +1,14 @@
-package net.satisfy.beachparty.core.block.furniture;
+package net.satisfy.beachparty.core.block;
 
 import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.Unpooled;
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -48,7 +48,7 @@ public class RadioBlock extends Block {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty SEARCHING;
     public static final Set<BlockPos> RADIO_BLOCKS = new HashSet<>();
-    public static final int CHANNELS = SoundEventRegistry.RADIO_SOUNDS.size();
+    public static final int CHANNELS = Math.max(SoundEventRegistry.RADIO_SOUNDS.size(), 1);
     public static final int DELAY = 2 * 20;
 
     private static final Supplier<VoxelShape> voxelShapeSupplier = () -> Shapes.box(0.125, 0, 0.3125, 0.875, 0.5, 0.6875);
@@ -59,49 +59,9 @@ public class RadioBlock extends Block {
         }
     });
 
-    static {
-        ON = BooleanProperty.create("on");
-        CHANNEL = IntegerProperty.create("channel", 0, CHANNELS - 1);
-        SEARCHING = BooleanProperty.create("searching");
-    }
-
-    private boolean newState;
-
     public RadioBlock(Properties settings) {
         super(settings);
         this.registerDefaultState(this.stateDefinition.any().setValue(ON, false).setValue(CHANNEL, 0).setValue(SEARCHING, false));
-    }
-
-    public static void sendPacket(BlockState state, ServerLevel world, BlockPos pos, boolean on) {
-        for (ServerPlayer player : world.players()) {
-            FriendlyByteBuf buffer = createPacketBuf();
-            buffer.writeBlockPos(pos);
-            buffer.writeInt(state.getValue(CHANNEL));
-            buffer.writeBoolean(on);
-            NetworkManager.sendToPlayer(player, BeachpartyMessages.TURN_RADIO_S2C, buffer);
-        }
-    }
-
-    public static FriendlyByteBuf createPacketBuf() {
-        return new FriendlyByteBuf(Unpooled.buffer());
-    }
-
-    public static Set<BlockPos> getAllRadioBlocks() {
-        return RADIO_BLOCKS;
-    }
-
-    private static void spawnParticles(Level world, BlockPos pos) {
-        RandomSource random = world.random;
-
-        double d = (double) pos.getX() + random.nextDouble();
-        double e = pos.getY() + 0.5 + random.nextDouble();
-        double f = (double) pos.getZ() + random.nextDouble();
-
-        double red = random.nextDouble();
-        double green = random.nextDouble();
-        double blue = random.nextDouble();
-
-        world.addParticle(ParticleTypes.NOTE, d, e, f, red, green, blue);
     }
 
     @Override
@@ -125,6 +85,31 @@ public class RadioBlock extends Block {
             return InteractionResult.CONSUME;
         }
         if (hand == InteractionHand.MAIN_HAND) {
+
+            if (!world.isClientSide() && (player.isShiftKeyDown() || player.isCrouching())) {
+
+                if (state.getBlock() instanceof RadioBlock radioBlock) {
+
+                    if (!state.getValue(RadioBlock.ON) || state.getValue(RadioBlock.SEARCHING)) {
+                        return InteractionResult.PASS;
+                    }
+
+                    int channel = radioBlock.tune(world, state, pos, world.random.nextInt(1, CHANNELS));
+
+                    FriendlyByteBuf buffer = RadioBlock.createPacketBuf();
+
+                    buffer.writeBlockPos(pos);
+                    buffer.writeInt(channel);
+
+                    List<ServerPlayer> serverPlayerEntities = player.getServer().getPlayerList().getPlayers();
+                    for (ServerPlayer serverPlayer : serverPlayerEntities) {
+                        NetworkManager.sendToPlayer(serverPlayer, BeachpartyMessages.TUNE_RADIO_S2C, buffer);
+                    }
+                }
+
+                return InteractionResult.SUCCESS;
+            }
+
             boolean newState = !state.getValue(ON);
             if (newState) {
                 turnON(state, world, pos, player);
@@ -181,6 +166,20 @@ public class RadioBlock extends Block {
         world.scheduleTick(pos, this, DELAY);
     }
 
+    public static void sendPacket(BlockState state, ServerLevel world, BlockPos pos, boolean on) {
+        for (ServerPlayer player : world.players()) {
+            FriendlyByteBuf buffer = createPacketBuf();
+            buffer.writeBlockPos(pos);
+            buffer.writeInt(state.getValue(CHANNEL));
+            buffer.writeBoolean(on);
+            NetworkManager.sendToPlayer(player, BeachpartyMessages.TURN_RADIO_S2C, buffer);
+        }
+    }
+
+    public static FriendlyByteBuf createPacketBuf() {
+        return new FriendlyByteBuf(Unpooled.buffer());
+    }
+
     @Override
     public @NotNull RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
@@ -207,6 +206,10 @@ public class RadioBlock extends Block {
         sendPacket(state, (ServerLevel) world, pos, false);
     }
 
+    public static Set<BlockPos> getAllRadioBlocks() {
+        return RADIO_BLOCKS;
+    }
+
     @Override
     public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         if (state.getValue(SEARCHING)) {
@@ -220,6 +223,20 @@ public class RadioBlock extends Block {
         }
     }
 
+    private static void spawnParticles(Level world, BlockPos pos) {
+        RandomSource random = world.random;
+
+        double d = (double) pos.getX() + random.nextDouble();
+        double e = pos.getY() + 0.5 + random.nextDouble();
+        double f = (double) pos.getZ() + random.nextDouble();
+
+        double red = random.nextDouble();
+        double green = random.nextDouble();
+        double blue = random.nextDouble();
+
+        world.addParticle(ParticleTypes.NOTE, d, e, f, red, green, blue);
+    }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, ON, CHANNEL, SEARCHING);
@@ -227,6 +244,12 @@ public class RadioBlock extends Block {
 
     @Override
     public void appendHoverText(ItemStack itemStack, BlockGetter world, List<Component> tooltip, TooltipFlag tooltipContext) {
-        tooltip.add(Component.translatable("tooltip.beachparty.canbeplaced").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))));
+        tooltip.add(Component.translatable("tooltip.beachparty.canbeplaced").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+    }
+
+    static {
+        ON = BooleanProperty.create("on");
+        CHANNEL = IntegerProperty.create("channel", 0, CHANNELS - 1);
+        SEARCHING = BooleanProperty.create("searching");
     }
 }
