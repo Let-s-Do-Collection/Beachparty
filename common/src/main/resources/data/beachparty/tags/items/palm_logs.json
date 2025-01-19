@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "vinery:palm_log",
+    "vinery:stripped_palm_log",
+    "vinery:palm_wood",
+    "vinery:stripped_palm_wood"
+  ]
+}
