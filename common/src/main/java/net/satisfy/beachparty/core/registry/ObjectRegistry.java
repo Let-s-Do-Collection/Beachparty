@@ -59,7 +59,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> RUBBER_RING_PELICAN = registerItem("rubber_ring_pelican", () -> new BeachpartyArmorItem(ArmorMaterialRegistry.RING, ArmorItem.Type.CHESTPLATE, getSettings().rarity(Rarity.RARE), new BeachpartyIdentifier("textures/models/armor/rubber_ring_pelican.png")));
     public static final RegistrySupplier<Item> RUBBER_RING_AXOLOTL = registerItem("rubber_ring_axolotl", () -> new BeachpartyArmorItem(ArmorMaterialRegistry.RING, ArmorItem.Type.CHESTPLATE, getSettings().rarity(Rarity.RARE), new BeachpartyIdentifier("textures/models/armor/rubber_ring_axolotl.png")));
     public static final RegistrySupplier<Item> POOL_NOODLE = registerItem("pool_noodle", () -> new PoolNoodleItem(Tiers.WOOD, 0, -1.4F, getSettings()));
-    public static final RegistrySupplier<Block> SAND_PILE = registerWithoutItem("sand_pile", () -> new SandPileBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND).mapColor(MapColor.SAND)));
+    public static final RegistrySupplier<Block> SAND_PILE = registerWithoutItem("sand_pile", () -> new SandBucketBlock.SandPileBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND).mapColor(MapColor.SAND)));
     public static final RegistrySupplier<Block> THATCH = registerWithItem("thatch", () -> new HayBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
     public static final RegistrySupplier<Block> THATCH_STAIRS = registerWithItem("thatch_stairs", () -> new StairBlock(THATCH.get().defaultBlockState(), BlockBehaviour.Properties.copy(THATCH.get()).sound(SoundType.GRASS)));
     public static final RegistrySupplier<Block> THATCH_SLAB = registerWithItem("thatch_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK).strength(2.0F).sound(SoundType.WOOD).explosionResistance(3.0F)));
@@ -77,10 +77,10 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> MESSAGE_IN_A_BOTTLE_ITEM = registerItem("message_in_a_bottle", () -> new MessageInABottleItem(ObjectRegistry.MESSAGE_IN_A_BOTTLE.get(), getSettings()));
     public static final RegistrySupplier<Block> SEASHELL_BLOCK = registerWithoutItem("seashell_block", () -> new SeashellBlock(BlockBehaviour.Properties.copy(Blocks.DECORATED_POT).instabreak().noParticlesOnBreak()));
     public static final RegistrySupplier<Item> SEASHELL = registerItem("seashell", () -> new SeashellItem(SEASHELL_BLOCK.get(), getSettings()));
-    public static final RegistrySupplier<Block> SAND_BUCKET_BLOCK = registerWithoutItem("sand_bucket_block", () -> new SandBucketBlock(BlockBehaviour.Properties.copy(Blocks.DECORATED_POT)));
-    public static final RegistrySupplier<Item> SAND_BUCKET = registerItem("sand_bucket", () -> new SandBucketItem(SAND_BUCKET_BLOCK.get(), getSettings().stacksTo(1)));
-    public static final RegistrySupplier<Block> EMPTY_SAND_BUCKET_BLOCK = registerWithoutItem("empty_sand_bucket_block", () -> new SandBucketBlock(BlockBehaviour.Properties.copy(Blocks.NETHER_WART)));
-    public static final RegistrySupplier<Item> EMPTY_SAND_BUCKET = registerItem("empty_sand_bucket", () -> new SandBucketItem(EMPTY_SAND_BUCKET_BLOCK.get(), getSettings()));
+    public static final RegistrySupplier<Block> SAND_BUCKET_BLOCK_FILLED = registerWithoutItem("sand_bucket_block_filled", () -> new SandBucketBlock(BlockBehaviour.Properties.copy(Blocks.DECORATED_POT)));
+    public static final RegistrySupplier<Item> SAND_BUCKET_FILLED = registerItem("sand_bucket_filled", () -> new SandBucketItem(SAND_BUCKET_BLOCK_FILLED.get(), getSettings().stacksTo(1)));
+    public static final RegistrySupplier<Block> SAND_BUCKET_BLOCK_EMPTY = registerWithoutItem("sand_bucket_block_empty", () -> new SandBucketBlock(BlockBehaviour.Properties.copy(Blocks.NETHER_WART)));
+    public static final RegistrySupplier<Item> SAND_BUCKET_EMPTY = registerItem("sand_bucket_empty", () -> new SandBucketItem(SAND_BUCKET_BLOCK_EMPTY.get(), getSettings()));
     public static final RegistrySupplier<Block> COCONUT_BLOCK = registerWithoutItem("coconut_block", () -> new CoconutBlock(BlockBehaviour.Properties.copy(Blocks.BAMBOO)));
     public static final RegistrySupplier<Item> COCONUT = registerItem("coconut", () -> new CoconutItem(COCONUT_BLOCK.get(), getSettings()));
     public static final RegistrySupplier<Block> COCONUT_COCKTAIL = registerCocktail("coconut_cocktail", () -> new CocktailBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().instabreak()), MobEffects.DAMAGE_BOOST);
@@ -99,7 +99,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> TIKI_WALL_TORCH = registerWithoutItem("tiki_wall_torch", () -> new WallTorchBlock(BlockBehaviour.Properties.copy(Blocks.TORCH).noCollission().instabreak().lightLevel((state) -> 14).sound(SoundType.WOOD).dropsLike(TIKI_TORCH.get()), ParticleTypes.FLAME));
     public static final RegistrySupplier<Item> TIKI_TORCH_ITEM = registerItem("tiki_torch_item", () -> new StandingAndWallBlockItem(ObjectRegistry.TIKI_TORCH.get(), ObjectRegistry.TIKI_WALL_TORCH.get(), getSettings(), Direction.DOWN));
     public static final RegistrySupplier<Block> TALL_TIKI_TORCH = registerWithItem("tall_tiki_torch", () -> new TallTorchBlock(BlockBehaviour.Properties.copy(Blocks.TORCH).noCollission().instabreak().lightLevel((state) -> 14).sound(SoundType.WOOD), ParticleTypes.FLAME));
-    public static final RegistrySupplier<Block> SANDCASTLE = registerWithoutItem("sandcastle", () -> new SandCastleBlock(BlockBehaviour.Properties.copy(Blocks.SAND)));
+    public static final RegistrySupplier<Block> SANDCASTLE = registerWithoutItem("sandcastle", () -> new SandBucketBlock.SandCastleBlock(BlockBehaviour.Properties.copy(Blocks.SAND)));
     public static final Supplier<Item> FLOATY_BOAT = registerItem("floaty_boat", () -> new BeachpartyBoatItem(false, BeachpartyBoatEntity.Type.FLOATY, new Item.Properties().stacksTo(1)));
     public static final Supplier<Item> FLOATY_CHEST_BOAT = registerItem("floaty_chest_boat", () -> new BeachpartyBoatItem(true, BeachpartyBoatEntity.Type.FLOATY, new Item.Properties().stacksTo(1)));
     public static final RegistrySupplier<Item> BEACH_BALL = registerItem("beach_ball", () -> new BeachBallItem(new Item.Properties()));

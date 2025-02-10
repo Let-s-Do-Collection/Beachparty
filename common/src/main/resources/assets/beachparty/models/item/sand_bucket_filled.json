@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "beachparty:item/empty_sand_bucket"
+    "layer0": "beachparty:item/sand_bucket_filled"
   }
 }

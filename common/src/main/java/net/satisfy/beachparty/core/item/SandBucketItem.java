@@ -33,7 +33,7 @@ public class SandBucketItem extends BlockItem {
     }
 
     public static ItemStack getEmptiedStack(ItemStack stack, Player player) {
-        return !player.getAbilities().instabuild ? new ItemStack(ObjectRegistry.EMPTY_SAND_BUCKET.get()) : stack;
+        return !player.getAbilities().instabuild ? new ItemStack(ObjectRegistry.SAND_BUCKET_EMPTY.get()) : stack;
     }
 
     @Override
@@ -63,12 +63,12 @@ public class SandBucketItem extends BlockItem {
             Direction direction = blockHitResult.getDirection();
             BlockPos offsetPos = blockPos.relative(direction);
             if (world.mayInteract(user, blockPos)) {
-                if (this == ObjectRegistry.EMPTY_SAND_BUCKET.get() && world.getBlockState(blockPos).is(BlockTags.SAND)) {
+                if (this == ObjectRegistry.SAND_BUCKET_EMPTY.get() && world.getBlockState(blockPos).is(BlockTags.SAND)) {
                     world.destroyBlock(blockPos, false);
-                    ItemStack sandBucket = new ItemStack(ObjectRegistry.SAND_BUCKET.get());
+                    ItemStack sandBucket = new ItemStack(ObjectRegistry.SAND_BUCKET_FILLED.get());
                     ItemStack returnStack = exchangeStack(itemStack, user, sandBucket);
                     return InteractionResultHolder.sidedSuccess(returnStack, world.isClientSide());
-                } else if (this == ObjectRegistry.SAND_BUCKET.get() && user.mayUseItemAt(offsetPos, direction, itemStack)) {
+                } else if (this == ObjectRegistry.SAND_BUCKET_FILLED.get() && user.mayUseItemAt(offsetPos, direction, itemStack)) {
                     if (world.getBlockState(offsetPos).isAir() && ObjectRegistry.SANDCASTLE.get().defaultBlockState().canSurvive(world, offsetPos)) {
                         world.setBlock(offsetPos, ObjectRegistry.SANDCASTLE.get().defaultBlockState(), 3);
                         ItemStack returnStack = exchangeStack(itemStack, user, getEmptiedStack(itemStack, user));

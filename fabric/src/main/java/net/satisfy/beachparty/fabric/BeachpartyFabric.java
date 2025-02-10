@@ -11,7 +11,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.satisfy.beachparty.Beachparty;
-import net.satisfy.beachparty.core.block.furniture.BeachTowelBlock;
+import net.satisfy.beachparty.core.block.BeachTowelBlock;
 import net.satisfy.beachparty.core.registry.CompostablesRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import net.satisfy.beachparty.core.world.PlacedFeatures;

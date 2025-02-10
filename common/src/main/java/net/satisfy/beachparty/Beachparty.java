@@ -1,7 +1,6 @@
 package net.satisfy.beachparty;
 
 import net.satisfy.beachparty.core.event.CommonEvents;
-import net.satisfy.beachparty.core.networking.BeachpartyMessages;
 import net.satisfy.beachparty.core.registry.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +17,6 @@ public class Beachparty {
         SoundEventRegistry.init();
         ScreenHandlerTypesRegistry.init();
         CommonEvents.init();
-        BeachpartyMessages.registerC2SPackets();
         RecipeRegistry.init();
     }
 }

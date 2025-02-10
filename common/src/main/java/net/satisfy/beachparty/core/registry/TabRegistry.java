@@ -35,8 +35,8 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.OVERGROWN_DISC.get());
                 out.accept(ObjectRegistry.MESSAGE_IN_A_BOTTLE_ITEM.get());
                 out.accept(ObjectRegistry.SEASHELL.get());
-                out.accept(ObjectRegistry.SAND_BUCKET.get());
-                out.accept(ObjectRegistry.EMPTY_SAND_BUCKET.get());
+                out.accept(ObjectRegistry.SAND_BUCKET_FILLED.get());
+                out.accept(ObjectRegistry.SAND_BUCKET_EMPTY.get());
                 out.accept(ObjectRegistry.COCONUT.get());
                 out.accept(ObjectRegistry.COCONUT_OPEN.get());
                 out.accept(ObjectRegistry.COCONUT_COCKTAIL.get());

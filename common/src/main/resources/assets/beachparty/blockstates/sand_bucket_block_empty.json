@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "beachparty:block/sand_bucket_empty",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "beachparty:block/sand_bucket_empty"
+    },
+    "facing=south": {
+      "model": "beachparty:block/sand_bucket_empty",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "beachparty:block/sand_bucket_empty",
+      "y": 270
+    }
+  }
+}
