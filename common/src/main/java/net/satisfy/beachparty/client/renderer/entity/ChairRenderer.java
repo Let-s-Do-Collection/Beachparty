@@ -1,4 +1,4 @@
-package net.satisfy.beachparty.client.renderer;
+package net.satisfy.beachparty.client.renderer.entity;
 
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;

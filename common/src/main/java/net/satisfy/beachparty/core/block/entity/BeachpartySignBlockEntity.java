@@ -8,8 +8,13 @@ import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 
 public class BeachpartySignBlockEntity extends SignBlockEntity {
-    public BeachpartySignBlockEntity(BlockPos pos, BlockState state) {
-        super(pos, state);
+
+    public BeachpartySignBlockEntity(BlockEntityType<? extends BeachpartySignBlockEntity> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
+    }
+
+    public BeachpartySignBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(EntityTypeRegistry.BEACHPARTY_SIGN.get(), pPos, pBlockState);
     }
 
     @Override

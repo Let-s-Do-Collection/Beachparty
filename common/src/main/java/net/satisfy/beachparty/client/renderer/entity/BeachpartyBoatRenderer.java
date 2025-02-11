@@ -1,4 +1,4 @@
-package net.satisfy.beachparty.client.renderer;
+package net.satisfy.beachparty.client.renderer.entity;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;

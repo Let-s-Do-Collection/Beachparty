@@ -2,6 +2,7 @@ package net.satisfy.beachparty.client;
 
 import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
+import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import dev.architectury.registry.client.rendering.RenderTypeRegistry;
 import dev.architectury.registry.menu.MenuRegistry;
 import net.fabricmc.api.EnvType;
@@ -11,9 +12,11 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.satisfy.beachparty.client.gui.MiniFridgeGui;
 import net.satisfy.beachparty.client.gui.TikiBarGui;
 import net.satisfy.beachparty.client.model.*;
-import net.satisfy.beachparty.client.renderer.BeachBallRenderer;
-import net.satisfy.beachparty.client.renderer.BeachpartyBoatRenderer;
-import net.satisfy.beachparty.client.renderer.ChairRenderer;
+import net.satisfy.beachparty.client.renderer.block.BeachpartyHangingSignRenderer;
+import net.satisfy.beachparty.client.renderer.block.BeachpartySignRenderer;
+import net.satisfy.beachparty.client.renderer.entity.BeachBallRenderer;
+import net.satisfy.beachparty.client.renderer.entity.BeachpartyBoatRenderer;
+import net.satisfy.beachparty.client.renderer.entity.ChairRenderer;
 import net.satisfy.beachparty.core.networking.BeachpartyMessages;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
@@ -37,6 +40,8 @@ public class BeachPartyClient {
         MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.TIKI_BAR_GUI_HANDLER.get(), TikiBarGui::new);
         MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeGui::new);
 
+        BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_SIGN.get(), BeachpartySignRenderer::new);
+        BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_HANGING_SIGN.get(), BeachpartyHangingSignRenderer::new);
 
         BeachpartyMessages.registerS2CPackets();
 
