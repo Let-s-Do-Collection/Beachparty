@@ -17,6 +17,20 @@ public class TabRegistry {
             .icon(() -> new ItemStack(ObjectRegistry.COCONUT_COCKTAIL.get()))
             .title(Component.translatable("creativetab.beachparty.tab").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))))
             .displayItems((parameters, out) -> {
+                out.accept(ObjectRegistry.PALM_LOG.get());
+                out.accept(ObjectRegistry.PALM_WOOD.get());
+                out.accept(ObjectRegistry.STRIPPED_PALM_LOG.get());
+                out.accept(ObjectRegistry.STRIPPED_PALM_WOOD.get());
+                out.accept(ObjectRegistry.PALM_BEAM.get());
+                out.accept(ObjectRegistry.PALM_PLANKS.get());
+                out.accept(ObjectRegistry.PALM_STAIRS.get());
+                out.accept(ObjectRegistry.PALM_SLAB.get());
+                out.accept(ObjectRegistry.PALM_FENCE.get());
+                out.accept(ObjectRegistry.PALM_FENCE_GATE.get());
+                out.accept(ObjectRegistry.PALM_DOOR.get());
+                out.accept(ObjectRegistry.PALM_TRAPDOOR.get());
+                out.accept(ObjectRegistry.PALM_PRESSURE_PLATE.get());
+                out.accept(ObjectRegistry.PALM_BUTTON.get());
                 out.accept(ObjectRegistry.CABINET.get());
                 out.accept(ObjectRegistry.TIKI_BAR.get());
                 out.accept(ObjectRegistry.LOUNGE_CHAIR.get());
@@ -31,6 +45,17 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.TIKI_TORCH_ITEM.get());
                 out.accept(ObjectRegistry.TALL_TIKI_TORCH.get());
                 out.accept(ObjectRegistry.MINI_FRIDGE.get());
+                out.accept(ObjectRegistry.PALM_FLOORBOARD.get());
+                out.accept(ObjectRegistry.SANDWAVES.get());
+                out.accept(ObjectRegistry.PALM_LEAVES.get());
+                out.accept(ObjectRegistry.PALM_SAPLING.get());
+                out.accept(ObjectRegistry.PALM_SIGN_ITEM.get());
+                out.accept(ObjectRegistry.PALM_HANGING_SIGN_ITEM.get());
+                out.accept(ObjectRegistry.PALM_BOAT.get());
+                out.accept(ObjectRegistry.PALM_CHEST_BOAT.get());
+                out.accept(ObjectRegistry.FLOATY_BOAT.get());
+                out.accept(ObjectRegistry.PALM_TORCH_ITEM.get());
+                out.accept(ObjectRegistry.PALM_TALL_TORCH.get());
                 out.accept(ObjectRegistry.RADIO.get());
                 out.accept(ObjectRegistry.OVERGROWN_DISC.get());
                 out.accept(ObjectRegistry.MESSAGE_IN_A_BOTTLE_ITEM.get());
@@ -48,10 +73,6 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.SWEETBERRY_MILKSHAKE.get());
                 out.accept(ObjectRegistry.COCONUT_MILKSHAKE.get());
                 out.accept(ObjectRegistry.CHOCOLATE_MILKSHAKE.get());
-                out.accept(ObjectRegistry.SWEETBERRY_SUNDAE.get());
-                out.accept(ObjectRegistry.COCONUT_SUNDAE.get());
-                out.accept(ObjectRegistry.CHOCOLATE_SUNDAE.get());
-                out.accept(ObjectRegistry.REFRESHING_DRINK.get());
                 out.accept(ObjectRegistry.ICECREAM_COCONUT.get());
                 out.accept(ObjectRegistry.ICECREAM_CACTUS.get());
                 out.accept(ObjectRegistry.ICECREAM_CHOCOLATE.get());
@@ -59,7 +80,6 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.ICECREAM_MELON.get());
                 out.accept(ObjectRegistry.RAW_MUSSEL_MEAT.get());
                 out.accept(ObjectRegistry.COOKED_MUSSEL_MEAT.get());
-                out.accept(ObjectRegistry.BEACH_TOWEL.get());
                 out.accept(ObjectRegistry.BEACH_BALL.get());
                 out.accept(ObjectRegistry.BEACH_GOAL.get());
                 out.accept(ObjectRegistry.BEACH_HAT.get());
@@ -74,7 +94,7 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.RUBBER_RING_AXOLOTL.get());
                 out.accept(ObjectRegistry.RUBBER_RING_PELICAN.get());
                 out.accept(ObjectRegistry.POOL_NOODLE.get());
-                out.accept(ObjectRegistry.BEACH_PARASOL.get());
+
             })
             .build());
 

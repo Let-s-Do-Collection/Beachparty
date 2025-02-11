@@ -5,6 +5,8 @@ import net.minecraft.world.level.block.ComposterBlock;
 public class CompostablesRegistry {
 
     public static void init() {
+        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.PALM_SAPLING.get().asItem(), 0.6F);
+        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.PALM_LEAVES.get().asItem(), 0.6F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COCONUT.get().asItem(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COCONUT_OPEN.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COOKED_MUSSEL_MEAT.get(), 0.3F);
@@ -14,10 +16,6 @@ public class CompostablesRegistry {
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.ICECREAM_CHOCOLATE.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.ICECREAM_COCONUT.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.ICECREAM_SWEETBERRIES.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.CHOCOLATE_SUNDAE.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COCONUT_SUNDAE.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.SWEETBERRY_SUNDAE.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.REFRESHING_DRINK.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.CHOCOLATE_MILKSHAKE.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.SWEETBERRY_MILKSHAKE.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COCONUT_MILKSHAKE.get(), 0.3F);

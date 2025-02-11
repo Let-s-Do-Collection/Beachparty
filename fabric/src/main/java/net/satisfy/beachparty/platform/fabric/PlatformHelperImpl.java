@@ -22,7 +22,7 @@ public class PlatformHelperImpl {
     static ConfigFabric config = AutoConfig.getConfigHolder(ConfigFabric.class).getConfig();
 
     public static void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-        if (config.worldgen.destroySandcastle) {
+        if (config.destroySandcastle) {
             world.setBlock(pos, ObjectRegistry.SAND_PILE.get().defaultBlockState(), 3);
         }
     }

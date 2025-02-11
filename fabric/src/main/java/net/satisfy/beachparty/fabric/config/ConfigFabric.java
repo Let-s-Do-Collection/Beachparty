@@ -10,16 +10,17 @@ import net.satisfy.beachparty.Beachparty;
 public class ConfigFabric implements ConfigData {
 
     @ConfigEntry.Category("worldgen")
-    public WorldgenSettings worldgen = new WorldgenSettings();
+    public boolean spawnPalms = true;
+    @ConfigEntry.Category("worldgen")
+    public boolean spawnSeashells = true;
+    @ConfigEntry.Category("worldgen")
+    public boolean spawnSandwaves = true;
+    @ConfigEntry.Category("worldgen")
+    public boolean spawnMessageInABottle = true;
 
-    public static class WorldgenSettings {
-        @ConfigEntry.Gui.Tooltip
-        public boolean spawnSeashells = true;
+    @ConfigEntry.Gui.PrefixText
+    @ConfigEntry.Gui.Tooltip
+    public boolean destroySandcastle = true;
 
-        @ConfigEntry.Gui.Tooltip
-        public boolean spawnMessageInABottle = true;
 
-        @ConfigEntry.Gui.Tooltip
-        public boolean destroySandcastle = true;
-    }
 }

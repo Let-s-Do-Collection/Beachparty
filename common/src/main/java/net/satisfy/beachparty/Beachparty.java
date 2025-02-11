@@ -2,12 +2,10 @@ package net.satisfy.beachparty;
 
 import net.satisfy.beachparty.core.event.CommonEvents;
 import net.satisfy.beachparty.core.registry.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import dev.architectury.hooks.item.tool.AxeItemHooks;
 
 public class Beachparty {
     public static final String MOD_ID = "beachparty";
-    public static final Logger LOGGER = LogManager.getLogger();
 
     public static void init() {
         ObjectRegistry.init();
@@ -18,5 +16,10 @@ public class Beachparty {
         ScreenHandlerTypesRegistry.init();
         CommonEvents.init();
         RecipeRegistry.init();
+    }
+
+    public static void commonSetup() {
+        AxeItemHooks.addStrippable(ObjectRegistry.PALM_LOG.get(), ObjectRegistry.STRIPPED_PALM_LOG.get());
+        AxeItemHooks.addStrippable(ObjectRegistry.PALM_WOOD.get(), ObjectRegistry.STRIPPED_PALM_WOOD.get());
     }
 }

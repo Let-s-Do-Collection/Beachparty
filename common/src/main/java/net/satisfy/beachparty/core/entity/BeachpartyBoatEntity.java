@@ -29,7 +29,7 @@ public class BeachpartyBoatEntity extends Boat {
     }
 
     public BeachpartyBoatEntity(Level level, double x, double y, double z) {
-        this(EntityTypeRegistry.FLOATY_BOAT.get(), level);
+        this(EntityTypeRegistry.PALM_BOAT.get(), level);
         this.setPos(x, y, z);
         this.xo = x;
         this.yo = y;
@@ -74,6 +74,7 @@ public class BeachpartyBoatEntity extends Boat {
     }
 
     public enum Type {
+        PALM("palm", ObjectRegistry.PALM_BOAT, ObjectRegistry.PALM_CHEST_BOAT),
         FLOATY("floaty", ObjectRegistry.FLOATY_BOAT, ObjectRegistry.FLOATY_CHEST_BOAT);
 
 

@@ -28,6 +28,7 @@ public class BeachpartyFabric implements ModInitializer {
         AutoConfig.register(ConfigFabric.class, GsonConfigSerializer::new);
         Beachparty.init();
         CompostablesRegistry.init();
+        Beachparty.commonSetup();
         addBiomeModification();
         EntitySleepEvents.ALLOW_SETTING_SPAWN.register((player, sleepingPos) -> {
             boolean onClient = player.level().isClientSide;
@@ -46,20 +47,35 @@ public class BeachpartyFabric implements ModInitializer {
         ConfigFabric config = AutoConfig.getConfigHolder(ConfigFabric.class).getConfig();
 
         BiomeModification world = BiomeModifications.create(new BeachpartyIdentifier("world_features"));
-
         Predicate<BiomeSelectionContext> beachBiomes = getBeachpartySelector();
 
-        if (config.worldgen.spawnSeashells) {
+        if (config.spawnSeashells) {
             world.add(ModificationPhase.ADDITIONS, beachBiomes, ctx ->
                     ctx.getGenerationSettings().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SEASHELLS_KEY)
             );
+        }
+
+        if (config.spawnPalms) {
+            world.add(ModificationPhase.ADDITIONS, beachBiomes, ctx ->
+                    ctx.getGenerationSettings().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.PALM_TREE_KEY)
+            );
         } else {
             world.add(ModificationPhase.REMOVALS, beachBiomes, ctx ->
-                    ctx.getGenerationSettings().removeFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SEASHELLS_KEY)
+                    ctx.getGenerationSettings().removeFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.PALM_TREE_KEY)
             );
         }
 
-        if (config.worldgen.spawnMessageInABottle) {
+        if (config.spawnSandwaves) {
+            world.add(ModificationPhase.ADDITIONS, beachBiomes, ctx ->
+                    ctx.getGenerationSettings().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SANDWAVES_KEY)
+            );
+        } else {
+            world.add(ModificationPhase.REMOVALS, beachBiomes, ctx ->
+                    ctx.getGenerationSettings().removeFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SANDWAVES_KEY)
+            );
+        }
+
+        if (config.spawnMessageInABottle) {
             world.add(ModificationPhase.ADDITIONS, beachBiomes, ctx ->
                     ctx.getGenerationSettings().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.MESSAGE_IN_A_BOTTLE_KEY)
             );

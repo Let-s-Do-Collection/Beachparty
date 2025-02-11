@@ -16,16 +16,18 @@ import net.satisfy.beachparty.platform.PlatformHelper;
 
 import java.util.function.Supplier;
 
-import static net.satisfy.beachparty.core.registry.ObjectRegistry.CABINET;
+import static net.satisfy.beachparty.core.registry.ObjectRegistry.*;
 
 public final class EntityTypeRegistry {
     private static final Registrar<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Beachparty.MOD_ID, Registries.BLOCK_ENTITY_TYPE).getRegistrar();
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Beachparty.MOD_ID, Registries.ENTITY_TYPE);
 
+    public static final RegistrySupplier<BlockEntityType<BeachpartySignBlockEntity>> BEACHPARTY_SIGN = registerBlockEntity("beachparty_sign", () -> BlockEntityType.Builder.of(BeachpartySignBlockEntity::new, PALM_SIGN.get(), PALM_WALL_SIGN.get()).build(null));
+    public static final RegistrySupplier<BlockEntityType<BeachpartyHangingSignBlockEntity>> BEACHPARTY_HANGING_SIGN = registerBlockEntity("beachparty_hanging_sign", () -> BlockEntityType.Builder.of(BeachpartyHangingSignBlockEntity::new, ObjectRegistry.PALM_HANGING_SIGN.get(), ObjectRegistry.PALM_WALL_HANGING_SIGN.get()).build(null));
+
+
     public static final RegistrySupplier<EntityType<ChairEntity>> CHAIR = registerEntity("chair", () -> EntityType.Builder.of(ChairEntity::new, MobCategory.MISC).sized(0.001F, 0.001F).build(new BeachpartyIdentifier("chair").toString()));
     public static final RegistrySupplier<EntityType<CoconutEntity>> COCONUT = registerEntity("coconut", () -> EntityType.Builder.<CoconutEntity>of(CoconutEntity::new, MobCategory.MISC).sized(0.25f, 0.25f).build(new BeachpartyIdentifier("coconut").toString()));
-    public static final Supplier<EntityType<BeachpartyBoatEntity>> FLOATY_BOAT = PlatformHelper.registerBoatType("floaty_boat", BeachpartyBoatEntity::new, MobCategory.MISC, 1.375F, 0.5625F, 10);
-    public static final Supplier<EntityType<BeachpartyChestBoatEntity>> FLOATY_CHEST_BOAT = PlatformHelper.registerBoatType("floaty_chest_boat", BeachpartyChestBoatEntity::new, MobCategory.MISC, 1.375F, 0.5625F, 10);
     public static final RegistrySupplier<EntityType<BeachBallEntity>> BEACH_BALL = registerEntity("beach_ball", () -> EntityType.Builder.of(BeachBallEntity::new, MobCategory.MISC).sized(0.4f, 0.4f).build(new BeachpartyIdentifier("beach_ball").toString()));
 
     public static final RegistrySupplier<BlockEntityType<MiniFridgeBlockEntity>> MINI_FRIDGE_BLOCK_ENTITY = registerBlockEntity("mini_fridge", () -> BlockEntityType.Builder.of(MiniFridgeBlockEntity::new, ObjectRegistry.MINI_FRIDGE.get()).build(null));
@@ -33,6 +35,10 @@ public final class EntityTypeRegistry {
     public static final RegistrySupplier<BlockEntityType<TikiBarBlockEntity>> TIKI_BAR_BLOCK_ENTITY = registerBlockEntity("tiki_bar", () -> BlockEntityType.Builder.of(TikiBarBlockEntity::new, ObjectRegistry.TIKI_BAR.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<BeachGoalBlockEntity>> BEACH_GOAL_BLOCK_ENTITY = registerBlockEntity("beach_goal", () -> BlockEntityType.Builder.of(BeachGoalBlockEntity::new, ObjectRegistry.BEACH_GOAL.get()).build(null));
 
+    public static final Supplier<EntityType<BeachpartyBoatEntity>> PALM_BOAT = PlatformHelper.registerBoatType("palm_boat", BeachpartyBoatEntity::new, MobCategory.MISC, 1.375F, 0.5625F, 10);
+    public static final Supplier<EntityType<BeachpartyChestBoatEntity>> PALM_CHEST_BOAT = PlatformHelper.registerBoatType("palm_chest_boat", BeachpartyChestBoatEntity::new, MobCategory.MISC, 1.375F, 0.5625F, 10);
+
+    
     private static <T extends BlockEntityType<?>> RegistrySupplier<T> registerBlockEntity(final String path, final Supplier<T> type) {
         return BLOCK_ENTITY_TYPES.register(new BeachpartyIdentifier(path), type);
     }

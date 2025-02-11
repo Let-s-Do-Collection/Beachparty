@@ -27,10 +27,11 @@ public class BeachPartyClient {
         RenderTypeRegistry.register(RenderType.cutout(), TABLE.get(), CHAIR.get(), TIKI_CHAIR.get(),
                 TIKI_TORCH.get(), TIKI_WALL_TORCH.get(), TALL_TIKI_TORCH.get(), THATCH.get(), THATCH_SLAB.get(),
                 MELON_COCKTAIL.get(), COCONUT_COCKTAIL.get(), HONEY_COCKTAIL.get(), THATCH_STAIRS.get(),
-                SWEETBERRIES_COCKTAIL.get(), PUMPKIN_COCKTAIL.get(), COCOA_COCKTAIL.get(), COCONUT_SUNDAE.get(),
-                SANDCASTLE.get(), MESSAGE_IN_A_BOTTLE.get(), BEACH_TOWEL.get(), CHOCOLATE_SUNDAE.get(),
-                DECK_CHAIR.get(), SEASHELL_BLOCK.get(), REFRESHING_DRINK.get(), SWEETBERRY_SUNDAE.get(),
+                SWEETBERRIES_COCKTAIL.get(), PUMPKIN_COCKTAIL.get(), COCOA_COCKTAIL.get(),
+                SANDCASTLE.get(), MESSAGE_IN_A_BOTTLE.get(),
+                DECK_CHAIR.get(), SEASHELL_BLOCK.get(),
                 BEACH_GOAL.get()
+
         );
 
         MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.TIKI_BAR_GUI_HANDLER.get(), TikiBarGui::new);
@@ -55,8 +56,8 @@ public class BeachPartyClient {
         EntityRendererRegistry.register(EntityTypeRegistry.BEACH_BALL, BeachBallRenderer::new);
         EntityRendererRegistry.register(EntityTypeRegistry.CHAIR, ChairRenderer::new);
         EntityRendererRegistry.register(EntityTypeRegistry.COCONUT, ThrownItemRenderer::new);
-        EntityRendererRegistry.register(EntityTypeRegistry.FLOATY_BOAT, context -> new BeachpartyBoatRenderer<>(context, false));
-        EntityRendererRegistry.register(EntityTypeRegistry.FLOATY_CHEST_BOAT, context -> new BeachpartyBoatRenderer<>(context, true));
+        EntityRendererRegistry.register(EntityTypeRegistry.PALM_BOAT, context -> new BeachpartyBoatRenderer<>(context, false));
+        EntityRendererRegistry.register(EntityTypeRegistry.PALM_CHEST_BOAT, context -> new BeachpartyBoatRenderer<>(context, true));
     }
 
     public static void registerEntityModelLayers() {

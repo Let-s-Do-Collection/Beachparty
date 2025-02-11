@@ -37,7 +37,7 @@ public class BeachpartyChestBoatEntity extends BeachpartyBoatEntity implements H
     }
 
     public BeachpartyChestBoatEntity(Level level, double x, double y, double z) {
-        this(EntityTypeRegistry.FLOATY_CHEST_BOAT.get(), level);
+        this(EntityTypeRegistry.PALM_CHEST_BOAT.get(), level);
         this.setPos(x, y, z);
         this.xo = x;
         this.yo = y;

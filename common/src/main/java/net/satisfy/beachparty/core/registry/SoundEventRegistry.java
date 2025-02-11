@@ -30,6 +30,5 @@ public class SoundEventRegistry {
     }
 
     public static void init() {
-        Beachparty.LOGGER.debug("Register " + SoundEventRegistry.class);
     }
 }
