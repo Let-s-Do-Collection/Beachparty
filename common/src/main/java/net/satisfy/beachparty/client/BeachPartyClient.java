@@ -28,7 +28,7 @@ import static net.satisfy.beachparty.core.registry.ObjectRegistry.*;
 public class BeachPartyClient {
     public static void initClient() {
         RenderTypeRegistry.register(RenderType.cutout(), TABLE.get(), CHAIR.get(), TIKI_CHAIR.get(),
-                TIKI_TORCH.get(), TIKI_WALL_TORCH.get(), TALL_TIKI_TORCH.get(), THATCH.get(), THATCH_SLAB.get(),
+                PALM_TORCH.get(), PALM_WALL_TORCH.get(), TALL_PALM_TORCH.get(), THATCH.get(), THATCH_SLAB.get(),
                 MELON_COCKTAIL.get(), COCONUT_COCKTAIL.get(), HONEY_COCKTAIL.get(), THATCH_STAIRS.get(),
                 SWEETBERRIES_COCKTAIL.get(), PUMPKIN_COCKTAIL.get(), COCOA_COCKTAIL.get(),
                 SANDCASTLE.get(), MESSAGE_IN_A_BOTTLE.get(), PALM_SPROUT.get(),

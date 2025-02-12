@@ -24,11 +24,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class BenchBlock extends LineConnectingBlock {
+public class HoodedBeachChair extends LineConnectingBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF = EnumProperty.create("half", DoubleBlockHalf.class);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    public BenchBlock(Properties settings) {
+    public HoodedBeachChair(Properties settings) {
         super(settings);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(HALF, DoubleBlockHalf.LOWER)
