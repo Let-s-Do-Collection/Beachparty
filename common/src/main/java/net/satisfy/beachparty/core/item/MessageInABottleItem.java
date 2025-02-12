@@ -19,9 +19,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Random;
 
 public class MessageInABottleItem extends BlockItem {
     public MessageInABottleItem(Block block, Properties settings) {
@@ -29,21 +28,14 @@ public class MessageInABottleItem extends BlockItem {
     }
 
     public static @Nullable ItemStack getRandomMap(Entity entity) {
-        int lootChest = entity.level().getRandom().nextInt(4);
-
-        ItemStack map = null;
-
-        switch (lootChest) {
-            case 0 -> // Buried Treasure
-                    map = createMansionMap(entity);
-            case 1 -> // Shipwreck Map
-                    map = createShipwreckMap(entity);
-            case 2 -> // Shipwreck Supply
-                    map = createMonumentMap(entity);
-            case 3 -> // Shipwreck Treasure
-                    map = createTreasureMap(entity);
-        }
-        return map;
+        int index = entity.level().getRandom().nextInt(4);
+        return switch (index) {
+            case 0 -> createMansionMap(entity);
+            case 1 -> createShipwreckMap(entity);
+            case 2 -> createMonumentMap(entity);
+            case 3 -> createTreasureMap(entity);
+            default -> null;
+        };
     }
 
     public static ItemStack createMonumentMap(Entity entity) {
@@ -66,47 +58,45 @@ public class MessageInABottleItem extends BlockItem {
         if (!(entity.level() instanceof ServerLevel serverWorld)) {
             return null;
         }
-        BlockPos blockPos = serverWorld.findNearestMapStructure(structure, entity.blockPosition(), 100, true);
-        if (blockPos != null) {
-            ItemStack itemStack = MapItem.create(serverWorld, blockPos.getX(), blockPos.getZ(), (byte) 2, true, true);
-            MapItem.renderBiomePreviewMap(serverWorld, itemStack);
-            MapItemSavedData.addTargetDecoration(itemStack, blockPos, "+", iconType);
-            itemStack.setHoverName(Component.translatable(nameKey));
-            return itemStack;
+        BlockPos pos = serverWorld.findNearestMapStructure(structure, entity.blockPosition(), 100, true);
+        if (pos != null) {
+            ItemStack stack = MapItem.create(serverWorld, pos.getX(), pos.getZ(), (byte) 2, true, true);
+            MapItem.renderBiomePreviewMap(serverWorld, stack);
+            MapItemSavedData.addTargetDecoration(stack, pos, "+", iconType);
+            stack.setHoverName(Component.translatable(nameKey));
+            return stack;
         }
         return null;
     }
 
+    private static void spawnItem(Level world, double x, double y, double z, ItemStack stack) {
+        world.addFreshEntity(new ItemEntity(world, x, y, z, stack));
+    }
+
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
         if (world.isClientSide()) {
             return InteractionResultHolder.success(user.getItemInHand(hand));
         }
-
-        Random random = new Random();
+        var random = world.getRandom();
         int randomNumber = random.nextInt(100);
-        ItemStack itemStack;
-
+        ItemStack dropStack;
         if (randomNumber < 50) {
-            itemStack = new ItemStack(Items.PAPER);
+            dropStack = new ItemStack(Items.PAPER);
         } else if (randomNumber < 80) {
-            itemStack = new ItemStack(Items.MAP);
+            dropStack = new ItemStack(Items.MAP);
         } else {
-            itemStack = getRandomMap(user);
+            dropStack = getRandomMap(user);
         }
-        if (itemStack == null) itemStack = new ItemStack(Items.PAPER);
-
-        ItemEntity entity = new ItemEntity(world, user.getX(), user.getY(), user.getZ(), itemStack);
-        world.addFreshEntity(entity);
-
-        ItemStack glassBottleStack = new ItemStack(Items.GLASS_BOTTLE, 1);
-        ItemEntity glassBottleEntity = new ItemEntity(world, user.getX(), user.getY(), user.getZ(), glassBottleStack);
-        world.addFreshEntity(glassBottleEntity);
-
+        if (dropStack == null) {
+            dropStack = new ItemStack(Items.PAPER);
+        }
+        double x = user.getX();
+        double y = user.getY();
+        double z = user.getZ();
+        spawnItem(world, x, y, z, dropStack);
+        spawnItem(world, x, y, z, new ItemStack(Items.GLASS_BOTTLE));
         user.getItemInHand(hand).shrink(1);
-
         return InteractionResultHolder.success(user.getItemInHand(hand));
     }
-
 }
-

@@ -1,4 +1,4 @@
-package net.satisfy.beachparty.mixin;
+package net.satisfy.beachparty.core.mixin;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,7 +26,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-//TODO
 @Mixin(PotionItem.class)
 public class PotionItemMixin {
     @Inject(at = @At("HEAD"), method = "useOn", cancellable = true)

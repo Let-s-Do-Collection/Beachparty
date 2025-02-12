@@ -34,7 +34,7 @@
     ]
   },
   "mixins": [
-    "beachparty.fabric.mixins.json"
+    "beachparty-common.mixins.json"
   ],
   "depends": {
     "fabric": "*",

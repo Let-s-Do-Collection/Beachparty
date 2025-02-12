@@ -59,21 +59,7 @@ public class RadioHelper {
 
     private static void addSounds(BlockPos blockPos) {
         List<SimpleSoundInstance> soundInstance = Lists.newArrayList();
-        for (RegistrySupplier<SoundEvent> sound : SoundEventRegistry.RADIO_SOUNDS) {
-            soundInstance.add(new SimpleSoundInstance(
-                    sound.get().getLocation(),
-                    SoundSource.RECORDS,
-                    1.0f,
-                    1.0f,
-                    RandomSource.create(),
-                    true,
-                    0,
-                    SoundInstance.Attenuation.LINEAR,
-                    blockPos.getX(),
-                    blockPos.getY(),
-                    blockPos.getZ(),
-                    false
-            ));
+        for (RegistrySupplier<SoundEvent> sound : SoundEventRegistry.RADIO_SOUNDS) {soundInstance.add(new SimpleSoundInstance(sound.get().getLocation(), SoundSource.RECORDS, 1.0f, 1.0f, RandomSource.create(), true, 0, SoundInstance.Attenuation.LINEAR, blockPos.getX(), blockPos.getY(), blockPos.getZ(), false));
             soundInstances.put(blockPos, soundInstance);
         }
     }

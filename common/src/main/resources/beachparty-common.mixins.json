@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "net.satisfy.beachparty.core.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "PotionItemMixin",
+    "ServerLevelTickMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
