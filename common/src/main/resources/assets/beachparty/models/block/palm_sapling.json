@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "beachparty:item/palm_sapling"
+    "cross": "beachparty:item/palm_sprout"
   }
 }

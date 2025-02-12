@@ -33,7 +33,7 @@
       "predicate": {
         "type": "minecraft:would_survive",
         "state": {
-          "Name": "beachparty:palm_sapling",
+          "Name": "beachparty:palm_sprout",
           "Properties": {
             "stage": "0"
           }

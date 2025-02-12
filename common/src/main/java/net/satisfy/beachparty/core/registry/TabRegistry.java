@@ -48,7 +48,7 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.PALM_FLOORBOARD.get());
                 out.accept(ObjectRegistry.SANDWAVES.get());
                 out.accept(ObjectRegistry.PALM_LEAVES.get());
-                out.accept(ObjectRegistry.PALM_SAPLING.get());
+                out.accept(ObjectRegistry.PALM_SPROUT.get());
                 out.accept(ObjectRegistry.PALM_SIGN_ITEM.get());
                 out.accept(ObjectRegistry.PALM_HANGING_SIGN_ITEM.get());
                 out.accept(ObjectRegistry.PALM_BOAT.get());

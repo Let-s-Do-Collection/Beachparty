@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.satisfy.beachparty.core.entity.CoconutEntity;
+import net.satisfy.beachparty.core.entity.ThrowableCoconutEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,7 +29,7 @@ public class CoconutItem extends BlockItem {
         ItemStack itemStack = user.getItemInHand(hand);
         world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.EGG_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!world.isClientSide) {
-            CoconutEntity coconutEntity = new CoconutEntity(world, user);
+            ThrowableCoconutEntity coconutEntity = new ThrowableCoconutEntity(world, user);
             coconutEntity.setItem(itemStack);
             coconutEntity.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, 1.5F, 1.0F);
             world.addFreshEntity(coconutEntity);
