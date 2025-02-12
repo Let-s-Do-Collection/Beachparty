@@ -9,43 +9,54 @@ import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.satisfy.beachparty.core.block.BeachGoalBlock;
 import net.satisfy.beachparty.core.entity.BeachBallEntity;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
-
+import org.joml.Vector3d;
 import java.util.List;
 
 public class BeachGoalBlockEntity extends BlockEntity {
     private boolean hasBeachBall = false;
+    private int ballPresenceCounter = 0;
+    private static final int PRESENCE_THRESHOLD = 10;
 
     public BeachGoalBlockEntity(BlockPos pos, BlockState state) {
         super(EntityTypeRegistry.BEACH_GOAL_BLOCK_ENTITY.get(), pos, state);
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, BeachGoalBlockEntity blockEntity) {
-        if (level instanceof ServerLevel serverLevel) {
-            BeachGoalBlock block = (BeachGoalBlock) state.getBlock();
-            VoxelShape detectionShape = block.getDetectionShape(state);
-            AABB detectionAABB = detectionShape.bounds().move(pos);
-
-            List<BeachBallEntity> entities = serverLevel.getEntitiesOfClass(BeachBallEntity.class, detectionAABB, Entity::isAlive);
-            boolean previouslyHadBeachBall = blockEntity.hasBeachBall;
-            blockEntity.hasBeachBall = !entities.isEmpty();
-
-            if (blockEntity.hasBeachBall && !previouslyHadBeachBall) {
-                for (BeachBallEntity ignored : entities) {
-                    blockEntity.fireRocket(serverLevel, pos, new int[]{0xADD8E6}, -0.05);
-                    blockEntity.fireRocket(serverLevel, pos, new int[]{0xFFFFFF}, 0);
-                    blockEntity.fireRocket(serverLevel, pos, new int[]{0xF4A460}, 0.05);
-                }
-                level.updateNeighborsAt(pos, state.getBlock());
-            } else if (!blockEntity.hasBeachBall && previouslyHadBeachBall) {
-                level.updateNeighborsAt(pos, state.getBlock());
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        BeachGoalBlock block = (BeachGoalBlock) state.getBlock();
+        VoxelShape detectionShape = block.getDetectionShape(state);
+        VoxelShape worldShape = detectionShape.move(pos.getX(), pos.getY(), pos.getZ());
+        AABB detectionAABB = worldShape.bounds();
+        List<BeachBallEntity> balls = serverLevel.getEntitiesOfClass(BeachBallEntity.class, detectionAABB.inflate(0.1), Entity::isAlive);
+        boolean detected = false;
+        for (BeachBallEntity ball : balls) {
+            VoxelShape ballShape = Shapes.create(ball.getBoundingBox());
+            if (Shapes.joinIsNotEmpty(worldShape, ballShape, BooleanOp.AND)) {
+                detected = true;
+                break;
             }
+        }
+        if (detected) {
+            blockEntity.ballPresenceCounter = Math.min(blockEntity.ballPresenceCounter + 1, PRESENCE_THRESHOLD);
+        } else {
+            blockEntity.ballPresenceCounter = Math.max(blockEntity.ballPresenceCounter - 1, 0);
+        }
+        boolean previouslyHadBall = blockEntity.hasBeachBall;
+        blockEntity.hasBeachBall = blockEntity.ballPresenceCounter >= PRESENCE_THRESHOLD;
+        if (blockEntity.hasBeachBall && !previouslyHadBall) {
+            blockEntity.fireRockets(serverLevel, pos);
+            level.updateNeighborsAt(pos, state.getBlock());
+        } else if (!blockEntity.hasBeachBall && previouslyHadBall) {
+            level.updateNeighborsAt(pos, state.getBlock());
         }
     }
 
@@ -53,43 +64,47 @@ public class BeachGoalBlockEntity extends BlockEntity {
         return hasBeachBall;
     }
 
-    private void fireRocket(ServerLevel world, BlockPos pos, int[] colors, double dx) {
-        double x = pos.getX() + 0.5;
-        double y = pos.getY() + 1.0;
-        double z = pos.getZ() + 0.5;
-
-        ItemStack fireworkItem = new ItemStack(Items.FIREWORK_ROCKET);
-        CompoundTag fireworkTag = new CompoundTag();
-
-        CompoundTag explosion = new CompoundTag();
-        explosion.putIntArray("Colors", colors);
-        explosion.putByte("Type", (byte)1);
-
-        ListTag explosionsList = new ListTag();
-        explosionsList.add(explosion);
-
-        CompoundTag fireworks = new CompoundTag();
-        fireworks.putByte("Flight", (byte)1);
-        fireworks.put("Explosions", explosionsList);
-
-        fireworkTag.put("Fireworks", fireworks);
-        fireworkItem.setTag(fireworkTag);
-
-        FireworkRocketEntity rocket = new FireworkRocketEntity(world, x, y, z, fireworkItem);
-        rocket.setDeltaMovement(dx, 0.5, 0);
-        world.addFreshEntity(rocket);
+    private void fireRockets(ServerLevel world, BlockPos pos) {
+        int rocketCount = world.random.nextInt(5) + 3;
+        int[][] colorOptions = new int[][] { { 0xADD8E6 }, { 0xFFFFFF }, { 0xF4A460 } };
+        for (int i = 0; i < rocketCount; i++) {
+            double dx = (world.random.nextDouble() - 0.5) * 0.2;
+            double dz = (world.random.nextDouble() - 0.5) * 0.2;
+            double dy = 1.2 + (world.random.nextDouble() - 0.5) * 0.1;
+            double x = pos.getX() + 0.5;
+            double y = pos.getY() + 1.0;
+            double z = pos.getZ() + 0.5;
+            ItemStack fireworkItem = new ItemStack(Items.FIREWORK_ROCKET);
+            CompoundTag fireworkTag = new CompoundTag();
+            CompoundTag explosion = new CompoundTag();
+            int[] colors = colorOptions[world.random.nextInt(colorOptions.length)];
+            explosion.putIntArray("Colors", colors);
+            explosion.putByte("Type", (byte) 1);
+            ListTag explosionsList = new ListTag();
+            explosionsList.add(explosion);
+            CompoundTag fireworks = new CompoundTag();
+            fireworks.putByte("Flight", (byte) 1);
+            fireworks.put("Explosions", explosionsList);
+            fireworkTag.put("Fireworks", fireworks);
+            fireworkItem.setTag(fireworkTag);
+            FireworkRocketEntity rocket = new FireworkRocketEntity(world, x, y, z, fireworkItem);
+            Vector3d velocity = new Vector3d(dx, dy, dz);
+            rocket.setDeltaMovement(velocity.x, velocity.y, velocity.z);
+            world.addFreshEntity(rocket);
+        }
     }
-
 
     @Override
     public void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.putBoolean("HasBeachBall", hasBeachBall);
+        tag.putInt("BallPresenceCounter", ballPresenceCounter);
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         hasBeachBall = tag.getBoolean("HasBeachBall");
+        ballPresenceCounter = tag.getInt("BallPresenceCounter");
     }
 }
