@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 @SuppressWarnings("deprecation")
-public class TableBlock extends LineConnectingBlock implements SimpleWaterloggedBlock {
+public class PalmTableBlock extends LineConnectingBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED;
     public static final VoxelShape TOP_SHAPE;
     public static final VoxelShape[] LEG_SHAPES;
@@ -41,7 +41,7 @@ public class TableBlock extends LineConnectingBlock implements SimpleWaterlogged
         };
     }
 
-    public TableBlock(BlockBehaviour.Properties settings) {
+    public PalmTableBlock(BlockBehaviour.Properties settings) {
         super(settings);
         this.registerDefaultState((this.stateDefinition.any().setValue(WATERLOGGED, false)));
     }

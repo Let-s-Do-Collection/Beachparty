@@ -20,24 +20,24 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.satisfy.beachparty.Beachparty;
-import net.satisfy.beachparty.core.entity.BeachpartyBoatEntity;
+import net.satisfy.beachparty.core.entity.PalmBoatEntity;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class BeachpartyBoatRenderer<T extends BeachpartyBoatEntity> extends EntityRenderer<T> {
-    private final Map<BeachpartyBoatEntity.Type, Pair<ResourceLocation, ListModel<Boat>>> boatResources;
+public class PalmBoatRenderer<T extends PalmBoatEntity> extends EntityRenderer<T> {
+    private final Map<PalmBoatEntity.Type, Pair<ResourceLocation, ListModel<Boat>>> boatResources;
 
-    public BeachpartyBoatRenderer(EntityRendererProvider.Context context, boolean hasChest) {
+    public PalmBoatRenderer(EntityRendererProvider.Context context, boolean hasChest) {
         super(context);
         this.shadowRadius = 0.8f;
-        this.boatResources = Stream.of(BeachpartyBoatEntity.Type.values()).collect(ImmutableMap.toImmutableMap(type -> type, type ->
+        this.boatResources = Stream.of(PalmBoatEntity.Type.values()).collect(ImmutableMap.toImmutableMap(type -> type, type ->
                 Pair.of(type.getTexture(hasChest), this.createBoatModel(context, type, hasChest))));
     }
 
-    private ListModel<Boat> createBoatModel(EntityRendererProvider.Context context, BeachpartyBoatEntity.Type type, boolean hasChest) {
+    private ListModel<Boat> createBoatModel(EntityRendererProvider.Context context, PalmBoatEntity.Type type, boolean hasChest) {
         ModelLayerLocation modelLayerLocation = hasChest ?
                 new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getChestModelLocation()), "main")
                 : new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getModelLocation()), "main");
@@ -82,7 +82,7 @@ public class BeachpartyBoatRenderer<T extends BeachpartyBoatEntity> extends Enti
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(BeachpartyBoatEntity boat) {
+    public @NotNull ResourceLocation getTextureLocation(PalmBoatEntity boat) {
         return boatResources.get(boat.getWoodType()).getFirst();
     }
 }

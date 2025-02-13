@@ -25,14 +25,14 @@ public final class EntityTypeRegistry {
     public static final RegistrySupplier<EntityType<ChairEntity>> CHAIR = registerEntity("chair", () -> EntityType.Builder.of(ChairEntity::new, MobCategory.MISC).sized(0.001F, 0.001F).build(new BeachpartyIdentifier("chair").toString()));
     public static final RegistrySupplier<EntityType<ThrowableCoconutEntity>> COCONUT = registerEntity("coconut", () -> EntityType.Builder.<ThrowableCoconutEntity>of(ThrowableCoconutEntity::new, MobCategory.MISC).sized(0.25f, 0.25f).build(new BeachpartyIdentifier("coconut").toString()));
     public static final RegistrySupplier<EntityType<BeachBallEntity>> BEACH_BALL = registerEntity("beach_ball", () -> EntityType.Builder.of(BeachBallEntity::new, MobCategory.MISC).sized(0.4f, 0.4f).build(new BeachpartyIdentifier("beach_ball").toString()));
-    public static final Supplier<EntityType<BeachpartyBoatEntity>> PALM_BOAT = PlatformHelper.registerBoatType("palm_boat", BeachpartyBoatEntity::new, MobCategory.MISC, 1.375F, 0.5625F, 10);
-    public static final Supplier<EntityType<BeachpartyChestBoatEntity>> PALM_CHEST_BOAT = PlatformHelper.registerBoatType("palm_chest_boat", BeachpartyChestBoatEntity::new, MobCategory.MISC, 1.375F, 0.5625F, 10);
+    public static final Supplier<EntityType<PalmBoatEntity>> PALM_BOAT = PlatformHelper.registerBoatType("palm_boat", PalmBoatEntity::new, MobCategory.MISC, 1.375F, 0.5625F, 10);
+    public static final Supplier<EntityType<PalmChestBoatEntity>> PALM_CHEST_BOAT = PlatformHelper.registerBoatType("palm_chest_boat", PalmChestBoatEntity::new, MobCategory.MISC, 1.375F, 0.5625F, 10);
 
-    public static final RegistrySupplier<BlockEntityType<BeachpartySignBlockEntity>> BEACHPARTY_SIGN = registerBlockEntity("beachparty_sign", () -> BlockEntityType.Builder.of(BeachpartySignBlockEntity::new, PALM_SIGN.get(), PALM_WALL_SIGN.get()).build(null));
-    public static final RegistrySupplier<BlockEntityType<BeachpartyHangingSignBlockEntity>> BEACHPARTY_HANGING_SIGN = registerBlockEntity("beachparty_hanging_sign", () -> BlockEntityType.Builder.of(BeachpartyHangingSignBlockEntity::new, PALM_HANGING_SIGN.get(), ObjectRegistry.PALM_WALL_HANGING_SIGN.get()).build(null));
+    public static final RegistrySupplier<BlockEntityType<PalmSignBlockEntity>> BEACHPARTY_SIGN = registerBlockEntity("beachparty_sign", () -> BlockEntityType.Builder.of(PalmSignBlockEntity::new, PALM_SIGN.get(), PALM_WALL_SIGN.get()).build(null));
+    public static final RegistrySupplier<BlockEntityType<PalmHangingSignBlockEntity>> BEACHPARTY_HANGING_SIGN = registerBlockEntity("beachparty_hanging_sign", () -> BlockEntityType.Builder.of(PalmHangingSignBlockEntity::new, PALM_HANGING_SIGN.get(), ObjectRegistry.PALM_WALL_HANGING_SIGN.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<MiniFridgeBlockEntity>> MINI_FRIDGE_BLOCK_ENTITY = registerBlockEntity("mini_fridge", () -> BlockEntityType.Builder.of(MiniFridgeBlockEntity::new, ObjectRegistry.MINI_FRIDGE.get()).build(null));
-    public static final RegistrySupplier<BlockEntityType<CabinetBlockEntity>> CABINET_BLOCK_ENTITY = registerBlockEntity("cabinet", () -> BlockEntityType.Builder.of(CabinetBlockEntity::new, CABINET.get()).build(null));
-    public static final RegistrySupplier<BlockEntityType<TikiBarBlockEntity>> TIKI_BAR_BLOCK_ENTITY = registerBlockEntity("tiki_bar", () -> BlockEntityType.Builder.of(TikiBarBlockEntity::new, ObjectRegistry.TIKI_BAR.get()).build(null));
+    public static final RegistrySupplier<BlockEntityType<PalmCabinetBlockEntity>> CABINET_BLOCK_ENTITY = registerBlockEntity("cabinet", () -> BlockEntityType.Builder.of(PalmCabinetBlockEntity::new, PALM_CABINET.get()).build(null));
+    public static final RegistrySupplier<BlockEntityType<PalmBarBlockEntity>> TIKI_BAR_BLOCK_ENTITY = registerBlockEntity("tiki_bar", () -> BlockEntityType.Builder.of(PalmBarBlockEntity::new, PALM_BAR.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<BeachGoalBlockEntity>> BEACH_GOAL_BLOCK_ENTITY = registerBlockEntity("beach_goal", () -> BlockEntityType.Builder.of(BeachGoalBlockEntity::new, ObjectRegistry.BEACH_GOAL.get()).build(null));
 
 

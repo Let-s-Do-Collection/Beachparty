@@ -1,4 +1,4 @@
-package net.satisfy.beachparty.core.block.furniture;
+package net.satisfy.beachparty.core.block;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -24,7 +24,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.satisfy.beachparty.core.block.entity.TikiBarBlockEntity;
+import net.satisfy.beachparty.core.block.entity.PalmBarBlockEntity;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
-public class TikiBarBlock extends BaseEntityBlock implements EntityBlock {
+public class PalmBarBlock extends BaseEntityBlock implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
         VoxelShape shape = Shapes.empty();
@@ -49,7 +49,7 @@ public class TikiBarBlock extends BaseEntityBlock implements EntityBlock {
         }
     });
 
-    public TikiBarBlock(Properties settings) {
+    public PalmBarBlock(Properties settings) {
         super(settings);
     }
 
@@ -88,8 +88,8 @@ public class TikiBarBlock extends BaseEntityBlock implements EntityBlock {
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof TikiBarBlockEntity) {
-                Containers.dropContents(world, pos, (TikiBarBlockEntity) blockEntity);
+            if (blockEntity instanceof PalmBarBlockEntity) {
+                Containers.dropContents(world, pos, (PalmBarBlockEntity) blockEntity);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
             super.onRemove(state, world, pos, newState, moved);
@@ -113,13 +113,13 @@ public class TikiBarBlock extends BaseEntityBlock implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TikiBarBlockEntity(pos, state);
+        return new PalmBarBlockEntity(pos, state);
     }
 
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return BaseEntityBlock.createTickerHelper(type, EntityTypeRegistry.TIKI_BAR_BLOCK_ENTITY.get(), TikiBarBlockEntity::tick);
+        return BaseEntityBlock.createTickerHelper(type, EntityTypeRegistry.TIKI_BAR_BLOCK_ENTITY.get(), PalmBarBlockEntity::tick);
     }
 
     public boolean isPathfindable(BlockState arg, BlockGetter arg2, BlockPos arg3, PathComputationType arg4) {

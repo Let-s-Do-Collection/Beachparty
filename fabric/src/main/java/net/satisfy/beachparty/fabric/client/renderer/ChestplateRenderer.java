@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.satisfy.beachparty.core.item.BeachpartyArmorItem;
+import net.satisfy.beachparty.core.item.TrinketsArmorItem;
 import net.satisfy.beachparty.core.item.DyeableBeachpartyArmorItem;
 import net.satisfy.beachparty.core.registry.ArmorRegistry;
 
@@ -31,7 +31,7 @@ public class ChestplateRenderer implements ArmorRenderer {
             red = (color >> 16 & 255) / 255.0F;
             green = (color >> 8 & 255) / 255.0F;
             blue = (color & 255) / 255.0F;
-        } else if (stack.getItem() instanceof BeachpartyArmorItem beachpartyArmorItem) {
+        } else if (stack.getItem() instanceof TrinketsArmorItem beachpartyArmorItem) {
             model = ArmorRegistry.chestplateModel(beachpartyArmorItem, contextModel.body, contextModel.leftArm, contextModel.rightArm);
             texture = beachpartyArmorItem.getTexture();
         } else {

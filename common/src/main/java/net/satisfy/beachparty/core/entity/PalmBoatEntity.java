@@ -19,16 +19,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public class BeachpartyBoatEntity extends Boat {
+public class PalmBoatEntity extends Boat {
 
-    private static final EntityDataAccessor<Integer> WOOD_TYPE = SynchedEntityData.defineId(BeachpartyBoatEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> WOOD_TYPE = SynchedEntityData.defineId(PalmBoatEntity.class, EntityDataSerializers.INT);
 
-    public BeachpartyBoatEntity(EntityType<? extends Boat> type, Level level) {
+    public PalmBoatEntity(EntityType<? extends Boat> type, Level level) {
         super(type, level);
         this.blocksBuilding = true;
     }
 
-    public BeachpartyBoatEntity(Level level, double x, double y, double z) {
+    public PalmBoatEntity(Level level, double x, double y, double z) {
         this(EntityTypeRegistry.PALM_BOAT.get(), level);
         this.setPos(x, y, z);
         this.xo = x;

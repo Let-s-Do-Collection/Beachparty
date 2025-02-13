@@ -24,15 +24,15 @@ import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
-public class CabinetBlockEntity extends RandomizableContainerBlockEntity {
+public class PalmCabinetBlockEntity extends RandomizableContainerBlockEntity {
     private final ContainerOpenersCounter stateManager;
     private NonNullList<ItemStack> inventory;
 
-    public CabinetBlockEntity(BlockPos pos, BlockState state) {
+    public PalmCabinetBlockEntity(BlockPos pos, BlockState state) {
         this(pos, state, SoundEvents.BAMBOO_WOOD_TRAPDOOR_OPEN, SoundEvents.BAMBOO_WOOD_TRAPDOOR_CLOSE);
     }
 
-    public CabinetBlockEntity(BlockPos pos, BlockState state, SoundEvent openSound, SoundEvent closeSound) {
+    public PalmCabinetBlockEntity(BlockPos pos, BlockState state, SoundEvent openSound, SoundEvent closeSound) {
         super(EntityTypeRegistry.CABINET_BLOCK_ENTITY.get(), pos, state);
         this.inventory = NonNullList.withSize(36, ItemStack.EMPTY);
         this.stateManager = new ContainerOpenersCounter() {
@@ -47,16 +47,16 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity {
             protected void onOpen(Level world, BlockPos pos, BlockState state) {
                 world.setBlock(pos, state.setValue(BlockStateProperties.OPEN, true), 3);
 
-                assert CabinetBlockEntity.this.level != null;
+                assert PalmCabinetBlockEntity.this.level != null;
 
-                playSound(CabinetBlockEntity.this.level, pos, openSound);
+                playSound(PalmCabinetBlockEntity.this.level, pos, openSound);
             }
 
             @Override
             protected void onClose(Level world, BlockPos pos, BlockState state) {
                 world.setBlock(pos, state.setValue(BlockStateProperties.OPEN, false), 3);
-                assert CabinetBlockEntity.this.level != null;
-                playSound(CabinetBlockEntity.this.level, pos, closeSound);
+                assert PalmCabinetBlockEntity.this.level != null;
+                playSound(PalmCabinetBlockEntity.this.level, pos, closeSound);
             }
 
             @Override
@@ -67,7 +67,7 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity {
             protected boolean isOwnContainer(Player player) {
                 if (player.containerMenu instanceof ChestMenu) {
                     Container inventory = ((ChestMenu) player.containerMenu).getContainer();
-                    return inventory == CabinetBlockEntity.this;
+                    return inventory == PalmCabinetBlockEntity.this;
                 } else {
                     return false;
                 }

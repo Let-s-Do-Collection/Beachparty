@@ -24,20 +24,20 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.satisfy.beachparty.core.block.entity.CabinetBlockEntity;
+import net.satisfy.beachparty.core.block.entity.PalmCabinetBlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation, unused")
-public class CabinetBlock extends BaseEntityBlock {
+public class PalmCabinetBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     private final Supplier<SoundEvent> openSound;
     private final Supplier<SoundEvent> closeSound;
 
-    public CabinetBlock(Properties settings, Supplier<SoundEvent> openSound, Supplier<SoundEvent> closeSound) {
+    public PalmCabinetBlock(Properties settings, Supplier<SoundEvent> openSound, Supplier<SoundEvent> closeSound) {
         super(settings);
         this.openSound = openSound;
         this.closeSound = closeSound;
@@ -50,7 +50,7 @@ public class CabinetBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         } else {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof CabinetBlockEntity blockEntity1) {
+            if (blockEntity instanceof PalmCabinetBlockEntity blockEntity1) {
                 player.openMenu(blockEntity1);
             }
 
@@ -74,7 +74,7 @@ public class CabinetBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new CabinetBlockEntity(pos, state);
+        return new PalmCabinetBlockEntity(pos, state);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class CabinetBlock extends BaseEntityBlock {
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         if (itemStack.hasCustomHoverName()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof CabinetBlockEntity blockEntity1) {
+            if (blockEntity instanceof PalmCabinetBlockEntity blockEntity1) {
                 blockEntity1.setCustomName(itemStack.getHoverName());
             }
         }

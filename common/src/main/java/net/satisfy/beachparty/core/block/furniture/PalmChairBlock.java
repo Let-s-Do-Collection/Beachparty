@@ -23,7 +23,7 @@ import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
-public class ChairBlock extends Block {
+public class PalmChairBlock extends Block {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
@@ -35,7 +35,7 @@ public class ChairBlock extends Block {
             Block.box(3, 10, 3, 5, 22, 13)
     };
 
-    public ChairBlock(Properties settings) {
+    public PalmChairBlock(Properties settings) {
         super(settings);
     }
 

@@ -9,13 +9,13 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.satisfy.beachparty.core.item.BeachpartyArmorItem;
+import net.satisfy.beachparty.core.item.TrinketsArmorItem;
 import net.satisfy.beachparty.core.registry.ArmorRegistry;
 
 public class HelmetRenderer implements ArmorRenderer {
     @Override
     public void render(PoseStack matrices, MultiBufferSource vertexConsumers, ItemStack stack, LivingEntity entity, EquipmentSlot slot, int light, HumanoidModel<LivingEntity> contextModel) {
-        BeachpartyArmorItem hat = (BeachpartyArmorItem) stack.getItem();
+        TrinketsArmorItem hat = (TrinketsArmorItem) stack.getItem();
 
         Model model = ArmorRegistry.HelmetModel(hat, contextModel.getHead());
 

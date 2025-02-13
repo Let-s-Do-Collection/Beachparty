@@ -10,7 +10,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.satisfy.beachparty.core.item.BeachpartyArmorItem;
+import net.satisfy.beachparty.core.item.TrinketsArmorItem;
 import net.satisfy.beachparty.core.registry.ArmorRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.function.Consumer;
 
-@Mixin(BeachpartyArmorItem.class)
+@Mixin(TrinketsArmorItem.class)
 public abstract class HelmetItemMixin extends ArmorItem {
     @Shadow
     @Final

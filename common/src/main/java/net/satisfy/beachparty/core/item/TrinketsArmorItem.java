@@ -15,10 +15,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BeachpartyArmorItem extends ArmorItem implements IBeachpartyArmorItem {
+public class TrinketsArmorItem extends ArmorItem implements IBeachpartyArmorItem {
     private final ResourceLocation getTexture;
 
-    public BeachpartyArmorItem(ArmorMaterial armorMaterial, Type type, Properties properties, ResourceLocation getTexture) {
+    public TrinketsArmorItem(ArmorMaterial armorMaterial, Type type, Properties properties, ResourceLocation getTexture) {
         super(armorMaterial, type, properties);
         this.getTexture = getTexture;
     }

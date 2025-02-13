@@ -25,18 +25,18 @@ import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BeachpartyChestBoatEntity extends BeachpartyBoatEntity implements HasCustomInventoryScreen, ContainerEntity {
+public class PalmChestBoatEntity extends PalmBoatEntity implements HasCustomInventoryScreen, ContainerEntity {
     private static final int CONTAINER_SIZE = 27;
     private NonNullList<ItemStack> itemStacks = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
     @Nullable
     private ResourceLocation lootTable;
     private long lootTableSeed;
 
-    public BeachpartyChestBoatEntity(EntityType<? extends Boat> entityType, Level level) {
+    public PalmChestBoatEntity(EntityType<? extends Boat> entityType, Level level) {
         super(entityType, level);
     }
 
-    public BeachpartyChestBoatEntity(Level level, double x, double y, double z) {
+    public PalmChestBoatEntity(Level level, double x, double y, double z) {
         this(EntityTypeRegistry.PALM_CHEST_BOAT.get(), level);
         this.setPos(x, y, z);
         this.xo = x;

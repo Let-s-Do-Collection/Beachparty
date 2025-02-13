@@ -19,7 +19,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.block.BeachTowelBlock;
-import net.satisfy.beachparty.core.entity.BeachpartyBoatEntity;
+import net.satisfy.beachparty.core.entity.PalmBoatEntity;
 import net.satisfy.beachparty.core.registry.CompostablesRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.forge.registry.BeachpartyConfig;
@@ -43,7 +43,7 @@ public class BeachpartyForge {
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        for (BeachpartyBoatEntity.Type type : BeachpartyBoatEntity.Type.values()) {
+        for (PalmBoatEntity.Type type : PalmBoatEntity.Type.values()) {
             event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getModelLocation()), "main"), BoatModel::createBodyModel);
             event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getChestModelLocation()), "main"), ChestBoatModel::createBodyModel);
         }

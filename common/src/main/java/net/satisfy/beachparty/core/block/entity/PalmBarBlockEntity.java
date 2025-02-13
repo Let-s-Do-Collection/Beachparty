@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-public class TikiBarBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
+public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
     public static final int CAPACITY = 3;
     private static final int[] SLOTS_FOR_SIDE = new int[]{2};
     private static final int[] SLOTS_FOR_UP = new int[]{1};
@@ -43,8 +43,8 @@ public class TikiBarBlockEntity extends BlockEntity implements WorldlyContainer,
         @Override
         public int get(int index) {
             return switch (index) {
-                case 0 -> TikiBarBlockEntity.this.shakingTime;
-                case 1 -> TikiBarBlockEntity.this.totalShakingTime;
+                case 0 -> PalmBarBlockEntity.this.shakingTime;
+                case 1 -> PalmBarBlockEntity.this.totalShakingTime;
                 default -> 0;
             };
         }
@@ -52,8 +52,8 @@ public class TikiBarBlockEntity extends BlockEntity implements WorldlyContainer,
         @Override
         public void set(int index, int value) {
             switch (index) {
-                case 0 -> TikiBarBlockEntity.this.shakingTime = value;
-                case 1 -> TikiBarBlockEntity.this.totalShakingTime = value;
+                case 0 -> PalmBarBlockEntity.this.shakingTime = value;
+                case 1 -> PalmBarBlockEntity.this.totalShakingTime = value;
             }
         }
 
@@ -63,12 +63,12 @@ public class TikiBarBlockEntity extends BlockEntity implements WorldlyContainer,
         }
     };
 
-    public TikiBarBlockEntity(BlockPos pos, BlockState state) {
+    public PalmBarBlockEntity(BlockPos pos, BlockState state) {
         super(EntityTypeRegistry.TIKI_BAR_BLOCK_ENTITY.get(), pos, state);
         this.inventory = NonNullList.withSize(CAPACITY, ItemStack.EMPTY);
     }
 
-    public static void tick(Level world, BlockPos pos, BlockState state, TikiBarBlockEntity blockEntity) {
+    public static void tick(Level world, BlockPos pos, BlockState state, PalmBarBlockEntity blockEntity) {
         if (world.isClientSide) return;
 
         boolean dirty = false;

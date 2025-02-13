@@ -25,13 +25,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.Vec3;
-import net.satisfy.beachparty.core.block.entity.BeachpartySignBlockEntity;
+import net.satisfy.beachparty.core.block.entity.PalmSignBlockEntity;
 
 import java.util.Map;
 
 @SuppressWarnings("all")
 @Environment(EnvType.CLIENT)
-public class BeachpartyHangingSignRenderer extends BeachpartySignRenderer {
+public class PalmHangingSignRenderer extends PalmSignRenderer {
     private static final String PLANK = "plank";
     private static final String V_CHAINS = "vChains";
     private static final String NORMAL_CHAINS = "normalChains";
@@ -45,7 +45,7 @@ public class BeachpartyHangingSignRenderer extends BeachpartySignRenderer {
     private static final Vec3 TEXT_OFFSET = new Vec3(0.0, -0.3199999928474426, 0.0729999989271164);
     private final Map<WoodType, HangingSignModel> hangingSignModels;
 
-    public BeachpartyHangingSignRenderer(BlockEntityRendererProvider.Context context) {
+    public PalmHangingSignRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
         this.hangingSignModels = (Map)WoodType.values().collect(ImmutableMap.toImmutableMap((woodType) -> {
             return woodType;
@@ -62,7 +62,7 @@ public class BeachpartyHangingSignRenderer extends BeachpartySignRenderer {
         return 0.9F;
     }
 
-    public void render(BeachpartySignBlockEntity signBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
+    public void render(PalmSignBlockEntity signBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
         BlockState blockState = signBlockEntity.getBlockState();
         SignBlock signBlock = (SignBlock)blockState.getBlock();
         WoodType woodType = SignBlock.getWoodType(signBlock);

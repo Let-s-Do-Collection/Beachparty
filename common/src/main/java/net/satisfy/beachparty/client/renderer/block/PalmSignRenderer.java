@@ -37,14 +37,14 @@ import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.Vec3;
-import net.satisfy.beachparty.core.block.entity.BeachpartySignBlockEntity;
+import net.satisfy.beachparty.core.block.entity.PalmSignBlockEntity;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
-public class BeachpartySignRenderer<T extends BeachpartySignBlockEntity> implements BlockEntityRenderer<T> {
+public class PalmSignRenderer<T extends PalmSignBlockEntity> implements BlockEntityRenderer<T> {
     private static final String STICK = "stick";
     private static final int BLACK_TEXT_OUTLINE_COLOR = -988212;
     private static final int OUTLINE_RENDER_DISTANCE = Mth.square(16);
@@ -53,7 +53,7 @@ public class BeachpartySignRenderer<T extends BeachpartySignBlockEntity> impleme
     private final Map<WoodType, SignModel> signModels;
     private final Font font;
 
-    public BeachpartySignRenderer(BlockEntityRendererProvider.Context context) {
+    public PalmSignRenderer(BlockEntityRendererProvider.Context context) {
         this.signModels = (Map)WoodType.values().collect(ImmutableMap.toImmutableMap((woodType) -> {
             return woodType;
         }, (woodType) -> {
@@ -62,7 +62,7 @@ public class BeachpartySignRenderer<T extends BeachpartySignBlockEntity> impleme
         this.font = context.getFont();
     }
 
-    public void render(BeachpartySignBlockEntity signBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
+    public void render(PalmSignBlockEntity signBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
         BlockState blockState = signBlockEntity.getBlockState();
         SignBlock signBlock = (SignBlock)blockState.getBlock();
         WoodType woodType = SignBlock.getWoodType(signBlock);
@@ -79,7 +79,7 @@ public class BeachpartySignRenderer<T extends BeachpartySignBlockEntity> impleme
         return 0.6666667F;
     }
 
-    void renderSignWithText(BeachpartySignBlockEntity signBlockEntity, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BlockState blockState, SignBlock signBlock, WoodType woodType, Model model) {
+    void renderSignWithText(PalmSignBlockEntity signBlockEntity, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BlockState blockState, SignBlock signBlock, WoodType woodType, Model model) {
         poseStack.pushPose();
         this.translateSign(poseStack, -signBlock.getYRotationDegrees(blockState), blockState);
         this.renderSign(poseStack, multiBufferSource, i, j, woodType, model);

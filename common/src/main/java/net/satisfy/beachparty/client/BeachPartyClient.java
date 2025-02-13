@@ -12,10 +12,10 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.satisfy.beachparty.client.gui.MiniFridgeGui;
 import net.satisfy.beachparty.client.gui.TikiBarGui;
 import net.satisfy.beachparty.client.model.*;
-import net.satisfy.beachparty.client.renderer.block.BeachpartyHangingSignRenderer;
-import net.satisfy.beachparty.client.renderer.block.BeachpartySignRenderer;
+import net.satisfy.beachparty.client.renderer.block.PalmHangingSignRenderer;
+import net.satisfy.beachparty.client.renderer.block.PalmSignRenderer;
 import net.satisfy.beachparty.client.renderer.entity.BeachBallRenderer;
-import net.satisfy.beachparty.client.renderer.entity.BeachpartyBoatRenderer;
+import net.satisfy.beachparty.client.renderer.entity.PalmBoatRenderer;
 import net.satisfy.beachparty.client.renderer.entity.ChairRenderer;
 import net.satisfy.beachparty.core.networking.BeachpartyMessages;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
@@ -27,7 +27,7 @@ import static net.satisfy.beachparty.core.registry.ObjectRegistry.*;
 @Environment(EnvType.CLIENT)
 public class BeachPartyClient {
     public static void initClient() {
-        RenderTypeRegistry.register(RenderType.cutout(), TABLE.get(), CHAIR.get(),
+        RenderTypeRegistry.register(RenderType.cutout(), PALM_TABLE.get(), PALM_CHAIR.get(),
                 PALM_TORCH.get(), PALM_WALL_TORCH.get(), TALL_PALM_TORCH.get(), THATCH.get(), THATCH_SLAB.get(),
                 MELON_COCKTAIL.get(), COCONUT_COCKTAIL.get(), HONEY_COCKTAIL.get(), THATCH_STAIRS.get(),
                 SWEETBERRIES_COCKTAIL.get(), PUMPKIN_COCKTAIL.get(), COCOA_COCKTAIL.get(),
@@ -40,8 +40,8 @@ public class BeachPartyClient {
         MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.TIKI_BAR_GUI_HANDLER.get(), TikiBarGui::new);
         MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeGui::new);
 
-        BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_SIGN.get(), BeachpartySignRenderer::new);
-        BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_HANGING_SIGN.get(), BeachpartyHangingSignRenderer::new);
+        BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_SIGN.get(), PalmSignRenderer::new);
+        BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_HANGING_SIGN.get(), PalmHangingSignRenderer::new);
 
         BeachpartyMessages.registerS2CPackets();
 
@@ -61,8 +61,8 @@ public class BeachPartyClient {
         EntityRendererRegistry.register(EntityTypeRegistry.BEACH_BALL, BeachBallRenderer::new);
         EntityRendererRegistry.register(EntityTypeRegistry.CHAIR, ChairRenderer::new);
         EntityRendererRegistry.register(EntityTypeRegistry.COCONUT, ThrownItemRenderer::new);
-        EntityRendererRegistry.register(EntityTypeRegistry.PALM_BOAT, context -> new BeachpartyBoatRenderer<>(context, false));
-        EntityRendererRegistry.register(EntityTypeRegistry.PALM_CHEST_BOAT, context -> new BeachpartyBoatRenderer<>(context, true));
+        EntityRendererRegistry.register(EntityTypeRegistry.PALM_BOAT, context -> new PalmBoatRenderer<>(context, false));
+        EntityRendererRegistry.register(EntityTypeRegistry.PALM_CHEST_BOAT, context -> new PalmBoatRenderer<>(context, true));
     }
 
     public static void registerEntityModelLayers() {

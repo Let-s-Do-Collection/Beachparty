@@ -6,9 +6,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 
-public class BeachpartyHangingSignBlockEntity extends BeachpartySignBlockEntity {
+public class PalmHangingSignBlockEntity extends PalmSignBlockEntity {
 
-    public BeachpartyHangingSignBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public PalmHangingSignBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(EntityTypeRegistry.BEACHPARTY_HANGING_SIGN.get(), blockPos, blockState);
     }
 

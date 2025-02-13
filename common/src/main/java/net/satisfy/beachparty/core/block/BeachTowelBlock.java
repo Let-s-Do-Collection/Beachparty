@@ -48,7 +48,7 @@ public class BeachTowelBlock extends BedBlock {
     public static final EnumProperty<BedPart> PART = BlockStateProperties.BED_PART;
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
     public static final BooleanProperty CAN_DROP = BlockStateProperties.CONDITIONAL;
-    protected static final VoxelShape SLEEPING_BAG_SHAPE = Shapes.box(0.0625D, 0.0D, 0.03125D, 0.9375D, 0.0625D, 0.9375D);
+    protected static final VoxelShape BEACH_TOWEL_SHAPE = Shapes.box(0.0625D, 0.0D, 0.03125D, 0.9375D, 0.0625D, 0.9375D);
 
     public BeachTowelBlock(DyeColor color, Properties properties) {
 
@@ -63,7 +63,7 @@ public class BeachTowelBlock extends BedBlock {
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-        return state.getValue(PART) == BedPart.HEAD ? rotateShape(Direction.NORTH, state.getValue(FACING), SLEEPING_BAG_SHAPE) : SLEEPING_BAG_SHAPE;
+        return state.getValue(PART) == BedPart.HEAD ? rotateShape(Direction.NORTH, state.getValue(FACING), BEACH_TOWEL_SHAPE) : BEACH_TOWEL_SHAPE;
     }
 
     @Override

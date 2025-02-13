@@ -39,11 +39,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @SuppressWarnings({"deprecation", "unused"})
-public class ParasolBlock extends Block {
+public class PalmParasolBlock extends Block {
     public static final EnumProperty<DoubleBlockHalf> HALF = EnumProperty.create("half", DoubleBlockHalf.class);
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
 
-    public ParasolBlock(Properties properties) {
+    public PalmParasolBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
     }

@@ -11,13 +11,13 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.satisfy.beachparty.core.item.BeachpartyArmorItem;
+import net.satisfy.beachparty.core.item.TrinketsArmorItem;
 import net.satisfy.beachparty.core.registry.ArmorRegistry;
 
 public class HelmetTrinketRenderer implements TrinketRenderer {
     @Override
     public void render(ItemStack itemStack, SlotReference slotReference, EntityModel<? extends LivingEntity> entityModel, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, LivingEntity livingEntity, float v, float v1, float v2, float v3, float v4, float v5) {
-        if (!(itemStack.getItem() instanceof BeachpartyArmorItem armorItem)) return;
+        if (!(itemStack.getItem() instanceof TrinketsArmorItem armorItem)) return;
         CompoundTag tag = itemStack.getTag();
 
         if (tag != null && tag.contains("Visible") && !tag.getBoolean("Visible")) return;
