@@ -144,8 +144,8 @@
 			"to": [11, 21, 12],
 			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 16]},
 			"faces": {
-				"north": {"uv": [16, 0, 10, 12], "texture": "#5"},
-				"south": {"uv": [16, 0, 10, 12], "texture": "#5"}
+				"north": {"uv": [16, 0, 10, 11], "texture": "#5"},
+				"south": {"uv": [16, 0, 10, 11], "texture": "#5"}
 			}
 		}
 	],

@@ -40,12 +40,10 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class BeachpartyUtil {
-    public static final EnumProperty<LineConnectingType> LINE_CONNECTING_TYPE;
     private static final Map<ResourceLocation, Map<BlockPos, Pair<ChairEntity, BlockPos>>> CHAIRS = new HashMap<>();
+    public static final EnumProperty<BeachpartyUtil.LineConnectingType> LINE_CONNECTING_TYPE = EnumProperty.create("type", BeachpartyUtil.LineConnectingType.class);
 
-    static {
-        LINE_CONNECTING_TYPE = EnumProperty.create("type", LineConnectingType.class);
-    }
+
 
     public static <T extends Block> RegistrySupplier<T> registerWithItem(DeferredRegister<Block> registerB, Registrar<Block> registrarB, DeferredRegister<Item> registerI, Registrar<Item> registrarI, ResourceLocation name, Supplier<T> block) {
         RegistrySupplier<T> toReturn = registerWithoutItem(registerB, registrarB, name, block);
@@ -220,7 +218,6 @@ public class BeachpartyUtil {
             this.name = type;
         }
 
-        @Override
         public @NotNull String getSerializedName() {
             return this.name;
         }

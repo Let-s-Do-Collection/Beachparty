@@ -33,7 +33,7 @@ public class BeachPartyClient {
                 SWEETBERRIES_COCKTAIL.get(), PUMPKIN_COCKTAIL.get(), COCOA_COCKTAIL.get(),
                 SANDCASTLE.get(), MESSAGE_IN_A_BOTTLE.get(), PALM_SPROUT.get(),
                 DECK_CHAIR.get(), SEASHELL_BLOCK.get(),
-                BEACH_GOAL.get()
+                BEACH_GOAL.get(), PALM_DOOR.get(), PALM_TRAPDOOR.get(), PALM_BAR_STOOL.get()
         );
 
         MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.PALM_BAR_GUI_HANDLER.get(), PalmBarGui::new);

@@ -18,12 +18,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
-public class BarStoolBlock extends Block {
+public class PalmBarStoolBlock extends Block {
     private static final Supplier<VoxelShape> voxelShapeSupplier = () ->
-            Shapes.box(0.3125, 0, 0.3125, 0.6875, 0.0625, 0.6875);
+            Shapes.box(0.3125, 0, 0.3125, 0.6875, 0.6875, 0.6875);
 
-
-    public BarStoolBlock(Properties settings) {
+    public PalmBarStoolBlock(Properties settings) {
         super(settings);
     }
 

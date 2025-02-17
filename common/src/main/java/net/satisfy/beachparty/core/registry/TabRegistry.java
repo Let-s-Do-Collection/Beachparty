@@ -38,6 +38,7 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.BEACH_CHAIR.get());
                 out.accept(ObjectRegistry.DECK_CHAIR.get());
                 out.accept(ObjectRegistry.PALM_BAR_STOOL.get());
+                out.accept(ObjectRegistry.WET_HAY_BLOCK.get());
                 out.accept(ObjectRegistry.THATCH.get());
                 out.accept(ObjectRegistry.THATCH_STAIRS.get());
                 out.accept(ObjectRegistry.THATCH_SLAB.get());

@@ -1,19 +1,34 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "beachparty:block/palm_chair",
-      "y": 90
+    "facing=north,half=lower": {
+      "model": "beachparty:block/palm_chair_bottom"
     },
-    "facing=north": {
-      "model": "beachparty:block/palm_chair"
+    "facing=west,half=upper": {
+      "y": 270,
+      "model": "beachparty:block/palm_chair_top"
     },
-    "facing=south": {
-      "model": "beachparty:block/palm_chair",
-      "y": 180
+    "facing=west,half=lower": {
+      "y": 270,
+      "model": "beachparty:block/palm_chair_bottom"
     },
-    "facing=west": {
-      "model": "beachparty:block/palm_chair",
-      "y": 270
+    "facing=north,half=upper": {
+      "model": "beachparty:block/palm_chair_top"
+    },
+    "facing=south,half=upper": {
+      "y": 180,
+      "model": "beachparty:block/palm_chair_top"
+    },
+    "facing=east,half=upper": {
+      "y": 90,
+      "model": "beachparty:block/palm_chair_top"
+    },
+    "facing=south,half=lower": {
+      "y": 180,
+      "model": "beachparty:block/palm_chair_bottom"
+    },
+    "facing=east,half=lower": {
+      "y": 90,
+      "model": "beachparty:block/palm_chair_bottom"
     }
   }
 }

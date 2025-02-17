@@ -29,28 +29,47 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PotionItem.class)
 public class PotionItemMixin {
     @Inject(at = @At("HEAD"), method = "useOn", cancellable = true)
-    public void onSand(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
+    public void onWaterUse(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
         Level world = context.getLevel();
-        BlockPos blockPos = context.getClickedPos();
-        Player playerEntity = context.getPlayer();
-        ItemStack itemStack = context.getItemInHand();
-        BlockState blockState = world.getBlockState(blockPos);
-        if (context.getClickedFace() != Direction.DOWN && (blockState.getBlock() == Blocks.SAND || blockState.getBlock() == Blocks.GRAVEL) && PotionUtils.getPotion(itemStack) == Potions.WATER) {
-            world.playSound(null, blockPos, SoundEvents.GENERIC_SPLASH, SoundSource.PLAYERS, 1.0F, 1.0F);
-            assert playerEntity != null;
-            playerEntity.setItemInHand(context.getHand(), ItemUtils.createFilledResult(itemStack, playerEntity, new ItemStack(Items.GLASS_BOTTLE)));
-            playerEntity.awardStat(Stats.ITEM_USED.get(itemStack.getItem()));
+        BlockPos pos = context.getClickedPos();
+        Player player = context.getPlayer();
+        ItemStack stack = context.getItemInHand();
+        BlockState state = world.getBlockState(pos);
+        if (context.getClickedFace() != Direction.DOWN
+                && (state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.GRAVEL)
+                && PotionUtils.getPotion(stack) == Potions.WATER) {
+            world.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.PLAYERS, 1.0F, 1.0F);
+            assert player != null;
+            player.setItemInHand(context.getHand(), ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+            player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
             if (!world.isClientSide) {
                 ServerLevel serverWorld = (ServerLevel) world;
-
                 for (int i = 0; i < 5; ++i) {
-                    serverWorld.sendParticles(ParticleTypes.SPLASH, (double) blockPos.getX() + world.random.nextDouble(), blockPos.getY() + 1, (double) blockPos.getZ() + world.random.nextDouble(), 1, 0.0, 0.0, 0.0, 1.0);
+                    serverWorld.sendParticles(ParticleTypes.SPLASH, pos.getX() + world.random.nextDouble(), pos.getY() + 1, pos.getZ() + world.random.nextDouble(), 1, 0.0, 0.0, 0.0, 1.0);
                 }
             }
-
-            world.playSound(null, blockPos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
-            world.gameEvent(null, GameEvent.FLUID_PLACE, blockPos);
-            world.setBlockAndUpdate(blockPos, blockState.getBlock() == Blocks.GRAVEL ? Blocks.SAND.defaultBlockState() : ObjectRegistry.SANDWAVES.get().defaultBlockState());
+            world.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+            world.gameEvent(null, GameEvent.FLUID_PLACE, pos);
+            world.setBlockAndUpdate(pos, state.getBlock() == Blocks.GRAVEL ? Blocks.SAND.defaultBlockState() : ObjectRegistry.SANDWAVES.get().defaultBlockState());
+            cir.setReturnValue(InteractionResult.sidedSuccess(world.isClientSide));
+            return;
+        }
+        if (context.getClickedFace() != Direction.DOWN
+                && state.getBlock() == Blocks.HAY_BLOCK
+                && PotionUtils.getPotion(stack) == Potions.WATER) {
+            world.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.PLAYERS, 1.0F, 1.0F);
+            assert player != null;
+            player.setItemInHand(context.getHand(), ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+            player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+            if (!world.isClientSide) {
+                ServerLevel serverWorld = (ServerLevel) world;
+                for (int i = 0; i < 5; ++i) {
+                    serverWorld.sendParticles(ParticleTypes.SPLASH, pos.getX() + world.random.nextDouble(), pos.getY() + 1, pos.getZ() + world.random.nextDouble(), 1, 0.0, 0.0, 0.0, 1.0);
+                }
+            }
+            world.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+            world.gameEvent(null, GameEvent.FLUID_PLACE, pos);
+            world.setBlockAndUpdate(pos, ObjectRegistry.WET_HAY_BLOCK.get().defaultBlockState());
             cir.setReturnValue(InteractionResult.sidedSuccess(world.isClientSide));
         }
     }

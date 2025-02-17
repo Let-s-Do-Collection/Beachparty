@@ -61,6 +61,8 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> SWIM_WINGS = registerItem("swim_wings", () -> new DyeableBeachpartyArmorItem(ArmorMaterialRegistry.SWIM_WINGS, ArmorItem.Type.CHESTPLATE, 0xFFD700, getSettings(), new BeachpartyIdentifier("textures/models/armor/swim_wings.png")));
 
     public static final RegistrySupplier<Block> SAND_PILE = registerWithoutItem("sand_pile", () -> new SandBucketBlock.SandPileBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND).mapColor(MapColor.SAND)));
+
+    public static final RegistrySupplier<Block> WET_HAY_BLOCK = registerWithItem("wet_hay_block", () -> new WetHayBaleBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
     public static final RegistrySupplier<Block> THATCH = registerWithItem("thatch", () -> new HayBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
     public static final RegistrySupplier<Block> THATCH_STAIRS = registerWithItem("thatch_stairs", () -> new StairBlock(THATCH.get().defaultBlockState(), BlockBehaviour.Properties.copy(THATCH.get()).sound(SoundType.GRASS)));
     public static final RegistrySupplier<Block> THATCH_SLAB = registerWithItem("thatch_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK).strength(2.0F).sound(SoundType.WOOD).explosionResistance(3.0F)));
@@ -96,7 +98,7 @@ public class ObjectRegistry {
     // The one with Bedparts and no real use
     public static final RegistrySupplier<Block> DECK_CHAIR = registerWithItem("deck_chair", () -> new DeckChairBlock(BlockBehaviour.Properties.copy(Blocks.BAMBOO_PLANKS)));
     //Bar Stool
-    public static final RegistrySupplier<Block> PALM_BAR_STOOL = registerWithItem("palm_bar_stool", () -> new BarStoolBlock(BlockBehaviour.Properties.copy(Blocks.BAMBOO_PLANKS)));
+    public static final RegistrySupplier<Block> PALM_BAR_STOOL = registerWithItem("palm_bar_stool", () -> new PalmBarStoolBlock(BlockBehaviour.Properties.copy(Blocks.BAMBOO_PLANKS)));
 
     public static final RegistrySupplier<Block> BEACH_PARASOL = registerWithItem("beach_parasol", () -> new BeachParasolBlock(BlockBehaviour.Properties.copy(Blocks.BAMBOO_PLANKS)));
     public static final RegistrySupplier<Block> BEACH_TOWEL = registerWithItem("beach_towel", () -> new BeachTowelBlock(DyeColor.WHITE, BlockBehaviour.Properties.copy(Blocks.RED_WOOL).pushReaction(PushReaction.IGNORE).instabreak().mapColor(DyeColor.WHITE)));
