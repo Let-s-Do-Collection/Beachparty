@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "beachparty:block/palm_bar_stool" }
+    "": {
+      "model": "beachparty:block/palm_bar_stool"
+    }
   }
 }

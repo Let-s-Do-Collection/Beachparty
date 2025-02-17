@@ -7,7 +7,7 @@ public class BeachpartyJEIPlugin implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new MiniFridgeCategory(registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new TikiBarCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new palmBarCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
 
@@ -18,8 +18,8 @@ public class BeachpartyJEIPlugin implements IModPlugin {
         List<MiniFridgeRecipe> fridgeRecipes = rm.getAllRecipesFor(RecipeRegistry.MINI_FRIDGE_RECIPE_TYPE.get());
         registration.addRecipes(MiniFridgeCategory.MINI_FRIDGE, fridgeRecipes);
 
-        List<TikiBarRecipe> tikiBarRecipes = rm.getAllRecipesFor(RecipeRegistry.TIKI_BAR_RECIPE_TYPE.get());
-        registration.addRecipes(TikiBarCategory.TIKI_BAR, tikiBarRecipes);
+        List<palmBarRecipe> palmBarRecipes = rm.getAllRecipesFor(RecipeRegistry.palm_BAR_RECIPE_TYPE.get());
+        registration.addRecipes(palmBarCategory.palm_BAR, palmBarRecipes);
     }
 
     @Override
@@ -30,13 +30,13 @@ public class BeachpartyJEIPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(ObjectRegistry.MINI_FRIDGE.get().asItem().getDefaultInstance(), MiniFridgeCategory.MINI_FRIDGE);
-        registration.addRecipeCatalyst(ObjectRegistry.TIKI_BAR.get().asItem().getDefaultInstance(), TikiBarCategory.TIKI_BAR);
+        registration.addRecipeCatalyst(ObjectRegistry.palm_BAR.get().asItem().getDefaultInstance(), palmBarCategory.palm_BAR);
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         registration.addRecipeTransferHandler(MiniFridgeGuiHandler.class, ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeCategory.MINI_FRIDGE, 1, 2, 3, 36);
-        registration.addRecipeTransferHandler(TikiBarGuiHandler.class, ScreenHandlerTypesRegistry.TIKI_BAR_GUI_HANDLER.get(), TikiBarCategory.TIKI_BAR, 1, 2, 3, 36);
+        registration.addRecipeTransferHandler(palmBarGuiHandler.class, ScreenHandlerTypesRegistry.palm_BAR_GUI_HANDLER.get(), palmBarCategory.palm_BAR, 1, 2, 3, 36);
     }
 
     public static void addSlot(IRecipeLayoutBuilder builder, int x, int y, Ingredient ingredient) {

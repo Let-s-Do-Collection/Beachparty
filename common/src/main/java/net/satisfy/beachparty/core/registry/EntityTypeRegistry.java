@@ -32,7 +32,7 @@ public final class EntityTypeRegistry {
     public static final RegistrySupplier<BlockEntityType<PalmHangingSignBlockEntity>> BEACHPARTY_HANGING_SIGN = registerBlockEntity("beachparty_hanging_sign", () -> BlockEntityType.Builder.of(PalmHangingSignBlockEntity::new, PALM_HANGING_SIGN.get(), ObjectRegistry.PALM_WALL_HANGING_SIGN.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<MiniFridgeBlockEntity>> MINI_FRIDGE_BLOCK_ENTITY = registerBlockEntity("mini_fridge", () -> BlockEntityType.Builder.of(MiniFridgeBlockEntity::new, ObjectRegistry.MINI_FRIDGE.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<PalmCabinetBlockEntity>> CABINET_BLOCK_ENTITY = registerBlockEntity("cabinet", () -> BlockEntityType.Builder.of(PalmCabinetBlockEntity::new, PALM_CABINET.get()).build(null));
-    public static final RegistrySupplier<BlockEntityType<PalmBarBlockEntity>> TIKI_BAR_BLOCK_ENTITY = registerBlockEntity("tiki_bar", () -> BlockEntityType.Builder.of(PalmBarBlockEntity::new, PALM_BAR.get()).build(null));
+    public static final RegistrySupplier<BlockEntityType<PalmBarBlockEntity>> palm_BAR_BLOCK_ENTITY = registerBlockEntity("palm_bar", () -> BlockEntityType.Builder.of(PalmBarBlockEntity::new, PALM_BAR.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<BeachGoalBlockEntity>> BEACH_GOAL_BLOCK_ENTITY = registerBlockEntity("beach_goal", () -> BlockEntityType.Builder.of(BeachGoalBlockEntity::new, ObjectRegistry.BEACH_GOAL.get()).build(null));
 
 

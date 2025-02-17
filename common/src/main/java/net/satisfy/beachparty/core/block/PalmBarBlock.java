@@ -119,7 +119,7 @@ public class PalmBarBlock extends BaseEntityBlock implements EntityBlock {
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return BaseEntityBlock.createTickerHelper(type, EntityTypeRegistry.TIKI_BAR_BLOCK_ENTITY.get(), PalmBarBlockEntity::tick);
+        return BaseEntityBlock.createTickerHelper(type, EntityTypeRegistry.palm_BAR_BLOCK_ENTITY.get(), PalmBarBlockEntity::tick);
     }
 
     public boolean isPathfindable(BlockState arg, BlockGetter arg2, BlockPos arg3, PathComputationType arg4) {

@@ -10,7 +10,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.satisfy.beachparty.client.gui.MiniFridgeGui;
-import net.satisfy.beachparty.client.gui.TikiBarGui;
+import net.satisfy.beachparty.client.gui.PalmBarGui;
 import net.satisfy.beachparty.client.model.*;
 import net.satisfy.beachparty.client.renderer.block.PalmHangingSignRenderer;
 import net.satisfy.beachparty.client.renderer.block.PalmSignRenderer;
@@ -34,10 +34,9 @@ public class BeachPartyClient {
                 SANDCASTLE.get(), MESSAGE_IN_A_BOTTLE.get(), PALM_SPROUT.get(),
                 DECK_CHAIR.get(), SEASHELL_BLOCK.get(),
                 BEACH_GOAL.get()
-
         );
 
-        MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.TIKI_BAR_GUI_HANDLER.get(), TikiBarGui::new);
+        MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.PALM_BAR_GUI_HANDLER.get(), PalmBarGui::new);
         MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeGui::new);
 
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_SIGN.get(), PalmSignRenderer::new);

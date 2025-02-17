@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "beachparty:tiki_torch_item"
+          "name": "beachparty:palm_torch_item"
         }
       ],
       "rolls": 1.0

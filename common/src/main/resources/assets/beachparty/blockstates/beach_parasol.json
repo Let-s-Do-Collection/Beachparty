@@ -1,16 +1,16 @@
 {
   "variants": {
     "half=lower,open=false": {
-      "model": "beachparty:block/parasol_bottom"
+      "model": "beachparty:block/beach_parasol_bottom"
     },
     "half=lower,open=true": {
-      "model": "beachparty:block/parasol_bottom"
+      "model": "beachparty:block/beach_parasol_bottom"
     },
     "half=upper,open=false": {
-      "model": "beachparty:block/parasol_top_closed"
+      "model": "beachparty:block/beach_parasol_top_closed"
     },
     "half=upper,open=true": {
-      "model": "beachparty:block/parasol_top_open"
+      "model": "beachparty:block/beach_parasol_top_open"
     }
   }
 }

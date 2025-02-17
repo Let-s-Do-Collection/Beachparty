@@ -1,9 +1,9 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "2": "beachparty:block/tiki_torch_flame",
-    "3": "beachparty:block/tiki_torch",
-    "particle": "beachparty:block/tiki_torch"
+    "2": "beachparty:block/palm_torch_flame",
+    "3": "beachparty:block/palm_torch",
+    "particle": "beachparty:block/palm_torch"
   },
   "elements": [
     {

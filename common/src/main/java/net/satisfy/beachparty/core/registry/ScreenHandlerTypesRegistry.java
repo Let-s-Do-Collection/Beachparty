@@ -7,7 +7,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.client.gui.handler.MiniFridgeGuiHandler;
-import net.satisfy.beachparty.client.gui.handler.TikiBarGuiHandler;
+import net.satisfy.beachparty.client.gui.handler.PalmBarGuiHandler;
 
 import java.util.function.Supplier;
 
@@ -20,7 +20,7 @@ public class ScreenHandlerTypesRegistry {
         MENU_TYPES.register();
     }
 
-    public static final RegistrySupplier<MenuType<TikiBarGuiHandler>> TIKI_BAR_GUI_HANDLER = create("tiki_bar_gui_handler", () -> new MenuType<>(TikiBarGuiHandler::new, FeatureFlags.VANILLA_SET));
+    public static final RegistrySupplier<MenuType<PalmBarGuiHandler>> PALM_BAR_GUI_HANDLER = create("palm_bar_gui_handler", () -> new MenuType<>(PalmBarGuiHandler::new, FeatureFlags.VANILLA_SET));
 
     private static <T extends MenuType<?>> RegistrySupplier<T> create(String name, Supplier<T> type) {
         return MENU_TYPES.register(name, type);

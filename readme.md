@@ -14,7 +14,7 @@
 
 - **New Collectibles & Trinkets**: Trunks, bikinis, sunglasses, and more to collect! Many items come with bonuses to make
   beach life even better.
-- **Decorative Blocks**: Beach chairs in various styles, tables, a Tiki bar, and more! Perfect for building with bamboo.
+- **Decorative Blocks**: Beach chairs in various styles, tables, a palm bar, and more! Perfect for building with bamboo.
 - **Ice Cream & Popsicles**: Refreshing treats to craft and enjoy.
 - **Radio**: Now works seamlessly without disconnecting everyone. We promise!
 

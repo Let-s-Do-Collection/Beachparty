@@ -11,14 +11,6 @@ public class CompostablesRegistry {
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COCONUT_OPEN.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COOKED_MUSSEL_MEAT.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.RAW_MUSSEL_MEAT.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.ICECREAM_MELON.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.ICECREAM_CACTUS.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.ICECREAM_CHOCOLATE.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.ICECREAM_COCONUT.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.ICECREAM_SWEETBERRIES.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.CHOCOLATE_MILKSHAKE.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.SWEETBERRY_MILKSHAKE.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COCONUT_MILKSHAKE.get(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COCONUT_COCKTAIL.get().asItem(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.SWEETBERRIES_COCKTAIL.get().asItem(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COCOA_COCKTAIL.get().asItem(), 0.3F);

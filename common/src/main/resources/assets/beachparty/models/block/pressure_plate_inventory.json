@@ -2,7 +2,7 @@
   "credit": "Made by Satisfy",
   "parent": "block/thin_block",
   "textures": {
-    "1": "beachparty:block/palm_pressure_plate"
+    "1": "beachparty:block/palm_planks"
   },
   "elements": [
     {

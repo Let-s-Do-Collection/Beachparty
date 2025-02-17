@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/stairs",
   "textures": {
-    "bottom": "beachparty:block/palm_planks1",
-    "top": "beachparty:block/palm_planks1",
-    "side": "beachparty:block/palm_planks1"
+    "bottom": "beachparty:block/palm_planks",
+    "top": "beachparty:block/palm_planks",
+    "side": "beachparty:block/palm_planks"
   }
 }

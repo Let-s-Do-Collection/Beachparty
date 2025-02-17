@@ -9,7 +9,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.satisfy.beachparty.client.gui.handler.slot.IceSlot;
-import net.satisfy.beachparty.client.gui.handler.slot.TikiBarOutputSlot;
+import net.satisfy.beachparty.client.gui.handler.slot.PalmBarOutputSlot;
 import net.satisfy.beachparty.core.recipe.MiniFridgeRecipe;
 import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
 
@@ -38,7 +38,7 @@ public class MiniFridgeGuiHandler extends AbstractRecipeBookGUIScreenHandler {
     }
 
     private void buildBlockEntityContainer(Inventory playerInventory, Container inventory) {
-        this.addSlot(new TikiBarOutputSlot(playerInventory.player, inventory, 0, 128, 42));
+        this.addSlot(new PalmBarOutputSlot(playerInventory.player, inventory, 0, 128, 42));
         this.addSlot(new Slot(inventory, 1, 46, 27));
         this.addSlot(new IceSlot(inventory, 2, 59, 43));
     }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#V#",
+    "V V",
+    "#V#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:bamboo_planks"
+    },
+    "V": {
+      "item": "minecraft:bamboo_slab"
+    }
+  },
+  "result": {
+    "item": "beachparty:palm_cabinet"
+  }
+}

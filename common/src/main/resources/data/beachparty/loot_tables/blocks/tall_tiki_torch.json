@@ -13,14 +13,14 @@
           "type": "minecraft:item",
           "conditions": [
             {
-              "block": "beachparty:tall_tiki_torch",
+              "block": "beachparty:tall_palm_torch",
               "condition": "minecraft:block_state_property",
               "properties": {
                 "half": "lower"
               }
             }
           ],
-          "name": "beachparty:tall_tiki_torch"
+          "name": "beachparty:tall_palm_torch"
         }
       ],
       "rolls": 1.0

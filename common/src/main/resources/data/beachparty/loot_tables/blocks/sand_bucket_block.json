@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "beachparty:sand_bucket"
+          "name": "beachparty:sand_bucket_empty"
         }
       ],
       "rolls": 1.0

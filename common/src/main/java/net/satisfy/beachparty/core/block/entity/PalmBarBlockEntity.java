@@ -18,8 +18,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.satisfy.beachparty.client.gui.handler.TikiBarGuiHandler;
-import net.satisfy.beachparty.core.recipe.TikiBarRecipe;
+import net.satisfy.beachparty.client.gui.handler.PalmBarGuiHandler;
+import net.satisfy.beachparty.core.recipe.palmBarRecipe;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.registry.RecipeRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -64,7 +64,7 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
     };
 
     public PalmBarBlockEntity(BlockPos pos, BlockState state) {
-        super(EntityTypeRegistry.TIKI_BAR_BLOCK_ENTITY.get(), pos, state);
+        super(EntityTypeRegistry.palm_BAR_BLOCK_ENTITY.get(), pos, state);
         this.inventory = NonNullList.withSize(CAPACITY, ItemStack.EMPTY);
     }
 
@@ -72,8 +72,8 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         if (world.isClientSide) return;
 
         boolean dirty = false;
-        TikiBarRecipe recipe = world.getRecipeManager()
-                .getRecipeFor(RecipeRegistry.TIKI_BAR_RECIPE_TYPE.get(), blockEntity, world)
+        palmBarRecipe recipe = world.getRecipeManager()
+                .getRecipeFor(RecipeRegistry.palm_BAR_RECIPE_TYPE.get(), blockEntity, world)
                 .orElse(null);
         RegistryAccess access = world.registryAccess();
 
@@ -112,7 +112,7 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         nbt.putShort("ShakingTime", (short) this.shakingTime);
     }
 
-    private boolean canCraft(@Nullable TikiBarRecipe recipe, RegistryAccess access) {
+    private boolean canCraft(@Nullable palmBarRecipe recipe, RegistryAccess access) {
         if (recipe == null) return false;
 
         ItemStack recipeResultItem = recipe.getResultItem(access);
@@ -133,7 +133,7 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         return emptyStacks == 2;
     }
 
-    private void craft(TikiBarRecipe recipe, RegistryAccess access) {
+    private void craft(palmBarRecipe recipe, RegistryAccess access) {
         if (!canCraft(recipe, access)) {
             return;
         }
@@ -152,7 +152,7 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         consumeIngredients(recipe);
     }
 
-    private void consumeIngredients(TikiBarRecipe recipe) {
+    private void consumeIngredients(palmBarRecipe recipe) {
         for (Ingredient ingredient : recipe.getIngredients()) {
             for (int i = 1; i <= 2; i++) {
                 ItemStack slotItem = this.getItem(i);
@@ -259,7 +259,7 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int syncId, Inventory inv, Player player) {
-        return new TikiBarGuiHandler(syncId, inv, this, this.propertyDelegate);
+        return new PalmBarGuiHandler(syncId, inv, this, this.propertyDelegate);
     }
 
     @Override
