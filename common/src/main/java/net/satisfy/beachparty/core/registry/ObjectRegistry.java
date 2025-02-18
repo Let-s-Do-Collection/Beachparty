@@ -24,7 +24,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.block.*;
-import net.satisfy.beachparty.core.block.furniture.*;
 import net.satisfy.beachparty.core.entity.PalmBoatEntity;
 import net.satisfy.beachparty.core.item.*;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;

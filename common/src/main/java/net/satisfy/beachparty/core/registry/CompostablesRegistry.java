@@ -3,7 +3,6 @@ package net.satisfy.beachparty.core.registry;
 import net.minecraft.world.level.block.ComposterBlock;
 
 public class CompostablesRegistry {
-
     public static void init() {
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.PALM_SPROUT.get().asItem(), 0.6F);
         ComposterBlock.COMPOSTABLES.put(ObjectRegistry.PALM_LEAVES.get().asItem(), 0.6F);

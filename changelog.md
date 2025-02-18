@@ -3,13 +3,15 @@
 **Added**
 
 **Changed**
--	Most of the textures for the palm wood set, furniture and decorative elements have been changed to have a less modern style.
--	The Beach Chair has been renamed the Hooded Beach Chair. It now has two parts, a bottom and a top, and can be connected.
--	The palm saplings have been changed to palm sprouts. Unlike other saplings, they do not drop from leaves. You can get them with a small chance by opening coconuts.
+- Most of the textures for the palm wood set, furniture and decorative elements have been changed to have a less modern style.
+- The Beach Chair has been renamed the Hooded Beach Chair. It now has two parts, a bottom and a top, and can be connected.
+- The palm saplings have been changed to palm sprouts. Unlike other saplings, they do not drop from leaves. You can get them with a small chance by opening coconuts. 
+- All Variants of Icecream have been removed
+
+
 
 **Fixed**
-
-
+- You can finally properly dry wheat, but it has been renamed Thatch and its texture has been updated.To do this, place a hay bale in water or use a water bottle on it to make a wet hay bale. You can then either place the wet hay bale in a hot biome (defined by a tag) to dry it into thatch, or in any other biome to convert it back into a hay bale. If you want to keep the wet hay bale, you can stop it from drying out by using a Clay Ball on it. Use Water Bottles on it to start the drying process again. 
 
 **Note:**
 With 2.0.0 Beachparty got slightly overhauled and reworked. Texture Changes, Naming Conventions and new or reworked features.

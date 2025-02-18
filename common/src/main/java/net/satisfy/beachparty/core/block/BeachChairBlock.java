@@ -1,4 +1,4 @@
-package net.satisfy.beachparty.core.block.furniture;
+package net.satisfy.beachparty.core.block;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
