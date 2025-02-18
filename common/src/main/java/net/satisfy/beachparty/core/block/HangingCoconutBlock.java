@@ -159,6 +159,10 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
     }
 
     private void createFallingBlock(ServerLevel level, BlockPos pos) {
+        if (!level.getEntitiesOfClass(FallingBlockEntity.class, new net.minecraft.world.phys.AABB(pos)).isEmpty()) {
+            return;
+        }
+
         FallingBlockEntity fallingBlockEntity = FallingBlockEntity.fall(level, pos, level.getBlockState(pos));
         this.falling(fallingBlockEntity);
         level.addFreshEntity(fallingBlockEntity);

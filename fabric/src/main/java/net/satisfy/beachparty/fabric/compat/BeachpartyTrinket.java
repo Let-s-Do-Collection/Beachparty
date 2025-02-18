@@ -1,12 +1,8 @@
 package net.satisfy.beachparty.fabric.compat;
 
 import dev.emi.trinkets.api.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -15,10 +11,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.satisfy.beachparty.core.registry.MobEffectRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
-import net.satisfy.beachparty.fabric.client.BeachpartyFabricClient;
+import org.joml.Vector3d;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 public class BeachpartyTrinket {
     public static boolean isTrinketEquipped(Player player, Item... trinkets) {
@@ -123,82 +120,91 @@ public class BeachpartyTrinket {
     }
 
     public static class RubberRingTrinket extends BaseTrinket {
-        private static final int GLIDE_DURATION = 60;
-        private static final int COOLDOWN_DURATION = 200;
-        private boolean canGlide = true;
-        private int cooldown = 0;
-        private int glideTicks = 0;
-        private boolean jumpKeyPressed = false;
-        private boolean glideActivated = false;
-        private int jumpPressesInAir = 0;
-
         public RubberRingTrinket() {
             super(0,
                     ObjectRegistry.RUBBER_RING_AXOLOTL.get(),
-                    ObjectRegistry.RUBBER_RING_BLUE.get(),
                     ObjectRegistry.RUBBER_RING_PELICAN.get(),
-                    ObjectRegistry.RUBBER_RING_PINK.get(),
-                    ObjectRegistry.RUBBER_RING_STRIPPED.get()
+                    ObjectRegistry.RUBBER_RING_BLUE.get(),
+                    ObjectRegistry.RUBBER_RING_STRIPPED.get(),
+                    ObjectRegistry.RUBBER_RING_PINK.get()
             );
         }
 
         @Override
         public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
-            super.tick(stack, slot, entity);
-            if (entity instanceof Player player) {
-                if (cooldown > 0) {
-                    cooldown--;
-                } else {
-                    canGlide = true;
+            if (!(entity instanceof Player player)) return;
+            if (player.isInWater()) {
+                Vec3 motion = player.getDeltaMovement();
+                double targetUpwardSpeed = 0.3;
+                double newY = motion.y;
+                if (motion.y < targetUpwardSpeed) {
+                    newY += 0.01;
+                    if (newY > targetUpwardSpeed) newY = targetUpwardSpeed;
                 }
-
-                boolean isInAir = !player.onGround;
-                boolean jumpKeyCurrentlyPressed = false;
-
-                if (player instanceof LocalPlayer) {
-                    jumpKeyCurrentlyPressed = Minecraft.getInstance().options.keyJump.isDown();
+                double speedMultiplier = 1.17;
+                Vec3 newMotion = new Vec3(motion.x * speedMultiplier, newY, motion.z * speedMultiplier);
+                player.setDeltaMovement(newMotion);
+                BlockPos pos = player.blockPosition().above();
+                while (player.level().getBlockState(pos).getFluidState().isEmpty()) {
+                    pos = pos.below();
                 }
-
-                if (!isInAir) {
-                    jumpPressesInAir = 0;
+                double targetY = pos.getY();
+                if (player.getY() > targetY && !player.isUnderWater()) {
+                    player.setPos(player.getX(), targetY, player.getZ());
                 }
+                Vec3 look = player.getLookAngle();
+                Vector3d lookJ = new Vector3d(look.x, 0, look.z);
+                if (lookJ.length() == 0) lookJ.set(1, 0, 0);
+                Vector3d left = new Vector3d();
+                new Vector3d(0, 1, 0).cross(lookJ, left).normalize();
+                double offset = 0.5;
+                double px = player.getX();
+                double py = player.getY() + player.getEyeHeight() - 0.5;
+                double pz = player.getZ();
+                Vector3d leftPos = new Vector3d(px, py, pz).add(new Vector3d(left).mul(offset));
+                Vector3d rightPos = new Vector3d(px, py, pz).sub(new Vector3d(left).mul(offset));
 
-                if (isInAir && jumpKeyCurrentlyPressed && !jumpKeyPressed) {
-                    jumpPressesInAir++;
-                }
+                Random random = new Random();
+                double spread = 0.2;
 
-                if (jumpPressesInAir >= 2 && glideTicks == 0 && canGlide) {
-                    glideTicks = GLIDE_DURATION;
-                    canGlide = false;
-                    cooldown = COOLDOWN_DURATION;
-                    glideActivated = true;
+                if (player.getDeltaMovement().lengthSqr() > 0.005) {
+                    for (int i = 0; i < 3; i++) {
+                        player.level().addParticle(ParticleTypes.SPLASH,
+                                leftPos.x + (random.nextDouble() * spread - spread / 2),
+                                leftPos.y + (random.nextDouble() * spread - spread / 2),
+                                leftPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
 
-                    for (int i = 0; i < 20; i++) {
-                        double offsetX = (player.getRandom().nextDouble() - 0.5) * 0.5;
-                        double offsetY = player.getRandom().nextDouble() * 0.5;
-                        double offsetZ = (player.getRandom().nextDouble() - 0.5) * 0.5;
-                        player.level().addParticle(ParticleTypes.POOF,
-                                player.getX() + offsetX,
-                                player.getY() + offsetY,
-                                player.getZ() + offsetZ,
-                                0, 0, 0);
+                        player.level().addParticle(ParticleTypes.SPLASH,
+                                rightPos.x + (random.nextDouble() * spread - spread / 2),
+                                rightPos.y + (random.nextDouble() * spread - spread / 2),
+                                rightPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
+
+                        player.level().addParticle(ParticleTypes.BUBBLE_POP,
+                                leftPos.x + (random.nextDouble() * spread - spread / 2),
+                                leftPos.y + (random.nextDouble() * spread - spread / 2),
+                                leftPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
+
+                        player.level().addParticle(ParticleTypes.BUBBLE_POP,
+                                rightPos.x + (random.nextDouble() * spread - spread / 2),
+                                rightPos.y + (random.nextDouble() * spread - spread / 2),
+                                rightPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
                     }
-                    player.playSound(SoundEvents.WOOL_FALL, 0.75F, 0.75F);
-                }
-                if (glideTicks > 0 && glideActivated) {
-                    player.setDeltaMovement(player.getDeltaMovement().x, -0.05, player.getDeltaMovement().z);
-                    glideTicks--;
+                } else if (player.level().getGameTime() % 40L == 0L) {
+                    for (int i = 0; i < 2; i++) {
+                        player.level().addParticle(ParticleTypes.SPLASH,
+                                leftPos.x + (random.nextDouble() * spread - spread / 2),
+                                leftPos.y + (random.nextDouble() * spread - spread / 2),
+                                leftPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
 
-                    if (glideTicks == 0) {
-                        player.setDeltaMovement(player.getDeltaMovement().x, -0.08, player.getDeltaMovement().z);
-                        glideActivated = false;
+                        player.level().addParticle(ParticleTypes.SPLASH,
+                                rightPos.x + (random.nextDouble() * spread - spread / 2),
+                                rightPos.y + (random.nextDouble() * spread - spread / 2),
+                                rightPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
                     }
                 }
-                jumpKeyPressed = jumpKeyCurrentlyPressed;
             }
         }
     }
-
 
     public static class SunglassesTrinket extends BaseTrinket {
         public SunglassesTrinket() {
@@ -215,78 +221,37 @@ public class BeachpartyTrinket {
         }
 
         @Override
-        public void onEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
-            super.onEquip(stack, slot, entity);
-            if (entity instanceof Player player) {
-                player.addEffect(new MobEffectInstance(MobEffectRegistry.TIDE_RUSH.get(), 0, 0, false, false));
-            }
-        }
-
-        @Override
-        public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
-            super.onUnequip(stack, slot, entity);
-            if (entity instanceof Player player) {
-                player.removeEffect(MobEffectRegistry.TIDE_RUSH.get());
-            }
-        }
-
-        @Override
         public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.tick(stack, slot, entity);
-            if (entity instanceof Player player) {
-                if (!player.hasEffect(MobEffectRegistry.TIDE_RUSH.get())) {
-                    player.addEffect(new MobEffectInstance(MobEffectRegistry.TIDE_RUSH.get(), 0, 0, false, false));
-                }
+            if (entity instanceof Player player && player.isInWater() && player.isSwimming()) {
+                Vec3 vec3 = player.getDeltaMovement();
+                Vector3d vector3d = new Vector3d(vec3.x, vec3.y, vec3.z);
+                vector3d.x *= 1.08;
+                vector3d.z *= 1.08;
+                player.setDeltaMovement(new Vec3(vector3d.x, vector3d.y, vector3d.z));
             }
         }
     }
 
     public static class SwimWingsTrinket extends BaseTrinket {
-        private static final int DASH_DISTANCE = 6;
-        private static final int DASH_COOLDOWN_TICKS = 240;
-
         public SwimWingsTrinket() {
             super(0, ObjectRegistry.SWIM_WINGS.get());
         }
 
         @Override
         public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
-            super.tick(stack, slot, entity);
-
-            if (entity instanceof Player player) {
-                if (player.isInWater() && BeachpartyFabricClient.isDashKeyPressed() && !player.getCooldowns().isOnCooldown(stack.getItem())) {
-                    executeDash(player, stack);
-                } else {
-                    player.setSwimming(false);
+            if (!entity.level().isClientSide() && isEquipped() && entity instanceof Player player) {
+                if (!player.getCooldowns().isOnCooldown(ObjectRegistry.SWIM_WINGS.get())) {
+                    if (!player.onGround() && player.getDeltaMovement().y < 0) {
+                        player.fallDistance *= 0.5F;
+                        player.getCooldowns().addCooldown(ObjectRegistry.SWIM_WINGS.get(), 2400);
+                    }
                 }
             }
         }
 
-        private void executeDash(Player player, ItemStack stack) {
-            Vec3 lookDirection = player.getLookAngle().normalize();
-            Vec3 dashVector = lookDirection.scale(DASH_DISTANCE * 0.2);
-
-            player.setDeltaMovement(dashVector);
-            if (player instanceof ServerPlayer) {
-                ((ServerPlayer) player).connection.send(new ClientboundSetEntityMotionPacket(player));
-            }
-
-            player.setSwimming(true);
-            spawnBubbleParticles(player);
-
-            player.getCooldowns().addCooldown(stack.getItem(), DASH_COOLDOWN_TICKS);
-        }
-
-        private void spawnBubbleParticles(Player player) {
-            Vec3 playerPosition = player.position().subtract(player.getLookAngle().scale(0.5));
-            for (int i = 0; i < 15; i++) {
-                double offsetX = (player.getRandom().nextDouble() - 0.5) * 0.3;
-                double offsetY = (player.getRandom().nextDouble() - 0.5) * 0.1;
-                double offsetZ = (player.getRandom().nextDouble() - 0.5) * 0.3;
-
-                Vec3 particlePosition = playerPosition.add(offsetX, offsetY, offsetZ);
-                player.level().addParticle(ParticleTypes.BUBBLE, particlePosition.x, particlePosition.y, particlePosition.z, 0, 0, 0);
-            }
+        private static boolean isEquipped() {
+            return true;
         }
     }
 }

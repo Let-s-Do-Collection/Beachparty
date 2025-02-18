@@ -67,7 +67,7 @@ public class ThrowableCoconutEntity extends ThrowableItemProjectile {
             level.broadcastEntityEvent(this, (byte) 3);
             this.playSound(SoundEvents.WOOD_FALL, 1.0F, 1.0F);
             this.spawnAtLocation(ObjectRegistry.COCONUT_OPEN.get());
-            if (level.getRandom().nextFloat() < 0.1F) {
+            if (level.getRandom().nextFloat() < 0.25F) {
                 this.spawnAtLocation(ObjectRegistry.PALM_SPROUT.get());
             }
             this.discard();

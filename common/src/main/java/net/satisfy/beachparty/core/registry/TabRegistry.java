@@ -42,11 +42,11 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.THATCH.get());
                 out.accept(ObjectRegistry.THATCH_STAIRS.get());
                 out.accept(ObjectRegistry.THATCH_SLAB.get());
+                out.accept(ObjectRegistry.SANDWAVES.get());
+                out.accept(ObjectRegistry.PALM_LEAVES.get());
                 out.accept(ObjectRegistry.PALM_TORCH_ITEM.get());
                 out.accept(ObjectRegistry.TALL_PALM_TORCH.get());
                 out.accept(ObjectRegistry.MINI_FRIDGE.get());
-                out.accept(ObjectRegistry.SANDWAVES.get());
-                out.accept(ObjectRegistry.PALM_LEAVES.get());
                 out.accept(ObjectRegistry.PALM_SPROUT.get());
                 out.accept(ObjectRegistry.PALM_SIGN_ITEM.get());
                 out.accept(ObjectRegistry.PALM_HANGING_SIGN_ITEM.get());

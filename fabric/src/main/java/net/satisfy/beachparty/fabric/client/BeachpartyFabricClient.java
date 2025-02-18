@@ -27,6 +27,7 @@ public class BeachpartyFabricClient implements ClientModInitializer {
         BeachPartyClient.initClient();
         registerKeybind();
         registerBoatModels();
+
         ArmorRenderer.register(new HelmetRenderer(), BEACH_HAT.get(), SUNGLASSES.get());
         ArmorRenderer.register(new ChestplateRenderer(), RUBBER_RING_PINK.get(), RUBBER_RING_BLUE.get(), RUBBER_RING_STRIPPED.get(), RUBBER_RING_AXOLOTL.get(), RUBBER_RING_PELICAN.get(), BIKINI.get(), SWIM_WINGS.get());
         ArmorRenderer.register(new LeggingsRenderer(), TRUNKS.get(), CROCS.get());

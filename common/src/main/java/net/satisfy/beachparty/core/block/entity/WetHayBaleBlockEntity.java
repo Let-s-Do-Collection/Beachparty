@@ -72,7 +72,7 @@ public class WetHayBaleBlockEntity extends BlockEntity {
 
     public void preventDrying() {
         if (level instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, getBlockState()),
+            serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.CLAY.defaultBlockState()),
                     getBlockPos().getX() + 0.5, getBlockPos().getY() + 1.0, getBlockPos().getZ() + 0.5,
                     10, 0.2, 0.2, 0.2, 0.1);
             serverLevel.playSound(null, getBlockPos(), SoundEvents.SLIME_BLOCK_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);

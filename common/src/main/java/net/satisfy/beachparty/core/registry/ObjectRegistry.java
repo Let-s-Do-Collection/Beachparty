@@ -113,7 +113,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> SAND_BUCKET_BLOCK_EMPTY = registerWithoutItem("sand_bucket_block_empty", () -> new SandBucketBlock(BlockBehaviour.Properties.copy(Blocks.NETHER_WART)));
     public static final RegistrySupplier<Item> SAND_BUCKET_EMPTY = registerItem("sand_bucket_empty", () -> new SandBucketItem(SAND_BUCKET_BLOCK_EMPTY.get(), getSettings()));
 
-    public static final RegistrySupplier<Item> COCONUT = registerItem("coconut", () -> new Item(getSettings()));
+    public static final RegistrySupplier<Item> COCONUT = registerItem("coconut", () -> new CoconutItem(getSettings()));
     public static final RegistrySupplier<Block> COCONUT_COCKTAIL = registerCocktail("coconut_cocktail", () -> new CocktailBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().instabreak()), MobEffects.DAMAGE_BOOST);
     public static final RegistrySupplier<Block> SWEETBERRIES_COCKTAIL = registerCocktail("sweetberries_cocktail", () -> new CocktailBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().instabreak()), MobEffects.ABSORPTION);
     public static final RegistrySupplier<Block> COCOA_COCKTAIL = registerCocktail("cocoa_cocktail", () -> new CocktailBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().instabreak()), MobEffects.REGENERATION);
