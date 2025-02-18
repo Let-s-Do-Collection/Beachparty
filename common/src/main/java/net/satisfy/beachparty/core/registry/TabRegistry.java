@@ -15,7 +15,7 @@ public class TabRegistry {
 
     public static final RegistrySupplier<CreativeModeTab> BEACHPARTY_TAB = BEACHPARTY_TABS.register("beachparty", () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .icon(() -> new ItemStack(ObjectRegistry.COCONUT_COCKTAIL.get()))
-            .title(Component.translatable("creativetab.beachparty.tab").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))))
+            .title(Component.translatable("creativetab.beachparty.tab").withStyle(style -> style.withColor(TextColor.fromRgb(0xc0924a))))
             .displayItems((parameters, out) -> {
                 out.accept(ObjectRegistry.PALM_LOG.get());
                 out.accept(ObjectRegistry.PALM_WOOD.get());

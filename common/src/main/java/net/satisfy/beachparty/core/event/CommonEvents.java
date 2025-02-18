@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,8 +21,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.block.RadioBlock;
-import net.satisfy.beachparty.core.effect.NeverMeltEffect;
-import net.satisfy.beachparty.core.registry.MobEffectRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,14 +60,6 @@ public class CommonEvents {
 
             return EventResult.interruptTrue();
         }
-
-        if (player.hasEffect(MobEffectRegistry.NEVERMELT.get())) {
-            MobEffectInstance effect = player.getEffect(MobEffectRegistry.NEVERMELT.get());
-            if (effect != null && effect.getEffect() instanceof NeverMeltEffect neverMeltEffect) {
-                neverMeltEffect.onPlayerHurt(player, level.damageSources().generic(), 0);
-            }
-        }
-
         return EventResult.pass();
     }
 

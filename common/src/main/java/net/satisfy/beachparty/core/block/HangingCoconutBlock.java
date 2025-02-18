@@ -11,11 +11,15 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -30,8 +34,6 @@ import org.jetbrains.annotations.NotNull;
 public class HangingCoconutBlock extends FallingBlock implements BonemealableBlock {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
     private static final VoxelShape SHAPE = Block.box(4.0, 7.0, 4.0, 12.0, 15.0, 12.0);
-
-
     private static final float FALL_DAMAGE = 2.0F;
     private static final int FALL_DAMAGE_THRESHOLD = 40;
     private static final float COCONUT_SMASH_VOLUME = 0.7f;
@@ -58,7 +60,6 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
         }
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
-
 
     @Override
     public boolean isRandomlyTicking(BlockState state) {
@@ -123,18 +124,16 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int age = state.getValue(AGE);
-        if (random.nextInt(3) == 0) {
-            if (age < 2) {
-                level.setBlock(pos, state.setValue(AGE, age + 1), 2);
-            } else if (!canSurvive(state, level, pos) && canFall(level, pos)) {
-                createFallingBlock(level, pos);
-            }
+        if (random.nextInt(3) == 0 && age < 2) {
+            level.setBlock(pos, state.setValue(AGE, age + 1), 2);
         }
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!canSurvive(state, level, pos) && canFall(level, pos)) {
+            createFallingBlock(level, pos);
+        } else if (random.nextInt(100) < 5 && canFall(level, pos)) {
             createFallingBlock(level, pos);
         }
     }
@@ -142,6 +141,17 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
     @Override
     public void onBrokenAfterFall(Level level, BlockPos pos, FallingBlockEntity fallingBlock) {
         level.playSound(null, pos, SoundEvents.BAMBOO_BREAK, SoundSource.BLOCKS, COCONUT_SMASH_VOLUME, COCONUT_SMASH_PITCH_BASE + level.getRandom().nextFloat() * 0.2f);
+        if (level instanceof ServerLevel) {
+            RandomSource random = level.getRandom();
+            int chance = random.nextInt(100);
+            if (chance < 5) {
+                popResource(level, pos, new ItemStack(ObjectRegistry.PALM_SPROUT.get().asItem()));
+            } else if (chance < 5 + 20) {
+                popResource(level, pos, new ItemStack(ObjectRegistry.COCONUT_OPEN.get().asItem()));
+            } else if (chance < 5 + 20 + 75) {
+                popResource(level, pos, new ItemStack(ObjectRegistry.COCONUT.get().asItem()));
+            }
+        }
     }
 
     private boolean canFall(ServerLevel level, BlockPos pos) {
@@ -155,4 +165,3 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
         level.removeBlock(pos, false);
     }
 }
-
