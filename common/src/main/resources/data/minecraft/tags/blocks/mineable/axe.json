@@ -16,11 +16,11 @@
     "beachparty:palm_button",
     "beachparty:palm_door",
     "beachparty:palm_trapdoor",
-    "beachparty:beach_chair",
+    "beachparty:hooded_beach_chair",
     "beachparty:palm_chair",
     "beachparty:palm_bar",
-    "beachparty:lounge_chair",
+    "beachparty:beach_chair",
     "beachparty:radio",
-    "beachparty:deck_chair"
+    "beachparty:beach_sun_lounger"
   ]
 }

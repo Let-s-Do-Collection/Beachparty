@@ -1,23 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " #",
-    "#/",
-    "/O"
+    "///",
+    "/W/",
+    "OOO"
   ],
   "key": {
-    "#": {
-      "tag": "minecraft:wool"
-    },
     "/": {
       "item": "minecraft:stick"
+    },
+    "W": {
+      "tag": "minecraft:wool"
     },
     "O": {
       "item": "minecraft:bamboo_planks"
     }
   },
   "result": {
-    "item": "beachparty:lounge_chair",
-    "count": 1
+    "item": "beachparty:hooded_beach_chair",
+    "count": 2
   }
 }

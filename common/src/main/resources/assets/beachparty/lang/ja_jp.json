@@ -1,7 +1,7 @@
 {
   "beachparty.config.enableBeachSetBonus": "水着のセットボーナスを有効にする",
   "beachparty.config.title": "Beachparty",
-  "block.beachparty.beach_chair":"ビーチチェア",
+  "block.beachparty.hooded_beach_chair":"ビーチチェア",
   "block.beachparty.beach_parasol": "ビーチパラソル",
   "block.beachparty.beach_towel": "ビーチタオル",
   "block.beachparty.cabinet": "ティキ風の戸棚",
@@ -12,7 +12,7 @@
   "block.beachparty.coconut_block": "ココナッツ",
   "block.beachparty.coconut_hanging": "ぶら下がったココナッツ",
   "block.beachparty.coconut_cocktail": "ココナッツカクテル",
-  "block.beachparty.deck_chair": "デッキチェア",
+  "block.beachparty.beach_sun_lounger": "デッキチェア",
   "block.beachparty.dried_wheat_block": "乾燥した俵",
   "block.beachparty.dried_wheat_slab": "乾燥した俵のハーフブロック",
   "block.beachparty.dried_wheat_stairs": "乾燥した俵の階段",

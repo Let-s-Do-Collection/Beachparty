@@ -1,7 +1,7 @@
 {
   "beachparty.config.enableBeachSetBonus": "Включить бонус от полного комплекта пляжной одежды",
   "beachparty.config.title": "Beachparty",
-  "block.beachparty.beach_chair": "Пляжный шезлонг",
+  "block.beachparty.hooded_beach_chair": "Пляжный шезлонг",
   "block.beachparty.beach_parasol": "Пляжный зонтик",
   "block.beachparty.beach_towel": "Пляжное полотенце",
   "block.beachparty.cabinet": "Шкафчик тики",
@@ -11,7 +11,7 @@
   "block.beachparty.coconut": "Кокос",
   "block.beachparty.coconut_block": "Кокос",
   "block.beachparty.coconut_cocktail": "Кокосовый коктейль",
-  "block.beachparty.deck_chair": "Шезлонг",
+  "block.beachparty.beach_sun_lounger": "Шезлонг",
   "block.beachparty.thatch": "Солома",
   "block.beachparty.thatch_slab": "Соломенная плита",
   "block.beachparty.thatch_stairs": "Соломенные ступеньки",

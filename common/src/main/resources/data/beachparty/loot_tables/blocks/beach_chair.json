@@ -2,25 +2,19 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1,
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:item",
           "name": "beachparty:beach_chair"
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        },
-        {
-          "condition": "minecraft:block_state_property",
-          "block": "beachparty:beach_chair",
-          "properties": {
-            "half": "lower"
-          }
-        }
-      ]
+      "rolls": 1.0
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "beachparty.container.cabinet": "Gabinete",
-  "block.beachparty.beach_chair": "Silla de playa",
+  "block.beachparty.hooded_beach_chair": "Silla de playa",
   "block.beachparty.beach_grass": "Pasto de playa",
   "block.beachparty.beach_towel": "Toalla de playa",
   "block.beachparty.cabinet": "Gabinete palm",
@@ -9,7 +9,7 @@
   "block.beachparty.coconut": "Coco",
   "block.beachparty.coconut_block": "Coco",
   "block.beachparty.coconut_cocktail": "Cóctel de coco",
-  "block.beachparty.deck_chair": "Silla de patio",
+  "block.beachparty.beach_sun_lounger": "Silla de patio",
   "block.beachparty.dried_wheat_block": "Trigo seco",
   "block.beachparty.dried_wheat_slab": "Losa de trigo seco",
   "block.beachparty.dried_wheat_stairs": "Escaleras de trigo seco",

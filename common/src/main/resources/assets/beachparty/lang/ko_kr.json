@@ -1,6 +1,6 @@
 {
   "beachparty.container.cabinet": "캐비닛",
-  "block.beachparty.beach_chair": "비치 의자",
+  "block.beachparty.hooded_beach_chair": "비치 의자",
   "block.beachparty.beach_grass": "해변 풀",
   "block.beachparty.beach_towel": "해변 타월",
   "block.beachparty.cabinet": "티키 캐비닛",
@@ -9,7 +9,7 @@
   "block.beachparty.coconut": "코코넛",
   "block.beachparty.coconut_block": "코코넛 블록",
   "block.beachparty.coconut_cocktail": "코코넛 칵테일",
-  "block.beachparty.deck_chair": "데크 의자",
+  "block.beachparty.beach_sun_lounger": "데크 의자",
   "block.beachparty.dried_wheat_block": "말린 밀",
   "block.beachparty.dried_wheat_slab": "말린 밀 반 블록",
   "block.beachparty.dried_wheat_stairs": "말린 밀 계단",

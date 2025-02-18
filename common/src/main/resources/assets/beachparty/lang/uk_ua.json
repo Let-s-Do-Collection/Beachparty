@@ -1,6 +1,6 @@
 {
   "beachparty.container.cabinet": "Шафка",
-  "block.beachparty.beach_chair": "Пляжний стілець",
+  "block.beachparty.hooded_beach_chair": "Пляжний стілець",
   "block.beachparty.beach_grass": "Пляжна трава",
   "block.beachparty.beach_towel": "Пляжний рушник",
   "block.beachparty.cabinet": "Тікі шафка",
@@ -9,7 +9,7 @@
   "block.beachparty.coconut": "Кокос",
   "block.beachparty.coconut_block": "Кокос",
   "block.beachparty.coconut_cocktail": "Кокосовий коктейль",
-  "block.beachparty.deck_chair": "Шезлонг",
+  "block.beachparty.beach_sun_lounger": "Шезлонг",
   "block.beachparty.dried_wheat_block": "Висушена солома",
   "block.beachparty.dried_wheat_slab": "Плита з висушеної соломи",
   "block.beachparty.dried_wheat_stairs": "Сходи з висушеної соломи",

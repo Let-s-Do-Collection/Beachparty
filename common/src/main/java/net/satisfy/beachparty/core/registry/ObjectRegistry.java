@@ -92,11 +92,11 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> PALM_CHAIR = registerWithItem("palm_chair", () -> new PalmChairBlock(BlockBehaviour.Properties.copy(Blocks.BAMBOO_PLANKS).pushReaction(PushReaction.IGNORE)));
 
     // The small Chair with a 'Fabric' / Towel
-    public static final RegistrySupplier<Block> LOUNGE_CHAIR = registerWithItem("lounge_chair", () -> new LoungeChairBlock(BlockBehaviour.Properties.copy(Blocks.BAMBOO_PLANKS)));
+    public static final RegistrySupplier<Block> BEACH_CHAIR = registerWithItem("beach_chair", () -> new BeachChairBlock(BlockBehaviour.Properties.copy(Blocks.BAMBOO_PLANKS)));
     // That's the Chair with the Hood, connectable
-    public static final RegistrySupplier<Block> BEACH_CHAIR = registerWithItem("beach_chair", () -> new HoodedBeachChair(BlockBehaviour.Properties.copy(Blocks.BAMBOO_PLANKS)));
+    public static final RegistrySupplier<Block> HOODED_BEACH_CHAIR = registerWithItem("hooded_beach_chair", () -> new HoodedBeachChair(BlockBehaviour.Properties.copy(Blocks.BAMBOO_PLANKS)));
     // The one with Bedparts and no real use
-    public static final RegistrySupplier<Block> DECK_CHAIR = registerWithItem("deck_chair", () -> new DeckChairBlock(BlockBehaviour.Properties.copy(Blocks.BAMBOO_PLANKS)));
+    public static final RegistrySupplier<Block> BEACH_SUN_LOUNGER = registerWithItem("beach_sun_lounger", () -> new BeachSunLounger(BlockBehaviour.Properties.copy(Blocks.BAMBOO_PLANKS)));
     //Bar Stool
     public static final RegistrySupplier<Block> PALM_BAR_STOOL = registerWithItem("palm_bar_stool", () -> new PalmBarStoolBlock(BlockBehaviour.Properties.copy(Blocks.BAMBOO_PLANKS)));
 
@@ -158,21 +158,16 @@ public class ObjectRegistry {
         return settings;
     }
 
-
     private static FoodProperties cocktailFoodComponent(MobEffect effect) {
         FoodProperties.Builder component = new FoodProperties.Builder().nutrition(1).saturationMod(1);
         if (effect != null) component.effect(new MobEffectInstance(effect, 900), 1.0f);
         return component.build();
     }
 
-
-
-
     public static void init() {
         ITEMS.register();
         BLOCKS.register();
     }
-
 
     private static ButtonBlock woodenButton(FeatureFlag... featureFlags) {
         BlockBehaviour.Properties properties = BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY);
@@ -188,15 +183,6 @@ public class ObjectRegistry {
         registerItem(name, () -> new DrinkBlockItem(
                 toReturn.get(),
                 getSettings(settings -> settings.food(cocktailFoodComponent(effect)))
-        ));
-        return toReturn;
-    }
-
-    private static <T extends Block> RegistrySupplier<T> registerCocktail(String name, Supplier<T> block) {
-        RegistrySupplier<T> toReturn = registerWithoutItem(name, block);
-        registerItem(name, () -> new DrinkBlockItem(
-                toReturn.get(),
-                getSettings(settings -> settings.food(cocktailFoodComponent(MobEffectRegistry.NEVERMELT.get())))
         ));
         return toReturn;
     }

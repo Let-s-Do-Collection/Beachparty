@@ -1,4 +1,4 @@
-package net.satisfy.beachparty.core.block.furniture;
+package net.satisfy.beachparty.core.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,6 +18,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.satisfy.beachparty.core.block.furniture.LineConnectingBlock;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 

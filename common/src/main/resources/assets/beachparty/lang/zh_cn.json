@@ -1,7 +1,7 @@
 {
   "beachparty.config.enableBeachSetBonus": "开启套装增益",
   "beachparty.config.title": "沙滩派对",
-  "block.beachparty.beach_chair": "沙滩棚椅",
+  "block.beachparty.hooded_beach_chair": "沙滩棚椅",
   "block.beachparty.beach_parasol": "遮阳伞",
   "block.beachparty.beach_towel": "沙滩毛巾",
   "block.beachparty.cabinet": "提基橱柜",
@@ -11,7 +11,7 @@
   "block.beachparty.coconut": "椰子",
   "block.beachparty.coconut_block": "椰子",
   "block.beachparty.coconut_cocktail": "椰子鸡尾酒",
-  "block.beachparty.deck_chair": "帆布躺椅",
+  "block.beachparty.beach_sun_lounger": "帆布躺椅",
   "block.beachparty.dried_wheat_block": "草垛捆",
   "block.beachparty.dried_wheat_slab": "草垛台阶",
   "block.beachparty.dried_wheat_stairs": "草垛楼梯",

@@ -32,11 +32,11 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.PALM_BUTTON.get());
                 out.accept(ObjectRegistry.PALM_CABINET.get());
                 out.accept(ObjectRegistry.PALM_BAR.get());
-                out.accept(ObjectRegistry.LOUNGE_CHAIR.get());
+                out.accept(ObjectRegistry.BEACH_CHAIR.get());
                 out.accept(ObjectRegistry.PALM_CHAIR.get());
                 out.accept(ObjectRegistry.PALM_TABLE.get());
-                out.accept(ObjectRegistry.BEACH_CHAIR.get());
-                out.accept(ObjectRegistry.DECK_CHAIR.get());
+                out.accept(ObjectRegistry.HOODED_BEACH_CHAIR.get());
+                out.accept(ObjectRegistry.BEACH_SUN_LOUNGER.get());
                 out.accept(ObjectRegistry.PALM_BAR_STOOL.get());
                 out.accept(ObjectRegistry.WET_HAY_BLOCK.get());
                 out.accept(ObjectRegistry.THATCH.get());

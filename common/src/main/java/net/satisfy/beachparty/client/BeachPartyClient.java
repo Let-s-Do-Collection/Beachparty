@@ -32,7 +32,7 @@ public class BeachPartyClient {
                 MELON_COCKTAIL.get(), COCONUT_COCKTAIL.get(), HONEY_COCKTAIL.get(), THATCH_STAIRS.get(),
                 SWEETBERRIES_COCKTAIL.get(), PUMPKIN_COCKTAIL.get(), COCOA_COCKTAIL.get(),
                 SANDCASTLE.get(), MESSAGE_IN_A_BOTTLE.get(), PALM_SPROUT.get(),
-                DECK_CHAIR.get(), SEASHELL_BLOCK.get(),
+                BEACH_SUN_LOUNGER.get(), SEASHELL_BLOCK.get(),
                 BEACH_GOAL.get(), PALM_DOOR.get(), PALM_TRAPDOOR.get(), PALM_BAR_STOOL.get()
         );
 

@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "beachparty:beach_chair"
+      "beachparty:lounge_chair"
     ]
   },
   "criteria": {

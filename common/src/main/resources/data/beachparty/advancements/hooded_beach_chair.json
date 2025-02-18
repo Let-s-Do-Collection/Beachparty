@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "beachparty:lounge_chair"
+      "beachparty:hooded_beach_chair"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "beachparty:lounge_chair"
+        "recipe": "beachparty:hooded_beach_chair"
       }
     }
   },

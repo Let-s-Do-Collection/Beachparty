@@ -64,7 +64,7 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
     };
 
     public PalmBarBlockEntity(BlockPos pos, BlockState state) {
-        super(EntityTypeRegistry.palm_BAR_BLOCK_ENTITY.get(), pos, state);
+        super(EntityTypeRegistry.PALM_BAR_BLOCK_ENTITY.get(), pos, state);
         this.inventory = NonNullList.withSize(CAPACITY, ItemStack.EMPTY);
     }
 

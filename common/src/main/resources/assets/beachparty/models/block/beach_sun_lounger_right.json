@@ -2,8 +2,8 @@
 	"credit": "Made by Satisfy",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "beachparty:block/deck_chair",
-		"particle": "beachparty:block/deck_chair"
+		"0": "beachparty:block/beach_sun_lounger",
+		"particle": "beachparty:block/beach_sun_lounger"
 	},
 	"elements": [
 		{

@@ -13,18 +13,18 @@
           "type": "minecraft:item",
           "conditions": [
             {
-              "block": "beachparty:deck_chair",
+              "block": "beachparty:beach_sun_lounger",
               "condition": "minecraft:block_state_property",
               "properties": {
                 "part": "head"
               }
             }
           ],
-          "name": "beachparty:deck_chair"
+          "name": "beachparty:beach_sun_lounger"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "beachparty:blocks/deck_chair"
+  "random_sequence": "beachparty:blocks/beach_sun_lounger"
 }

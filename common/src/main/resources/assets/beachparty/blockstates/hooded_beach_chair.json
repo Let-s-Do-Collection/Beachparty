@@ -1,0 +1,124 @@
+{
+  "variants": {
+    "facing=north,half=lower,type=none": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_single",
+      "y": 180
+    },
+    "facing=east,half=lower,type=none": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_single",
+      "y": 270
+    },
+    "facing=south,half=lower,type=none": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_single"
+    },
+    "facing=west,half=lower,type=none": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_single",
+      "y": 90
+    },
+    "facing=north,half=lower,type=middle": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_middle",
+      "y": 180
+    },
+    "facing=east,half=lower,type=middle": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_middle",
+      "y": 270
+    },
+    "facing=south,half=lower,type=middle": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_middle"
+    },
+    "facing=west,half=lower,type=middle": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_middle",
+      "y": 90
+    },
+    "facing=north,half=lower,type=left": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_side_left",
+      "y": 180
+    },
+    "facing=east,half=lower,type=left": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_side_right",
+      "y": 270
+    },
+    "facing=south,half=lower,type=left": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_side_left"
+    },
+    "facing=west,half=lower,type=left": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_side_right",
+      "y": 90
+    },
+    "facing=north,half=lower,type=right": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_side_right",
+      "y": 180
+    },
+    "facing=east,half=lower,type=right": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_side_left",
+      "y": 270
+    },
+    "facing=south,half=lower,type=right": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_side_right"
+    },
+    "facing=west,half=lower,type=right": {
+      "model": "beachparty:block/hooded_beach_chair_bottom_side_left",
+      "y": 90
+    },
+    "facing=north,half=upper,type=none": {
+      "model": "beachparty:block/hooded_beach_chair_top_single",
+      "y": 180
+    },
+    "facing=east,half=upper,type=none": {
+      "model": "beachparty:block/hooded_beach_chair_top_single",
+      "y": 270
+    },
+    "facing=south,half=upper,type=none": {
+      "model": "beachparty:block/hooded_beach_chair_top_single"
+    },
+    "facing=west,half=upper,type=none": {
+      "model": "beachparty:block/hooded_beach_chair_top_single",
+      "y": 90
+    },
+    "facing=north,half=upper,type=middle": {
+      "model": "beachparty:block/hooded_beach_chair_top_middle",
+      "y": 180
+    },
+    "facing=east,half=upper,type=middle": {
+      "model": "beachparty:block/hooded_beach_chair_top_middle",
+      "y": 270
+    },
+    "facing=south,half=upper,type=middle": {
+      "model": "beachparty:block/hooded_beach_chair_top_middle"
+    },
+    "facing=west,half=upper,type=middle": {
+      "model": "beachparty:block/hooded_beach_chair_top_middle",
+      "y": 90
+    },
+    "facing=north,half=upper,type=left": {
+      "model": "beachparty:block/hooded_beach_chair_top_side_left",
+      "y": 180
+    },
+    "facing=east,half=upper,type=left": {
+      "model": "beachparty:block/hooded_beach_chair_top_side_right",
+      "y": 270
+    },
+    "facing=south,half=upper,type=left": {
+      "model": "beachparty:block/hooded_beach_chair_top_side_left"
+    },
+    "facing=west,half=upper,type=left": {
+      "model": "beachparty:block/hooded_beach_chair_top_side_right",
+      "y": 90
+    },
+    "facing=north,half=upper,type=right": {
+      "model": "beachparty:block/hooded_beach_chair_top_side_right",
+      "y": 180
+    },
+    "facing=east,half=upper,type=right": {
+      "model": "beachparty:block/hooded_beach_chair_top_side_left",
+      "y": 270
+    },
+    "facing=south,half=upper,type=right": {
+      "model": "beachparty:block/hooded_beach_chair_top_side_right"
+    },
+    "facing=west,half=upper,type=right": {
+      "model": "beachparty:block/hooded_beach_chair_top_side_left",
+      "y": 90
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "beachparty.config.title": "Beachparty",
-  "block.beachparty.beach_chair": "Strandstuhl",
+  "block.beachparty.hooded_beach_chair": "Strandstuhl",
   "block.beachparty.beach_parasol": "Sonnenschirm",
   "block.beachparty.beach_towel": "Strandtuch",
   "block.beachparty.cabinet": "palm-Schrank",
@@ -10,7 +10,7 @@
   "block.beachparty.coconut": "Kokosnuss",
   "block.beachparty.coconut_block": "Kokosnuss",
   "block.beachparty.coconut_cocktail": "Kokosnuss-Cocktail",
-  "block.beachparty.deck_chair": "Liegestuhl",
+  "block.beachparty.beach_sun_lounger": "Liegestuhl",
   "block.beachparty.sand_bucket_empty": "Leerer Sandeimer",
   "block.beachparty.sand_bucket_empty_block": "Leerer Sandeimer",
   "block.beachparty.honey_cocktail": "Honig-Cocktail",
