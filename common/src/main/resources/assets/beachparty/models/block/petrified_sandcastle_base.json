@@ -1,9 +1,9 @@
 {
 	"credit": "Made by Satisfy",
 	"textures": {
-		"2": "block/sand",
-		"4": "beachparty:block/sandcastle",
-		"particle": "block/sand"
+		"2": "block/sandstone_top",
+		"4": "beachparty:block/petrified_sand_castle_",
+		"particle": "block/sandstone_top"
 	},
 	"elements": [
 		{
