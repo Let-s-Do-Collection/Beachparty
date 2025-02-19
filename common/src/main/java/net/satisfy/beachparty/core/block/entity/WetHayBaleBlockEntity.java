@@ -71,7 +71,7 @@ public class WetHayBaleBlockEntity extends BlockEntity {
             level.scheduleTick(pos, state.getBlock(), 1);
         }
     }
-    
+
     public void preventDrying() {
         if (level instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.CLAY.defaultBlockState()),

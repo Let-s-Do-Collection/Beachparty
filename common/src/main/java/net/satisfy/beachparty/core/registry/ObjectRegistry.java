@@ -131,7 +131,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> TALL_PALM_TORCH = registerWithItem("tall_palm_torch", () -> new TallPalmTorchBlock(BlockBehaviour.Properties.copy(Blocks.TORCH).noCollission().instabreak().lightLevel((state) -> 14).sound(SoundType.WOOD), ParticleTypes.FLAME));
 
 
-    public static final RegistrySupplier<Block> COCONUT_HANGING = registerWithoutItem("coconut_hanging", () -> new HangingCoconutBlock(BlockBehaviour.Properties.copy(Blocks.BAMBOO)));
+    public static final RegistrySupplier<Block> HANGING_COCONUT = registerWithoutItem("hanging_coconut", () -> new HangingCoconutBlock(BlockBehaviour.Properties.copy(Blocks.BAMBOO)));
     public static final RegistrySupplier<Block> SANDWAVES = registerWithItem("sandwaves", () -> new SandBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND).mapColor(MapColor.SAND).strength(0.5F).sound(SoundType.SAND)));
 
     public static final RegistrySupplier<Block> PALM_SIGN = registerWithoutItem("palm_sign", () -> new PalmStandingSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_SIGN), BeachpartyWoodType.PALM));

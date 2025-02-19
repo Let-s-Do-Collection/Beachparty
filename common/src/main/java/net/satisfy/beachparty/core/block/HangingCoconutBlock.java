@@ -17,7 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,7 +32,11 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("deprecation")
 public class HangingCoconutBlock extends FallingBlock implements BonemealableBlock {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
-    private static final VoxelShape SHAPE = Block.box(4.0, 7.0, 4.0, 12.0, 15.0, 12.0);
+    protected static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[] {
+            Block.box(4.0, 7.0, 4.0, 12.0, 15.0, 12.0),
+            Block.box(3.0, 5.0, 3.0, 13.0, 15.0, 13.0),
+            Block.box(2.0, 3.0, 2.0, 14.0, 15.0, 14.0)
+    };
     private static final float FALL_DAMAGE = 2.0F;
     private static final int FALL_DAMAGE_THRESHOLD = 40;
     private static final float COCONUT_SMASH_VOLUME = 0.7f;
@@ -46,17 +49,16 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        BlockState aboveState = level.getBlockState(pos.above());
-        return aboveState.is(ObjectRegistry.PALM_LEAVES.get());
+        return level.getBlockState(pos.above()).is(ObjectRegistry.PALM_LEAVES.get());
     }
 
     @Override
     public @NotNull BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         if (facing == Direction.UP && !this.canSurvive(state, level, currentPos)) {
-            if (level instanceof ServerLevel serverLevel) {
-                createFallingBlock(serverLevel, currentPos);
+            if (!level.isClientSide()) {
+                level.scheduleTick(currentPos, this, 1);
             }
-            return Blocks.AIR.defaultBlockState();
+            return state;
         }
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
@@ -67,8 +69,32 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
     }
 
     @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        int age = state.getValue(AGE);
+        if (random.nextInt(3) == 0) {
+            if (age < 2) {
+                level.setBlock(pos, state.setValue(AGE, age + 1), 2);
+            } else if (pos.getY() >= level.getMinBuildHeight() && isFree(level.getBlockState(pos.below()))) {
+                FallingBlockEntity fallingEntity = FallingBlockEntity.fall(level, pos, level.getBlockState(pos));
+                falling(fallingEntity);
+                level.removeBlock(pos, false);
+            }
+        }
+    }
+
+    @Override
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (level.isEmptyBlock(pos.above()) && pos.getY() >= level.getMinBuildHeight() && isFree(level.getBlockState(pos.below()))) {
+            FallingBlockEntity fallingEntity = FallingBlockEntity.fall(level, pos, level.getBlockState(pos));
+            falling(fallingEntity);
+            level.removeBlock(pos, false);
+        }
+    }
+
+
+    @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
+        return SHAPE_BY_AGE[state.getValue(AGE)];
     }
 
     @Override
@@ -107,39 +133,17 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
     }
 
     @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
-        if (state.getValue(AGE) == 2 && rand.nextInt(16) == 0) {
-            double x = pos.getX() + rand.nextDouble();
-            double y = pos.getY() - 0.05D;
-            double z = pos.getZ() + rand.nextDouble();
-            level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state), x, y, z, 0.0D, 0.0D, 0.0D);
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (random.nextInt(16) == 0 && state.getValue(AGE) == 2) {
+            double x = pos.getX() + random.nextDouble();
+            double y = pos.getY() - 0.05;
+            double z = pos.getZ() + random.nextDouble();
+            level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state), x, y, z, 0.0, 0.0, 0.0);
         }
     }
 
     @Override
-    public int getDustColor(BlockState state, BlockGetter level, BlockPos pos) {
-        return 6636321;
-    }
-
-    @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        int age = state.getValue(AGE);
-        if (random.nextInt(3) == 0 && age < 2) {
-            level.setBlock(pos, state.setValue(AGE, age + 1), 2);
-        }
-    }
-
-    @Override
-    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (!canSurvive(state, level, pos) && canFall(level, pos)) {
-            createFallingBlock(level, pos);
-        } else if (random.nextInt(100) < 5 && canFall(level, pos)) {
-            createFallingBlock(level, pos);
-        }
-    }
-
-    @Override
-    public void onBrokenAfterFall(Level level, BlockPos pos, FallingBlockEntity fallingBlock) {
+    public void onBrokenAfterFall(Level level, BlockPos pos, FallingBlockEntity fallingEntity) {
         level.playSound(null, pos, SoundEvents.BAMBOO_BREAK, SoundSource.BLOCKS, COCONUT_SMASH_VOLUME, COCONUT_SMASH_PITCH_BASE + level.getRandom().nextFloat() * 0.2f);
         if (level instanceof ServerLevel) {
             RandomSource random = level.getRandom();
@@ -152,20 +156,5 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
                 popResource(level, pos, new ItemStack(ObjectRegistry.COCONUT.get().asItem()));
             }
         }
-    }
-
-    private boolean canFall(ServerLevel level, BlockPos pos) {
-        return pos.getY() >= level.getMinBuildHeight() && isFree(level.getBlockState(pos.below()));
-    }
-
-    private void createFallingBlock(ServerLevel level, BlockPos pos) {
-        if (!level.getEntitiesOfClass(FallingBlockEntity.class, new net.minecraft.world.phys.AABB(pos)).isEmpty()) {
-            return;
-        }
-
-        FallingBlockEntity fallingBlockEntity = FallingBlockEntity.fall(level, pos, level.getBlockState(pos));
-        this.falling(fallingBlockEntity);
-        level.addFreshEntity(fallingBlockEntity);
-        level.removeBlock(pos, false);
     }
 }

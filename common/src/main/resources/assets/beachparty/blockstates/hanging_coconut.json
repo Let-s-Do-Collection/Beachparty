@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "beachparty:block/hanging_coconut_age0"
+    },
+    "age=1": {
+      "model": "beachparty:block/hanging_coconut_age1"
+    },
+    "age=2": {
+      "model": "beachparty:block/hanging_coconut_age2"
+    }
+  }
+}

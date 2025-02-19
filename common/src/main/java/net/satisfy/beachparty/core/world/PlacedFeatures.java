@@ -7,7 +7,6 @@ import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 public class PlacedFeatures {
     public static final ResourceKey<PlacedFeature> SEASHELLS_KEY = registerKey("seashells");
-    public static final ResourceKey<PlacedFeature> MESSAGE_IN_A_BOTTLE_KEY = registerKey("message_in_a_bottle");
     public static final ResourceKey<PlacedFeature> PALM_TREE_KEY = registerKey("palm_tree");
     public static final ResourceKey<PlacedFeature> SANDWAVES_KEY = registerKey("sandwaves");
 

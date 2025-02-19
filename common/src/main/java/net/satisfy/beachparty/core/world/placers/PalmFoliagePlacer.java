@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
+import net.satisfy.beachparty.core.block.HangingCoconutBlock;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.registry.PlacerTypesRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -57,12 +58,12 @@ public class PalmFoliagePlacer extends FoliagePlacer {
 
         if (pRandom.nextInt(2) == 0) {
             if (pLevel.isStateAtPosition(pos.below(), BlockBehaviour.BlockStateBase::isAir)) {
-                foliageSetter.set(pos.below(), ObjectRegistry.COCONUT_HANGING.get().defaultBlockState());//TODO
+                foliageSetter.set(pos.below(), ObjectRegistry.HANGING_COCONUT.get().defaultBlockState().setValue(HangingCoconutBlock.AGE, pRandom.nextInt(3)));
             }
         }
         if (pRandom.nextInt(2) == 0) {
             if (pLevel.isStateAtPosition(pos.below().relative(direction.getCounterClockWise()), BlockBehaviour.BlockStateBase::isAir)) {
-                foliageSetter.set(pos.below().relative(direction.getCounterClockWise()), ObjectRegistry.COCONUT_HANGING.get().defaultBlockState());
+                foliageSetter.set(pos.below().relative(direction.getCounterClockWise()), ObjectRegistry.HANGING_COCONUT.get().defaultBlockState().setValue(000HangingCoconutBlock.AGE, pRandom.nextInt(3)));
             }
         }
 

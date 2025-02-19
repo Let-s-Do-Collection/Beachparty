@@ -74,16 +74,6 @@ public class BeachpartyFabric implements ModInitializer {
                     ctx.getGenerationSettings().removeFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SANDWAVES_KEY)
             );
         }
-
-        if (config.spawnMessageInABottle) {
-            world.add(ModificationPhase.ADDITIONS, beachBiomes, ctx ->
-                    ctx.getGenerationSettings().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.MESSAGE_IN_A_BOTTLE_KEY)
-            );
-        } else {
-            world.add(ModificationPhase.REMOVALS, beachBiomes, ctx ->
-                    ctx.getGenerationSettings().removeFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.MESSAGE_IN_A_BOTTLE_KEY)
-            );
-        }
     }
 
     private static Predicate<BiomeSelectionContext> getBeachpartySelector() {
