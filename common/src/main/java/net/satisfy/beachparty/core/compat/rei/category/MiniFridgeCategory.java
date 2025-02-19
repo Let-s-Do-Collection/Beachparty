@@ -26,13 +26,12 @@ public class MiniFridgeCategory implements DisplayCategory<MiniFridgeDisplay> {
 
     @Override
     public Component getTitle() {
-        return Component.translatable("rei.beachparty.mini_fridge_category");
+        return ObjectRegistry.MINI_FRIDGE.get().getName();
     }
 
     @Override
     public Renderer getIcon() {
-        //TODO
-        return EntryStacks.of(ObjectRegistry.BEACH_HAT.get());
+        return EntryStacks.of(ObjectRegistry.MINI_FRIDGE.get());
     }
 
     @Override
@@ -50,20 +49,14 @@ public class MiniFridgeCategory implements DisplayCategory<MiniFridgeDisplay> {
         Point startPoint = new Point(bounds.getCenterX() - getDisplayWidth(display) / 2 - 4, bounds.getCenterY() - getDisplayHeight() / 2 + 14);
         List<Widget> widgets = Lists.newArrayList();
         widgets.add(Widgets.createRecipeBase(bounds));
-        widgets.add(Widgets.createArrow(new Point(startPoint.x + 54, startPoint.y + 9))
-                .animationDurationTicks(50));
+        widgets.add(Widgets.createArrow(new Point(startPoint.x + 54, startPoint.y + 9)).animationDurationTicks(50));
         widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 88, startPoint.y + 9)));
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 88, startPoint.y + 9)).entries(display.getOutputEntries().get(0)).disableBackground().markOutput());
 
-        if (display.getInputEntries().size() < 1)
-            widgets.add(Widgets.createSlotBackground(new Point(startPoint.x + 32, startPoint.y)));
+        if (display.getInputEntries().isEmpty())
+            widgets.add(Widgets.createSlotBackground(new Point(startPoint.x + 32, startPoint.y + 9)));
         else
-            widgets.add(Widgets.createSlot(new Point(startPoint.x + 32, startPoint.y)).entries(display.getInputEntries().get(0)).markInput());
-
-        if (display.getInputEntries().size() < 2)
-            widgets.add(Widgets.createSlotBackground(new Point(startPoint.x + 32, startPoint.y + 20)));
-        else
-            widgets.add(Widgets.createSlot(new Point(startPoint.x + 32, startPoint.y + 20)).entries(display.getInputEntries().get(1)).markInput());
+            widgets.add(Widgets.createSlot(new Point(startPoint.x + 32, startPoint.y + 9)).entries(display.getInputEntries().get(0)).markInput());
 
         return widgets;
     }

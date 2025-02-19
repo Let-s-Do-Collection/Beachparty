@@ -15,12 +15,12 @@ import net.satisfy.beachparty.core.registry.RecipeRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class palmBarRecipe implements Recipe<Container> {
+public class PalmBarRecipe implements Recipe<Container> {
     final ResourceLocation id;
     private final NonNullList<Ingredient> inputs;
     private final ItemStack output;
 
-    public palmBarRecipe(ResourceLocation id, NonNullList<Ingredient> inputs, ItemStack output) {
+    public PalmBarRecipe(ResourceLocation id, NonNullList<Ingredient> inputs, ItemStack output) {
         this.id = id;
         this.inputs = inputs;
         this.output = output;
@@ -53,12 +53,12 @@ public class palmBarRecipe implements Recipe<Container> {
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return RecipeRegistry.palm_BAR_RECIPE_SERIALIZER.get();
+        return RecipeRegistry.PALM_BAR_RECIPE_SERIALIZER.get();
     }
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return RecipeRegistry.palm_BAR_RECIPE_TYPE.get();
+        return RecipeRegistry.PALM_BAR_RECIPE_TYPE.get();
     }
 
     @Override
@@ -71,29 +71,29 @@ public class palmBarRecipe implements Recipe<Container> {
         return true;
     }
 
-    public static class Serializer implements RecipeSerializer<palmBarRecipe> {
+    public static class Serializer implements RecipeSerializer<PalmBarRecipe> {
 
         @Override
-        public @NotNull palmBarRecipe fromJson(ResourceLocation id, JsonObject json) {
+        public @NotNull PalmBarRecipe fromJson(ResourceLocation id, JsonObject json) {
             final var ingredients = BeachpartyUtil.deserializeIngredients(GsonHelper.getAsJsonArray(json, "ingredients"));
             if (ingredients.isEmpty()) {
                 throw new JsonParseException("No ingredients for palmBar Recipe");
             } else if (ingredients.size() > 4) {
                 throw new JsonParseException("Too many ingredients for palmBar Recipe");
             } else {
-                return new palmBarRecipe(id, ingredients, ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result")));
+                return new PalmBarRecipe(id, ingredients, ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result")));
             }
         }
 
         @Override
-        public @NotNull palmBarRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+        public @NotNull PalmBarRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             final var ingredients = NonNullList.withSize(buf.readVarInt(), Ingredient.EMPTY);
             ingredients.replaceAll(ignored -> Ingredient.fromNetwork(buf));
-            return new palmBarRecipe(id, ingredients, buf.readItem());
+            return new PalmBarRecipe(id, ingredients, buf.readItem());
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buf, palmBarRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buf, PalmBarRecipe recipe) {
             buf.writeVarInt(recipe.inputs.size());
             for (Ingredient ingredient : recipe.inputs) {
                 ingredient.toNetwork(buf);

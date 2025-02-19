@@ -1,0 +1,15 @@
+{
+  "type": "beachparty:mini_fridge_freezing",
+  "ingredients": [
+    {
+      "item": "minecraft:potion",
+      "nbt": {
+        "Potion": "minecraft:water"
+      }
+    }
+  ],
+  "result": {
+    "item": "minecraft:ice"
+  },
+  "crafting_time": 1200
+}

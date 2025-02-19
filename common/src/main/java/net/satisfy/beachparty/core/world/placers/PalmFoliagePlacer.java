@@ -63,7 +63,7 @@ public class PalmFoliagePlacer extends FoliagePlacer {
         }
         if (pRandom.nextInt(2) == 0) {
             if (pLevel.isStateAtPosition(pos.below().relative(direction.getCounterClockWise()), BlockBehaviour.BlockStateBase::isAir)) {
-                foliageSetter.set(pos.below().relative(direction.getCounterClockWise()), ObjectRegistry.HANGING_COCONUT.get().defaultBlockState().setValue(000HangingCoconutBlock.AGE, pRandom.nextInt(3)));
+                foliageSetter.set(pos.below().relative(direction.getCounterClockWise()), ObjectRegistry.HANGING_COCONUT.get().defaultBlockState().setValue(HangingCoconutBlock.AGE, pRandom.nextInt(3)));
             }
         }
 

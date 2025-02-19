@@ -13,7 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -26,19 +25,18 @@ import net.satisfy.beachparty.core.world.ImplementedInventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-
 public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInventory, BlockEntityTicker<MiniFridgeBlockEntity>, MenuProvider {
-    public static final int CAPACITY = 3;
-    private static final int[] SLOTS_FOR_SIDE = new int[]{2};
-    private static final int[] SLOTS_FOR_UP = new int[]{1};
-    private static final int[] SLOTS_FOR_DOWN = new int[]{0};
+    public static final int CAPACITY = 2;
+    private static final int[] SLOTS_FOR_INPUT = new int[]{1};
+    private static final int[] SLOTS_FOR_OUTPUT = new int[]{0};
     private static final int OUTPUT_SLOT = 0;
+    private static final int INPUT_SLOT = 1;
     protected float experience;
     private NonNullList<ItemStack> inventory;
     private int fermentationTime = 0;
     private int totalFermentationTime;
-    private final ContainerData propertyDelegate = new ContainerData() {
 
+    private final ContainerData propertyDelegate = new ContainerData() {
         @Override
         public int get(int index) {
             return switch (index) {
@@ -47,7 +45,6 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
                 default -> 0;
             };
         }
-
 
         @Override
         public void set(int index, int value) {
@@ -68,24 +65,23 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
         this.inventory = NonNullList.withSize(CAPACITY, ItemStack.EMPTY);
     }
 
-
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
         this.inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(nbt, this.inventory);
-        this.fermentationTime = nbt.getShort("FermentationTime");
+        this.fermentationTime = nbt.getInt("FermentationTime");
+        this.totalFermentationTime = nbt.getInt("TotalFermentationTime");
         this.experience = nbt.getFloat("Experience");
-
     }
-
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         super.saveAdditional(nbt);
         ContainerHelper.saveAllItems(nbt, this.inventory);
+        nbt.putInt("FermentationTime", this.fermentationTime);
+        nbt.putInt("TotalFermentationTime", this.totalFermentationTime);
         nbt.putFloat("Experience", this.experience);
-        nbt.putShort("FermentationTime", (short) this.fermentationTime);
     }
 
     @Override
@@ -98,8 +94,11 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
         assert level != null;
         RegistryAccess access = level.registryAccess();
         if (canCraft(recipeType, access)) {
+            if (this.fermentationTime == 0) {
+                this.totalFermentationTime = recipeType.getCraftingTime();
+            }
             this.fermentationTime++;
-            if (this.fermentationTime == this.totalFermentationTime) {
+            if (this.fermentationTime >= this.totalFermentationTime) {
                 this.fermentationTime = 0;
                 craft(recipeType, access);
                 dirty = true;
@@ -110,26 +109,15 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
         if (dirty) {
             setChanged();
         }
-
     }
 
     private boolean canCraft(MiniFridgeRecipe recipe, RegistryAccess access) {
         if (recipe == null || recipe.getResultItem(access).isEmpty()) {
             return false;
-        } else if (areInputsEmpty()) {
-            return false;
         }
-        ItemStack itemStack = this.getItem(OUTPUT_SLOT);
-        return itemStack.isEmpty() || itemStack == recipe.getResultItem(access);
-    }
-
-
-    private boolean areInputsEmpty() {
-        int emptyStacks = 0;
-        for (int i = 1; i <= 2; i++) {
-            if (this.getItem(i).isEmpty()) emptyStacks++;
-        }
-        return emptyStacks == 2;
+        ItemStack inputStack = this.getItem(INPUT_SLOT);
+        ItemStack outputStack = this.getItem(OUTPUT_SLOT);
+        return !inputStack.isEmpty() && (outputStack.isEmpty() || outputStack == recipe.getResultItem(access));
     }
 
     private void craft(MiniFridgeRecipe recipe, RegistryAccess access) {
@@ -139,23 +127,11 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
         final ItemStack recipeOutput = recipe.getResultItem(access);
         final ItemStack outputSlotStack = this.getItem(OUTPUT_SLOT);
         if (outputSlotStack.isEmpty()) {
-            ItemStack output = recipeOutput.copy();
-            setItem(OUTPUT_SLOT, output);
+            setItem(OUTPUT_SLOT, recipeOutput.copy());
         }
-        for (int slot = 1; slot <= 2; slot++) {
-            ItemStack slotStack = this.getItem(slot);
-            for (Ingredient ingredient : recipe.getIngredients()) {
-                if (ingredient.test(slotStack)) {
-                    slotStack.shrink(1);
-                    if (!slotStack.isEmpty()) {
-                        setItem(slot, slotStack);
-                    } else {
-                        this.setItem(slot, ItemStack.EMPTY);
-                    }
-                    break;
-                }
-            }
-        }
+        ItemStack inputStack = this.getItem(INPUT_SLOT);
+        inputStack.shrink(1);
+        setItem(INPUT_SLOT, inputStack.isEmpty() ? ItemStack.EMPTY : inputStack);
     }
 
     @Override
@@ -165,40 +141,39 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
 
     @Override
     public int @NotNull [] getSlotsForFace(Direction side) {
-        if (side.equals(Direction.UP)) {
-            return SLOTS_FOR_UP;
-        } else if (side.equals(Direction.DOWN)) {
-            return SLOTS_FOR_DOWN;
-        } else return SLOTS_FOR_SIDE;
+        if (side == Direction.DOWN) {
+            return SLOTS_FOR_OUTPUT;
+        } else {
+            return SLOTS_FOR_INPUT;
+        }
     }
 
     @Override
     public void setItem(int slot, ItemStack stack) {
-        final ItemStack stackInSlot = this.inventory.get(slot);
-        boolean dirty = !stack.isEmpty() && ItemStack.isSameItem(stack, stackInSlot) && ItemStack.matches(stack, stackInSlot);
         this.inventory.set(slot, stack);
-        if (stack.getCount() > this.getMaxStackSize()) {
-            stack.setCount(this.getMaxStackSize());
+        if (slot == INPUT_SLOT) {
+            this.totalFermentationTime = 50;
+            this.fermentationTime = 0;
+            setChanged();
         }
-        if (slot == 1 || slot == 2) {
-            if (!dirty) {
-                this.totalFermentationTime = 50;
-                this.fermentationTime = 0;
-                setChanged();
-            }
-        }
+    }
+
+    @Override
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction dir) {
+        return slot == INPUT_SLOT;
+    }
+
+    @Override
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) {
+        return slot == OUTPUT_SLOT;
     }
 
     @Override
     public boolean stillValid(Player player) {
         assert this.level != null;
-        if (this.level.getBlockEntity(this.worldPosition) != this) {
-            return false;
-        } else {
-            return player.distanceToSqr((double) this.worldPosition.getX() + 0.5, (double) this.worldPosition.getY() + 0.5, (double) this.worldPosition.getZ() + 0.5) <= 64.0;
-        }
+        return this.level.getBlockEntity(this.worldPosition) == this &&
+                player.distanceToSqr(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5) <= 64.0;
     }
-
 
     @Override
     public @NotNull Component getDisplayName() {

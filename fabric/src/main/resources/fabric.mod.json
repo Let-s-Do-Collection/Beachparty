@@ -28,6 +28,7 @@
       "net.satisfy.beachparty.fabric.rei.BeachpartyREIClientPluginFabric"
     ],
     "jei_mod_plugin": [
+      "net.satisfy.beachparty.core.compat.jei.BeachpartyJEIPlugin"
     ],
     "modmenu": [
       "net.satisfy.beachparty.fabric.config.ModMenu"

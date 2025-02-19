@@ -8,7 +8,7 @@ import net.satisfy.beachparty.core.compat.rei.category.palmBarCategory;
 import net.satisfy.beachparty.core.compat.rei.display.MiniFridgeDisplay;
 import net.satisfy.beachparty.core.compat.rei.display.palmBarDisplay;
 import net.satisfy.beachparty.core.recipe.MiniFridgeRecipe;
-import net.satisfy.beachparty.core.recipe.palmBarRecipe;
+import net.satisfy.beachparty.core.recipe.PalmBarRecipe;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 
 public class BeachpartyREIClientPlugin {
@@ -18,13 +18,13 @@ public class BeachpartyREIClientPlugin {
         registry.add(new palmBarCategory());
 
         //TODO Change ObjectRegistry.
-        registry.addWorkstations(MiniFridgeCategory.MINE_FRIDGE_DISPLAY, EntryStacks.of(ObjectRegistry.BEACH_HAT.get()));
+        registry.addWorkstations(MiniFridgeCategory.MINE_FRIDGE_DISPLAY, EntryStacks.of(ObjectRegistry.MINI_FRIDGE.get()));
         registry.addWorkstations(palmBarCategory.palm_BAR_DISPLAY, EntryStacks.of(ObjectRegistry.BEACH_HAT.get()));
     }
 
 
     public static void registerDisplays(DisplayRegistry registry) {
         registry.registerFiller(MiniFridgeRecipe.class, MiniFridgeDisplay::new);
-        registry.registerFiller(palmBarRecipe.class, palmBarDisplay::new);
+        registry.registerFiller(PalmBarRecipe.class, palmBarDisplay::new);
     }
 }

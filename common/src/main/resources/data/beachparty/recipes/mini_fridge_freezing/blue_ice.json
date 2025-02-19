@@ -1,0 +1,12 @@
+{
+  "type": "beachparty:mini_fridge_freezing",
+  "ingredients": [
+    {
+      "item": "minecraft:packed_ice"
+    }
+  ],
+  "result": {
+    "item": "minecraft:blue_ice"
+  },
+  "crafting_time": 800
+}

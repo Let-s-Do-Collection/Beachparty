@@ -9,11 +9,8 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
 import net.satisfy.beachparty.client.gui.handler.slot.IceSlot;
 import net.satisfy.beachparty.client.gui.handler.slot.PalmBarOutputSlot;
-import net.satisfy.beachparty.core.recipe.palmBarRecipe;
 import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
 
 public class PalmBarGuiHandler extends AbstractContainerMenu {

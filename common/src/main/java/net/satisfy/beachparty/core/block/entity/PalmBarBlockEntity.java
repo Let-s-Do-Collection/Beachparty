@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.beachparty.client.gui.handler.PalmBarGuiHandler;
-import net.satisfy.beachparty.core.recipe.palmBarRecipe;
+import net.satisfy.beachparty.core.recipe.PalmBarRecipe;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.registry.RecipeRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -72,8 +72,8 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         if (world.isClientSide) return;
 
         boolean dirty = false;
-        palmBarRecipe recipe = world.getRecipeManager()
-                .getRecipeFor(RecipeRegistry.palm_BAR_RECIPE_TYPE.get(), blockEntity, world)
+        PalmBarRecipe recipe = world.getRecipeManager()
+                .getRecipeFor(RecipeRegistry.PALM_BAR_RECIPE_TYPE.get(), blockEntity, world)
                 .orElse(null);
         RegistryAccess access = world.registryAccess();
 
@@ -112,7 +112,7 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         nbt.putShort("ShakingTime", (short) this.shakingTime);
     }
 
-    private boolean canCraft(@Nullable palmBarRecipe recipe, RegistryAccess access) {
+    private boolean canCraft(@Nullable PalmBarRecipe recipe, RegistryAccess access) {
         if (recipe == null) return false;
 
         ItemStack recipeResultItem = recipe.getResultItem(access);
@@ -133,7 +133,7 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         return emptyStacks == 2;
     }
 
-    private void craft(palmBarRecipe recipe, RegistryAccess access) {
+    private void craft(PalmBarRecipe recipe, RegistryAccess access) {
         if (!canCraft(recipe, access)) {
             return;
         }
@@ -152,7 +152,7 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         consumeIngredients(recipe);
     }
 
-    private void consumeIngredients(palmBarRecipe recipe) {
+    private void consumeIngredients(PalmBarRecipe recipe) {
         for (Ingredient ingredient : recipe.getIngredients()) {
             for (int i = 1; i <= 2; i++) {
                 ItemStack slotItem = this.getItem(i);
