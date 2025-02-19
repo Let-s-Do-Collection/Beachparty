@@ -2,6 +2,7 @@
 
 **Added**
 
+
 **Changed**
 - Most of the textures for the palm wood set, furniture and decorative elements have been changed to have a less modern style.
 - The Beach Chair has been renamed the Hooded Beach Chair. It now has two parts, a bottom and a top, and can be connected.
