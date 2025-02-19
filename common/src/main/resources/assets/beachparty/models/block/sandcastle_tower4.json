@@ -1,9 +1,9 @@
 {
 	"credit": "Made by Satisfy",
 	"textures": {
-		"0": "beachparty:block/sand_castle",
+		"0": "beachparty:block/sandcastle",
 		"1": "block/sand",
-		"particle": "beachparty:block/sand_castle"
+		"particle": "beachparty:block/sandcastle"
 	},
 	"elements": [
 		{
@@ -34,15 +34,14 @@
 			}
 		},
 		{
-			"from": [5, 6, 5],
-			"to": [11, 9, 11],
-			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 2]},
+			"from": [11, 1, 1],
+			"to": [15, 12, 5],
 			"faces": {
-				"north": {"uv": [4, 5, 10, 8], "texture": "#0"},
-				"east": {"uv": [4, 5, 10, 8], "texture": "#0"},
-				"south": {"uv": [4, 5, 10, 8], "texture": "#0"},
-				"west": {"uv": [4, 5, 10, 8], "texture": "#0"},
-				"up": {"uv": [7, 5, 13, 11], "texture": "#1"}
+				"north": {"uv": [0, 0, 4, 11], "texture": "#0"},
+				"east": {"uv": [0, 0, 4, 11], "texture": "#0"},
+				"south": {"uv": [0, 0, 4, 11], "texture": "#0"},
+				"west": {"uv": [0, 0, 4, 11], "texture": "#0"},
+				"up": {"uv": [4, 8, 8, 12], "texture": "#0"}
 			}
 		}
 	],
@@ -53,7 +52,7 @@
 			"name": "tower1",
 			"origin": [8, 8, 8],
 			"color": 0,
-			"children": []
+			"children": [2]
 		},
 		{
 			"name": "tower2",
@@ -62,16 +61,10 @@
 			"children": []
 		},
 		{
-			"name": "tower3",
-			"origin": [8, 8, 8],
-			"color": 0,
-			"children": []
-		},
-		{
 			"name": "tower4",
 			"origin": [8, 8, 8],
 			"color": 0,
-			"children": [2]
+			"children": []
 		}
 	]
 }

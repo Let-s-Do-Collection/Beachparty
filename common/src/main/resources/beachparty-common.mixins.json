@@ -7,8 +7,10 @@
   ],
   "mixins": [
     "HayBaleBlockMixin",
+    "MobAccessor",
     "PotionItemMixin",
-    "ServerLevelTickMixin"
+    "ServerLevelTickMixin",
+    "ZombieMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -10,7 +10,8 @@
         "model": "beachparty:block/sandcastle_tower1"
       },
       "when": {
-        "tall": "true"
+        "tall": "true",
+        "petrified": "false"
       }
     },
     {
@@ -18,7 +19,8 @@
         "model": "beachparty:block/sandcastle_tower3"
       },
       "when": {
-        "right": "true"
+        "right": "true",
+        "petrified": "false"
       }
     },
     {
@@ -26,7 +28,8 @@
         "model": "beachparty:block/sandcastle_tower2"
       },
       "when": {
-        "top": "true"
+        "top": "true",
+        "petrified": "false"
       }
     },
     {
@@ -34,7 +37,44 @@
         "model": "beachparty:block/sandcastle_tower4"
       },
       "when": {
-        "left": "true"
+        "left": "true",
+        "petrified": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "beachparty:block/petrified_sandcastle_tower1"
+      },
+      "when": {
+        "tall": "true",
+        "petrified": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "beachparty:block/petrified_sandcastle_tower3"
+      },
+      "when": {
+        "right": "true",
+        "petrified": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "beachparty:block/petrified_sandcastle_tower2"
+      },
+      "when": {
+        "top": "true",
+        "petrified": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "beachparty:block/petrified_sandcastle_tower4"
+      },
+      "when": {
+        "left": "true",
+        "petrified": "true"
       }
     }
   ]

@@ -3,7 +3,11 @@ package net.satisfy.beachparty.core.block;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,11 +18,14 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SandBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,7 +39,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
-import net.satisfy.beachparty.platform.PlatformHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -88,17 +94,24 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
         public static final BooleanProperty LEFT_TOWER;
         public static final VoxelShape LEFT_TOWER_SHAPE = Block.box(11.0, 1.0, 1.0, 15.0, 12.0, 5.0);
         private static final VoxelShape BASE_SHAPE = Shapes.or(Block.box(1.0, 0.0, 1.0, 15.0, 1.0, 15.0), Block.box(2.0, 1.0, 2.0, 14.0, 6.0, 14.0));
+        public static final BooleanProperty PETRIFIED;
 
         static {
             TALL_TOWER = BooleanProperty.create("tall");
             RIGHT_TOWER = BooleanProperty.create("right");
             TOP_TOWER = BooleanProperty.create("top");
             LEFT_TOWER = BooleanProperty.create("left");
+            PETRIFIED = BooleanProperty.create("petrified");
         }
 
         public SandCastleBlock(Properties settings) {
-            super(settings);
-            this.registerDefaultState(this.stateDefinition.any().setValue(TALL_TOWER, false).setValue(RIGHT_TOWER, false).setValue(TOP_TOWER, false).setValue(LEFT_TOWER, false));
+            super(settings.randomTicks());
+            this.registerDefaultState(this.stateDefinition.any()
+                    .setValue(TALL_TOWER, false)
+                    .setValue(RIGHT_TOWER, false)
+                    .setValue(TOP_TOWER, false)
+                    .setValue(LEFT_TOWER, false)
+                    .setValue(PETRIFIED, false));
         }
 
         @Override
@@ -122,26 +135,73 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
         @Override
         public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
             ItemStack handStack = player.getItemInHand(hand);
+
+            if (PotionUtils.getPotion(handStack) == Potions.WATER && !state.getValue(PETRIFIED)) {
+                if (!player.getAbilities().instabuild) {
+                    handStack.shrink(1);
+                }
+                world.setBlockAndUpdate(pos, state.setValue(PETRIFIED, true));
+
+                if (world.isClientSide) {
+                    BlockState smoothSandState = Blocks.SMOOTH_SANDSTONE.defaultBlockState();
+                    for (int i = 0; i < 8; i++) {
+                        world.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, smoothSandState),
+                                pos.getX() + 0.5 + (world.random.nextDouble() - 0.5) * 0.5,
+                                pos.getY() + 1.0,
+                                pos.getZ() + 0.5 + (world.random.nextDouble() - 0.5) * 0.5,
+                                0, 0.1, 0);
+                    }
+                    for (int i = 0; i < 6; i++) {
+                        world.addParticle(ParticleTypes.SPLASH,
+                                pos.getX() + 0.5 + (world.random.nextDouble() - 0.5) * 0.5,
+                                pos.getY() + 1.0,
+                                pos.getZ() + 0.5 + (world.random.nextDouble() - 0.5) * 0.5,
+                                0, 0.1, 0);
+                    }
+                }
+                return InteractionResult.sidedSuccess(world.isClientSide);
+            }
+
             if (handStack.getItem() == ObjectRegistry.SAND_BUCKET_FILLED.get() && !hasAllTowers(state)) {
                 BooleanProperty tower = getTowerHitPos(hit);
                 if (!state.getValue(tower)) {
                     world.setBlockAndUpdate(pos, state.setValue(tower, true));
                     exchangeStack(handStack, player, new ItemStack(ObjectRegistry.SAND_BUCKET_EMPTY.get()));
+
+                    if (world.isClientSide) {
+                        for (int i = 0; i < 8; i++) {
+                            world.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState()), pos.getX() + 0.5 + (world.random.nextDouble() - 0.5) * 0.5, pos.getY() + 1.0, pos.getZ() + 0.5 + (world.random.nextDouble() - 0.5) * 0.5, 0, 0.1, 0);
+                        }
+                        world.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.SAND_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f, false);
+                    }
                     return InteractionResult.sidedSuccess(world.isClientSide);
                 }
             } else if (handStack.getItem() == ObjectRegistry.SAND_BUCKET_EMPTY.get()) {
                 if (hasNoTowers(state)) {
                     world.destroyBlock(pos, false);
                     exchangeStack(handStack, player, new ItemStack(ObjectRegistry.SAND_BUCKET_FILLED.get()));
+
+                    if (world.isClientSide) {
+                        for (int i = 0; i < 6; i++) {
+                            world.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState()), pos.getX() + 0.5 + (world.random.nextDouble() - 0.5) * 0.5, pos.getY() + 1.0, pos.getZ() + 0.5 + (world.random.nextDouble() - 0.5) * 0.5, 0, 0.1, 0);
+                        }
+                        world.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.SAND_BREAK, SoundSource.BLOCKS, 1.0f, 1.0f, false);
+                    }
                     return InteractionResult.sidedSuccess(world.isClientSide);
-                } else if (!hasNoTowers(state)) {
+                } else {
                     BooleanProperty tower = getTowerHitPos(hit);
                     if (state.getValue(tower)) {
                         world.setBlockAndUpdate(pos, state.setValue(tower, false));
                         exchangeStack(handStack, player, new ItemStack(ObjectRegistry.SAND_BUCKET_FILLED.get()));
+
+                        if (world.isClientSide) {
+                            for (int i = 0; i < 6; i++) {
+                                world.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState()), pos.getX() + 0.5 + (world.random.nextDouble() - 0.5) * 0.5, pos.getY() + 1.0, pos.getZ() + 0.5 + (world.random.nextDouble() - 0.5) * 0.5, 0, 0.1, 0);
+                            }
+                            world.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.SAND_BREAK, SoundSource.BLOCKS, 1.0f, 1.0f, false);
+                        }
                         return InteractionResult.sidedSuccess(world.isClientSide);
                     }
-
                 }
             }
             return InteractionResult.PASS;
@@ -149,7 +209,22 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
 
         @Override
         public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-            PlatformHelper.stepOn(world, pos, state, entity);
+            if (!state.getValue(PETRIFIED)) {
+                world.setBlockAndUpdate(pos, ObjectRegistry.SAND_PILE.get().defaultBlockState());
+            } else if (entity.getType() == EntityType.ZOMBIE) {
+                world.destroyBlock(pos, true);
+            }
+        }
+
+        @Override
+        public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+            if (!state.getValue(PETRIFIED) && (world.isRainingAt(pos) || world.isRainingAt(pos.above()))) {
+                world.setBlockAndUpdate(pos, ObjectRegistry.SAND_PILE.get().defaultBlockState());
+                return;
+            }
+            if (!state.canSurvive(world, pos)) {
+                world.destroyBlock(pos, true);
+            }
         }
 
         private void exchangeStack(ItemStack handStack, Player player, ItemStack possibleReturnStack) {
@@ -201,13 +276,6 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
         }
 
         @Override
-        public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-            if (!state.canSurvive(world, pos)) {
-                world.destroyBlock(pos, true);
-            }
-        }
-
-        @Override
         public @NotNull BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
             if (!state.canSurvive(world, pos)) {
                 world.scheduleTick(pos, this, 1);
@@ -232,7 +300,7 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
 
         @Override
         protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-            builder.add(TALL_TOWER, RIGHT_TOWER, TOP_TOWER, LEFT_TOWER);
+            builder.add(TALL_TOWER, RIGHT_TOWER, TOP_TOWER, LEFT_TOWER, PETRIFIED);
         }
     }
 
