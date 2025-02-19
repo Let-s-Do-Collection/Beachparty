@@ -3,9 +3,12 @@ package net.satisfy.beachparty.client.gui.handler;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.satisfy.beachparty.client.gui.handler.slot.IceSlot;
@@ -13,14 +16,19 @@ import net.satisfy.beachparty.client.gui.handler.slot.PalmBarOutputSlot;
 import net.satisfy.beachparty.core.recipe.MiniFridgeRecipe;
 import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
 
-public class MiniFridgeGuiHandler extends AbstractRecipeBookGUIScreenHandler {
+public class MiniFridgeGuiHandler extends AbstractContainerMenu {
+
+    private final Container inventory;
+    private final ContainerData propertyDelegate;
 
     public MiniFridgeGuiHandler(int syncId, Inventory playerInventory) {
         this(syncId, playerInventory, new SimpleContainer(6), new SimpleContainerData(2));
     }
 
     public MiniFridgeGuiHandler(int syncId, Inventory playerInventory, Container inventory, ContainerData propertyDelegate) {
-        super(ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), syncId, 2, playerInventory, inventory, propertyDelegate);
+        super(ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), syncId);
+        this.inventory = inventory;
+        this.propertyDelegate = propertyDelegate;
 
         buildBlockEntityContainer(playerInventory, inventory);
         buildPlayerContainer(playerInventory);
@@ -43,7 +51,7 @@ public class MiniFridgeGuiHandler extends AbstractRecipeBookGUIScreenHandler {
         this.addSlot(new IceSlot(inventory, 2, 59, 43));
     }
 
-    private void buildPlayerContainer(Container playerInventory) {
+    private void buildPlayerContainer(Inventory playerInventory) {
         int i;
         for (i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
@@ -55,33 +63,13 @@ public class MiniFridgeGuiHandler extends AbstractRecipeBookGUIScreenHandler {
         }
     }
 
-//    @Override
-//    public List<IRecipeBookGroup> getGroups() {
-//        return MiniFridgeRecipeBookGroup.FRIDGE_GROUPS;
-//    }
-
     @Override
-    public boolean hasIngredient(Recipe<?> recipe) {
-        if (recipe instanceof MiniFridgeRecipe miniFridgeRecipe) {
-            for (Ingredient ingredient : miniFridgeRecipe.getIngredients()) {
-                boolean found = false;
-                for (Slot slot : this.slots) {
-                    if (ingredient.test(slot.getItem())) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        return false;
+    public ItemStack quickMoveStack(Player player, int i) {
+        return null;
     }
 
     @Override
-    public int getCraftingSlotCount() {
-        return 2;
+    public boolean stillValid(Player player) {
+        return true;
     }
 }
