@@ -57,7 +57,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> TRUNKS = registerItem("trunks", () -> new DyeableBeachpartyArmorItem(ArmorMaterialRegistry.TRUNKS, ArmorItem.Type.LEGGINGS, 16715535, getSettings().rarity(Rarity.UNCOMMON), new BeachpartyIdentifier("textures/models/armor/trunks.png")));
     public static final RegistrySupplier<Item> BIKINI = registerItem("bikini", () -> new DyeableBeachpartyArmorItem(ArmorMaterialRegistry.BIKINI, ArmorItem.Type.CHESTPLATE, 987135, getSettings().rarity(Rarity.UNCOMMON), new BeachpartyIdentifier("textures/models/armor/bikini.png")));
     public static final RegistrySupplier<Item> CROCS = registerItem("crocs", () -> new DyeableBeachpartyArmorItem(ArmorMaterialRegistry.CROCS, ArmorItem.Type.BOOTS, 1048335, getSettings().rarity(Rarity.EPIC), new BeachpartyIdentifier("textures/models/armor/crocs.png")));
-    public static final RegistrySupplier<Item> SWIM_WINGS = registerItem("swim_wings", () -> new DyeableBeachpartyArmorItem(ArmorMaterialRegistry.SWIM_WINGS, ArmorItem.Type.CHESTPLATE, 0xFFD700, getSettings(), new BeachpartyIdentifier("textures/models/armor/swim_wings.png")));
+    public static final RegistrySupplier<Item> SWIM_WINGS = registerItem("swim_wings", () -> new DyeableBeachpartyArmorItem(ArmorMaterialRegistry.SWIM_WINGS, ArmorItem.Type.CHESTPLATE, 0xFF5800, getSettings(), new BeachpartyIdentifier("textures/models/armor/swim_wings.png")));
 
     public static final RegistrySupplier<Block> SAND_PILE = registerWithoutItem("sand_pile", () -> new SandBucketBlock.SandPileBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND).mapColor(MapColor.SAND)));
 

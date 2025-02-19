@@ -47,7 +47,7 @@ public class BeachPartyClient {
         BeachpartyUtil.registerColorArmor(TRUNKS.get(), 16715535);
         BeachpartyUtil.registerColorArmor(BIKINI.get(), 987135);
         BeachpartyUtil.registerColorArmor(CROCS.get(), 1048335);
-        BeachpartyUtil.registerColorArmor(SWIM_WINGS.get(), 0xFFD700);
+        BeachpartyUtil.registerColorArmor(SWIM_WINGS.get(), 0xFF5800);
         BeachpartyUtil.registerColorArmor(POOL_NOODLE.get(), 1017855);
     }
 
