@@ -40,7 +40,6 @@ public class CrocsModel<T extends Entity> extends EntityModel<T> implements Legg
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         poseStack.scale(1.09F, 1.09F, 1.09F);
-        poseStack.translate(0F, 0.025F, 0.025F);
         right_leg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         left_leg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         poseStack.popPose();

@@ -23,15 +23,15 @@ public class SunglassesModel<T extends Entity> extends EntityModel<T> implements
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition sunglasses = partdefinition.addOrReplaceChild("sunglasses", CubeListBuilder.create().texOffs(0, 3).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.75F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition sunglasses = partdefinition.addOrReplaceChild("sunglasses", CubeListBuilder.create().texOffs(0, 3).addBox(-4.0F, -7.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.75F)), PartPose.ZERO);
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
+
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
-        poseStack.translate(0F, 0.1F, 0F);
         sunglasses.render(poseStack, buffer, packedLight, packedOverlay);
         poseStack.popPose();
     }
