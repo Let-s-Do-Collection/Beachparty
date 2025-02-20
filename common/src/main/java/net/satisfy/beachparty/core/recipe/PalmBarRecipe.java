@@ -28,7 +28,7 @@ public class PalmBarRecipe implements Recipe<Container> {
 
     @Override
     public boolean matches(Container inventory, Level world) {
-        return BeachpartyUtil.matchesRecipe(inventory, inputs, 1, 2);
+        return BeachpartyUtil.matchesRecipe(inventory, inputs, 1, 4);
     }
 
     @Override
@@ -77,9 +77,9 @@ public class PalmBarRecipe implements Recipe<Container> {
         public @NotNull PalmBarRecipe fromJson(ResourceLocation id, JsonObject json) {
             final var ingredients = BeachpartyUtil.deserializeIngredients(GsonHelper.getAsJsonArray(json, "ingredients"));
             if (ingredients.isEmpty()) {
-                throw new JsonParseException("No ingredients for palmBar Recipe");
+                throw new JsonParseException("No ingredients for Palm Bar Recipe");
             } else if (ingredients.size() > 4) {
-                throw new JsonParseException("Too many ingredients for palmBar Recipe");
+                throw new JsonParseException("Too many ingredients for Palm Bar Recipe");
             } else {
                 return new PalmBarRecipe(id, ingredients, ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result")));
             }
@@ -98,7 +98,6 @@ public class PalmBarRecipe implements Recipe<Container> {
             for (Ingredient ingredient : recipe.inputs) {
                 ingredient.toNetwork(buf);
             }
-
             buf.writeItem(recipe.output);
         }
     }

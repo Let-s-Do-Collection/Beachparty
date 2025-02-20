@@ -9,21 +9,19 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.satisfy.beachparty.client.gui.handler.slot.IceSlot;
 import net.satisfy.beachparty.client.gui.handler.slot.PalmBarOutputSlot;
 import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
+import org.jetbrains.annotations.NotNull;
 
 public class PalmBarGuiHandler extends AbstractContainerMenu {
-    private final Container inventory;
     protected final ContainerData propertyDelegate;
 
     public PalmBarGuiHandler(int syncId, Inventory playerInventory) {
-        this(syncId, playerInventory, new SimpleContainer(3), new SimpleContainerData(2));
+        this(syncId, playerInventory, new SimpleContainer(5), new SimpleContainerData(2));
     }
 
     public PalmBarGuiHandler(int syncId, Inventory playerInventory, Container inventory, ContainerData propertyDelegate) {
         super(ScreenHandlerTypesRegistry.PALM_BAR_GUI_HANDLER.get(), syncId);
-        this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
         buildBlockEntityContainer(playerInventory, inventory);
         buildPlayerContainer(playerInventory);
@@ -31,9 +29,11 @@ public class PalmBarGuiHandler extends AbstractContainerMenu {
     }
 
     private void buildBlockEntityContainer(Inventory playerInventory, Container inventory) {
-        this.addSlot(new PalmBarOutputSlot(playerInventory.player, inventory, 0, 128, 35));
-        this.addSlot(new Slot(inventory, 1, 55, 26));
-        this.addSlot(new IceSlot(inventory, 2, 55, 44));
+        this.addSlot(new PalmBarOutputSlot(playerInventory.player, inventory, 0, 116, 35));
+        this.addSlot(new Slot(inventory, 1, 38, 25));
+        this.addSlot(new Slot(inventory, 2, 56, 25));
+        this.addSlot(new Slot(inventory, 3, 38, 43));
+        this.addSlot(new Slot(inventory, 4, 56, 43));
     }
 
     private void buildPlayerContainer(Inventory playerInventory) {
@@ -56,26 +56,48 @@ public class PalmBarGuiHandler extends AbstractContainerMenu {
         return progress * 22 / totalProgress + 1;
     }
 
-    public int getShakeYProgress() {
-        int progress = propertyDelegate.get(0);
-        int totalProgress = propertyDelegate.get(1);
-        if (totalProgress == 0 || progress == 0) {
-            return 0;
+    @Override
+    public @NotNull ItemStack quickMoveStack(Player player, int index) {
+        Slot slot = this.slots.get(index);
+        if (slot.hasItem()) {
+            ItemStack originalStack = slot.getItem();
+            ItemStack copyStack = originalStack.copy();
+
+            if (index == 0) {
+                if (!moveItemStackTo(originalStack, 5, 41, true)) {
+                    return ItemStack.EMPTY;
+                }
+                slot.onQuickCraft(originalStack, copyStack);
+            } else if (index >= 1 && index <= 4) {
+                if (!moveItemStackTo(originalStack, 5, 41, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (index >= 5) {
+                if (!moveItemStackTo(originalStack, 1, 5, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if (originalStack.isEmpty()) {
+                slot.set(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+
+            if (originalStack.getCount() == copyStack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, originalStack);
+            return copyStack;
         }
-        return progress * 20 / totalProgress + 1;
+        return ItemStack.EMPTY;
     }
 
-    @Override
-    public ItemStack quickMoveStack(Player player, int i) {
-        return null;
-    }
 
     @Override
     public boolean stillValid(Player player) {
         return true;
     }
 
-    public boolean isOutputSlotFilled() {
-        return this.slots.get(0).hasItem();
-    }
 }

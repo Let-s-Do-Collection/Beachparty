@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.beachparty.client.gui.handler.MiniFridgeGuiHandler;
 import net.satisfy.beachparty.core.recipe.MiniFridgeRecipe;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
+import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.registry.RecipeRegistry;
 import net.satisfy.beachparty.core.world.ImplementedInventory;
 import org.jetbrains.annotations.NotNull;
@@ -177,7 +178,7 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.translatable(this.getBlockState().getBlock().getDescriptionId());
+        return ObjectRegistry.MINI_FRIDGE.get().getName();
     }
 
     @Nullable

@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.beachparty.client.gui.handler.PalmBarGuiHandler;
 import net.satisfy.beachparty.core.recipe.PalmBarRecipe;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
+import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.registry.RecipeRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,8 +30,8 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
-    public static final int CAPACITY = 3;
-    private static final int[] SLOTS_FOR_SIDE = new int[]{2};
+    public static final int CAPACITY = 5;
+    private static final int[] SLOTS_FOR_SIDE = new int[]{2, 3, 4};
     private static final int[] SLOTS_FOR_UP = new int[]{1};
     private static final int[] SLOTS_FOR_DOWN = new int[]{0};
     private static final int OUTPUT_SLOT = 0;
@@ -101,6 +102,7 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         this.inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(nbt, this.inventory);
         this.shakingTime = nbt.getShort("ShakingTime");
+        this.totalShakingTime = nbt.getShort("TotalShakingTime");
         this.experience = nbt.getFloat("Experience");
     }
 
@@ -110,7 +112,9 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         ContainerHelper.saveAllItems(nbt, this.inventory);
         nbt.putFloat("Experience", this.experience);
         nbt.putShort("ShakingTime", (short) this.shakingTime);
+        nbt.putShort("TotalShakingTime", (short) this.totalShakingTime);
     }
+
 
     private boolean canCraft(@Nullable PalmBarRecipe recipe, RegistryAccess access) {
         if (recipe == null) return false;
@@ -126,11 +130,12 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
     }
 
     private boolean areInputsEmpty() {
-        int emptyStacks = 0;
-        for (int i = 1; i <= 2; i++) {
-            if (this.getItem(i).isEmpty()) emptyStacks++;
+        for (int i = 1; i <= 4; i++) {
+            if (!this.getItem(i).isEmpty()) {
+                return false;
+            }
         }
-        return emptyStacks == 2;
+        return true;
     }
 
     private void craft(PalmBarRecipe recipe, RegistryAccess access) {
@@ -152,9 +157,16 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         consumeIngredients(recipe);
     }
 
+    private ItemStack getRemainderItem(ItemStack stack) {
+        if (stack.getItem().hasCraftingRemainingItem()) {
+            return new ItemStack(Objects.requireNonNull(stack.getItem().getCraftingRemainingItem()));
+        }
+        return ItemStack.EMPTY;
+    }
+
     private void consumeIngredients(PalmBarRecipe recipe) {
         for (Ingredient ingredient : recipe.getIngredients()) {
-            for (int i = 1; i <= 2; i++) {
+            for (int i = 1; i <= 4; i++) {
                 ItemStack slotItem = this.getItem(i);
                 if (ingredient.test(slotItem)) {
                     ItemStack remainder = getRemainderItem(slotItem);
@@ -170,11 +182,19 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         }
     }
 
-    private ItemStack getRemainderItem(ItemStack stack) {
-        if (stack.getItem().hasCraftingRemainingItem()) {
-            return new ItemStack(Objects.requireNonNull(stack.getItem().getCraftingRemainingItem()));
-        }
-        return ItemStack.EMPTY;
+    @Override
+    public @NotNull ItemStack getItem(int i) {
+        return this.inventory.get(i);
+    }
+
+    @Override
+    public @NotNull ItemStack removeItem(int i, int j) {
+        return ContainerHelper.removeItem(this.inventory, i, j);
+    }
+
+    @Override
+    public @NotNull ItemStack removeItemNoUpdate(int i) {
+        return this.inventory.remove(i);
     }
 
     @Override
@@ -207,53 +227,27 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
     }
 
     @Override
-    public @NotNull ItemStack getItem(int i) {
-        return this.inventory.get(i);
-    }
-
-    @Override
-    public @NotNull ItemStack removeItem(int i, int j) {
-        return ContainerHelper.removeItem(this.inventory, i, j);
-    }
-
-    @Override
-    public @NotNull ItemStack removeItemNoUpdate(int i) {
-        return this.inventory.remove(i);
-    }
-
-    @Override
     public void setItem(int slot, ItemStack stack) {
-        final ItemStack stackInSlot = this.inventory.get(slot);
-        boolean dirty = !stack.isEmpty() && ItemStack.isSameItem(stack, stackInSlot) && ItemStack.matches(stack, stackInSlot);
         this.inventory.set(slot, stack);
         if (stack.getCount() > this.getMaxStackSize()) {
             stack.setCount(this.getMaxStackSize());
         }
-        if (slot == 1 || slot == 2) {
-            if (!dirty) {
-                this.totalShakingTime = 50;
-                this.shakingTime = 0;
-                setChanged();
-            }
+        if (slot >= 1 && slot <= 4) {
+            this.totalShakingTime = 50;
+            this.shakingTime = 0;
+            setChanged();
         }
     }
 
     @Override
     public boolean stillValid(Player player) {
-        if (this.level == null) return false;
-        if (this.level.getBlockEntity(this.worldPosition) != this) {
-            return false;
-        } else {
-            return player.distanceToSqr(
-                    (double) this.worldPosition.getX() + 0.5,
-                    (double) this.worldPosition.getY() + 0.5,
-                    (double) this.worldPosition.getZ() + 0.5) <= 64.0;
-        }
+        return this.level != null && this.level.getBlockEntity(this.worldPosition) == this &&
+                player.distanceToSqr(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5) <= 64.0;
     }
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.translatable(this.getBlockState().getBlock().getDescriptionId());
+        return ObjectRegistry.PALM_BAR.get().getName();
     }
 
     @Nullable

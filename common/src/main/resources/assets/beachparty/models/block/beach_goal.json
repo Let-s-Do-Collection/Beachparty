@@ -2,7 +2,7 @@
 	"credit": "Made by Satisfy",
 	"textures": {
 		"1": "beachparty:block/palm_cabinet_top",
-		"2": "beachparty:block/net",
+		"2": "beachparty:block/beach_goal_net",
 		"particle": "beachparty:block/palm_cabinet_top"
 	},
 	"elements": [
