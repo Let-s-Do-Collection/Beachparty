@@ -3,7 +3,7 @@
   "group": "wooden_button",
   "ingredients": [
     {
-      "tag": "beachparty:palm_planks"
+      "item": "beachparty:palm_planks"
     }
   ],
   "result": {

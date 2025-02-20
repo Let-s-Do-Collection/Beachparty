@@ -240,18 +240,14 @@ public class BeachpartyTrinket {
 
         @Override
         public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
-            if (!entity.level().isClientSide() && isEquipped() && entity instanceof Player player) {
+            if (!entity.level().isClientSide() && entity instanceof Player player && player.tickCount > 20) {
                 if (!player.getCooldowns().isOnCooldown(ObjectRegistry.SWIM_WINGS.get())) {
-                    if (!player.onGround() && player.getDeltaMovement().y < 0) {
+                    if (!player.onGround() && player.getDeltaMovement().y < -0.1F && player.fallDistance > 3.0F) {
                         player.fallDistance *= 0.5F;
                         player.getCooldowns().addCooldown(ObjectRegistry.SWIM_WINGS.get(), 2400);
                     }
                 }
             }
-        }
-
-        private static boolean isEquipped() {
-            return true;
         }
     }
 }

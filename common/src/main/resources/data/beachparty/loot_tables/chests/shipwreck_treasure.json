@@ -3,7 +3,7 @@
     {
       "rolls": {
         "min": 1.0,
-        "max": 3.0,
+        "max": 2.0,
         "type": "minecraft:uniform"
       },
       "entries": [
@@ -55,6 +55,116 @@
         {
           "type": "minecraft:empty",
           "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "beachparty:trunks"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "beachparty:bikini"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "beachparty:crocs"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "beachparty:swim_wings"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "beachparty:pool_noodle"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "beachparty:rubber_ring_pink"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "beachparty:rubber_ring_blue"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "beachparty:sunglasses"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "beachparty:rubber_ring_stripped"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "beachparty:beach_hat"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 3.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "beachparty:palm_sprout"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "beachparty:radio"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2.0,
+                "max": 7.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "beachparty:coconut"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "beachparty:beach_ball"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 3.0,
+                "max": 5.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ],
+          "name": "beachparty:palm_torch_item"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "beachparty:floaty_boat"
         }
       ]
     }

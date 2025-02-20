@@ -7,7 +7,7 @@
   ],
   "key": {
     "/": {
-      "item": "minecraft:bamboo_planks"
+      "item": "beachparty:palm_planks"
     },
     "W": {
       "tag": "minecraft:wool"

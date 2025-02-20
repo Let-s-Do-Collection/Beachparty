@@ -3,7 +3,7 @@
     {
       "rolls": {
         "min": 1.0,
-        "max": 3.0,
+        "max": 1.0,
         "type": "minecraft:uniform"
       },
       "entries": [
@@ -21,36 +21,6 @@
             }
           ],
           "name": "beachparty:overgrown_disc"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "min": 1.0,
-                "max": 1.0,
-                "type": "minecraft:uniform"
-              }
-            }
-          ],
-          "name": "beachparty:rubber_ring_pelican"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "min": 1.0,
-                "max": 1.0,
-                "type": "minecraft:uniform"
-              }
-            }
-          ],
-          "name": "beachparty:rubber_ring_axolotl"
         },
         {
           "type": "minecraft:empty",

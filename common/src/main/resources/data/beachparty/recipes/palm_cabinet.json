@@ -7,10 +7,10 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:bamboo_planks"
+      "item": "beachparty:palm_planks"
     },
     "V": {
-      "item": "minecraft:bamboo_slab"
+      "item": "beachparty:palm_slab"
     }
   },
   "result": {

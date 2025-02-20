@@ -6,6 +6,9 @@
     },
     {
       "item": "minecraft:ice"
+    },
+    {
+      "item": "minecraft:milk_bucket"
     }
   ],
   "result": {

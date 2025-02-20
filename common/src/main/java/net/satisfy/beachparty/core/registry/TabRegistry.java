@@ -54,6 +54,7 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.PALM_CHEST_BOAT.get());
                 out.accept(ObjectRegistry.FLOATY_BOAT.get());
                 out.accept(ObjectRegistry.RADIO.get());
+                out.accept(ObjectRegistry.BEACH_GOAL.get());
                 out.accept(ObjectRegistry.BEACH_TOWEL.get());
                 out.accept(ObjectRegistry.BEACH_PARASOL.get());
                 out.accept(ObjectRegistry.OVERGROWN_DISC.get());
@@ -72,7 +73,6 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.RAW_MUSSEL_MEAT.get());
                 out.accept(ObjectRegistry.COOKED_MUSSEL_MEAT.get());
                 out.accept(ObjectRegistry.BEACH_BALL.get());
-                out.accept(ObjectRegistry.BEACH_GOAL.get());
                 out.accept(ObjectRegistry.BEACH_HAT.get());
                 out.accept(ObjectRegistry.SUNGLASSES.get());
                 out.accept(ObjectRegistry.TRUNKS.get());

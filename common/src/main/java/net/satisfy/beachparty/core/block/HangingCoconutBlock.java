@@ -2,8 +2,7 @@ package net.satisfy.beachparty.core.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -28,6 +27,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 @SuppressWarnings("deprecation")
 public class HangingCoconutBlock extends FallingBlock implements BonemealableBlock {
@@ -91,7 +91,6 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
         }
     }
 
-
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE_BY_AGE[state.getValue(AGE)];
@@ -138,7 +137,7 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
             double x = pos.getX() + random.nextDouble();
             double y = pos.getY() - 0.05;
             double z = pos.getZ() + random.nextDouble();
-            level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state), x, y, z, 0.0, 0.0, 0.0);
+            level.addParticle(new DustParticleOptions(new Vector3f(0.545f, 0.345f, 0.169f), 1.0f), x, y, z, 0.0, -0.2, 0.0);
         }
     }
 
