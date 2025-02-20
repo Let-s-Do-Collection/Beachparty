@@ -47,7 +47,7 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
 public class SandBucketBlock extends HorizontalDirectionalBlock {
-    private static final Supplier<VoxelShape> voxelShapeSupplier = () -> box(4, 0, 6, 10, 6, 12);
+    private static final Supplier<VoxelShape> voxelShapeSupplier = () -> box(4, 0, 6, 10, 8, 12);
 
     public static final Map<Direction, VoxelShape> SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
