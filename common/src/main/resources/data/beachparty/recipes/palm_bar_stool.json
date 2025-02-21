@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "#",
-    "///",
-    "O O"
+    "/",
+    "O"
   ],
   "key": {
     "#": {

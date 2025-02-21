@@ -10,10 +10,14 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.satisfy.beachparty.client.gui.handler.MiniFridgeGuiHandler;
+import net.satisfy.beachparty.client.gui.handler.PalmBarGuiHandler;
 import net.satisfy.beachparty.core.compat.jei.categorys.MiniFridgeCategory;
+import net.satisfy.beachparty.core.compat.jei.categorys.PalmBarCategory;
 import net.satisfy.beachparty.core.recipe.MiniFridgeRecipe;
+import net.satisfy.beachparty.core.recipe.PalmBarRecipe;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.registry.RecipeRegistry;
 import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
@@ -28,6 +32,7 @@ public class BeachpartyJEIPlugin implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new MiniFridgeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new PalmBarCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -35,6 +40,8 @@ public class BeachpartyJEIPlugin implements IModPlugin {
         RecipeManager rm = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
         List<MiniFridgeRecipe> fridgeRecipes = rm.getAllRecipesFor(RecipeRegistry.MINI_FRIDGE_RECIPE_TYPE.get());
         registration.addRecipes(MiniFridgeCategory.MINI_FRIDGE_FREEZING, fridgeRecipes);
+        List<PalmBarRecipe> barRecipes = rm.getAllRecipesFor(RecipeRegistry.PALM_BAR_RECIPE_TYPE.get());
+        registration.addRecipes(PalmBarCategory.PALM_BAR, barRecipes);
     }
 
     @Override
@@ -45,14 +52,17 @@ public class BeachpartyJEIPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(ObjectRegistry.MINI_FRIDGE.get().asItem().getDefaultInstance(), MiniFridgeCategory.MINI_FRIDGE_FREEZING);
+        registration.addRecipeCatalyst(ObjectRegistry.PALM_BAR.get().asItem().getDefaultInstance(), PalmBarCategory.PALM_BAR);
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         registration.addRecipeTransferHandler(MiniFridgeGuiHandler.class, ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeCategory.MINI_FRIDGE_FREEZING, 1, 1, 2, 36);
+        registration.addRecipeTransferHandler(PalmBarGuiHandler.class, ScreenHandlerTypesRegistry.PALM_BAR_GUI_HANDLER.get(), PalmBarCategory.PALM_BAR, 1, 4, 2, 36);
+
     }
 
-    public static void addSlot(IRecipeLayoutBuilder builder, int x, int y, net.minecraft.world.item.crafting.Ingredient ingredient) {
+    public static void addSlot(IRecipeLayoutBuilder builder, int x, int y, Ingredient ingredient) {
         builder.addSlot(RecipeIngredientRole.INPUT, x, y).addIngredients(ingredient);
     }
 }

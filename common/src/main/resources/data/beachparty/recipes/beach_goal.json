@@ -1,9 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "#",
     "///",
-    "O O"
+    "/#/"
   ],
   "key": {
     "#": {
@@ -11,13 +10,10 @@
     },
     "/": {
       "item": "minecraft:stick"
-    },
-    "O": {
-      "item": "beachparty:palm_planks"
     }
   },
   "result": {
-    "item": "beachparty:palm_chair",
-    "count": 2
+    "item": "beachparty:beach_goal",
+    "count": 1
   }
 }
