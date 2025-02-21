@@ -1,0 +1,37 @@
+{
+  "parent": "beachparty:main/welcome_to_the_beach",
+  "display": {
+    "icon": {
+      "item": "beachparty:seashell"
+    },
+    "title": {
+      "translate": "advancement.beachparty.get_a_seashell"
+    },
+    "description": {
+      "translate": "advancement.beachparty.get_a_seashell.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "get_a_seashell": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beachparty:seashell"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_a_seashell"
+    ]
+  ]
+}

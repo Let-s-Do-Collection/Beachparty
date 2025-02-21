@@ -1,0 +1,37 @@
+{
+  "parent": "beachparty:main/root",
+  "criteria": {
+    "place_palm_bar": {
+      "conditions": {
+        "location": [
+          {
+            "block": "beachparty:palm_bar",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.beachparty.place_palm_bar.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "beachparty:palm_bar"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.beachparty.place_palm_bar"
+    }
+  },
+  "requirements": [
+    [
+      "place_palm_bar"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

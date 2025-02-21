@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "beachparty:melon_cocktail",
+    "beachparty:cocoa_cocktail",
+    "beachparty:pumpkin_cocktail",
+    "beachparty:honey_cocktail",
+    "beachparty:sweetberries_cocktail",
+    "beachparty:coconut_cocktail"
+  ]
+}

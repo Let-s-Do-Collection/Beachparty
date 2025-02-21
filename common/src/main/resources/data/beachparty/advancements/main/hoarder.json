@@ -1,0 +1,234 @@
+{
+  "parent": "beachparty:main/root",
+  "display": {
+    "icon": {
+      "item": "beachparty:message_in_a_bottle"
+    },
+    "title": {
+      "translate": "advancement.beachparty.hoarder"
+    },
+    "description": {
+      "translate": "advancement.beachparty.hoarder.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "rewards": {
+    "experience": 600
+  },
+  "criteria": {
+    "beachparty:message_in_a_bottle": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:message_in_a_bottle"]
+          }
+        ]
+      }
+    },
+    "beachparty:melon_cocktail": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:melon_cocktail"]
+          }
+        ]
+      }
+    },
+    "beachparty:cocoa_cocktail": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:cocoa_cocktail"]
+          }
+        ]
+      }
+    },
+    "beachparty:pumpkin_cocktail": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:pumpkin_cocktail"]
+          }
+        ]
+      }
+    },
+    "beachparty:honey_cocktail": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:honey_cocktail"]
+          }
+        ]
+      }
+    },
+    "beachparty:sweetberries_cocktail": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:sweetberries_cocktail"]
+          }
+        ]
+      }
+    },
+    "beachparty:coconut_cocktail": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:coconut_cocktail"]
+          }
+        ]
+      }
+    },
+    "beachparty:floaty_boat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:floaty_boat"]
+          }
+        ]
+      }
+    },
+    "beachparty:sunglasses": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:sunglasses"]
+          }
+        ]
+      }
+    },
+    "beachparty:trunks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:trunks"]
+          }
+        ]
+      }
+    },
+    "beachparty:bikini": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:bikini"]
+          }
+        ]
+      }
+    },
+    "beachparty:crocs": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:crocs"]
+          }
+        ]
+      }
+    },
+    "beachparty:swim_wings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:swim_wings"]
+          }
+        ]
+      }
+    },
+    "beachparty:rubber_ring_blue": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:rubber_ring_blue"]
+          }
+        ]
+      }
+    },
+    "beachparty:rubber_ring_pink": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:rubber_ring_pink"]
+          }
+        ]
+      }
+    },
+    "beachparty:rubber_ring_stripped": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:rubber_ring_stripped"]
+          }
+        ]
+      }
+    },
+    "beachparty:rubber_ring_pelican": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:rubber_ring_pelican"]
+          }
+        ]
+      }
+    },
+    "beachparty:rubber_ring_axolotl": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:rubber_ring_axolotl"]
+          }
+        ]
+      }
+    },
+    "beachparty:beach_ball": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["beachparty:beach_ball"]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    ["beachparty:message_in_a_bottle"],
+    ["beachparty:melon_cocktail"],
+    ["beachparty:cocoa_cocktail"],
+    ["beachparty:pumpkin_cocktail"],
+    ["beachparty:honey_cocktail"],
+    ["beachparty:sweetberries_cocktail"],
+    ["beachparty:coconut_cocktail"],
+    ["beachparty:floaty_boat"],
+    ["beachparty:sunglasses"],
+    ["beachparty:trunks"],
+    ["beachparty:bikini"],
+    ["beachparty:crocs"],
+    ["beachparty:swim_wings"],
+    ["beachparty:rubber_ring_blue"],
+    ["beachparty:rubber_ring_pink"],
+    ["beachparty:rubber_ring_stripped"],
+    ["beachparty:rubber_ring_pelican"],
+    ["beachparty:rubber_ring_axolotl"],
+    ["beachparty:beach_ball"]
+  ]
+}

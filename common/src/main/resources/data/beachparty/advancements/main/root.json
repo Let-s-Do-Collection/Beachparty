@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "beachparty:beach_ball"
+    },
+    "title": {
+      "translate": "advancement.beachparty.root"
+    },
+    "description": {
+      "translate": "advancement.beachparty.root.desc"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "beachparty:textures/block/palm_planks.png"
+  },
+  "criteria": {
+    "example_criterion": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "position": {
+          "x": {
+            "min": 1000000
+          }
+        }
+      }
+    }
+  }
+}

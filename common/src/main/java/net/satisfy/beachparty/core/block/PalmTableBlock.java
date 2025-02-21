@@ -45,9 +45,9 @@ public class PalmTableBlock extends LineConnectingBlock implements SimpleWaterlo
             if (leftConnected && rightConnected) {
                 state = state.setValue(TYPE, BeachpartyUtil.LineConnectingType.MIDDLE);
             } else if (leftConnected) {
-                state = state.setValue(TYPE, (facing == Direction.NORTH || facing == Direction.SOUTH) ? BeachpartyUtil.LineConnectingType.LEFT : BeachpartyUtil.LineConnectingType.RIGHT);
+                state = state.setValue(TYPE, BeachpartyUtil.LineConnectingType.RIGHT);
             } else if (rightConnected) {
-                state = state.setValue(TYPE, (facing == Direction.NORTH || facing == Direction.SOUTH) ? BeachpartyUtil.LineConnectingType.RIGHT : BeachpartyUtil.LineConnectingType.LEFT);
+                state = state.setValue(TYPE, BeachpartyUtil.LineConnectingType.LEFT);
             } else {
                 state = state.setValue(TYPE, BeachpartyUtil.LineConnectingType.NONE);
             }
@@ -55,26 +55,38 @@ public class PalmTableBlock extends LineConnectingBlock implements SimpleWaterlo
         return super.updateShape(state, direction, neighborState, world, pos, neighborPos);
     }
 
+    @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction direction = state.getValue(FACING);
         BeachpartyUtil.LineConnectingType type = state.getValue(TYPE);
 
         if (type == BeachpartyUtil.LineConnectingType.MIDDLE) {
             return TOP_SHAPE;
-        } else if (direction == Direction.NORTH && type == BeachpartyUtil.LineConnectingType.LEFT || direction == Direction.SOUTH && type == BeachpartyUtil.LineConnectingType.RIGHT) {
-            return Shapes.or(TOP_SHAPE, LEG_SHAPES[0], LEG_SHAPES[3]);
-        } else if ((direction != Direction.NORTH || type != BeachpartyUtil.LineConnectingType.RIGHT) && (direction != Direction.SOUTH || type != BeachpartyUtil.LineConnectingType.LEFT)) {
-            if ((direction != Direction.EAST || type != BeachpartyUtil.LineConnectingType.LEFT) && (direction != Direction.WEST || type != BeachpartyUtil.LineConnectingType.RIGHT)) {
-                return (direction != Direction.EAST || type != BeachpartyUtil.LineConnectingType.RIGHT) && (direction != Direction.WEST || type != BeachpartyUtil.LineConnectingType.LEFT)
-                        ? Shapes.or(TOP_SHAPE, LEG_SHAPES)
-                        : Shapes.or(TOP_SHAPE, LEG_SHAPES[2], LEG_SHAPES[3]);
-            } else {
-                return Shapes.or(TOP_SHAPE, LEG_SHAPES[0], LEG_SHAPES[1]);
-            }
-        } else {
+        }
+
+        if ((direction == Direction.NORTH && type == BeachpartyUtil.LineConnectingType.RIGHT) ||
+                (direction == Direction.SOUTH && type == BeachpartyUtil.LineConnectingType.LEFT)) {
             return Shapes.or(TOP_SHAPE, LEG_SHAPES[1], LEG_SHAPES[2]);
         }
+
+        if ((direction == Direction.NORTH && type == BeachpartyUtil.LineConnectingType.LEFT) ||
+                (direction == Direction.SOUTH && type == BeachpartyUtil.LineConnectingType.RIGHT)) {
+            return Shapes.or(TOP_SHAPE, LEG_SHAPES[0], LEG_SHAPES[3]);
+        }
+
+        if ((direction == Direction.EAST && type == BeachpartyUtil.LineConnectingType.LEFT) ||
+                (direction == Direction.WEST && type == BeachpartyUtil.LineConnectingType.RIGHT)) {
+            return Shapes.or(TOP_SHAPE, LEG_SHAPES[0], LEG_SHAPES[1]);
+        }
+
+        if ((direction == Direction.EAST && type == BeachpartyUtil.LineConnectingType.RIGHT) ||
+                (direction == Direction.WEST && type == BeachpartyUtil.LineConnectingType.LEFT)) {
+            return Shapes.or(TOP_SHAPE, LEG_SHAPES[2], LEG_SHAPES[3]);
+        }
+
+        return Shapes.or(TOP_SHAPE, LEG_SHAPES);
     }
+
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Level world = context.getLevel();
@@ -99,7 +111,6 @@ public class PalmTableBlock extends LineConnectingBlock implements SimpleWaterlo
                 box(14, 0, 0, 16, 13, 2),
                 box(14, 0, 14, 16, 13, 16),
                 box(0, 0, 14, 2, 13, 16)
-
         };
     }
 }
