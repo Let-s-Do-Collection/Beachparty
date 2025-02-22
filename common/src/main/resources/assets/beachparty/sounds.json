@@ -20,31 +20,31 @@
   "beachparty": {
     "subtitle": "subtitles.beachparty.sound.beachparty",
     "sounds": [
-      "beachparty:beachparty-kevin-macleod"
+      "beachparty:beachparty_kevin_macleod"
     ]
   },
   "caribbean_beach": {
     "subtitle": "subtitles.beachparty.sound.caribbean_beach",
     "sounds": [
-      "beachparty:caribbeanbeach-pecan-pie"
+      "beachparty:caribbeanbeach_pecan_pie"
     ]
   },
   "pridelands": {
     "subtitle": "subtitles.beachparty.sound.pridelands",
     "sounds": [
-      "beachparty:pridelands-andey-rossi"
+      "beachparty:pridelands_andey_rossi"
     ]
   },
   "vocalista": {
     "subtitle": "subtitles.beachparty.sound.vocalista",
     "sounds": [
-      "beachparty:vocalista-pecan-pie"
+      "beachparty:vocalista_pecan_pie"
     ]
   },
   "wild_veins": {
     "subtitle": "subtitles.beachparty.sound.wild_veins",
     "sounds": [
-      "beachparty:wildveins-adams"
+      "beachparty:wildveins_adams"
     ]
   }
 }

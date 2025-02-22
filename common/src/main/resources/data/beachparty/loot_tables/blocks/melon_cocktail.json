@@ -12,10 +12,10 @@
           "predicate": {}
         },
         {
-          "condition": "minecraft:property",
+          "condition": "minecraft:block_state_property",
           "block": "beachparty:melon_cocktail",
           "properties": {
-            "stage": "3"
+            "stage": 3
           }
         }
       ],

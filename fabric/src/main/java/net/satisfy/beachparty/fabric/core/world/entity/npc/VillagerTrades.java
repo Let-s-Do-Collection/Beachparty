@@ -46,7 +46,6 @@ public class VillagerTrades {
             factories.add(new SellItemFactory(ObjectRegistry.OVERGROWN_DISC.get(), 36, 1, 10));
             factories.add(new SellItemFactory(ObjectRegistry.SAND_BUCKET_FILLED.get(), 11, 1, 5));
 
-
         });
         TradeOfferHelper.registerVillagerOffers(SANDYMERCHANT, 4, factories -> {
             factories.add(new SellItemFactory(ObjectRegistry.RADIO.get(), 44, 1, 12));

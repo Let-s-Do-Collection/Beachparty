@@ -15,8 +15,6 @@ public class ConfigFabric implements ConfigData {
     public boolean spawnSeashells = true;
     @ConfigEntry.Category("worldgen")
     public boolean spawnSandwaves = true;
-    @ConfigEntry.Category("worldgen")
-    public boolean spawnMessageInABottle = true;
 
     @ConfigEntry.Gui.PrefixText
     @ConfigEntry.Gui.Tooltip

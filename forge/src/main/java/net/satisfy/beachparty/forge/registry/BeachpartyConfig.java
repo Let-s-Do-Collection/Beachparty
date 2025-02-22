@@ -14,7 +14,6 @@ public class BeachpartyConfig {
     public static final ForgeConfigSpec.BooleanValue SPAWN_PALMS;
     public static final ForgeConfigSpec.BooleanValue SPAWN_SEASHELLS;
     public static final ForgeConfigSpec.BooleanValue SPAWN_SANDWAVES;
-    public static final ForgeConfigSpec.BooleanValue SPAWN_MESSAGE_IN_A_BOTTLE;
 
     static {
         ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
@@ -22,7 +21,6 @@ public class BeachpartyConfig {
         SPAWN_PALMS = COMMON_BUILDER.comment("Generate Palm Trees").define("spawnPalms", true);
         SPAWN_SEASHELLS = COMMON_BUILDER.comment("Generate Seashells").define("spawnSeashells", true);
         SPAWN_SANDWAVES = COMMON_BUILDER.comment("Generate Sandwaves").define("spawnSandwaves", true);
-        SPAWN_MESSAGE_IN_A_BOTTLE = COMMON_BUILDER.comment("Generate Message in a Bottle").define("spawnMessageInABottle", true);
 
         COMMON_CONFIG = COMMON_BUILDER.build();
     }

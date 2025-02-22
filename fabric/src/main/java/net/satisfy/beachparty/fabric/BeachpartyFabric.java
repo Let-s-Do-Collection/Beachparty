@@ -5,7 +5,6 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.*;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.state.BlockState;
@@ -16,14 +15,12 @@ import net.satisfy.beachparty.core.block.BeachTowelBlock;
 import net.satisfy.beachparty.core.registry.CompostablesRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import net.satisfy.beachparty.core.world.PlacedFeatures;
-import net.satisfy.beachparty.fabric.core.compat.trinkets.TrinketsCompatibility;
 import net.satisfy.beachparty.fabric.core.config.ConfigFabric;
 import net.satisfy.beachparty.fabric.core.world.entity.npc.VillagerTrades;
 
 import java.util.function.Predicate;
 
 public class BeachpartyFabric implements ModInitializer {
-    public static boolean trinketsLoaded;
 
     @Override
     public void onInitialize() {
@@ -38,12 +35,6 @@ public class BeachpartyFabric implements ModInitializer {
             BlockState blockState = player.level().getBlockState(sleepingPos);
             return !(onClient || blockState.getBlock() instanceof BeachTowelBlock || blockState.getBlock() instanceof BeachSunLounger);
         });
-
-        trinketsLoaded = FabricLoader.getInstance().isModLoaded("trinkets");
-
-        if (trinketsLoaded) {
-            TrinketsCompatibility.load();
-        }
     }
 
     private void addBiomeModification() {
