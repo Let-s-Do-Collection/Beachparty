@@ -6,6 +6,17 @@
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
+        },
+        {
+          "condition": "minecraft:match_tool",
+          "predicate": {}
+        },
+        {
+          "condition": "minecraft:property",
+          "block": "beachparty:melon_cocktail",
+          "properties": {
+            "stage": "3"
+          }
         }
       ],
       "entries": [

@@ -1,4 +1,4 @@
-## [2.0.0] - 2025.02.21
+## [2.0.0] - 2025.02.22
 
 ### **Added**
 - Advancements have been added.
@@ -10,6 +10,7 @@
 
 ### **Changed**
 - Most textures for the palm wood set, furniture, and decorative elements have been adjusted to have a less modern look.
+- Sunglasses Model aint using mixels anymore
 - The Beach Chair has been renamed to Hooded Beach Chair. It now consists of two parts, a top and a bottom, which can be connected.
 - Most other chairs have been slightly modified and renamed to better match their appearance.
 - Palm saplings have been replaced with palm sprouts. Unlike regular saplings, they do not drop from leaves. Instead, they can be obtained with a small chance by opening coconuts.
@@ -23,14 +24,15 @@
 - Message in a Bottle has now a small spawnchance while you're near water / beaches
 - Deck Chair has been renamed to Sun Lounger – you can now adjust the backrest and sleep on it at night. It does not set a spawn point.
 - All Beach Villager Trades have been completely revamped
+- Spawnrates in Chestloot have been massively lowered 
 
 ### **Fixed**
 - You can now properly dry wheat, but it has been renamed to Thatch, and its texture has been updated.
-    - Placing a hay bale in water (or using a water bottle on it) turns it into a wet hay bale.
-    - In hot biomes, it will dry into thatch.
-    - In other biomes, it will revert back into a hay bale.
-    - A clay ball can be used to prevent it from drying.
-    - Using a water bottle on it will restart the drying process.
+- Placing a hay bale in water (or using a water bottle on it) turns it into a wet hay bale.
+- In hot biomes, it will dry into thatch.
+- In other biomes, it will revert back into a hay bale.
+- A clay ball can be used to prevent it from drying.
+- Using a water bottle on it will restart the drying process.
 - The radio no longer disconnects players in multiplayer.
 
 ### **Beachparty 2.0.0: The Overhaul**

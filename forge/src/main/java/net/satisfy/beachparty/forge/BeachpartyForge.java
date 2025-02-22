@@ -1,5 +1,6 @@
 package net.satisfy.beachparty.forge;
 
+import dev.architectury.platform.Platform;
 import dev.architectury.platform.forge.EventBuses;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChestBoatModel;
@@ -34,7 +35,7 @@ public class BeachpartyForge {
         EventBuses.registerModEventBus(Beachparty.MOD_ID, modEventBus);
         BeachpartyVillagers.register(modEventBus);
         PlatformHelperImpl.ENTITY_TYPES.register(modEventBus);
-        BeachpartyConfig.loadConfig(BeachpartyConfig.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("beachparty.toml").toString());
+        BeachpartyConfig.loadConfig(BeachpartyConfig.COMMON_CONFIG, Platform.getConfigFolder().resolve("beachparty.toml").toString());
 
         Beachparty.init();
         modEventBus.addListener(this::commonSetup);

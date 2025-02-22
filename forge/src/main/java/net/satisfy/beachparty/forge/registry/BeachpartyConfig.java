@@ -35,9 +35,15 @@ public class BeachpartyConfig {
     public static void onReload(final ModConfigEvent.Reloading configEvent) {
     }
 
-    public static void loadConfig(ForgeConfigSpec config, String path) {
-        final CommentedFileConfig file = CommentedFileConfig.builder(new File(path)).sync().preserveInsertionOrder().autosave().writingMode(WritingMode.REPLACE).build();
+    public static void loadConfig(ForgeConfigSpec spec, String path) {
+        final CommentedFileConfig file = CommentedFileConfig.builder(new File(path))
+                .sync()
+                .preserveInsertionOrder()
+                .autosave()
+                .writingMode(WritingMode.REPLACE)
+                .build();
         file.load();
-        config.setConfig(file);
+        spec.setConfig(file);
+        file.save();
     }
 }

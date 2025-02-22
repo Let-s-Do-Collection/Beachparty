@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.block.*;
 import net.satisfy.beachparty.core.entity.PalmBoatEntity;
@@ -98,12 +99,12 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> SANDCASTLE = registerWithoutItem("sandcastle", () -> new SandBucketBlock.SandCastleBlock(BlockBehaviour.Properties.copy(Blocks.SAND)));
     public static final RegistrySupplier<Block> SAND_PILE = registerWithoutItem("sand_pile", () -> new SandBucketBlock.SandPileBlock(14406560, BlockBehaviour.Properties.copy(Blocks.SAND).mapColor(MapColor.SAND)));
     public static final RegistrySupplier<Item> COCONUT = registerItem("coconut", () -> new CoconutItem(getSettings()));
-    public static final RegistrySupplier<Block> COCONUT_COCKTAIL = registerCocktail("coconut_cocktail", () -> new CocktailBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().instabreak()), MobEffects.DAMAGE_BOOST);
-    public static final RegistrySupplier<Block> SWEETBERRIES_COCKTAIL = registerCocktail("sweetberries_cocktail", () -> new CocktailBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().instabreak()), MobEffects.ABSORPTION);
-    public static final RegistrySupplier<Block> COCOA_COCKTAIL = registerCocktail("cocoa_cocktail", () -> new CocktailBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().instabreak()), MobEffects.REGENERATION);
-    public static final RegistrySupplier<Block> PUMPKIN_COCKTAIL = registerCocktail("pumpkin_cocktail", () -> new CocktailBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().instabreak()), MobEffects.FIRE_RESISTANCE);
-    public static final RegistrySupplier<Block> HONEY_COCKTAIL = registerCocktail("honey_cocktail", () -> new CocktailBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().instabreak()), MobEffects.DIG_SPEED);
-    public static final RegistrySupplier<Block> MELON_COCKTAIL = registerCocktail("melon_cocktail", () -> new CocktailBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().instabreak()), MobEffects.LUCK);
+    public static final RegistrySupplier<Block> COCONUT_COCKTAIL = registerCocktail("coconut_cocktail", () -> new CocktailBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).sound(SoundType.WOOD).noOcclusion().instabreak(), MobEffects.DAMAGE_BOOST, 600, () -> CocktailBlock.COCONUT_COCKTAIL_SHAPE), MobEffects.DAMAGE_BOOST);
+    public static final RegistrySupplier<Block> SWEETBERRIES_COCKTAIL = registerCocktail("sweetberries_cocktail", MobEffects.ABSORPTION, CocktailBlock.SWEETBERRIES_COCKTAIL_SHAPE);
+    public static final RegistrySupplier<Block> COCOA_COCKTAIL = registerCocktail("cocoa_cocktail", MobEffects.REGENERATION, CocktailBlock.COCOA_COCKTAIL_SHAPE);
+    public static final RegistrySupplier<Block> PUMPKIN_COCKTAIL = registerCocktail("pumpkin_cocktail", MobEffects.FIRE_RESISTANCE, CocktailBlock.PUMPKIN_COCKTAIL_SHAPE);
+    public static final RegistrySupplier<Block> HONEY_COCKTAIL = registerCocktail("honey_cocktail", MobEffects.DIG_SPEED, CocktailBlock.HONEY_COCKTAIL_SHAPE);
+    public static final RegistrySupplier<Block> MELON_COCKTAIL = registerCocktail("melon_cocktail", MobEffects.LUCK, CocktailBlock.MELON_COCKTAIL_SHAPE);
     public static final RegistrySupplier<Item> BEACH_BALL = registerItem("beach_ball", () -> new BeachBallItem(new Item.Properties()));
     public static final RegistrySupplier<Block> BEACH_GOAL = registerWithItem("beach_goal", () -> new BeachGoalBlock(BlockBehaviour.Properties.copy(Blocks.BAMBOO_PLANKS)));
     public static final RegistrySupplier<Block> PALM_TORCH = registerWithoutItem("palm_torch", () -> new TorchBlock(BlockBehaviour.Properties.copy(Blocks.TORCH).noCollission().instabreak().lightLevel((state) -> 14).sound(SoundType.WOOD), ParticleTypes.FLAME));
@@ -154,12 +155,13 @@ public class ObjectRegistry {
         return new ButtonBlock(properties, BlockSetType.BAMBOO, 30, true);
     }
 
+    private static RegistrySupplier<Block> registerCocktail(String name, MobEffect effect, VoxelShape shape) {
+        return registerCocktail(name, () -> new CocktailBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().instabreak(), effect, 600, () -> shape), effect);
+    }
+
     private static <T extends Block> RegistrySupplier<T> registerCocktail(String name, Supplier<T> block, MobEffect effect) {
         RegistrySupplier<T> toReturn = registerWithoutItem(name, block);
-        registerItem(name, () -> new DrinkBlockItem(
-                toReturn.get(),
-                getSettings(settings -> settings.food(cocktailFoodComponent(effect)))
-        ));
+        registerItem(name, () -> new DrinkBlockItem(toReturn.get(), getSettings(s -> s.food(cocktailFoodComponent(effect)))));
         return toReturn;
     }
 

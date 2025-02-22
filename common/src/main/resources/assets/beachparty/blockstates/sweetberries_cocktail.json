@@ -1,18 +1,63 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "beachparty:block/sweetberries_cocktail",
+    "facing=east,stage=3": {
+      "model": "beachparty:block/sweetberries_cocktail_3",
       "y": 90
     },
-    "facing=north": {
-      "model": "beachparty:block/sweetberries_cocktail"
+    "facing=north,stage=3": {
+      "model": "beachparty:block/sweetberries_cocktail_3"
     },
-    "facing=south": {
-      "model": "beachparty:block/sweetberries_cocktail",
+    "facing=south,stage=3": {
+      "model": "beachparty:block/sweetberries_cocktail_3",
       "y": 180
     },
-    "facing=west": {
-      "model": "beachparty:block/sweetberries_cocktail",
+    "facing=west,stage=3": {
+      "model": "beachparty:block/sweetberries_cocktail_3",
+      "y": 270
+    },
+    "facing=east,stage=2": {
+      "model": "beachparty:block/sweetberries_cocktail_2",
+      "y": 90
+    },
+    "facing=north,stage=2": {
+      "model": "beachparty:block/sweetberries_cocktail_2"
+    },
+    "facing=south,stage=2": {
+      "model": "beachparty:block/sweetberries_cocktail_2",
+      "y": 180
+    },
+    "facing=west,stage=2": {
+      "model": "beachparty:block/sweetberries_cocktail_2",
+      "y": 270
+    },
+    "facing=east,stage=1": {
+      "model": "beachparty:block/sweetberries_cocktail_1",
+      "y": 90
+    },
+    "facing=north,stage=1": {
+      "model": "beachparty:block/sweetberries_cocktail_1"
+    },
+    "facing=south,stage=1": {
+      "model": "beachparty:block/sweetberries_cocktail_1",
+      "y": 180
+    },
+    "facing=west,stage=1": {
+      "model": "beachparty:block/sweetberries_cocktail_1",
+      "y": 270
+    },
+    "facing=east,stage=0": {
+      "model": "beachparty:block/sweetberries_cocktail_0",
+      "y": 90
+    },
+    "facing=north,stage=0": {
+      "model": "beachparty:block/sweetberries_cocktail_0"
+    },
+    "facing=south,stage=0": {
+      "model": "beachparty:block/sweetberries_cocktail_0",
+      "y": 180
+    },
+    "facing=west,stage=0": {
+      "model": "beachparty:block/sweetberries_cocktail_0",
       "y": 270
     }
   }
