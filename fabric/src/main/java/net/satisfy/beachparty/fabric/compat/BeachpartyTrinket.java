@@ -1,6 +1,8 @@
 package net.satisfy.beachparty.fabric.compat;
 
 import dev.emi.trinkets.api.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -134,7 +136,12 @@ public class BeachpartyTrinket {
         @Override
         public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
             if (!(entity instanceof Player player)) return;
+
             if (player.isInWater()) {
+                if (player instanceof LocalPlayer && Minecraft.getInstance().options.keyJump.isDown()) {
+                    return;
+                }
+
                 Vec3 motion = player.getDeltaMovement();
                 double targetUpwardSpeed = 0.3;
                 double newY = motion.y;
@@ -145,7 +152,6 @@ public class BeachpartyTrinket {
 
                 double normalSpeed = 0.17;
                 double maxSpeed = normalSpeed * 1.17;
-
                 double speedMultiplier = 1.17;
                 Vec3 newMotion = new Vec3(motion.x * speedMultiplier, newY, motion.z * speedMultiplier);
 
@@ -181,6 +187,8 @@ public class BeachpartyTrinket {
                 spawnWaterParticles(player, leftPos, rightPos);
             }
         }
+
+
 
         private void spawnWaterParticles(Player player, Vector3d leftPos, Vector3d rightPos) {
             Random random = new Random();
