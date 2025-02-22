@@ -16,8 +16,9 @@ import net.satisfy.beachparty.core.block.BeachTowelBlock;
 import net.satisfy.beachparty.core.registry.CompostablesRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import net.satisfy.beachparty.core.world.PlacedFeatures;
-import net.satisfy.beachparty.fabric.compat.trinkets.TrinketsCompatibility;
-import net.satisfy.beachparty.fabric.config.ConfigFabric;
+import net.satisfy.beachparty.fabric.core.compat.trinkets.TrinketsCompatibility;
+import net.satisfy.beachparty.fabric.core.config.ConfigFabric;
+import net.satisfy.beachparty.fabric.core.world.entity.npc.VillagerTrades;
 
 import java.util.function.Predicate;
 
@@ -31,6 +32,7 @@ public class BeachpartyFabric implements ModInitializer {
         CompostablesRegistry.init();
         Beachparty.commonSetup();
         addBiomeModification();
+        VillagerTrades.init();
         EntitySleepEvents.ALLOW_SETTING_SPAWN.register((player, sleepingPos) -> {
             boolean onClient = player.level().isClientSide;
             BlockState blockState = player.level().getBlockState(sleepingPos);

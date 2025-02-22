@@ -25,13 +25,13 @@
       "net.satisfy.beachparty.fabric.client.BeachpartyFabricClient"
     ],
     "rei_client": [
-      "net.satisfy.beachparty.fabric.rei.BeachpartyREIClientPluginFabric"
+      "net.satisfy.beachparty.fabric.core.rei.BeachpartyREIClientPluginFabric"
     ],
     "jei_mod_plugin": [
       "net.satisfy.beachparty.core.compat.jei.BeachpartyJEIPlugin"
     ],
     "modmenu": [
-      "net.satisfy.beachparty.fabric.config.ModMenu"
+      "net.satisfy.beachparty.fabric.core.config.ModMenu"
     ]
   },
   "mixins": [

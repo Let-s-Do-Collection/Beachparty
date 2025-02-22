@@ -143,5 +143,8 @@
   "tooltip.beachparty.message": "Right-Click to Open",
   "tooltip.beachparty.toggle.hide": "§e[Right-Click]§r to hide 3D Model.",
   "tooltip.beachparty.toggle.show": "§e[Right-Click]§r to show 3D Model.",
-  "tooltip.beachparty.trinketsslot": "When equipped in Trinket Slot:"
+  "tooltip.beachparty.trinketsslot": "When equipped in Trinket Slot:",
+  "entity.minecraft.villager.sandymerchant": "Sandy Merchant",
+  "entity.minecraft.villager.beachparty.sandymerchant": "Sandy Merchant"
+
 }

@@ -19,6 +19,8 @@
 - Beachparty now only affects Beach Biomes. Cold Beaches are no longer included.
 - Sand Castles can now be reinforced by using Water Bottles on it 
 - Message in a Bottle has now a small spawnchance while you're near water / beaches
+  Deck Chair has been renamed to Sun Lounger – you can now adjust the backrest and sleep on it at night. It does not set a spawn point.
+
 
 ### **Fixed**
 - You can now properly dry wheat, but it has been renamed to Thatch, and its texture has been updated.

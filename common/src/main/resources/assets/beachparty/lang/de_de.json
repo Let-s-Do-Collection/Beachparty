@@ -143,5 +143,7 @@
   "tooltip.beachparty.effect.item.beachparty.rubber_ring_stripped": "Erhöht Schwimmtempo um 17%, verhindert abtauchen",
   "tooltip.beachparty.effect.item.beachparty.sunglasses": "Reduziert Feuerschaden um 12%",
   "tooltip.beachparty.effect.item.beachparty.swim_wings": "Reduziert Feuerschaden um 50%",
-  "tooltip.beachparty.effect.item.beachparty.trunks": "Erhöht Schwimmtempo um 8%"
+  "tooltip.beachparty.effect.item.beachparty.trunks": "Erhöht Schwimmtempo um 8%",
+  "entity.minecraft.villager.sandymerchant": "Strandverkäufer",
+  "entity.minecraft.villager.beachparty.sandymerchant": "Strandverkäufer"
 }

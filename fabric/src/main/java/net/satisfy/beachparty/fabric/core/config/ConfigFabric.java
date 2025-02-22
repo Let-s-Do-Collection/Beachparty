@@ -1,4 +1,4 @@
-package net.satisfy.beachparty.fabric.config;
+package net.satisfy.beachparty.fabric.core.config;
 
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;

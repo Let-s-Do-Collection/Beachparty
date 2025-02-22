@@ -1,4 +1,4 @@
-package net.satisfy.beachparty.fabric.compat;
+package net.satisfy.beachparty.fabric.core.compat;
 
 import dev.emi.trinkets.api.*;
 import net.minecraft.client.Minecraft;

@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
-import net.satisfy.beachparty.fabric.config.ConfigFabric;
+import net.satisfy.beachparty.fabric.core.config.ConfigFabric;
 
 import java.util.function.Supplier;
 

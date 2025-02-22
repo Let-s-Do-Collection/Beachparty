@@ -1,4 +1,4 @@
-package net.satisfy.beachparty.fabric.config;
+package net.satisfy.beachparty.fabric.core.config;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

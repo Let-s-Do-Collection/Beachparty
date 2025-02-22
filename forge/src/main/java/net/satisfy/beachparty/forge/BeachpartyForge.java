@@ -24,6 +24,7 @@ import net.satisfy.beachparty.core.entity.PalmBoatEntity;
 import net.satisfy.beachparty.core.registry.CompostablesRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.forge.registry.BeachpartyConfig;
+import net.satisfy.beachparty.forge.registry.BeachpartyVillagers;
 import net.satisfy.beachparty.platform.forge.PlatformHelperImpl;
 
 @Mod(Beachparty.MOD_ID)
@@ -31,6 +32,7 @@ public class BeachpartyForge {
     public BeachpartyForge() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         EventBuses.registerModEventBus(Beachparty.MOD_ID, modEventBus);
+        BeachpartyVillagers.register(modEventBus);
         PlatformHelperImpl.ENTITY_TYPES.register(modEventBus);
         BeachpartyConfig.loadConfig(BeachpartyConfig.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("beachparty.toml").toString());
 
