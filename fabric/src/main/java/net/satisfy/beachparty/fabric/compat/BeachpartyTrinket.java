@@ -2,6 +2,7 @@ package net.satisfy.beachparty.fabric.compat;
 
 import dev.emi.trinkets.api.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -141,9 +142,21 @@ public class BeachpartyTrinket {
                     newY += 0.01;
                     if (newY > targetUpwardSpeed) newY = targetUpwardSpeed;
                 }
+
+                double normalSpeed = 0.17;
+                double maxSpeed = normalSpeed * 1.17;
+
                 double speedMultiplier = 1.17;
                 Vec3 newMotion = new Vec3(motion.x * speedMultiplier, newY, motion.z * speedMultiplier);
+
+                double currentSpeed = Math.sqrt(newMotion.x * newMotion.x + newMotion.z * newMotion.z);
+                if (currentSpeed > maxSpeed) {
+                    double scale = maxSpeed / currentSpeed;
+                    newMotion = new Vec3(newMotion.x * scale, newY, newMotion.z * scale);
+                }
+
                 player.setDeltaMovement(newMotion);
+
                 BlockPos pos = player.blockPosition().above();
                 while (player.level().getBlockState(pos).getFluidState().isEmpty()) {
                     pos = pos.below();
@@ -152,6 +165,7 @@ public class BeachpartyTrinket {
                 if (player.getY() > targetY && !player.isUnderWater()) {
                     player.setPos(player.getX(), targetY, player.getZ());
                 }
+
                 Vec3 look = player.getLookAngle();
                 Vector3d lookJ = new Vector3d(look.x, 0, look.z);
                 if (lookJ.length() == 0) lookJ.set(1, 0, 0);
@@ -164,46 +178,30 @@ public class BeachpartyTrinket {
                 Vector3d leftPos = new Vector3d(px, py, pz).add(new Vector3d(left).mul(offset));
                 Vector3d rightPos = new Vector3d(px, py, pz).sub(new Vector3d(left).mul(offset));
 
-                Random random = new Random();
-                double spread = 0.2;
+                spawnWaterParticles(player, leftPos, rightPos);
+            }
+        }
 
-                if (player.getDeltaMovement().lengthSqr() > 0.005) {
-                    for (int i = 0; i < 3; i++) {
-                        player.level().addParticle(ParticleTypes.SPLASH,
-                                leftPos.x + (random.nextDouble() * spread - spread / 2),
-                                leftPos.y + (random.nextDouble() * spread - spread / 2),
-                                leftPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
-
-                        player.level().addParticle(ParticleTypes.SPLASH,
-                                rightPos.x + (random.nextDouble() * spread - spread / 2),
-                                rightPos.y + (random.nextDouble() * spread - spread / 2),
-                                rightPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
-
-                        player.level().addParticle(ParticleTypes.BUBBLE_POP,
-                                leftPos.x + (random.nextDouble() * spread - spread / 2),
-                                leftPos.y + (random.nextDouble() * spread - spread / 2),
-                                leftPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
-
-                        player.level().addParticle(ParticleTypes.BUBBLE_POP,
-                                rightPos.x + (random.nextDouble() * spread - spread / 2),
-                                rightPos.y + (random.nextDouble() * spread - spread / 2),
-                                rightPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
-                    }
-                } else if (player.level().getGameTime() % 40L == 0L) {
-                    for (int i = 0; i < 2; i++) {
-                        player.level().addParticle(ParticleTypes.SPLASH,
-                                leftPos.x + (random.nextDouble() * spread - spread / 2),
-                                leftPos.y + (random.nextDouble() * spread - spread / 2),
-                                leftPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
-
-                        player.level().addParticle(ParticleTypes.SPLASH,
-                                rightPos.x + (random.nextDouble() * spread - spread / 2),
-                                rightPos.y + (random.nextDouble() * spread - spread / 2),
-                                rightPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
-                    }
+        private void spawnWaterParticles(Player player, Vector3d leftPos, Vector3d rightPos) {
+            Random random = new Random();
+            double spread = 0.2;
+            if (player.getDeltaMovement().lengthSqr() > 0.005) {
+                for (int i = 0; i < 3; i++) {
+                    spawnParticlePair(player, ParticleTypes.SPLASH, leftPos, rightPos, random, spread);
+                    spawnParticlePair(player, ParticleTypes.BUBBLE_POP, leftPos, rightPos, random, spread);
+                }
+            } else if (player.level().getGameTime() % 40L == 0L) {
+                for (int i = 0; i < 2; i++) {
+                    spawnParticlePair(player, ParticleTypes.SPLASH, leftPos, rightPos, random, spread);
                 }
             }
         }
+
+        private void spawnParticlePair(Player player, ParticleOptions particle, Vector3d leftPos, Vector3d rightPos, Random random, double spread) {
+            player.level().addParticle(particle, leftPos.x + (random.nextDouble() * spread - spread / 2), leftPos.y + (random.nextDouble() * spread - spread / 2), leftPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
+            player.level().addParticle(particle, rightPos.x + (random.nextDouble() * spread - spread / 2), rightPos.y + (random.nextDouble() * spread - spread / 2), rightPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
+        }
+
     }
 
     public static class SunglassesTrinket extends BaseTrinket {

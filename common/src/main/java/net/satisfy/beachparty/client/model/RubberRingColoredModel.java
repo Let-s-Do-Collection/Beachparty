@@ -2,12 +2,15 @@ package net.satisfy.beachparty.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 @SuppressWarnings("unused")
@@ -40,7 +43,14 @@ public class RubberRingColoredModel<T extends Entity> extends EntityModel<T> imp
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
-        poseStack.translate(-0.1F, 0.6F, 0.5F);
+
+        Player player = Minecraft.getInstance().player;
+        if (player != null && player.getPose() == Pose.CROUCHING) {
+            poseStack.translate(0.4F, 0.9F, 0F);
+        } else {
+            poseStack.translate(0.4F, 0.7F, -0.4F);
+        }
+
         rubber_ring.render(poseStack, buffer, packedLight, packedOverlay);
         poseStack.popPose();
     }

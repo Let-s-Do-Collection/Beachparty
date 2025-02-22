@@ -17,12 +17,14 @@ public class SoundEventRegistry {
 
     public static final RegistrySupplier<SoundEvent> RADIO_CLICK = create("radio_click");
     public static final RegistrySupplier<SoundEvent> RADIO_TUNE = create("radio_tune");
-    public static final RegistrySupplier<SoundEvent> RADIO_REGGEA = create("radio_reggea");
-    public static final RegistrySupplier<SoundEvent> RADIO_HAWAII = create("radio_hawaii");
-    public static final RegistrySupplier<SoundEvent> RADIO_TROPICAL = create("radio_tropical");
-    public static final RegistrySupplier<SoundEvent> RADIO_BEACHPARTY = create("radio_beachparty");
+    public static final RegistrySupplier<SoundEvent> OVER_THE_RAINBOW = create("over_the_rainbow");
+    public static final RegistrySupplier<SoundEvent> BEACHPARTY = create("beachparty");
+    public static final RegistrySupplier<SoundEvent> CARIBBEAN_BEACH = create("caribbean_beach");
+    public static final RegistrySupplier<SoundEvent> PRIDELANDS = create("pridelands");
+    public static final RegistrySupplier<SoundEvent> VOCALISTA = create("vocalista");
+    public static final RegistrySupplier<SoundEvent> WILD_VEINS = create("wild_veins");
 
-    public static final List<RegistrySupplier<SoundEvent>> RADIO_SOUNDS = List.of(RADIO_REGGEA, RADIO_HAWAII, RADIO_TROPICAL, RADIO_BEACHPARTY);
+    public static final List<RegistrySupplier<SoundEvent>> RADIO_SOUNDS = List.of(BEACHPARTY, CARIBBEAN_BEACH, PRIDELANDS, VOCALISTA, WILD_VEINS, OVER_THE_RAINBOW);
 
     private static RegistrySupplier<SoundEvent> create(String name) {
         final ResourceLocation id = new BeachpartyIdentifier(name);

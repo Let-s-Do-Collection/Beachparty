@@ -1,5 +1,5 @@
 {
-  "parent": "beachparty:main/root",
+  "parent": "beachparty:main/get_a_seashell",
   "display": {
     "icon": {
       "item": "beachparty:overgrown_disc"

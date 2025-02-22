@@ -5,10 +5,10 @@
       "item": "beachparty:beach_parasol"
     },
     "title": {
-      "translate": "advancements.beachparty.welcome_to_the_beach"
+      "translate": "advancement.beachparty.welcome_to_the_beach"
     },
     "description": {
-      "translate": "advancements.beachparty.welcome_to_the_beach.desc"
+      "translate": "advancement.beachparty.welcome_to_the_beach.desc"
     },
     "frame": "goal",
     "show_toast": false,

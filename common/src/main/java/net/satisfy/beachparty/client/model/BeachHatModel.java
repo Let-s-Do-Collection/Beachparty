@@ -36,7 +36,7 @@ public class BeachHatModel<T extends Entity> extends EntityModel<T> implements H
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
-        poseStack.scale(1F, 1F, 1F);
+        poseStack.scale(1.05F, 1.05F, 1.05F);
         beach_hat.render(poseStack, buffer, packedLight, packedOverlay);
         poseStack.popPose();
     }
