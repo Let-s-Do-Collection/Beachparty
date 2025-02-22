@@ -51,8 +51,6 @@ public class BeachTowelBlock extends BedBlock {
     protected static final VoxelShape BEACH_TOWEL_SHAPE = Shapes.box(0.0625D, 0.0D, 0.03125D, 0.9375D, 0.0625D, 0.9375D);
 
     public BeachTowelBlock(DyeColor color, Properties properties) {
-
-
         super(color, properties.forceSolidOn());
         this.registerDefaultState(this.stateDefinition.any().setValue(PART, BedPart.FOOT).setValue(OCCUPIED, Boolean.FALSE).setValue(CAN_DROP, Boolean.TRUE));
     }

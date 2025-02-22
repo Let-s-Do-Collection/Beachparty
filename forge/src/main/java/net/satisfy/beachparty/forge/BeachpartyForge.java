@@ -18,6 +18,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.satisfy.beachparty.Beachparty;
+import net.satisfy.beachparty.core.block.BeachSunLounger;
 import net.satisfy.beachparty.core.block.BeachTowelBlock;
 import net.satisfy.beachparty.core.entity.PalmBoatEntity;
 import net.satisfy.beachparty.core.registry.CompostablesRegistry;
@@ -67,7 +68,7 @@ public class BeachpartyForge {
             if (event.getNewSpawn() != null) {
                 Block block = level.getBlockState(event.getNewSpawn()).getBlock();
 
-                if (!level.isClientSide && block instanceof BeachTowelBlock && !event.isForced()) {
+                if (!level.isClientSide && (block instanceof BeachTowelBlock || block instanceof BeachSunLounger) && !event.isForced()) {
                     event.setCanceled(true);
                 }
             }

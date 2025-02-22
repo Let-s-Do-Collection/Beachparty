@@ -11,6 +11,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.satisfy.beachparty.Beachparty;
+import net.satisfy.beachparty.core.block.BeachSunLounger;
 import net.satisfy.beachparty.core.block.BeachTowelBlock;
 import net.satisfy.beachparty.core.registry.CompostablesRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
@@ -33,7 +34,7 @@ public class BeachpartyFabric implements ModInitializer {
         EntitySleepEvents.ALLOW_SETTING_SPAWN.register((player, sleepingPos) -> {
             boolean onClient = player.level().isClientSide;
             BlockState blockState = player.level().getBlockState(sleepingPos);
-            return !(!onClient && blockState.getBlock() instanceof BeachTowelBlock);
+            return !(onClient || blockState.getBlock() instanceof BeachTowelBlock || blockState.getBlock() instanceof BeachSunLounger);
         });
 
         trinketsLoaded = FabricLoader.getInstance().isModLoaded("trinkets");
