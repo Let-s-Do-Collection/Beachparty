@@ -14,13 +14,15 @@
 - Most other chairs have been slightly modified and renamed to better match their appearance.
 - Palm saplings have been replaced with palm sprouts. Unlike regular saplings, they do not drop from leaves. Instead, they can be obtained with a small chance by opening coconuts.
 - All variants of ice cream have been removed.
+- Seashell loot is now datadriven
+- MiniFridge can now be used to craft Ice and other cold Blocks & Items such as Snow
 - Most armor items no longer have effects. The (OP) set bonuses have been removed. Armor pieces are now mainly artifacts and can be placed in curios/trinket slots to gain additional stats or bonuses. They can't be crafted. You need to find them in lootchests.
 - Beach Parasols now provide proper protection from heavy sunlight, reducing fire damage by 3 percent.
 - Beachparty now only affects Beach Biomes. Cold Beaches are no longer included.
 - Sand Castles can now be reinforced by using Water Bottles on it 
 - Message in a Bottle has now a small spawnchance while you're near water / beaches
-  Deck Chair has been renamed to Sun Lounger – you can now adjust the backrest and sleep on it at night. It does not set a spawn point.
-
+- Deck Chair has been renamed to Sun Lounger – you can now adjust the backrest and sleep on it at night. It does not set a spawn point.
+- All Beach Villager Trades have been completely revamped
 
 ### **Fixed**
 - You can now properly dry wheat, but it has been renamed to Thatch, and its texture has been updated.

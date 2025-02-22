@@ -105,7 +105,7 @@ public class PalmChairBlock extends Block {
     @Override
     public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
-            return BeachpartyUtil.onUse(world, player, hand, hit, 0);
+            return BeachpartyUtil.onUse(world, player, hand, hit, 0.25);
         }
         return InteractionResult.PASS;
     }
