@@ -1,12 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "///",
-    "/W/",
+    "AAA",
+    "AWA",
     "OOO"
   ],
   "key": {
-    "/": {
+    "A": {
       "item": "minecraft:stick"
     },
     "W": {

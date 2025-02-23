@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "///",
-    "/#/"
+    "BBB",
+    "B#B"
   ],
   "key": {
     "#": {
       "tag": "minecraft:wool"
     },
-    "/": {
+    "B": {
       "item": "minecraft:stick"
     }
   },

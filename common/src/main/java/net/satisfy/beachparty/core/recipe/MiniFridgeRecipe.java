@@ -82,22 +82,27 @@ public class MiniFridgeRecipe implements Recipe<Container> {
 
         @Override
         public @NotNull MiniFridgeRecipe fromJson(ResourceLocation id, JsonObject json) {
-            final var ingredients = BeachpartyUtil.deserializeIngredients(GsonHelper.getAsJsonArray(json, "ingredients"));
+            var jsonArray = GsonHelper.getAsJsonArray(json, "ingredients");
+            NonNullList<Ingredient> ingredients = NonNullList.create();
+            jsonArray.forEach(element -> ingredients.add(Ingredient.fromJson(element.getAsJsonObject())));
             if (ingredients.isEmpty()) {
                 throw new JsonParseException("No ingredients for Mini Fridge Recipe");
             } else if (ingredients.size() > 1) {
                 throw new JsonParseException("Too many ingredients for Mini Fridge Recipe");
             }
             int craftingTime = GsonHelper.getAsInt(json, "crafting_time", 100);
-            return new MiniFridgeRecipe(id, ingredients, ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result")), craftingTime);
+            JsonObject resultJson = GsonHelper.getAsJsonObject(json, "result");
+            return new MiniFridgeRecipe(id, ingredients, ShapedRecipe.itemStackFromJson(resultJson), craftingTime);
         }
+
 
         @Override
         public @NotNull MiniFridgeRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             final var ingredients = NonNullList.withSize(buf.readVarInt(), Ingredient.EMPTY);
             ingredients.replaceAll(ignored -> Ingredient.fromNetwork(buf));
+            ItemStack output = buf.readItem();
             int craftingTime = buf.readVarInt();
-            return new MiniFridgeRecipe(id, ingredients, buf.readItem(), craftingTime);
+            return new MiniFridgeRecipe(id, ingredients, output, craftingTime);
         }
 
         @Override
