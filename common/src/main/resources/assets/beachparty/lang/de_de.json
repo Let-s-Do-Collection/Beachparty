@@ -146,5 +146,11 @@
   "tooltip.beachparty.effect.item.beachparty.trunks": "Erhöht Schwimmtempo um 8%",
   "entity.minecraft.villager.sandymerchant": "Strandverkäufer",
   "entity.minecraft.villager.beachparty.sandymerchant": "Strandverkäufer",
-  "block.beachparty.palm_glass_pane": "Palmenholzfensterscheibe"
+  "block.beachparty.palm_glass_pane": "Palmenholzfensterscheibe",
+  "tooltip.beachparty.banner.thankyou_1": "Eine Belohnung für das sammeln aller Artefakte und Cocktails",
+  "tooltip.beachparty.banner.thankyou_2": "Wenn platziert:",
+  "tooltip.beachparty.banner.thankyou_3": "Danke, dass du Beachparty spielst!",
+  "tooltip.beachparty.banner.thankyou_4": "Gewährt Water Breathing einem Radius von 8 Blöcken",
+  "block.beachparty.palm_glass": "Palmenholzglass",
+  "block.beachparty.beachparty_banner": "Vervollständigungsbanner: §eBeachparty"
 }

@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.satisfy.beachparty.client.gui.MiniFridgeGui;
 import net.satisfy.beachparty.client.gui.PalmBarGui;
 import net.satisfy.beachparty.client.model.*;
+import net.satisfy.beachparty.client.renderer.block.CompletionistBannerRenderer;
 import net.satisfy.beachparty.client.renderer.block.PalmHangingSignRenderer;
 import net.satisfy.beachparty.client.renderer.block.PalmSignRenderer;
 import net.satisfy.beachparty.client.renderer.entity.BeachBallRenderer;
@@ -36,6 +37,7 @@ public class BeachPartyClient {
 
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_SIGN.get(), PalmSignRenderer::new);
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_HANGING_SIGN.get(), PalmHangingSignRenderer::new);
+        BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_BANNER.get(), CompletionistBannerRenderer::new);
 
         BeachpartyMessages.registerS2CPackets();
 
@@ -70,5 +72,6 @@ public class BeachPartyClient {
         EntityModelLayerRegistry.register(TrunksModel.LAYER_LOCATION, TrunksModel::createBodyLayer);
         EntityModelLayerRegistry.register(CrocsModel.LAYER_LOCATION, CrocsModel::createBodyLayer);
         EntityModelLayerRegistry.register(BeachBallModel.LAYER_LOCATION, BeachBallModel::createBodyLayer);
+        EntityModelLayerRegistry.register(CompletionistBannerRenderer.LAYER_LOCATION, CompletionistBannerRenderer::createBodyLayer);
     }
 }

@@ -16,7 +16,10 @@
     "hidden": true
   },
   "rewards": {
-    "experience": 600
+    "experience": 800,
+    "loot": [
+      "beachparty:advancements/completionist"
+    ]
   },
   "criteria": {
     "beachparty:message_in_a_bottle": {
@@ -24,7 +27,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:message_in_a_bottle"]
+            "items": [
+              "beachparty:message_in_a_bottle"
+            ]
           }
         ]
       }
@@ -34,7 +39,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:melon_cocktail"]
+            "items": [
+              "beachparty:melon_cocktail"
+            ]
           }
         ]
       }
@@ -44,7 +51,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:cocoa_cocktail"]
+            "items": [
+              "beachparty:cocoa_cocktail"
+            ]
           }
         ]
       }
@@ -54,7 +63,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:pumpkin_cocktail"]
+            "items": [
+              "beachparty:pumpkin_cocktail"
+            ]
           }
         ]
       }
@@ -64,7 +75,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:honey_cocktail"]
+            "items": [
+              "beachparty:honey_cocktail"
+            ]
           }
         ]
       }
@@ -74,7 +87,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:sweetberries_cocktail"]
+            "items": [
+              "beachparty:sweetberries_cocktail"
+            ]
           }
         ]
       }
@@ -84,7 +99,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:coconut_cocktail"]
+            "items": [
+              "beachparty:coconut_cocktail"
+            ]
           }
         ]
       }
@@ -94,7 +111,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:floaty_boat"]
+            "items": [
+              "beachparty:floaty_boat"
+            ]
           }
         ]
       }
@@ -104,7 +123,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:sunglasses"]
+            "items": [
+              "beachparty:sunglasses"
+            ]
           }
         ]
       }
@@ -114,7 +135,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:trunks"]
+            "items": [
+              "beachparty:trunks"
+            ]
           }
         ]
       }
@@ -124,7 +147,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:bikini"]
+            "items": [
+              "beachparty:bikini"
+            ]
           }
         ]
       }
@@ -134,7 +159,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:crocs"]
+            "items": [
+              "beachparty:crocs"
+            ]
           }
         ]
       }
@@ -144,7 +171,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:swim_wings"]
+            "items": [
+              "beachparty:swim_wings"
+            ]
           }
         ]
       }
@@ -154,7 +183,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:rubber_ring_blue"]
+            "items": [
+              "beachparty:rubber_ring_blue"
+            ]
           }
         ]
       }
@@ -164,7 +195,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:rubber_ring_pink"]
+            "items": [
+              "beachparty:rubber_ring_pink"
+            ]
           }
         ]
       }
@@ -174,7 +207,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:rubber_ring_stripped"]
+            "items": [
+              "beachparty:rubber_ring_stripped"
+            ]
           }
         ]
       }
@@ -184,7 +219,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:rubber_ring_pelican"]
+            "items": [
+              "beachparty:rubber_ring_pelican"
+            ]
           }
         ]
       }
@@ -194,7 +231,9 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:rubber_ring_axolotl"]
+            "items": [
+              "beachparty:rubber_ring_axolotl"
+            ]
           }
         ]
       }
@@ -204,31 +243,71 @@
       "conditions": {
         "items": [
           {
-            "items": ["beachparty:beach_ball"]
+            "items": [
+              "beachparty:beach_ball"
+            ]
           }
         ]
       }
     }
   },
   "requirements": [
-    ["beachparty:message_in_a_bottle"],
-    ["beachparty:melon_cocktail"],
-    ["beachparty:cocoa_cocktail"],
-    ["beachparty:pumpkin_cocktail"],
-    ["beachparty:honey_cocktail"],
-    ["beachparty:sweetberries_cocktail"],
-    ["beachparty:coconut_cocktail"],
-    ["beachparty:floaty_boat"],
-    ["beachparty:sunglasses"],
-    ["beachparty:trunks"],
-    ["beachparty:bikini"],
-    ["beachparty:crocs"],
-    ["beachparty:swim_wings"],
-    ["beachparty:rubber_ring_blue"],
-    ["beachparty:rubber_ring_pink"],
-    ["beachparty:rubber_ring_stripped"],
-    ["beachparty:rubber_ring_pelican"],
-    ["beachparty:rubber_ring_axolotl"],
-    ["beachparty:beach_ball"]
+    [
+      "beachparty:message_in_a_bottle"
+    ],
+    [
+      "beachparty:melon_cocktail"
+    ],
+    [
+      "beachparty:cocoa_cocktail"
+    ],
+    [
+      "beachparty:pumpkin_cocktail"
+    ],
+    [
+      "beachparty:honey_cocktail"
+    ],
+    [
+      "beachparty:sweetberries_cocktail"
+    ],
+    [
+      "beachparty:coconut_cocktail"
+    ],
+    [
+      "beachparty:floaty_boat"
+    ],
+    [
+      "beachparty:sunglasses"
+    ],
+    [
+      "beachparty:trunks"
+    ],
+    [
+      "beachparty:bikini"
+    ],
+    [
+      "beachparty:crocs"
+    ],
+    [
+      "beachparty:swim_wings"
+    ],
+    [
+      "beachparty:rubber_ring_blue"
+    ],
+    [
+      "beachparty:rubber_ring_pink"
+    ],
+    [
+      "beachparty:rubber_ring_stripped"
+    ],
+    [
+      "beachparty:rubber_ring_pelican"
+    ],
+    [
+      "beachparty:rubber_ring_axolotl"
+    ],
+    [
+      "beachparty:beach_ball"
+    ]
   ]
 }

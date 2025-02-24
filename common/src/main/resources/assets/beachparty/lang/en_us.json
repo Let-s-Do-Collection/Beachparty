@@ -147,6 +147,10 @@
   "tooltip.beachparty.toggle.show": "§e[Right-Click]§r to show 3D Model.",
   "tooltip.beachparty.trinketsslot": "When equipped in Trinket Slot:",
   "entity.minecraft.villager.sandymerchant": "Sandy Merchant",
-  "entity.minecraft.villager.beachparty.sandymerchant": "Sandy Merchant"
-
+  "entity.minecraft.villager.beachparty.sandymerchant": "Sandy Merchant",
+  "tooltip.beachparty.banner.thankyou_1": "A reward for collecting all Artifacts & Cocktails",
+  "tooltip.beachparty.banner.thankyou_2": "When placed:",
+  "tooltip.beachparty.banner.thankyou_3": "Thank you for playing Beachparty!",
+  "tooltip.beachparty.banner.thankyou_4": "Grants Water Breathing in a radius of 8 blocks",
+  "block.beachparty.beachparty_banner": "Completionist Banner: §eBeachparty"
 }

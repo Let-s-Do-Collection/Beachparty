@@ -2,7 +2,6 @@
 	"credit": "Made by Satisfy",
 	"render_type": "minecraft:cutout",
 	"textures": {
-		"2": "beachparty:block/palm_glass_pane_top",
 		"3": "beachparty:block/palm_glass_pane_top",
 		"particle": "beachparty:block/palm_glass_pane_top"
 	},
@@ -12,9 +11,9 @@
 			"to": [16, 16, 9.5],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 7.5]},
 			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"north": {"uv": [0, 0, 16, 16], "texture": "#3"},
 				"east": {"uv": [7, 0, 9, 16], "texture": "#3"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#3"},
 				"west": {"uv": [9, 0, 7, 16], "texture": "#3"},
 				"up": {"uv": [9, 16, 7, 0], "rotation": 90, "texture": "#3"},
 				"down": {"uv": [7, 0, 9, 16], "rotation": 90, "texture": "#3"}

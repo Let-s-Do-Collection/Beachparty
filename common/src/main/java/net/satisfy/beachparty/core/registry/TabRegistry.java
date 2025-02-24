@@ -87,6 +87,7 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.RUBBER_RING_AXOLOTL.get());
                 out.accept(ObjectRegistry.RUBBER_RING_PELICAN.get());
                 out.accept(ObjectRegistry.POOL_NOODLE.get());
+                out.accept(ObjectRegistry.BEACHPARTY_BANNER.get());
 
             })
             .build());

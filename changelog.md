@@ -16,6 +16,7 @@
 - Most other chairs have been slightly modified and renamed to better match their appearance.
 - Palm saplings have been replaced with palm sprouts. Unlike regular saplings, they do not drop from leaves. Instead, they can be obtained with a small chance by opening coconuts.
 - All variants of ice cream have been removed.
+- You can regrowth coconuts by using bone meal on palm leaves
 - Seashell loot is now datadriven
 - MiniFridge can now be used to craft Ice and other cold Blocks & Items such as Snow
 - Most armor items no longer have effects. The (OP) set bonuses have been removed. Armor pieces are now mainly artifacts and can be placed in curios/trinket slots to gain additional stats or bonuses. They can't be crafted. You need to find them in lootchests.
@@ -40,7 +41,7 @@
 - Using a water bottle on it will restart the drying process.
 - The radio no longer disconnects players in multiplayer.
 
-### **Beachparty 2.0.0: The Overhaul**
+### **Beachparty 2.0.0: Overhaul**
 This update introduces a refined version of Beachparty with adjusted textures, naming conventions, and reworked features.
 
 ### **Why this rework?**

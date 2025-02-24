@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "beachparty:palm_log",
     "beachparty:stripped_palm_log",
