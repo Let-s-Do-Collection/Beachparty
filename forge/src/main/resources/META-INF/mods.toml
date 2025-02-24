@@ -8,8 +8,9 @@ modId = "beachparty"
 version = "${version}"
 displayName = "[Let's Do] Beachparty"
 displayURL = "https://github.com/satisfyu/Beachparty"
-authors = "Satisfy, Jason13, Fej"
+authors = "Satisfy, Jason13"
 credits = "MissLilitu, Cristelknight, BaumeisterJo"
+textures= "Satisfy, Iri, Dev_Myst"
 description = '''
 Take a break - build sandcastles, drink cocktails and enjoy your Minecraft Session.
 '''

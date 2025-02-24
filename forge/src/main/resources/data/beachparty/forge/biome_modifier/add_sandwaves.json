@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#beachparty:beach",
+  "features": "beachparty:sandwaves",
+  "step": "vegetal_decoration"
+}

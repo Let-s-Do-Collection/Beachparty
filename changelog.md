@@ -1,53 +1,59 @@
-## [2.0.0] - 2025.02.22
+## [2.0.0] - 2025.02.24
 
-### **Added**
-- Advancements have been added.
-- Beach Goal has been added.
-- Beach Ball has been added.
-- You can now sleep on Beach Towels, but they will not reset or set your spawn point.
-- Structures have been added. 
-- Completionist Banner have been added. 
-- Other Let's Do Wood Variants have Windows - Palm Wood has now Windows too!
+### **New & Updated Features**
+- Added a Beach Goal. 
+- Added a Beach Ball.
+- Added Advancements.
+- Palm Trees spawning now less frequently.
+- Beach Towels can now be used for sleeping but do not set a spawn point.
+- Completionist Banner has been added.
+- All Let's Do wood variants have windows – Palm Wood now as well!
+- Most textures for palm wood, furniture, and decorative elements have been adjusted to look less modern.
+- The Beach Chair has been renamed to Hooded Beach Chair and now consists of two parts that can be vertically connected.
+- Other chairs have been slightly modified and renamed.
+- Palm saplings have been replaced with palm sprouts. They no longer drop from leaves but can be obtained with a small chance (45%) by opening coconuts.
+- Coconuts can now regrow by using bone meal on palm leaves.
+- Throwing a coconut at a solid block now drops 2 open coconuts.
+- The MiniFridge can now be used to craft ice and other cold blocks/items like snow.
+- Sandcastles can now be reinforced by using water bottles. Reinforced Sandcastles can't be destroyed by jumping on them. 
+- "Message in a Bottle" are now spawning while near water or beaches.
+- Deck Chair has been renamed to Sun Lounger – the backrest can now be adjusted, and it can be used for sleeping at night (without setting a spawn point).
+- The FloatyBoat now has its own model.
+- SeaShells no longer have a CollisionShape.
+- Zombies like Sandcastles! They will walk towards any SandCastle within 12 Blocks and try to trample it. 
+- Increased the crafting result for Palm Tables from "1" to "2".
+- Increased the crafting result for Beach Chairs from "1" to "2".
+- Beach Parasols now provide proper protection from heavy sunlight, reducing fire damage by 3%.
+- Beachparty now only affects beach biomes — cold beaches are no longer included.
+- All Beach Villager trades have been completely revamped.
+- Spawn rates in chest loot have been significantly reduced.
+- Most armor items no longer have effects. The (OP) set bonuses have been removed.
+- Armor pieces are now artifacts that can be placed in Curios/Trinket slots to gain additional bonuses. They can no longer be crafted and must be found in loot chests or be traded.
+- Armor pieces found in chests have random colors.
+- Sunglasses no longer use mixels.
+- Config for a few features. Theres still a lot of potential though. 
 
-### **Changed**
-- Most textures for the palm wood set, furniture, and decorative elements have been adjusted to have a less modern look.
-- Sunglasses Model aint using mixels anymore
-- The Beach Chair has been renamed to Hooded Beach Chair. It now consists of two parts, a top and a bottom, which can be connected.
-- Most other chairs have been slightly modified and renamed to better match their appearance.
-- Palm saplings have been replaced with palm sprouts. Unlike regular saplings, they do not drop from leaves. Instead, they can be obtained with a small chance by opening coconuts.
-- All variants of ice cream have been removed.
-- You can regrowth coconuts by using bone meal on palm leaves
-- Seashell loot is now datadriven
-- MiniFridge can now be used to craft Ice and other cold Blocks & Items such as Snow
-- Most armor items no longer have effects. The (OP) set bonuses have been removed. Armor pieces are now mainly artifacts and can be placed in curios/trinket slots to gain additional stats or bonuses. They can't be crafted. You need to find them in lootchests.
-- These armor items can be found in various pre-dyed colors
-- Beach Parasols now provide proper protection from heavy sunlight, reducing fire damage by 3 percent.
-- Beachparty now only affects Beach Biomes. Cold Beaches are no longer included.
-- Sand Castles can now be reinforced by using Water Bottles on it 
-- Message in a Bottle has now a small spawnchance while you're near water / beaches
-- Deck Chair has been renamed to Sun Lounger – you can now adjust the backrest and sleep on it at night. It does not set a spawn point.
-- All Beach Villager Trades have been completely revamped
-- Spawnrates in Chestloot have been massively lowered 
-- Increased Palm Table crafting result count from "1" to "2"
-- Increased Beach Chair crafting result count from "1" to "2"
-
-
-### **Fixed**
-- You can now properly dry wheat, but it has been renamed to Thatch, and its texture has been updated.
+### **Bug Fixes**
+- Wheat can now be properly dried but has been renamed to Thatch and given a new texture.
 - Placing a hay bale in water (or using a water bottle on it) turns it into a wet hay bale.
-- In hot biomes, it will dry into thatch.
-- In other biomes, it will revert back into a hay bale.
-- A clay ball can be used to prevent it from drying.
-- Using a water bottle on it will restart the drying process.
+    - In hot biomes, it dries into thatch.
+    - In other biomes, it reverts back into a hay bale.
+    - A clay ball can prevent it from drying.
+    - Using a water bottle resets the drying process.
 - The radio no longer disconnects players in multiplayer.
+- Sandwaves will now also spawn when using Forge.
+
+### **TODO**
+- Curios integration for Forge.
+- Completionist Banner Texture
+- Structures.
 
 ### **Beachparty 2.0.0: Overhaul**
 This update introduces a refined version of Beachparty with adjusted textures, naming conventions, and reworked features.
 
 ### **Why this rework?**
-Currently, Beachparty feels like a collection of loosely connected beach-themed content rather than a cohesive experience. While it does capture a general beach atmosphere, it lacks structure and meaningful gameplay elements.
+Currently, Beachparty feels like a collection of loosely connected beach-themed content rather than a cohesive experience. While it does capture a general beach atmosphere, it lacks structure and fun and / or meaningful gameplay elements. The removal of the DoAPI required a lot of refactoring and restructuring anyway, so i have bundled it together with this rework.
 
 This update aims to give Beachparty a more defined identity with unique and well-integrated features. Not every addition needs to affect gameplay, but even decorative elements should serve a small functional purpose to make them more relevant within the game world.
 
 The goal is to create a more immersive, engaging, and enjoyable beach-themed experience where every feature feels intentional rather than just another random addition.
-

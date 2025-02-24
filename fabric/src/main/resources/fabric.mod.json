@@ -5,10 +5,13 @@
   "name": "[Let's Do] Beachparty",
   "description": "Take a break - build sandcastles, drink cocktails and enjoy your Minecraft Session.",
   "authors": [
-    "Jason13Official, Satisfy"
+    "Satisfy, Jason13Official"
   ],
   "contributors": [
     "MissLilitu, Cristelknight, BaumeisterJo"
+  ],
+  "textures": [
+    "Satisfy, Iri, Dev_Myst"
   ],
   "contact": {
     "homepage": "https://github.com/satisfyu/Beachparty",

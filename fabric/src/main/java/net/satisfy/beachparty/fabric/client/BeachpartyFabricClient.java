@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.client.BeachPartyClient;
+import net.satisfy.beachparty.client.model.FloatyBoatModel;
 import net.satisfy.beachparty.core.entity.PalmBoatEntity;
 import net.satisfy.beachparty.fabric.client.renderer.*;
 
@@ -43,7 +44,12 @@ public class BeachpartyFabricClient implements ClientModInitializer {
     private void registerBoatModels() {
         for (PalmBoatEntity.Type type : PalmBoatEntity.Type.values()) {
             String modId = Beachparty.MOD_ID;
-            EntityModelLayerRegistry.registerModelLayer(new ModelLayerLocation(new ResourceLocation(modId, type.getModelLocation()), "main"), BoatModel::createBodyModel);
+            ModelLayerLocation modelLayerLocation = new ModelLayerLocation(new ResourceLocation(modId, type.getModelLocation()), "main");
+            if (type == PalmBoatEntity.Type.FLOATY) {
+                EntityModelLayerRegistry.registerModelLayer(modelLayerLocation, FloatyBoatModel::createBodyModel);
+            } else {
+                EntityModelLayerRegistry.registerModelLayer(modelLayerLocation, BoatModel::createBodyModel);
+            }
             EntityModelLayerRegistry.registerModelLayer(new ModelLayerLocation(new ResourceLocation(modId, type.getChestModelLocation()), "main"), ChestBoatModel::createBodyModel);
         }
     }

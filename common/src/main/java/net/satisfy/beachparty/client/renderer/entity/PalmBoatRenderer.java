@@ -20,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.satisfy.beachparty.Beachparty;
+import net.satisfy.beachparty.client.model.FloatyBoatModel;
 import net.satisfy.beachparty.core.entity.PalmBoatEntity;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
@@ -42,6 +43,9 @@ public class PalmBoatRenderer<T extends PalmBoatEntity> extends EntityRenderer<T
                 new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getChestModelLocation()), "main")
                 : new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getModelLocation()), "main");
         ModelPart modelPart = context.bakeLayer(modelLayerLocation);
+        if (type == PalmBoatEntity.Type.FLOATY) {
+            return new FloatyBoatModel(modelPart);
+        }
         return hasChest ? new ChestBoatModel(modelPart) : new BoatModel(modelPart);
     }
 
