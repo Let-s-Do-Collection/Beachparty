@@ -198,8 +198,13 @@ public class HoodedBeachChair extends LineConnectingBlock {
             world.destroyBlock(otherPos, false);
         }
 
+        if (half == DoubleBlockHalf.UPPER && world instanceof Level level) {
+            Block.popResource(level, pos, new ItemStack(this.asItem()));
+        }
+
         super.destroy(world, pos, state);
     }
+
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {

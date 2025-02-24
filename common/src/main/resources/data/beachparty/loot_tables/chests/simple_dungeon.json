@@ -37,6 +37,10 @@
                 "max": 1.0,
                 "type": "minecraft:uniform"
               }
+            },
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{display:{color:16711680}}"
             }
           ],
           "name": "beachparty:pool_noodle"

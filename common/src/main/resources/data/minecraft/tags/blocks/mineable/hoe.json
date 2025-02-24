@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
+    "beachparty:palm_leaves",
     "beachparty:thatch",
     "beachparty:thatch_slab",
-    "beachparty:thatch_stairs",
-    "beachparty:palm_leaves"
+    "beachparty:thatch_stairs"
   ]
 }

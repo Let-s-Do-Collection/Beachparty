@@ -7,20 +7,24 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.OptionalInt;
 
 
-public class PalmLeavesBlock extends LeavesBlock {
+public class PalmLeavesBlock extends LeavesBlock implements BonemealableBlock {
     public static final IntegerProperty DISTANCE_9 = IntegerProperty.create("distance_9", 1, 9);
 
     public PalmLeavesBlock(Properties properties) {
@@ -104,6 +108,23 @@ public class PalmLeavesBlock extends LeavesBlock {
             return OptionalInt.of(0);
         } else {
             return blockState.hasProperty(DISTANCE_9) ? OptionalInt.of(blockState.getValue(DISTANCE_9)) : OptionalInt.empty();
+        }
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
+        return level.getBlockState(pos.below()).isAir();
+    }
+
+    @Override
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+        return true;
+    }
+
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        if (level.getBlockState(pos.below()).isAir()) {
+            level.setBlock(pos.below(), ObjectRegistry.HANGING_COCONUT.get().defaultBlockState().setValue(HangingCoconutBlock.AGE, 0), 2);
         }
     }
 }

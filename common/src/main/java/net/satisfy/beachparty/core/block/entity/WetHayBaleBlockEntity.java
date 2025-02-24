@@ -38,19 +38,26 @@ public class WetHayBaleBlockEntity extends BlockEntity {
     }
 
     public static void tick(ServerLevel level, BlockPos pos, BlockState state, WetHayBaleBlockEntity be) {
-        if (be.isProtected) return;
-
+        if (be.isProtected) {
+            level.scheduleTick(pos, state.getBlock(), 1);
+            return;
+        }
+        if (!level.canSeeSky(pos.above()) || level.getFluidState(pos).is(net.minecraft.world.level.material.Fluids.WATER)) {
+            level.scheduleTick(pos, state.getBlock(), 1);
+            return;
+        }
         boolean hot = isHotBiome(level, pos);
         RandomSource random = level.getRandom();
         Direction direction = Direction.getRandom(random);
-
         if (direction != Direction.UP) {
             BlockPos pos2 = pos.relative(direction);
             if (!state.canOcclude() || !level.getBlockState(pos2).isFaceSturdy(level, pos2, direction.getOpposite())) {
                 if (random.nextFloat() < 0.3f) {
                     double d = pos.getX(), e = pos.getY(), f = pos.getZ();
                     if (direction == Direction.DOWN) {
-                        e -= 0.05; d += random.nextDouble(); f += random.nextDouble();
+                        e -= 0.05;
+                        d += random.nextDouble();
+                        f += random.nextDouble();
                     } else {
                         e += random.nextDouble() * 0.8;
                         d += direction.getAxis() == Direction.Axis.X ? (direction == Direction.EAST ? 1 : 0.05) : random.nextDouble();
@@ -63,10 +70,9 @@ public class WetHayBaleBlockEntity extends BlockEntity {
         if (hot && random.nextFloat() < 0.25f) {
             level.sendParticles(ParticleTypes.SMOKE, pos.getX() + 0.6, pos.getY() + 1.25, pos.getZ() + 0.5, 1, 0.05, 0.1875, 0.05, 0.0);
         }
-
         be.timer--;
         if (be.timer <= 0) {
-            level.setBlock(pos, hot ? ObjectRegistry.THATCH.get().defaultBlockState() : Blocks.HAY_BLOCK.defaultBlockState(), 3);
+            level.setBlock(pos, hot ? ObjectRegistry.THATCH.get().defaultBlockState() : net.minecraft.world.level.block.Blocks.HAY_BLOCK.defaultBlockState(), 3);
         } else {
             level.scheduleTick(pos, state.getBlock(), 1);
         }

@@ -1,5 +1,6 @@
 package net.satisfy.beachparty.core.entity;
 
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -64,12 +65,13 @@ public class BeachBallEntity extends Mob {
     @Override
     public void push(Entity entity) {
         if (entity instanceof Player) {
+            float pitch = 0.9F + this.level().getRandom().nextFloat() * 0.1F;
+            this.playSound(SoundEvents.ARMOR_EQUIP_TURTLE, 0.5F, pitch);
             Vector3f lookDirection = new Vector3f(
                     (float) entity.getLookAngle().x,
                     0,
                     (float) entity.getLookAngle().z
             ).normalize();
-
             Vector3f pushDirection = lookDirection.mul(INITIAL_ROLL_SPEED);
             this.setDeltaMovement(pushDirection.x, this.getDeltaMovement().y, pushDirection.z);
         } else {
@@ -90,7 +92,8 @@ public class BeachBallEntity extends Mob {
                 }
 
             } else {
-
+                float pitch = 0.8F + this.level().getRandom().nextFloat() * 0.4F;
+                this.playSound(SoundEvents.ARMOR_EQUIP_TURTLE, 1.0F, pitch);
                 Vector3f lookDirection = new Vector3f(
                         (float) player.getLookAngle().x,
                         0,

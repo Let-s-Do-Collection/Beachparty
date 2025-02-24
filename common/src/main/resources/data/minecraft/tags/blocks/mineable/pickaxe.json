@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "beachparty:mini_fridge"
+    "beachparty:mini_fridge",
+    "beachparty:palm_glass",
+    "beachparty:palm_glass_pane"
   ]
 }

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "part=none": {
+      "model": "beachparty:block/palm_glass"
+    },
+    "part=bottom": {
+      "model": "beachparty:block/palm_glass_bottom"
+    },
+    "part=middle": {
+      "model": "beachparty:block/palm_glass_middle"
+    },
+    "part=top": {
+      "model": "beachparty:block/palm_glass_top"
+    }
+  }
+}

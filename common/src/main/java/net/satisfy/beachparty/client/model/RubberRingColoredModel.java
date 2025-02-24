@@ -46,9 +46,9 @@ public class RubberRingColoredModel<T extends Entity> extends EntityModel<T> imp
 
         Player player = Minecraft.getInstance().player;
         if (player != null && player.getPose() == Pose.CROUCHING) {
-            poseStack.translate(0.4F, 0.9F, 0F);
+            poseStack.translate(-0.1F, 0.4F, 0.7F);
         } else {
-            poseStack.translate(0.4F, 0.7F, -0.4F);
+            poseStack.translate(-0.1F, 0.6F, 0.5F);
         }
 
         rubber_ring.render(poseStack, buffer, packedLight, packedOverlay);

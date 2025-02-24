@@ -59,27 +59,57 @@
         {
           "type": "minecraft:item",
           "weight": 1,
-          "name": "beachparty:trunks"
+          "name": "beachparty:trunks",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{display:{color:3947580}}"
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "weight": 1,
-          "name": "beachparty:bikini"
+          "name": "beachparty:bikini",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{display:{color:11184810}}"
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "weight": 1,
-          "name": "beachparty:crocs"
+          "name": "beachparty:crocs",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{display:{color:7303023}}"
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "weight": 1,
-          "name": "beachparty:swim_wings"
+          "name": "beachparty:swim_wings",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{display:{color:2236962}}"
+            }
+          ]
         },
         {
           "type": "minecraft:item",
           "weight": 1,
-          "name": "beachparty:pool_noodle"
+          "name": "beachparty:pool_noodle",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{display:{color:1973790}}"
+            }
+          ]
         },
         {
           "type": "minecraft:item",
