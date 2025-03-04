@@ -44,8 +44,8 @@ public class BeachpartyForge {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(CompostablesRegistry::init);
-        CuriosApi.registerCurio(ObjectRegistry.BEACH_HAT.get(), new CuriosWearableTrinket.BeachhatCurio());
-        CuriosApi.registerCurio(ObjectRegistry.SUNGLASSES.get(), new CuriosWearableTrinket.SunglassesCurio());
+        CuriosApi.registerCurio(ObjectRegistry.BEACH_HAT.get(), new CuriosWearableTrinket.BaseCurio(0.10f));
+        CuriosApi.registerCurio(ObjectRegistry.SUNGLASSES.get(), new CuriosWearableTrinket.BaseCurio(0.12f));
         CuriosApi.registerCurio(ObjectRegistry.SWIM_WINGS.get(), new CuriosWearableTrinket.SwimWingsCurio());
         CuriosApi.registerCurio(ObjectRegistry.BIKINI.get(), new CuriosWearableTrinket.SwimSuitCurio());
         CuriosApi.registerCurio(ObjectRegistry.TRUNKS.get(), new CuriosWearableTrinket.SwimSuitCurio());
@@ -56,7 +56,6 @@ public class BeachpartyForge {
         CuriosApi.registerCurio(ObjectRegistry.RUBBER_RING_AXOLOTL.get(), new CuriosWearableTrinket.RubberRingCurio());
         CuriosApi.registerCurio(ObjectRegistry.CROCS.get(), new CuriosWearableTrinket.CrocsCurio());
     }
-
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
         InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("feet").size(1).icon(new ResourceLocation("minecraft", "item/empty_armor_slot_boots")).build());

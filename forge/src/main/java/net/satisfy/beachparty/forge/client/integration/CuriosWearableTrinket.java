@@ -9,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.satisfy.beachparty.core.registry.MobEffectRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
-import org.joml.Vector3d;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
@@ -26,22 +25,22 @@ public class CuriosWearableTrinket {
         }).isPresent();
     }
 
-    public abstract static class BaseCurio implements ICurioItem {
+    public static class BaseCurio implements ICurioItem {
         private final float fireDamageReduction;
         private final Item[] conflictingItems;
 
-        protected BaseCurio(float fireDamageReduction, Item... conflictingItems) {
+        public BaseCurio(float fireDamageReduction, Item... conflictingItems) {
             this.fireDamageReduction = fireDamageReduction;
             this.conflictingItems = conflictingItems;
         }
 
         @Override
-        public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        public void curioTick(SlotContext slotContext, ItemStack stack) {
             LivingEntity entity = slotContext.entity();
-            if (entity instanceof Player player && fireDamageReduction > 0) {
-                if (!player.isInvulnerableTo(player.level().damageSources().onFire())) {
-                    player.hurt(player.level().damageSources().onFire(), 1 - fireDamageReduction);
-                }
+            if (!(entity instanceof Player player)) return;
+
+            if (fireDamageReduction > 0 && (player.isOnFire() || player.getRemainingFireTicks() > 0)) {
+                player.clearFire();
             }
         }
 
@@ -66,12 +65,6 @@ public class CuriosWearableTrinket {
         }
     }
 
-    public static class BeachhatCurio extends BaseCurio {
-        public BeachhatCurio() {
-            super(0.10f, ObjectRegistry.BEACH_HAT.get());
-        }
-    }
-
     public static class CrocsCurio extends BaseCurio {
         public CrocsCurio() {
             super(0, ObjectRegistry.CROCS.get());
@@ -81,7 +74,7 @@ public class CuriosWearableTrinket {
         public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
             super.onEquip(slotContext, prevStack, stack);
             LivingEntity entity = slotContext.entity();
-            if (entity instanceof Player player) {
+            if (entity instanceof Player player && !player.hasEffect(MobEffectRegistry.OCEAN_WALK.get())) {
                 player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), -1, 0, false, false));
             }
         }
@@ -115,9 +108,10 @@ public class CuriosWearableTrinket {
                     newY += 0.01;
                     if (newY > targetUpwardSpeed) newY = targetUpwardSpeed;
                 }
-                double speedMultiplier = 1.17;
-                Vec3 newMotion = new Vec3(motion.x * speedMultiplier, newY, motion.z * speedMultiplier);
-                player.setDeltaMovement(newMotion);
+                double maxSpeed = 0.3;
+                double newX = Math.min(motion.x * 1.08, maxSpeed);
+                double newZ = Math.min(motion.z * 1.08, maxSpeed);
+                player.setDeltaMovement(new Vec3(newX, newY, newZ));
                 BlockPos pos = player.blockPosition().above();
                 while (player.level().getBlockState(pos).getFluidState().isEmpty()) {
                     pos = pos.below();
@@ -127,12 +121,6 @@ public class CuriosWearableTrinket {
                     player.setPos(player.getX(), targetY, player.getZ());
                 }
             }
-        }
-    }
-
-    public static class SunglassesCurio extends BaseCurio {
-        public SunglassesCurio() {
-            super(0.12f, ObjectRegistry.SUNGLASSES.get());
         }
     }
 
@@ -148,11 +136,11 @@ public class CuriosWearableTrinket {
         public void curioTick(SlotContext slotContext, ItemStack stack) {
             LivingEntity entity = slotContext.entity();
             if (entity instanceof Player player && player.isInWater() && player.isSwimming()) {
-                Vec3 vec3 = player.getDeltaMovement();
-                Vector3d vector3d = new Vector3d(vec3.x, vec3.y, vec3.z);
-                vector3d.x *= 1.08;
-                vector3d.z *= 1.08;
-                player.setDeltaMovement(new Vec3(vector3d.x, vector3d.y, vector3d.z));
+                Vec3 motion = player.getDeltaMovement();
+                double maxSpeed = 0.3;
+                double newX = Math.min(motion.x * 1.08, maxSpeed);
+                double newZ = Math.min(motion.z * 1.08, maxSpeed);
+                player.setDeltaMovement(new Vec3(newX, motion.y, newZ));
             }
         }
     }
@@ -165,11 +153,11 @@ public class CuriosWearableTrinket {
         @Override
         public void curioTick(SlotContext slotContext, ItemStack stack) {
             LivingEntity entity = slotContext.entity();
-            if (!entity.level().isClientSide() && entity instanceof Player player && player.tickCount > 20) {
-                if (!player.getCooldowns().isOnCooldown(ObjectRegistry.SWIM_WINGS.get())) {
-                    if (!player.onGround() && player.getDeltaMovement().y < -0.1F && player.fallDistance > 3.0F) {
+            if (!entity.level().isClientSide() && entity instanceof Player player) {
+                if (!player.onGround() && player.getDeltaMovement().y < -0.1F && player.fallDistance > 3.0F) {
+                    if (!player.getCooldowns().isOnCooldown(ObjectRegistry.SWIM_WINGS.get())) {
                         player.fallDistance *= 0.5F;
-                        player.getCooldowns().addCooldown(ObjectRegistry.SWIM_WINGS.get(), 2400);
+                        player.getCooldowns().addCooldown(ObjectRegistry.SWIM_WINGS.get(), 100);
                     }
                 }
             }

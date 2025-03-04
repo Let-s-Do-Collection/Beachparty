@@ -1,13 +1,17 @@
 package net.satisfy.beachparty.forge.event;
 
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.BasicItemListing;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.forge.client.integration.CuriosWearableTrinket;
 import net.satisfy.beachparty.forge.registry.BeachpartyVillagers;
 
 
@@ -15,7 +19,6 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = Beachparty.MOD_ID)
 public class ForgeEventHandler {
-
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event) {
         if (event.getType().equals(BeachpartyVillagers.SANDYMERCHANT.get())) {
@@ -54,6 +57,25 @@ public class ForgeEventHandler {
             level5.add(new BasicItemListing(22, new ItemStack(ObjectRegistry.MESSAGE_IN_A_BOTTLE_ITEM.get()), 1, 4, 0.25F));
             level5.add(new BasicItemListing(39, new ItemStack(ObjectRegistry.FLOATY_BOAT.get()), 1, 8, 0.25F));
             level5.add(new BasicItemListing(45, new ItemStack(ObjectRegistry.BEACH_HAT.get()), 1, 8, 0.25F));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingDamage(LivingDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (!event.getSource().is(DamageTypes.ON_FIRE) && !event.getSource().is(DamageTypes.IN_FIRE)) return;
+
+        float reduction = 0;
+        if (CuriosWearableTrinket.isCurioEquipped(player, ObjectRegistry.BEACH_HAT.get())) {
+            reduction += 0.10f;
+        }
+        if (CuriosWearableTrinket.isCurioEquipped(player, ObjectRegistry.SUNGLASSES.get())) {
+            reduction += 0.12f;
+        }
+
+        if (reduction > 0) {
+            float newDamage = event.getAmount() * (1 - reduction);
+            event.setAmount(newDamage);
         }
     }
 }
