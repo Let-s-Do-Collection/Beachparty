@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 
 import java.util.function.Consumer;
 
@@ -26,11 +27,11 @@ public abstract class DyeableArmorMixin extends DyeableArmorItem {
     @Shadow
     public abstract int getColor(@NotNull ItemStack stack);
 
-    @Shadow
-    private ResourceLocation getTexture;
+    @Unique
+    private ResourceLocation beachparty$getTexture_ = new ResourceLocation("default_texture_path");
 
     private DyeableArmorMixin(Type type, Properties properties) {
-        super(null, type, properties);
+        super(null , type, properties);
     }
 
     @Override
@@ -55,6 +56,6 @@ public abstract class DyeableArmorMixin extends DyeableArmorItem {
     }
 
     public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return getTexture.toString();
+        return beachparty$getTexture_.toString();
     }
 }

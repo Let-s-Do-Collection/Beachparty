@@ -21,6 +21,7 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.PALM_WOOD.get());
                 out.accept(ObjectRegistry.STRIPPED_PALM_LOG.get());
                 out.accept(ObjectRegistry.STRIPPED_PALM_WOOD.get());
+                out.accept(ObjectRegistry.PALM_FLOORBOARD.get());
                 out.accept(ObjectRegistry.PALM_PLANKS.get());
                 out.accept(ObjectRegistry.PALM_STAIRS.get());
                 out.accept(ObjectRegistry.PALM_SLAB.get());
@@ -40,10 +41,10 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.PALM_TABLE.get());
                 out.accept(ObjectRegistry.HOODED_BEACH_CHAIR.get());
                 out.accept(ObjectRegistry.BEACH_SUN_LOUNGER.get());
-                out.accept(ObjectRegistry.WET_HAY_BLOCK.get());
                 out.accept(ObjectRegistry.THATCH.get());
                 out.accept(ObjectRegistry.THATCH_STAIRS.get());
                 out.accept(ObjectRegistry.THATCH_SLAB.get());
+                out.accept(ObjectRegistry.WET_HAY_BLOCK.get());
                 out.accept(ObjectRegistry.SANDWAVES.get());
                 out.accept(ObjectRegistry.PALM_LEAVES.get());
                 out.accept(ObjectRegistry.PALM_TORCH_ITEM.get());

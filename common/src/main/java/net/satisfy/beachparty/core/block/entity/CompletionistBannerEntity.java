@@ -20,7 +20,7 @@ public class CompletionistBannerEntity extends BlockEntity {
 
     public static void tick(Level level, BlockPos pos) {
         if (!level.isClientSide) {
-            AABB effectRadius = new AABB(pos).inflate(8);
+            AABB effectRadius = new AABB(pos).inflate(6);
             List<Player> players = level.getEntitiesOfClass(Player.class, effectRadius);
             for (Player player : players) {
                 player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 40, 1, true, false));

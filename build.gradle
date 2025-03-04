@@ -31,16 +31,11 @@ allprojects {
     group = rootProject.maven_group
 
     repositories {
-        maven {
-            name = "Jared's maven"
-            url = "https://maven.blamejared.com/"
-        }
-        maven {
-            url "https://cursemaven.com"
-        }
+        maven { url = "https://maven.blamejared.com/" }
+        maven { url "https://cursemaven.com" }
     }
 
-    tasks.withType(JavaCompile) {
+    tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
         options.release = 17
     }

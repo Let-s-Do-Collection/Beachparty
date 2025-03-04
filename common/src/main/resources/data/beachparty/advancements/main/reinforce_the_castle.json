@@ -1,0 +1,52 @@
+{
+  "parent": "beachparty:main/build_a_tower",
+  "criteria": {
+    "reinforce_the_castle": {
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "beachparty:sandcastle"
+                ]
+              }
+            }
+          },
+          {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "items": [
+                "minecraft:potion"
+              ],
+              "nbt": "{Potion:\"minecraft:water\"}"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:item_used_on_block"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.beachparty.reinforce_the_castle.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "beachparty:sand_bucket_filled"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.beachparty.reinforce_the_castle"
+    }
+  },
+  "requirements": [
+    [
+      "reinforce_the_castle"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

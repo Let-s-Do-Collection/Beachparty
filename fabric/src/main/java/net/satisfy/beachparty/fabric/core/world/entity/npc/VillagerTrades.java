@@ -41,6 +41,7 @@ public class VillagerTrades {
             factories.add(new SellItemFactory(ObjectRegistry.POOL_NOODLE.get(), 27, 1, 10));
         });
         TradeOfferHelper.registerVillagerOffers(SANDYMERCHANT, 3, factories -> {
+            factories.add(new SellItemFactory(ObjectRegistry.PALM_FLOORBOARD.get(), 6, 1, 7));
             factories.add(new SellItemFactory(ObjectRegistry.BEACH_PARASOL.get(), 5, 1, 5));
             factories.add(new SellItemFactory(ObjectRegistry.BEACH_TOWEL.get(), 3, 1, 5));
             factories.add(new SellItemFactory(ObjectRegistry.OVERGROWN_DISC.get(), 36, 1, 10));

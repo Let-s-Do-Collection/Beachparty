@@ -27,6 +27,7 @@
 - Beachparty now only affects beach biomes — cold beaches are no longer included.
 - All Beach Villager trades have been completely revamped.
 - Spawn rates in chest loot have been significantly reduced.
+- Added various structures that generate near or directly on beaches.
 - Most armor items no longer have effects. The (OP) set bonuses have been removed.
 - Armor pieces are now artifacts that can be placed in Curios/Trinket slots to gain additional bonuses. They can no longer be crafted and must be found in loot chests or be traded.
 - Armor pieces found in chests have random colors.
@@ -41,12 +42,8 @@
     - A clay ball can prevent it from drying.
     - Using a water bottle resets the drying process.
 - The radio no longer disconnects players in multiplayer.
+- Tall Palm Torch now also drops when breaking the bottom part
 - Sandwaves will now also spawn when using Forge.
-
-### **TODO**
-- Curios integration for Forge.
-- Completionist Banner Texture
-- Structures.
 
 ### **Beachparty 2.0.0: Overhaul**
 This update introduces a refined version of Beachparty with adjusted textures, naming conventions, and reworked features.

@@ -86,7 +86,16 @@ public class TallPalmTorchBlock extends TorchBlock {
 
     @Override
     public void playerDestroy(Level world, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
-        super.playerDestroy(world, player, pos, Blocks.AIR.defaultBlockState(), blockEntity, stack);
+        DoubleBlockHalf half = state.getValue(HALF);
+        BlockPos otherPos = half == DoubleBlockHalf.LOWER ? pos.above() : pos.below();
+        BlockState otherState = world.getBlockState(otherPos);
+
+        if (otherState.is(this) && otherState.getValue(HALF) != half) {
+            world.setBlock(otherPos, Blocks.AIR.defaultBlockState(), 35);
+            world.levelEvent(player, 2001, otherPos, Block.getId(otherState));
+        }
+
+        super.playerDestroy(world, player, pos, state, blockEntity, stack);
     }
 
     public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {

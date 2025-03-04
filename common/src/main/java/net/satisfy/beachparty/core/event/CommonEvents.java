@@ -112,8 +112,7 @@ public class CommonEvents {
                 String file = name.substring(name.indexOf(prefix) + prefix.length());
                 switch (file) {
                     case "desert_pyramid", "buried_treasure", "shipwreck_supply", "shipwreck_treasure",
-                         "simple_dungeon", "underwater_ruin_big", "underwater_ruin_small", "woodland_mansion",
-                         "village/village_cartographer", "village/plains_house", "village_savanna_house" ->
+                         "simple_dungeon", "underwater_ruin_big", "underwater_ruin_small", "woodland_mansion" ->
                             context.addPool(getPool(file));
                     default -> {
                     }
@@ -125,8 +124,7 @@ public class CommonEvents {
             return LootPool.lootPool().add(getPoolEntry(entryName)).build();
         }
 
-        @SuppressWarnings("rawtypes")
-        private static LootPoolEntryContainer.Builder getPoolEntry(String name) {
+        private static LootPoolEntryContainer.Builder<?> getPoolEntry(String name) {
             ResourceLocation table = new ResourceLocation(Beachparty.MOD_ID, "chests/" + name);
             return LootTableReference.lootTableReference(table);
         }

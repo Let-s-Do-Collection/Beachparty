@@ -1,0 +1,12 @@
+{
+  "processors": [
+    {
+      "processor_type": "minecraft:block_predicate",
+      "predicate": {
+        "type": "minecraft:matching_blocks",
+        "blocks": ["minecraft:water"]
+      },
+      "output_state": "minecraft:air"
+    }
+  ]
+}

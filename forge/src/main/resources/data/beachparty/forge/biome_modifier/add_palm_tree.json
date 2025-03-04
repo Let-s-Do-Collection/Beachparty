@@ -1,6 +1,6 @@
 {
   "type": "forge:add_features",
-  "biomes": "#beachparty:beach",
+  "biomes": "minecraft:beach",
   "features": "beachparty:palm_tree",
   "step": "vegetal_decoration"
 }
