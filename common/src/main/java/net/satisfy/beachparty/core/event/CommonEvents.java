@@ -6,7 +6,6 @@ import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -31,8 +30,6 @@ import net.satisfy.beachparty.core.block.BeachParasolBlock;
 import net.satisfy.beachparty.core.block.RadioBlock;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import org.jetbrains.annotations.Nullable;
-
-import static net.satisfy.beachparty.core.block.RadioBlock.syncRadios;
 
 public class CommonEvents {
 
@@ -132,15 +129,4 @@ public class CommonEvents {
             return LootTableReference.lootTableReference(table);
         }
     }
-
-    public static void onServerStarted(MinecraftServer server) {
-        for (ServerLevel level : server.getAllLevels()) {
-            syncRadios(level);
-        }
-    }
-
-    public static void onPlayerJoin(ServerPlayer player) {
-        syncRadios(player.getLevel());
-    }
-
 }

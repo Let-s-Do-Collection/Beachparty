@@ -93,8 +93,8 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
         public static final VoxelShape TOP_TOWER_SHAPE = Block.box(5.0, 6.0, 5.0, 11.0, 9.0, 11.0);
         public static final BooleanProperty LEFT_TOWER;
         public static final VoxelShape LEFT_TOWER_SHAPE = Block.box(11.0, 1.0, 1.0, 15.0, 12.0, 5.0);
-        private static final VoxelShape BASE_SHAPE = Shapes.or(Block.box(1.0, 0.0, 1.0, 15.0, 1.0, 15.0), Block.box(2.0, 1.0, 2.0, 14.0, 6.0, 14.0));
         public static final BooleanProperty PETRIFIED;
+        private static final VoxelShape BASE_SHAPE = Shapes.or(Block.box(1.0, 0.0, 1.0, 15.0, 1.0, 15.0), Block.box(2.0, 1.0, 2.0, 14.0, 6.0, 14.0));
 
         static {
             TALL_TOWER = BooleanProperty.create("tall");

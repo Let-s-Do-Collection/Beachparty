@@ -29,6 +29,17 @@ public class PalmTableBlock extends LineConnectingBlock implements SimpleWaterlo
     public static final VoxelShape TOP_SHAPE;
     public static final VoxelShape[] LEG_SHAPES;
 
+    static {
+        WATERLOGGED = BlockStateProperties.WATERLOGGED;
+        TOP_SHAPE = box(0.0, 13.0, 0.0, 16.0, 16.0, 16.0);
+        LEG_SHAPES = new VoxelShape[]{
+                box(0, 0, 0, 2, 13, 2),
+                box(14, 0, 0, 16, 13, 2),
+                box(14, 0, 14, 16, 13, 16),
+                box(0, 0, 14, 2, 13, 16)
+        };
+    }
+
     public PalmTableBlock(BlockBehaviour.Properties settings) {
         super(settings);
         this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
@@ -87,7 +98,6 @@ public class PalmTableBlock extends LineConnectingBlock implements SimpleWaterlo
         return Shapes.or(TOP_SHAPE, LEG_SHAPES);
     }
 
-
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Level world = context.getLevel();
         BlockPos clickedPos = context.getClickedPos();
@@ -101,16 +111,5 @@ public class PalmTableBlock extends LineConnectingBlock implements SimpleWaterlo
 
     public @NotNull FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-    }
-
-    static {
-        WATERLOGGED = BlockStateProperties.WATERLOGGED;
-        TOP_SHAPE = box(0.0, 13.0, 0.0, 16.0, 16.0, 16.0);
-        LEG_SHAPES = new VoxelShape[]{
-                box(0, 0, 0, 2, 13, 2),
-                box(14, 0, 0, 16, 13, 2),
-                box(14, 0, 14, 16, 13, 16),
-                box(0, 0, 14, 2, 13, 16)
-        };
     }
 }

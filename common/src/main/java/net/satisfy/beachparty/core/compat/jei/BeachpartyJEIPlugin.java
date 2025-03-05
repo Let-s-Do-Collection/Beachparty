@@ -29,6 +29,10 @@ import java.util.Objects;
 
 @JeiPlugin
 public class BeachpartyJEIPlugin implements IModPlugin {
+    public static void addSlot(IRecipeLayoutBuilder builder, int x, int y, Ingredient ingredient) {
+        builder.addSlot(RecipeIngredientRole.INPUT, x, y).addIngredients(ingredient);
+    }
+
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new MiniFridgeCategory(registration.getJeiHelpers().getGuiHelper()));
@@ -60,9 +64,5 @@ public class BeachpartyJEIPlugin implements IModPlugin {
         registration.addRecipeTransferHandler(MiniFridgeGuiHandler.class, ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeCategory.MINI_FRIDGE_FREEZING, 1, 1, 2, 36);
         registration.addRecipeTransferHandler(PalmBarGuiHandler.class, ScreenHandlerTypesRegistry.PALM_BAR_GUI_HANDLER.get(), PalmBarCategory.PALM_BAR, 1, 4, 2, 36);
 
-    }
-
-    public static void addSlot(IRecipeLayoutBuilder builder, int x, int y, Ingredient ingredient) {
-        builder.addSlot(RecipeIngredientRole.INPUT, x, y).addIngredients(ingredient);
     }
 }

@@ -30,13 +30,6 @@ public class WetHayBaleBlockEntity extends BlockEntity {
         timer = initializeTimer();
     }
 
-    private int initializeTimer() {
-        Level level = getLevel();
-        return level instanceof ServerLevel serverLevel && isHotBiome(serverLevel, getBlockPos())
-                ? 1200 + level.random.nextInt(601)
-                : 600 + (level != null ? level.random.nextInt(601) : 600);
-    }
-
     public static void tick(ServerLevel level, BlockPos pos, BlockState state, WetHayBaleBlockEntity be) {
         if (be.isProtected) {
             level.scheduleTick(pos, state.getBlock(), 1);
@@ -78,6 +71,18 @@ public class WetHayBaleBlockEntity extends BlockEntity {
         }
     }
 
+    private static boolean isHotBiome(ServerLevel level, BlockPos pos) {
+        Holder<Biome> biomeHolder = level.getBiome(pos);
+        return biomeHolder.is(HOT_BIOME);
+    }
+
+    private int initializeTimer() {
+        Level level = getLevel();
+        return level instanceof ServerLevel serverLevel && isHotBiome(serverLevel, getBlockPos())
+                ? 1200 + level.random.nextInt(601)
+                : 600 + (level != null ? level.random.nextInt(601) : 600);
+    }
+
     public void preventDrying() {
         if (level instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.CLAY.defaultBlockState()),
@@ -97,10 +102,5 @@ public class WetHayBaleBlockEntity extends BlockEntity {
         }
         isProtected = false;
         timer = initializeTimer();
-    }
-
-    private static boolean isHotBiome(ServerLevel level, BlockPos pos) {
-        Holder<Biome> biomeHolder = level.getBiome(pos);
-        return biomeHolder.is(HOT_BIOME);
     }
 }

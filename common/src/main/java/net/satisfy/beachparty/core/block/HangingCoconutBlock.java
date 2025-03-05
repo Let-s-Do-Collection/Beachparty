@@ -32,7 +32,7 @@ import org.joml.Vector3f;
 @SuppressWarnings("deprecation")
 public class HangingCoconutBlock extends FallingBlock implements BonemealableBlock {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
-    protected static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[] {
+    protected static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{
             Block.box(4.0, 7.0, 4.0, 12.0, 15.0, 12.0),
             Block.box(3.0, 5.0, 3.0, 13.0, 15.0, 13.0),
             Block.box(2.0, 3.0, 2.0, 14.0, 15.0, 14.0)

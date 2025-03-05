@@ -88,6 +88,27 @@ public class PalmBoatEntity extends Boat {
             this.chestItem = chestBoatItem;
         }
 
+        public static Type byId(int id) {
+            Type[] values = values();
+            if (id < 0 || id >= values.length) {
+                id = 0;
+            }
+
+            return values[id];
+        }
+
+        public static Type byName(String name) {
+            Type[] values = values();
+
+            for (Type value : values) {
+                if (value.getName().equals(name)) {
+                    return value;
+                }
+            }
+
+            return values[0];
+        }
+
         public ResourceLocation getTexture(boolean hasChest) {
             if (hasChest) {
                 return new ResourceLocation(Beachparty.MOD_ID, "textures/entity/chest_boat/" + name + ".png");
@@ -113,27 +134,6 @@ public class PalmBoatEntity extends Boat {
 
         public Supplier<Item> getChestItem() {
             return chestItem;
-        }
-
-        public static Type byId(int id) {
-            Type[] values = values();
-            if (id < 0 || id >= values.length) {
-                id = 0;
-            }
-
-            return values[id];
-        }
-
-        public static Type byName(String name) {
-            Type[] values = values();
-
-            for (Type value : values) {
-                if (value.getName().equals(name)) {
-                    return value;
-                }
-            }
-
-            return values[0];
         }
     }
 }

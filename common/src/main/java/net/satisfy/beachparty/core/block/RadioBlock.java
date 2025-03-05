@@ -2,7 +2,6 @@ package net.satisfy.beachparty.core.block;
 
 import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.Unpooled;
-import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -60,9 +59,47 @@ public class RadioBlock extends Block {
         }
     });
 
+    static {
+        ON = BooleanProperty.create("on");
+        CHANNEL = IntegerProperty.create("channel", 0, CHANNELS - 1);
+        SEARCHING = BooleanProperty.create("searching");
+    }
+
     public RadioBlock(Properties settings) {
         super(settings);
         this.registerDefaultState(this.stateDefinition.any().setValue(ON, false).setValue(CHANNEL, 0).setValue(SEARCHING, false));
+    }
+
+    public static void sendPacket(BlockState state, ServerLevel world, BlockPos pos, boolean on) {
+        for (ServerPlayer player : world.players()) {
+            FriendlyByteBuf buffer = createPacketBuf();
+            buffer.writeBlockPos(pos);
+            buffer.writeInt(state.getValue(CHANNEL));
+            buffer.writeBoolean(on);
+            NetworkManager.sendToPlayer(player, BeachpartyMessages.TURN_RADIO_S2C, buffer);
+        }
+    }
+
+    public static FriendlyByteBuf createPacketBuf() {
+        return new FriendlyByteBuf(Unpooled.buffer());
+    }
+
+    public static Set<BlockPos> getAllRadioBlocks() {
+        return RADIO_BLOCKS;
+    }
+
+    private static void spawnParticles(Level world, BlockPos pos) {
+        RandomSource random = world.random;
+
+        double d = (double) pos.getX() + random.nextDouble();
+        double e = pos.getY() + 0.5 + random.nextDouble();
+        double f = (double) pos.getZ() + random.nextDouble();
+
+        double red = random.nextDouble();
+        double green = random.nextDouble();
+        double blue = random.nextDouble();
+
+        world.addParticle(ParticleTypes.NOTE, d, e, f, red, green, blue);
     }
 
     @Override
@@ -167,20 +204,6 @@ public class RadioBlock extends Block {
         world.scheduleTick(pos, this, DELAY);
     }
 
-    public static void sendPacket(BlockState state, ServerLevel world, BlockPos pos, boolean on) {
-        for (ServerPlayer player : world.players()) {
-            FriendlyByteBuf buffer = createPacketBuf();
-            buffer.writeBlockPos(pos);
-            buffer.writeInt(state.getValue(CHANNEL));
-            buffer.writeBoolean(on);
-            NetworkManager.sendToPlayer(player, BeachpartyMessages.TURN_RADIO_S2C, buffer);
-        }
-    }
-
-    public static FriendlyByteBuf createPacketBuf() {
-        return new FriendlyByteBuf(Unpooled.buffer());
-    }
-
     @Override
     public @NotNull RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
@@ -207,10 +230,6 @@ public class RadioBlock extends Block {
         sendPacket(state, (ServerLevel) world, pos, false);
     }
 
-    public static Set<BlockPos> getAllRadioBlocks() {
-        return RADIO_BLOCKS;
-    }
-
     @Override
     public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         if (state.getValue(SEARCHING)) {
@@ -224,20 +243,6 @@ public class RadioBlock extends Block {
         }
     }
 
-    private static void spawnParticles(Level world, BlockPos pos) {
-        RandomSource random = world.random;
-
-        double d = (double) pos.getX() + random.nextDouble();
-        double e = pos.getY() + 0.5 + random.nextDouble();
-        double f = (double) pos.getZ() + random.nextDouble();
-
-        double red = random.nextDouble();
-        double green = random.nextDouble();
-        double blue = random.nextDouble();
-
-        world.addParticle(ParticleTypes.NOTE, d, e, f, red, green, blue);
-    }
-
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, ON, CHANNEL, SEARCHING);
@@ -246,11 +251,5 @@ public class RadioBlock extends Block {
     @Override
     public void appendHoverText(ItemStack itemStack, BlockGetter world, List<Component> tooltip, TooltipFlag tooltipContext) {
         tooltip.add(Component.translatable("tooltip.beachparty.canbeplaced").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))));
-    }
-
-    static {
-        ON = BooleanProperty.create("on");
-        CHANNEL = IntegerProperty.create("channel", 0, CHANNELS - 1);
-        SEARCHING = BooleanProperty.create("searching");
     }
 }

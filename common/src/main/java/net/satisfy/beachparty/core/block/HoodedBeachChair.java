@@ -18,7 +18,10 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -35,6 +38,116 @@ import java.util.function.Supplier;
 public class HoodedBeachChair extends LineConnectingBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF = EnumProperty.create("half", DoubleBlockHalf.class);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    private static final Supplier<VoxelShape> topRightShapeSupplier = () -> {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0, 0.8125, 0, 0.9375, 1, 0.75), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0, 0.75, 0.75, 0.9375, 0.9375, 0.9375), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0, 0, 0, 0.875, 0.8125, 0.0625), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.874375, 0, 0, 0.936875, 0.8125, 0.75), BooleanOp.OR);
+        return shape;
+    };
+    private static final Supplier<VoxelShape> topLeftShapeSupplier = () -> {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0.8125, 0, 1, 1, 0.75), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0.75, 0.75, 1, 0.9375, 0.9375), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0, 1, 0.8125, 0.0625), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.063125, 0, 0, 0.125625, 0.8125, 0.75), BooleanOp.OR);
+        return shape;
+    };
+    public static final Map<Direction, VoxelShape> TOP_RIGHT_SHAPE = Util.make(new HashMap<>(), map -> {
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            VoxelShape shape = direction == Direction.NORTH || direction == Direction.SOUTH
+                    ? topLeftShapeSupplier.get() : topRightShapeSupplier.get();
+            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, shape));
+        }
+    });
+    public static final Map<Direction, VoxelShape> TOP_LEFT_SHAPE = Util.make(new HashMap<>(), map -> {
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            VoxelShape shape = direction == Direction.NORTH || direction == Direction.SOUTH
+                    ? topRightShapeSupplier.get() : topLeftShapeSupplier.get();
+            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, shape));
+        }
+    });
+    private static final Supplier<VoxelShape> topMiddleShapeSupplier = () -> {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0, 0.8125, 0, 1, 1, 0.75), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0, 0.75, 0.75, 1, 0.9375, 0.9375), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0, 0, 0, 1, 0.8125, 0.0625), BooleanOp.OR);
+        return shape;
+    };
+    public static final Map<Direction, VoxelShape> TOP_MIDDLE_SHAPE = Util.make(new HashMap<>(), map -> {
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, topMiddleShapeSupplier.get()));
+        }
+    });
+    private static final Supplier<VoxelShape> bottomRightShapeSupplier = () -> {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0.875, 0, 0.1875, 1, 1, 1), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0, 0, 0.25, 0.875, 0.375, 0.8125), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0, 0.375, 0.25, 0.875, 0.5, 0.875), BooleanOp.OR);
+        return shape;
+    };
+    private static final Supplier<VoxelShape> bottomLeftShapeSupplier = () -> {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0, 0, 0.1875, 0.125, 1, 1), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.25, 1, 0.375, 0.8125), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.125, 0.375, 0.25, 1, 0.5, 0.875), BooleanOp.OR);
+        return shape;
+    };
+    public static final Map<Direction, VoxelShape> BOTTOM_RIGHT_SHAPE = Util.make(new HashMap<>(), map -> {
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            VoxelShape shape = direction == Direction.NORTH || direction == Direction.SOUTH
+                    ? bottomLeftShapeSupplier.get() : bottomRightShapeSupplier.get();
+            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, shape));
+        }
+    });
+    public static final Map<Direction, VoxelShape> BOTTOM_LEFT_SHAPE = Util.make(new HashMap<>(), map -> {
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            VoxelShape shape = direction == Direction.NORTH || direction == Direction.SOUTH
+                    ? bottomRightShapeSupplier.get() : bottomLeftShapeSupplier.get();
+            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, shape));
+        }
+    });
+    private static final Supplier<VoxelShape> bottomMiddleShapeSupplier = () -> {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0, 0, 0.25, 1, 0.375, 0.8125), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0, 0.375, 0.25, 1, 0.5, 0.875), BooleanOp.OR);
+        return shape;
+    };
+    public static final Map<Direction, VoxelShape> BOTTOM_MIDDLE_SHAPE = Util.make(new HashMap<>(), map -> {
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, bottomMiddleShapeSupplier.get()));
+        }
+    });
+    private static final Supplier<VoxelShape> topShapeSupplier = () -> {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0.8125, 0, 0.9375, 1, 0.75), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0.75, 0.75, 0.9375, 0.9375, 0.9375), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.875625, 0, 0, 0.938125, 0.8125, 0.75), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0, 0.875, 0.8125, 0.0625), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.063125, 0, 0, 0.125625, 0.8125, 0.75), BooleanOp.OR);
+        return shape;
+    };
+    public static final Map<Direction, VoxelShape> TOP_SHAPE = Util.make(new HashMap<>(), map -> {
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, topShapeSupplier.get()));
+        }
+    });
+    private static final Supplier<VoxelShape> bottomShapeSupplier = () -> {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0.875, 0, 0.1875, 1, 1, 1), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0, 0, 0.1875, 0.125, 1, 1), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.25, 0.875, 0.375, 0.8125), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.125, 0.375, 0.25, 0.875, 0.5, 0.875), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.125, 0.4375, 0.125, 0.875, 1, 0.1875), BooleanOp.OR);
+        return shape;
+    };
+    public static final Map<Direction, VoxelShape> BOTTOM_SHAPE = Util.make(new HashMap<>(), map -> {
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, bottomShapeSupplier.get()));
+        }
+    });
+
 
     public HoodedBeachChair(Properties settings) {
         super(settings);
@@ -205,7 +318,6 @@ public class HoodedBeachChair extends LineConnectingBlock {
         super.destroy(world, pos, state);
     }
 
-
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction direction = state.getValue(FACING);
@@ -228,131 +340,4 @@ public class HoodedBeachChair extends LineConnectingBlock {
             };
         }
     }
-
-
-    private static final Supplier<VoxelShape> topRightShapeSupplier = () -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0, 0.8125, 0, 0.9375, 1, 0.75), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0.75, 0.75, 0.9375, 0.9375, 0.9375), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0, 0, 0.875, 0.8125, 0.0625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.874375, 0, 0, 0.936875, 0.8125, 0.75), BooleanOp.OR);
-        return shape;
-    };
-
-    private static final Supplier<VoxelShape> topLeftShapeSupplier = () -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.8125, 0, 1, 1, 0.75), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.75, 0.75, 1, 0.9375, 0.9375), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0, 1, 0.8125, 0.0625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.063125, 0, 0, 0.125625, 0.8125, 0.75), BooleanOp.OR);
-        return shape;
-    };
-
-    private static final Supplier<VoxelShape> topMiddleShapeSupplier = () -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0, 0.8125, 0, 1, 1, 0.75), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0.75, 0.75, 1, 0.9375, 0.9375), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0, 0, 1, 0.8125, 0.0625), BooleanOp.OR);
-        return shape;
-    };
-
-    private static final Supplier<VoxelShape> bottomRightShapeSupplier = () -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.875, 0, 0.1875, 1, 1, 1), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0, 0.25, 0.875, 0.375, 0.8125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0.375, 0.25, 0.875, 0.5, 0.875), BooleanOp.OR);
-        return shape;
-    };
-
-    private static final Supplier<VoxelShape> bottomLeftShapeSupplier = () -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0, 0, 0.1875, 0.125, 1, 1), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.25, 1, 0.375, 0.8125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.125, 0.375, 0.25, 1, 0.5, 0.875), BooleanOp.OR);
-        return shape;
-    };
-
-    private static final Supplier<VoxelShape> bottomMiddleShapeSupplier = () -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0, 0, 0.25, 1, 0.375, 0.8125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0.375, 0.25, 1, 0.5, 0.875), BooleanOp.OR);
-        return shape;
-    };
-
-    private static final Supplier<VoxelShape> topShapeSupplier = () -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.8125, 0, 0.9375, 1, 0.75), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.75, 0.75, 0.9375, 0.9375, 0.9375), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.875625, 0, 0, 0.938125, 0.8125, 0.75), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0, 0.875, 0.8125, 0.0625), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.063125, 0, 0, 0.125625, 0.8125, 0.75), BooleanOp.OR);
-        return shape;
-    };
-
-    public static final Map<Direction, VoxelShape> TOP_SHAPE = Util.make(new HashMap<>(), map -> {
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, topShapeSupplier.get()));
-        }
-    });
-
-
-    private static final Supplier<VoxelShape> bottomShapeSupplier = () -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.875, 0, 0.1875, 1, 1, 1), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0, 0.1875, 0.125, 1, 1), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.25, 0.875, 0.375, 0.8125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.125, 0.375, 0.25, 0.875, 0.5, 0.875), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.125, 0.4375, 0.125, 0.875, 1, 0.1875), BooleanOp.OR);
-        return shape;
-    };
-
-    public static final Map<Direction, VoxelShape> BOTTOM_SHAPE = Util.make(new HashMap<>(), map -> {
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, bottomShapeSupplier.get()));
-        }
-    });
-
-    public static final Map<Direction, VoxelShape> TOP_MIDDLE_SHAPE = Util.make(new HashMap<>(), map -> {
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, topMiddleShapeSupplier.get()));
-        }
-    });
-
-    public static final Map<Direction, VoxelShape> BOTTOM_MIDDLE_SHAPE = Util.make(new HashMap<>(), map -> {
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, bottomMiddleShapeSupplier.get()));
-        }
-    });
-
-    public static final Map<Direction, VoxelShape> TOP_RIGHT_SHAPE = Util.make(new HashMap<>(), map -> {
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-            VoxelShape shape = direction == Direction.NORTH || direction == Direction.SOUTH
-                    ? topLeftShapeSupplier.get() : topRightShapeSupplier.get();
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, shape));
-        }
-    });
-
-    public static final Map<Direction, VoxelShape> TOP_LEFT_SHAPE = Util.make(new HashMap<>(), map -> {
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-            VoxelShape shape = direction == Direction.NORTH || direction == Direction.SOUTH
-                    ? topRightShapeSupplier.get() : topLeftShapeSupplier.get();
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, shape));
-        }
-    });
-
-    public static final Map<Direction, VoxelShape> BOTTOM_RIGHT_SHAPE = Util.make(new HashMap<>(), map -> {
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-            VoxelShape shape = direction == Direction.NORTH || direction == Direction.SOUTH
-                    ? bottomLeftShapeSupplier.get() : bottomRightShapeSupplier.get();
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, shape));
-        }
-    });
-
-    public static final Map<Direction, VoxelShape> BOTTOM_LEFT_SHAPE = Util.make(new HashMap<>(), map -> {
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-            VoxelShape shape = direction == Direction.NORTH || direction == Direction.SOUTH
-                    ? bottomRightShapeSupplier.get() : bottomLeftShapeSupplier.get();
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, shape));
-        }
-    });
 }

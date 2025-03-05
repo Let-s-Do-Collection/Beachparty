@@ -1,8 +1,8 @@
 package net.satisfy.beachparty;
 
+import dev.architectury.hooks.item.tool.AxeItemHooks;
 import net.satisfy.beachparty.core.event.CommonEvents;
 import net.satisfy.beachparty.core.registry.*;
-import dev.architectury.hooks.item.tool.AxeItemHooks;
 
 public class Beachparty {
     public static final String MOD_ID = "beachparty";

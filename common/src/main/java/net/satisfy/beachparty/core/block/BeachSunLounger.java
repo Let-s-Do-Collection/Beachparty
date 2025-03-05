@@ -69,24 +69,21 @@ public class BeachSunLounger extends BedBlock {
         shape = Shapes.or(shape, Shapes.box(0.1875, 0, 0.875, 0.3125, 0.25, 1));
         return shape;
     };
-
-    private static final Supplier<VoxelShape> topShapeDownSupplier = () -> {
-        VoxelShape shape = Shapes.empty();
-          shape = Shapes.or(shape, Shapes.box(0, 0.25, 0, 0.375, 0.375, 1));
-          shape = Shapes.or(shape, Shapes.box(0, 0.36875, 0.0625, 0.25, 0.49375, 0.9375));
-          shape = Shapes.or(shape, Shapes.box(0.1875, 0, 0, 0.3125, 0.25, 0.125));
-          shape = Shapes.or(shape, Shapes.box(0.1875, 0, 0.875, 0.3125, 0.25, 1));
-          shape = Shapes.or(shape, Shapes.box(0.25, 0.36875, 0.0625, 0.9375, 0.49375, 0.9375));
-          shape = Shapes.or(shape, Shapes.box(0.375, 0.25, 0, 1, 0.375, 1));
-        return shape;
-    };
-
     public static final Map<Direction, VoxelShape> TOP_SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             map.put(direction, BeachpartyUtil.rotateShape(Direction.EAST, direction, topShapeSupplier.get()));
         }
     });
-
+    private static final Supplier<VoxelShape> topShapeDownSupplier = () -> {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.or(shape, Shapes.box(0, 0.25, 0, 0.375, 0.375, 1));
+        shape = Shapes.or(shape, Shapes.box(0, 0.36875, 0.0625, 0.25, 0.49375, 0.9375));
+        shape = Shapes.or(shape, Shapes.box(0.1875, 0, 0, 0.3125, 0.25, 0.125));
+        shape = Shapes.or(shape, Shapes.box(0.1875, 0, 0.875, 0.3125, 0.25, 1));
+        shape = Shapes.or(shape, Shapes.box(0.25, 0.36875, 0.0625, 0.9375, 0.49375, 0.9375));
+        shape = Shapes.or(shape, Shapes.box(0.375, 0.25, 0, 1, 0.375, 1));
+        return shape;
+    };
     public static final Map<Direction, VoxelShape> TOP_SHAPE_DOWN = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             map.put(direction, BeachpartyUtil.rotateShape(Direction.EAST, direction, topShapeDownSupplier.get()));
@@ -102,15 +99,6 @@ public class BeachSunLounger extends BedBlock {
                 .setValue(OCCUPIED, false));
     }
 
-    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        Direction direction = state.getValue(FACING);
-        if (state.getValue(PART) == BedPart.HEAD) {
-            return state.getValue(DOWN) ? TOP_SHAPE_DOWN.get(direction) : TOP_SHAPE.get(direction);
-        } else {
-            return BOTTOM_SHAPE.get(direction);
-        }
-    }
-
     private static Direction getDirectionTowardsOtherPart(BedPart part, Direction direction) {
         return part == BedPart.FOOT ? direction : direction.getOpposite();
     }
@@ -118,6 +106,15 @@ public class BeachSunLounger extends BedBlock {
     public static Direction getOppositePartDirection(BlockState state) {
         Direction direction = state.getValue(FACING);
         return state.getValue(PART) == BedPart.HEAD ? direction.getOpposite() : direction;
+    }
+
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        Direction direction = state.getValue(FACING);
+        if (state.getValue(PART) == BedPart.HEAD) {
+            return state.getValue(DOWN) ? TOP_SHAPE_DOWN.get(direction) : TOP_SHAPE.get(direction);
+        } else {
+            return BOTTOM_SHAPE.get(direction);
+        }
     }
 
     public @NotNull BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
@@ -266,5 +263,5 @@ public class BeachSunLounger extends BedBlock {
         });
         return InteractionResult.SUCCESS;
     }
- }
+}
 

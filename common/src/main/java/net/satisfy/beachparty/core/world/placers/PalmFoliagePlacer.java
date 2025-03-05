@@ -23,33 +23,6 @@ public class PalmFoliagePlacer extends FoliagePlacer {
         super(pRadius, pOffset);
     }
 
-    @Override
-    protected @NotNull FoliagePlacerType<?> type() {
-        return PlacerTypesRegistry.PALM_FOLIAGE_PLACER.get();
-    }
-
-    @Override
-    protected void createFoliage(LevelSimulatedReader pLevel, FoliageSetter foliageSetter, RandomSource pRandom, TreeConfiguration pConfig, int i, FoliageAttachment pAttachment, int j, int k, int l) {
-        BlockPos startingPos = pAttachment.pos();
-
-        tryPlaceLeaf(pLevel, foliageSetter, pRandom, pConfig, startingPos);
-
-        createQuadrant(Direction.NORTH, startingPos, pLevel, foliageSetter, pRandom, pConfig);
-        createQuadrant(Direction.EAST, startingPos, pLevel, foliageSetter, pRandom, pConfig);
-        createQuadrant(Direction.SOUTH, startingPos, pLevel, foliageSetter, pRandom, pConfig);
-        createQuadrant(Direction.WEST, startingPos, pLevel, foliageSetter, pRandom, pConfig);
-    }
-
-    @Override
-    public int foliageHeight(RandomSource pRandom, int pHeight, TreeConfiguration pConfig) {
-        return 0;
-    }
-
-    @Override
-    protected boolean shouldSkipLocation(RandomSource pRandom, int pLocalX, int pLocalY, int pLocalZ, int pRange, boolean pLarge) {
-        return false;
-    }
-
     private static void createQuadrant(Direction direction, BlockPos startingPos, LevelSimulatedReader pLevel, FoliagePlacer.FoliageSetter foliageSetter, RandomSource pRandom, TreeConfiguration pConfig) {
         BlockPos.MutableBlockPos pos = startingPos.mutable();
 
@@ -85,5 +58,32 @@ public class PalmFoliagePlacer extends FoliagePlacer {
             tryPlaceLeaf(pLevel, foliageSetter, pRandom, pConfig, pos);
             pos.move(Direction.DOWN);
         }
+    }
+
+    @Override
+    protected @NotNull FoliagePlacerType<?> type() {
+        return PlacerTypesRegistry.PALM_FOLIAGE_PLACER.get();
+    }
+
+    @Override
+    protected void createFoliage(LevelSimulatedReader pLevel, FoliageSetter foliageSetter, RandomSource pRandom, TreeConfiguration pConfig, int i, FoliageAttachment pAttachment, int j, int k, int l) {
+        BlockPos startingPos = pAttachment.pos();
+
+        tryPlaceLeaf(pLevel, foliageSetter, pRandom, pConfig, startingPos);
+
+        createQuadrant(Direction.NORTH, startingPos, pLevel, foliageSetter, pRandom, pConfig);
+        createQuadrant(Direction.EAST, startingPos, pLevel, foliageSetter, pRandom, pConfig);
+        createQuadrant(Direction.SOUTH, startingPos, pLevel, foliageSetter, pRandom, pConfig);
+        createQuadrant(Direction.WEST, startingPos, pLevel, foliageSetter, pRandom, pConfig);
+    }
+
+    @Override
+    public int foliageHeight(RandomSource pRandom, int pHeight, TreeConfiguration pConfig) {
+        return 0;
+    }
+
+    @Override
+    protected boolean shouldSkipLocation(RandomSource pRandom, int pLocalX, int pLocalY, int pLocalZ, int pRange, boolean pLarge) {
+        return false;
     }
 }

@@ -10,12 +10,18 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.*;
-import net.minecraft.world.phys.shapes.*;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.satisfy.beachparty.core.block.entity.BeachGoalBlockEntity;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
@@ -30,6 +36,31 @@ import java.util.function.Supplier;
 @SuppressWarnings("deprecation")
 public class BeachGoalBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0, 0.1875, 0.1875, 0.625, 0.3125), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.8125, 0, 0.1875, 0.9375, 0.625, 0.3125), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0.625, 0.1875, 0.9375, 0.75, 0.3125), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0, 0.6875, 0.9375, 0.125, 0.8125), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0, 0.3125, 0.1875, 0.125, 0.6875), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.8125, 0, 0.3125, 0.9375, 0.125, 0.6875), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.125, 0.125, 0.3125, 0.1875, 0.625, 0.6875), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.8125, 0.125, 0.3125, 0.875, 0.625, 0.6875), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.125, 0.125, 0.6875, 0.875, 0.625, 0.75), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.125, 0.625, 0.3125, 0.875, 0.6875, 0.75), BooleanOp.OR);
+        return shape;
+    };
+    public static final Map<Direction, VoxelShape> SHAPE = net.minecraft.Util.make(new HashMap<>(), map -> {
+        for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
+            map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
+        }
+    });
+    private static final Supplier<VoxelShape> detectionShapeSupplier = () -> Shapes.box(0.125, 0, 0.1875, 0.875, 0.6875, 0.75);
+    public static final Map<Direction, VoxelShape> DETECTION_SHAPE = net.minecraft.Util.make(new HashMap<>(), map -> {
+        for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
+            map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, detectionShapeSupplier.get()));
+        }
+    });
 
     public BeachGoalBlock(BlockBehaviour.Properties properties) {
         super(properties.isRedstoneConductor((state, world, pos) -> false));
@@ -55,35 +86,6 @@ public class BeachGoalBlock extends BaseEntityBlock {
     public @NotNull BlockState mirror(BlockState state, Mirror mirrorIn) {
         return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
     }
-
-    private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0, 0.1875, 0.1875, 0.625, 0.3125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.8125, 0, 0.1875, 0.9375, 0.625, 0.3125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0.625, 0.1875, 0.9375, 0.75, 0.3125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0, 0.6875, 0.9375, 0.125, 0.8125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.0625, 0, 0.3125, 0.1875, 0.125, 0.6875), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.8125, 0, 0.3125, 0.9375, 0.125, 0.6875), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.125, 0.125, 0.3125, 0.1875, 0.625, 0.6875), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.8125, 0.125, 0.3125, 0.875, 0.625, 0.6875), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.125, 0.125, 0.6875, 0.875, 0.625, 0.75), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.125, 0.625, 0.3125, 0.875, 0.6875, 0.75), BooleanOp.OR);
-        return shape;
-    };
-
-    public static final Map<Direction, VoxelShape> SHAPE = net.minecraft.Util.make(new HashMap<>(), map -> {
-        for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
-        }
-    });
-
-    private static final Supplier<VoxelShape> detectionShapeSupplier = () -> Shapes.box(0.125, 0, 0.1875, 0.875, 0.6875, 0.75);
-
-    public static final Map<Direction, VoxelShape> DETECTION_SHAPE = net.minecraft.Util.make(new HashMap<>(), map -> {
-        for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, detectionShapeSupplier.get()));
-        }
-    });
 
     public VoxelShape getDetectionShape(BlockState state) {
         return DETECTION_SHAPE.get(state.getValue(FACING));

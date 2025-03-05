@@ -37,19 +37,22 @@ public class PalmChairBlock extends Block {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     private static final VoxelShape SHAPE_LOWER = makeLowerShape();
-    private static final VoxelShape SHAPE_UPPER = makeUpperShape();
-
     public static final Map<Direction, VoxelShape> SHAPE_LOWER_MAP = net.minecraft.Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
             map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, SHAPE_LOWER));
         }
     });
-
+    private static final VoxelShape SHAPE_UPPER = makeUpperShape();
     public static final Map<Direction, VoxelShape> SHAPE_UPPER_MAP = net.minecraft.Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
             map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, SHAPE_UPPER));
         }
     });
+
+    public PalmChairBlock(Properties settings) {
+        super(settings);
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HALF, DoubleBlockHalf.LOWER));
+    }
 
     private static VoxelShape makeLowerShape() {
         VoxelShape shape = Shapes.empty();
@@ -95,11 +98,6 @@ public class PalmChairBlock extends Block {
         BlockPos pos = context.getClickedPos();
         Level world = context.getLevel();
         return pos.getY() < world.getMaxBuildHeight() - 1 && world.getBlockState(pos.above()).canBeReplaced(context) ? this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(HALF, DoubleBlockHalf.LOWER) : null;
-    }
-
-    public PalmChairBlock(Properties settings) {
-        super(settings);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
     @Override

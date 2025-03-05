@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "part=bottom_left": {
+      "model": "beachparty:block/tall_beach_goal_bottom_left"
+    },
+    "part=bottom_right": {
+      "model": "beachparty:block/tall_beach_goal_bottom_right"
+    },
+    "part=top_left": {
+      "model": "beachparty:block/tall_beach_goal_top_left"
+    },
+    "part=top_right": {
+      "model": "beachparty:block/tall_beach_goal_top_right"
+    }
+  }
+}

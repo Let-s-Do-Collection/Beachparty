@@ -41,14 +41,14 @@ public class TallPalmTorchBlock extends TorchBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
+    public static BlockState withWaterloggedState(LevelReader world, BlockPos pos, BlockState state) {
+        return state.hasProperty(BlockStateProperties.WATERLOGGED) ? state.setValue(BlockStateProperties.WATERLOGGED, world.isWaterAt(pos)) : state;
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public @NotNull VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return state.getValue(HALF) == DoubleBlockHalf.UPPER ? TOP_SHAPE : BOTTOM_SHAPE;
-    }
-
-    public static BlockState withWaterloggedState(LevelReader world, BlockPos pos, BlockState state) {
-        return state.hasProperty(BlockStateProperties.WATERLOGGED) ? state.setValue(BlockStateProperties.WATERLOGGED, world.isWaterAt(pos)) : state;
     }
 
     @Override

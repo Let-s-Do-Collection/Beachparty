@@ -12,19 +12,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.satisfy.beachparty.core.block.BeachGoalBlock;
 import net.satisfy.beachparty.core.entity.BeachBallEntity;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import org.joml.Vector3d;
+
 import java.util.List;
 
 public class BeachGoalBlockEntity extends BlockEntity {
+    private static final int PRESENCE_THRESHOLD = 10;
     private boolean hasBeachBall = false;
     private int ballPresenceCounter = 0;
-    private static final int PRESENCE_THRESHOLD = 10;
 
     public BeachGoalBlockEntity(BlockPos pos, BlockState state) {
         super(EntityTypeRegistry.BEACH_GOAL_BLOCK_ENTITY.get(), pos, state);
@@ -66,7 +67,7 @@ public class BeachGoalBlockEntity extends BlockEntity {
 
     private void fireRockets(ServerLevel world, BlockPos pos) {
         int rocketCount = world.random.nextInt(5) + 3;
-        int[][] colorOptions = new int[][] { { 0xADD8E6 }, { 0xFFFFFF }, { 0xF4A460 } };
+        int[][] colorOptions = new int[][]{{0xADD8E6}, {0xFFFFFF}, {0xF4A460}};
         for (int i = 0; i < rocketCount; i++) {
             double dx = (world.random.nextDouble() - 0.5) * 0.2;
             double dz = (world.random.nextDouble() - 0.5) * 0.2;

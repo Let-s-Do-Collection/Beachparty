@@ -2,6 +2,13 @@ package net.satisfy.beachparty.core.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -18,19 +25,33 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 
 import java.util.function.Supplier;
 
 public class CocktailBlock extends Block {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 3);
+    public static final VoxelShape SWEETBERRIES_COCKTAIL_SHAPE = Shapes.or(
+            Shapes.box(0.375, 0.0, 0.375, 0.625, 0.3125, 0.625),
+            Shapes.box(0.3125, 0.3125, 0.3125, 0.6875, 0.75, 0.6875)
+    );
+    public static final VoxelShape MELON_COCKTAIL_SHAPE = Shapes.or(
+            Shapes.box(0.375, 0.0, 0.375, 0.625, 0.0625, 0.625),
+            Shapes.box(0.4375, 0.0625, 0.4375, 0.5625, 0.375, 0.5625),
+            Shapes.box(0.3125, 0.375, 0.3125, 0.6875, 0.75, 0.6875)
+    );
+    public static final VoxelShape COCONUT_COCKTAIL_SHAPE = Shapes.box(0.25, 0.0, 0.25, 0.75, 0.5, 0.75);
+    public static final VoxelShape PUMPKIN_COCKTAIL_SHAPE = Shapes.box(0.25, 0.0, 0.25, 0.75, 0.625, 0.75);
+    public static final VoxelShape HONEY_COCKTAIL_SHAPE = Shapes.or(
+            Shapes.box(0.375, 0.0, 0.375, 0.625, 0.0625, 0.625),
+            Shapes.box(0.4375, 0.0625, 0.4375, 0.5625, 0.25, 0.5625),
+            Shapes.box(0.3125, 0.25, 0.3125, 0.6875, 0.8125, 0.6875)
+    );
+    public static final VoxelShape COCOA_COCKTAIL_SHAPE = Shapes.or(
+            Shapes.box(0.375, 0.0, 0.375, 0.625, 0.0625, 0.625),
+            Shapes.box(0.4375, 0.0625, 0.4375, 0.5625, 0.375, 0.5625),
+            Shapes.box(0.3125, 0.375, 0.3125, 0.6875, 0.75, 0.6875)
+    );
     private final MobEffect effect;
     private final int effectDuration;
     private final Supplier<VoxelShape> shapeSupplier;
@@ -77,32 +98,5 @@ public class CocktailBlock extends Block {
         }
         return InteractionResult.SUCCESS;
     }
-
-    public static final VoxelShape SWEETBERRIES_COCKTAIL_SHAPE = Shapes.or(
-            Shapes.box(0.375, 0.0, 0.375, 0.625, 0.3125, 0.625),
-            Shapes.box(0.3125, 0.3125, 0.3125, 0.6875, 0.75, 0.6875)
-    );
-
-    public static final VoxelShape MELON_COCKTAIL_SHAPE = Shapes.or(
-            Shapes.box(0.375, 0.0, 0.375, 0.625, 0.0625, 0.625),
-            Shapes.box(0.4375, 0.0625, 0.4375, 0.5625, 0.375, 0.5625),
-            Shapes.box(0.3125, 0.375, 0.3125, 0.6875, 0.75, 0.6875)
-    );
-
-    public static final VoxelShape COCONUT_COCKTAIL_SHAPE = Shapes.box(0.25, 0.0, 0.25, 0.75, 0.5, 0.75);
-
-    public static final VoxelShape PUMPKIN_COCKTAIL_SHAPE = Shapes.box(0.25, 0.0, 0.25, 0.75, 0.625, 0.75);
-
-    public static final VoxelShape HONEY_COCKTAIL_SHAPE = Shapes.or(
-            Shapes.box(0.375, 0.0, 0.375, 0.625, 0.0625, 0.625),
-            Shapes.box(0.4375, 0.0625, 0.4375, 0.5625, 0.25, 0.5625),
-            Shapes.box(0.3125, 0.25, 0.3125, 0.6875, 0.8125, 0.6875)
-    );
-
-    public static final VoxelShape COCOA_COCKTAIL_SHAPE = Shapes.or(
-            Shapes.box(0.375, 0.0, 0.375, 0.625, 0.0625, 0.625),
-            Shapes.box(0.4375, 0.0625, 0.4375, 0.5625, 0.375, 0.5625),
-            Shapes.box(0.3125, 0.375, 0.3125, 0.6875, 0.75, 0.6875)
-    );
 
 }

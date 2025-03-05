@@ -81,7 +81,6 @@ public class LineConnectingBlock extends Block {
     }
 
     public BeachpartyUtil.LineConnectingType getType(BlockState state, BlockState left, BlockState right) {
-        // Ensure we only connect to blocks that are not air and that support the necessary properties
         if (left.getBlock() == Blocks.AIR || right.getBlock() == Blocks.AIR) {
             return BeachpartyUtil.LineConnectingType.NONE;
         }

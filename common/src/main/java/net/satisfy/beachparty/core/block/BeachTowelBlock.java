@@ -36,12 +36,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-
-import static net.satisfy.beachparty.core.util.BeachpartyUtil.rotateShape;
 
 @SuppressWarnings("deprecation")
 public class BeachTowelBlock extends BedBlock {
@@ -61,7 +60,7 @@ public class BeachTowelBlock extends BedBlock {
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-        return state.getValue(PART) == BedPart.HEAD ? rotateShape(Direction.NORTH, state.getValue(FACING), BEACH_TOWEL_SHAPE) : BEACH_TOWEL_SHAPE;
+        return state.getValue(PART) == BedPart.HEAD ? BeachpartyUtil.rotateShape(Direction.NORTH, state.getValue(FACING), BEACH_TOWEL_SHAPE) : BEACH_TOWEL_SHAPE;
     }
 
     @Override

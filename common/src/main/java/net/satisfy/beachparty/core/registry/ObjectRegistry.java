@@ -32,7 +32,6 @@ import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import net.satisfy.beachparty.core.util.BeachpartyWoodType;
 
-
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
