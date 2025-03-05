@@ -12,7 +12,6 @@ import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import java.util.List;
 
 public class SoundEventRegistry {
-
     public static Registrar<SoundEvent> SOUND_EVENTS = DeferredRegister.create(Beachparty.MOD_ID, Registries.SOUND_EVENT).getRegistrar();
 
     public static final RegistrySupplier<SoundEvent> RADIO_CLICK = create("radio_click");

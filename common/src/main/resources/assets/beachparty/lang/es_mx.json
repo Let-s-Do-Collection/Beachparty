@@ -156,5 +156,6 @@
   "tooltip.beachparty.effect.item.beachparty.trunks": "Increases Swim Speed by 8%",
   "tooltip.beachparty.toggle.hide": "§e[Right-Click]§r to hide 3D Model.",
   "tooltip.beachparty.toggle.show": "§e[Right-Click]§r to show 3D Model.",
-  "tooltip.beachparty.trinketsslot": "When equipped in Trinket Slot:"
+  "tooltip.beachparty.trinketsslot": "When equipped in Trinket Slot:",
+  "block.beachparty.palm_floorboard": "Palm Floorboard"
 }

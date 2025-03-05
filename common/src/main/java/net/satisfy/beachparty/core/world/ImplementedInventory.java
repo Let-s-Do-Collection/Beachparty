@@ -76,7 +76,7 @@ public interface ImplementedInventory extends WorldlyContainer {
     }
 
     @Override
-    default int @NotNull [] getSlotsForFace(Direction side) { // ALL SLOTS
+    default int @NotNull [] getSlotsForFace(Direction side) {
         int[] result = new int[getItems().size()];
         for (int i = 0; i < result.length; i++) {
             result[i] = i;

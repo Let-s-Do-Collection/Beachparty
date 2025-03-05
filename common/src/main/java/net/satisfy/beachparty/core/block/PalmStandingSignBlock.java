@@ -14,7 +14,7 @@ public class PalmStandingSignBlock extends StandingSignBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+    public @NotNull BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new PalmSignBlockEntity(pos, state);
     }
 }

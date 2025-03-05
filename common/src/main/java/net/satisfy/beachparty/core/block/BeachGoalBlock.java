@@ -94,7 +94,6 @@ public class BeachGoalBlock extends BaseEntityBlock {
         return SHAPE.get(state.getValue(FACING));
     }
 
-    // Korrigierte Methode
     @Override
     public @NotNull VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(FACING));

@@ -19,7 +19,9 @@
 - "Message in a Bottle" are now spawning while near water or beaches.
 - Deck Chair has been renamed to Sun Lounger – the backrest can now be adjusted, and it can be used for sleeping at night (without setting a spawn point).
 - The FloatyBoat now has its own model.
+- Added new Music to the Radio.
 - SeaShells no longer have a CollisionShape.
+- Pool Noodle doesnt deal any damage anymore
 - Zombies like Sandcastles! They will walk towards any SandCastle within 12 Blocks and try to trample it. 
 - Increased the crafting result for Palm Tables from "1" to "2".
 - Increased the crafting result for Beach Chairs from "1" to "2".
@@ -33,6 +35,8 @@
 - Armor pieces found in chests have random colors.
 - Sunglasses no longer use mixels.
 - Config for a few features. Theres still a lot of potential though. 
+- Support for JEI Effect Description.
+- Support for Diet.
 
 ### **Bug Fixes**
 - Wheat can now be properly dried but has been renamed to Thatch and given a new texture.
@@ -41,7 +45,7 @@
     - In other biomes, it reverts back into a hay bale.
     - A clay ball can prevent it from drying.
     - Using a water bottle resets the drying process.
-- The radio no longer disconnects players in multiplayer.
+- The radio no longer disconnects players in multiplayer. 
 - Tall Palm Torch now also drops when breaking the bottom part
 - Sandwaves will now also spawn when using Forge.
 

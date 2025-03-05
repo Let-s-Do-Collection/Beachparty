@@ -4,6 +4,7 @@ import dev.emi.trinkets.api.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -14,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.satisfy.beachparty.core.registry.MobEffectRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
-import org.joml.Vector3d;
 
 import java.util.Map;
 import java.util.Optional;
@@ -65,8 +65,9 @@ public class BeachpartyTrinket {
         @Override
         public void onEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
             if (entity instanceof Player player && fireDamageReduction > 0) {
-                if (!player.isInvulnerableTo(player.level().damageSources().onFire())) {
-                    player.hurt(player.level().damageSources().onFire(), 1 - fireDamageReduction);
+                float damage = Math.max(0, 1 - fireDamageReduction);
+                if (damage > 0 && !player.isInvulnerableTo(player.level().damageSources().inFire())) {
+                    player.hurt(player.level().damageSources().inFire(), damage);
                 }
             }
         }
@@ -99,7 +100,7 @@ public class BeachpartyTrinket {
         public void onEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.onEquip(stack, slot, entity);
             if (entity instanceof Player player) {
-                player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), -1, 0, false, false));
+                player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), Integer.MAX_VALUE, 0, false, false));
             }
         }
 
@@ -116,13 +117,15 @@ public class BeachpartyTrinket {
             super.tick(stack, slot, entity);
             if (entity instanceof Player player) {
                 if (!player.hasEffect(MobEffectRegistry.OCEAN_WALK.get())) {
-                    player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), -1, 0, false, false));
+                    player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), Integer.MAX_VALUE, 0, false, false));
                 }
             }
         }
     }
 
-    public static class RubberRingTrinket extends BaseTrinket {
+    public static class RubberRingTrinket extends BeachpartyTrinket.BaseTrinket {
+        private static final Random RANDOM = new Random();
+
         public RubberRingTrinket() {
             super(0,
                     ObjectRegistry.RUBBER_RING_AXOLOTL.get(),
@@ -143,22 +146,12 @@ public class BeachpartyTrinket {
                 }
 
                 Vec3 motion = player.getDeltaMovement();
-                double targetUpwardSpeed = 0.3;
-                double newY = motion.y;
-                if (motion.y < targetUpwardSpeed) {
-                    newY += 0.01;
-                    if (newY > targetUpwardSpeed) newY = targetUpwardSpeed;
-                }
+                double newY = Math.min(motion.y + 0.01, 0.3);
+                Vec3 newMotion = motion.multiply(1.17, 1, 1.17).with(Direction.Axis.Y, newY);
 
-                double normalSpeed = 0.17;
-                double maxSpeed = normalSpeed * 1.17;
-                double speedMultiplier = 1.17;
-                Vec3 newMotion = new Vec3(motion.x * speedMultiplier, newY, motion.z * speedMultiplier);
-
-                double currentSpeed = Math.sqrt(newMotion.x * newMotion.x + newMotion.z * newMotion.z);
-                if (currentSpeed > maxSpeed) {
-                    double scale = maxSpeed / currentSpeed;
-                    newMotion = new Vec3(newMotion.x * scale, newY, newMotion.z * scale);
+                double maxSpeed = 0.17 * 1.17;
+                if (newMotion.horizontalDistance() > maxSpeed) {
+                    newMotion = newMotion.normalize().scale(maxSpeed).with(Direction.Axis.Y, newY);
                 }
 
                 player.setDeltaMovement(newMotion);
@@ -173,43 +166,54 @@ public class BeachpartyTrinket {
                 }
 
                 Vec3 look = player.getLookAngle();
-                Vector3d lookJ = new Vector3d(look.x, 0, look.z);
-                if (lookJ.length() == 0) lookJ.set(1, 0, 0);
-                Vector3d left = new Vector3d();
-                new Vector3d(0, 1, 0).cross(lookJ, left).normalize();
+                Vec3 lookJ = new Vec3(look.x, 0, look.z);
+                if (lookJ.lengthSqr() == 0) lookJ = new Vec3(1, 0, 0);
+                Vec3 left = lookJ.cross(new Vec3(0, 1, 0)).normalize();
                 double offset = 0.5;
-                double px = player.getX();
-                double py = player.getY() + player.getEyeHeight() - 0.5;
-                double pz = player.getZ();
-                Vector3d leftPos = new Vector3d(px, py, pz).add(new Vector3d(left).mul(offset));
-                Vector3d rightPos = new Vector3d(px, py, pz).sub(new Vector3d(left).mul(offset));
+                Vec3 leftPos = player.position().add(left.scale(offset)).add(0, 0.8, 0);
+                Vec3 rightPos = player.position().subtract(left.scale(offset)).add(0, 0.8, 0);
 
                 spawnWaterParticles(player, leftPos, rightPos);
             }
         }
 
-
-
-        private void spawnWaterParticles(Player player, Vector3d leftPos, Vector3d rightPos) {
-            Random random = new Random();
+        private void spawnWaterParticles(Player player, Vec3 leftPos, Vec3 rightPos) {
             double spread = 0.2;
-            if (player.getDeltaMovement().lengthSqr() > 0.005) {
+            double motionThreshold = 0.005;
+
+            if (player.getDeltaMovement().lengthSqr() > motionThreshold) {
                 for (int i = 0; i < 3; i++) {
-                    spawnParticlePair(player, ParticleTypes.SPLASH, leftPos, rightPos, random, spread);
-                    spawnParticlePair(player, ParticleTypes.BUBBLE_POP, leftPos, rightPos, random, spread);
+                    spawnParticlePair(player, ParticleTypes.SPLASH, leftPos, rightPos, spread);
+                    spawnParticlePair(player, ParticleTypes.BUBBLE_POP, leftPos, rightPos, spread);
                 }
-            } else if (player.level().getGameTime() % 40L == 0L) {
-                for (int i = 0; i < 2; i++) {
-                    spawnParticlePair(player, ParticleTypes.SPLASH, leftPos, rightPos, random, spread);
+            } else if (player.level().getGameTime() % 20L == 0L) {
+                for (int i = 0; i < 5; i++) {
+                    spawnRandomSplash(player, spread);
                 }
             }
         }
 
-        private void spawnParticlePair(Player player, ParticleOptions particle, Vector3d leftPos, Vector3d rightPos, Random random, double spread) {
-            player.level().addParticle(particle, leftPos.x + (random.nextDouble() * spread - spread / 2), leftPos.y + (random.nextDouble() * spread - spread / 2), leftPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
-            player.level().addParticle(particle, rightPos.x + (random.nextDouble() * spread - spread / 2), rightPos.y + (random.nextDouble() * spread - spread / 2), rightPos.z + (random.nextDouble() * spread - spread / 2), 0, 0, 0);
+        private void spawnParticlePair(Player player, ParticleOptions particle, Vec3 leftPos, Vec3 rightPos, double spread) {
+            spawnParticle(player, particle, leftPos, spread);
+            spawnParticle(player, particle, rightPos, spread);
         }
 
+        private void spawnParticle(Player player, ParticleOptions particle, Vec3 pos, double spread) {
+            player.level().addParticle(particle, pos.x + (RANDOM.nextDouble() * spread - spread / 2), pos.y + (RANDOM.nextDouble() * spread - spread / 2), pos.z + (RANDOM.nextDouble() * spread - spread / 2), 0, 0, 0);
+        }
+
+        private void spawnRandomSplash(Player player, double spread) {
+            double offset = 0.25;
+            double angle = RANDOM.nextDouble() * Math.PI * 2;
+            double xOffset = Math.cos(angle) * offset;
+            double zOffset = Math.sin(angle) * offset;
+
+            double x = player.getX() + xOffset;
+            double y = player.getY() + player.getEyeHeight() - 0.5 + (RANDOM.nextDouble() * spread - spread / 2);
+            double z = player.getZ() + zOffset;
+
+            player.level().addParticle(ParticleTypes.SPLASH, x, y, z, 0, 0, 0);
+        }
     }
 
     public static class SunglassesTrinket extends BaseTrinket {
@@ -220,21 +224,14 @@ public class BeachpartyTrinket {
 
     public static class SwimSuitTrinket extends BaseTrinket {
         public SwimSuitTrinket() {
-            super(0,
-                    ObjectRegistry.TRUNKS.get(),
-                    ObjectRegistry.BIKINI.get()
-            );
+            super(0, ObjectRegistry.TRUNKS.get(), ObjectRegistry.BIKINI.get());
         }
 
         @Override
         public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.tick(stack, slot, entity);
             if (entity instanceof Player player && player.isInWater() && player.isSwimming()) {
-                Vec3 vec3 = player.getDeltaMovement();
-                Vector3d vector3d = new Vector3d(vec3.x, vec3.y, vec3.z);
-                vector3d.x *= 1.08;
-                vector3d.z *= 1.08;
-                player.setDeltaMovement(new Vec3(vector3d.x, vector3d.y, vector3d.z));
+                player.setDeltaMovement(player.getDeltaMovement().multiply(1.08, 1, 1.08));
             }
         }
     }

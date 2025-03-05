@@ -6,6 +6,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.satisfy.beachparty.core.block.entity.PalmHangingSignBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class PalmWallHangingSignBlock extends WallHangingSignBlock {
     public PalmWallHangingSignBlock(Properties properties, WoodType type) {
@@ -13,7 +14,7 @@ public class PalmWallHangingSignBlock extends WallHangingSignBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public @NotNull BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new PalmHangingSignBlockEntity(pos, state);
     }
 }

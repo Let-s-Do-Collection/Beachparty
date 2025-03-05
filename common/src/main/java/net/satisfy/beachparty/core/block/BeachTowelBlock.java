@@ -184,7 +184,6 @@ public class BeachTowelBlock extends BedBlock {
         return super.getDrops(state, builder);
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return null;

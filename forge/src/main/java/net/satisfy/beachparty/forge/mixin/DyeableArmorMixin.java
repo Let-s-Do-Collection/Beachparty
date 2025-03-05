@@ -27,8 +27,8 @@ public abstract class DyeableArmorMixin extends DyeableArmorItem {
     @Shadow
     public abstract int getColor(@NotNull ItemStack stack);
 
-    @Unique
-    private ResourceLocation beachparty$getTexture_ = new ResourceLocation("default_texture_path");
+    @Shadow
+    private ResourceLocation getTexture;
 
     private DyeableArmorMixin(Type type, Properties properties) {
         super(null , type, properties);
@@ -56,6 +56,6 @@ public abstract class DyeableArmorMixin extends DyeableArmorItem {
     }
 
     public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return beachparty$getTexture_.toString();
+        return getTexture.toString();
     }
 }
