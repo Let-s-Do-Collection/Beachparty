@@ -1,18 +1,66 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "beachparty:block/beach_goal",
+    "part=bottom_left,facing=north": {
+      "model": "beachparty:block/beach_goal_bottom_left"
+    },
+    "part=bottom_left,facing=east": {
+      "model": "beachparty:block/beach_goal_bottom_left",
       "y": 90
     },
-    "facing=north": {
-      "model": "beachparty:block/beach_goal"
-    },
-    "facing=south": {
-      "model": "beachparty:block/beach_goal",
+    "part=bottom_left,facing=south": {
+      "model": "beachparty:block/beach_goal_bottom_left",
       "y": 180
     },
-    "facing=west": {
-      "model": "beachparty:block/beach_goal",
+    "part=bottom_left,facing=west": {
+      "model": "beachparty:block/beach_goal_bottom_left",
+      "y": 270
+    },
+
+    "part=bottom_right,facing=north": {
+      "model": "beachparty:block/beach_goal_bottom_right"
+    },
+    "part=bottom_right,facing=east": {
+      "model": "beachparty:block/beach_goal_bottom_right",
+      "y": 90
+    },
+    "part=bottom_right,facing=south": {
+      "model": "beachparty:block/beach_goal_bottom_right",
+      "y": 180
+    },
+    "part=bottom_right,facing=west": {
+      "model": "beachparty:block/beach_goal_bottom_right",
+      "y": 270
+    },
+
+    "part=top_left,facing=north": {
+      "model": "beachparty:block/beach_goal_top_left"
+    },
+    "part=top_left,facing=east": {
+      "model": "beachparty:block/beach_goal_top_left",
+      "y": 90
+    },
+    "part=top_left,facing=south": {
+      "model": "beachparty:block/beach_goal_top_left",
+      "y": 180
+    },
+    "part=top_left,facing=west": {
+      "model": "beachparty:block/beach_goal_top_left",
+      "y": 270
+    },
+
+    "part=top_right,facing=north": {
+      "model": "beachparty:block/beach_goal_top_right"
+    },
+    "part=top_right,facing=east": {
+      "model": "beachparty:block/beach_goal_top_right",
+      "y": 90
+    },
+    "part=top_right,facing=south": {
+      "model": "beachparty:block/beach_goal_top_right",
+      "y": 180
+    },
+    "part=top_right,facing=west": {
+      "model": "beachparty:block/beach_goal_top_right",
       "y": 270
     }
   }

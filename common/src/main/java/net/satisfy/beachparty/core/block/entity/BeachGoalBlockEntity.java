@@ -73,7 +73,7 @@ public class BeachGoalBlockEntity extends BlockEntity {
             double dz = (world.random.nextDouble() - 0.5) * 0.2;
             double dy = 1.2 + (world.random.nextDouble() - 0.5) * 0.1;
             double x = pos.getX() + 0.5;
-            double y = pos.getY() + 1.0;
+            double y = pos.getY() + 2.0;
             double z = pos.getZ() + 0.5;
             ItemStack fireworkItem = new ItemStack(Items.FIREWORK_ROCKET);
             CompoundTag fireworkTag = new CompoundTag();
