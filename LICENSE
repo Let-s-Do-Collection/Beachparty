@@ -10,9 +10,6 @@ Copyright (c) 2022-2024 satisfy
 
 ---
 
-The following file is an adaptation of BiomeMakeover, originally created by Lemonszz under the MIT license (2024):
-/common/src/main/resources/assets/beachparty/textures/banner/beachparty_banner.png
-
 All other files within this repository are subject to the license below.
 
 MIT License
@@ -44,7 +41,8 @@ SOFTWARE.
 This project includes third-party content under separate license terms:
 
 - **Music from Uppbeat**:
-License code: WKE4MDRCCLVO5HEU
+License code: 
+WKE4MDRCCLVO5HEU
 YIDYDY6RLYUSZBI7
 EF3FHKSSIRQAR7T7
 O9PNVK6IZLKMKRB9
