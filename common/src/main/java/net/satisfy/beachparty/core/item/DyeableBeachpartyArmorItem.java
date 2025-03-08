@@ -1,5 +1,6 @@
 package net.satisfy.beachparty.core.item;
 
+import dev.architectury.platform.Platform;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -64,21 +65,28 @@ public class DyeableBeachpartyArmorItem extends DyeableArmorItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, @NotNull List<Component> tooltip, TooltipFlag context) {
-        tooltip.add(Component.translatable("tooltip.beachparty.trinketsslot")
-                .withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFAF3E0))));
+        if (Platform.isFabric()) {
+            tooltip.add(Component.translatable("tooltip.beachparty.trinketsslot")
+                    .withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFAF3E0))));
+        } else if (Platform.isForge()) {
+            tooltip.add(Component.translatable("tooltip.beachparty.curiosslot")
+                    .withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFAF3E0))));
+        }
 
         tooltip.add(Component.translatable("tooltip.beachparty.effect." + this.getDescriptionId())
                 .withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xD4B483))));
 
         tooltip.add(Component.empty());
 
-        CompoundTag tag = stack.getOrCreateTag();
-        boolean isVisible = !tag.contains("Visible") || tag.getBoolean("Visible");
+        if (Platform.isFabric()) {
+            CompoundTag tag = stack.getOrCreateTag();
+            boolean isVisible = !tag.contains("Visible") || tag.getBoolean("Visible");
 
-        Component toggleText = isVisible
-                ? Component.translatable("tooltip.beachparty.toggle.hide").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x5CB85C)))
-                : Component.translatable("tooltip.beachparty.toggle.show").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x5CB85C)));
+            Component toggleText = isVisible
+                    ? Component.translatable("tooltip.beachparty.toggle.hide").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x5CB85C)))
+                    : Component.translatable("tooltip.beachparty.toggle.show").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x5CB85C)));
 
-        tooltip.add(toggleText);
+            tooltip.add(toggleText);
+        }
     }
 }

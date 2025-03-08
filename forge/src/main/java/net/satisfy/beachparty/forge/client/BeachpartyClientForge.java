@@ -16,6 +16,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.RegisterEvent;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.client.BeachPartyClient;
+import net.satisfy.beachparty.client.model.FloatyBoatModel;
 import net.satisfy.beachparty.core.entity.PalmBoatEntity;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.forge.client.integration.*;
@@ -47,8 +48,13 @@ public class BeachpartyClientForge {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         for (PalmBoatEntity.Type type : PalmBoatEntity.Type.values()) {
-            event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getModelLocation()), "main"), BoatModel::createBodyModel);
-            event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getChestModelLocation()), "main"), ChestBoatModel::createBodyModel);
+            if (type == PalmBoatEntity.Type.FLOATY) {
+                event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getModelLocation()), "main"), FloatyBoatModel::createBodyModel);
+                event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getChestModelLocation()), "main"), FloatyBoatModel::createBodyModel);
+            } else {
+                event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getModelLocation()), "main"), BoatModel::createBodyModel);
+                event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getChestModelLocation()), "main"), ChestBoatModel::createBodyModel);
+            }
         }
     }
 

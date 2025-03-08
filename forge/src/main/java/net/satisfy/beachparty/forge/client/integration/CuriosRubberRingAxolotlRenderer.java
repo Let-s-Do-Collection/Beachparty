@@ -39,7 +39,7 @@ public class CuriosRubberRingAxolotlRenderer implements ICurioRenderer {
 
         matrixStack.pushPose();
         if (livingEntity.isCrouching()) {
-            matrixStack.translate(-0.4F, -1.4F, -0.1F);
+            matrixStack.translate(-0.4F, -1.4F, -0.5F);
             matrixStack.mulPose(new Quaternionf().rotationX((float) Math.toRadians(20)));
         } else {
             matrixStack.translate(-0.4F, -1.5F, 0.4F);

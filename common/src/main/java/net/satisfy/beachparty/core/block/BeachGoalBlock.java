@@ -54,10 +54,11 @@ public class BeachGoalBlock extends BaseEntityBlock {
 
     private static VoxelShape makeBottomLeftShape() {
         VoxelShape shape = Shapes.empty();
-        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.6875, 1, 0.125, 0.8125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.1875, 0.125, 0.3125, 1, 1, 0.75), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.3125, 0.25, 0.125, 0.6875), BooleanOp.OR);
         shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.1875, 0.25, 1, 0.3125), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.6875, 1, 0.125, 0.8125), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.3125, 0.25, 0.125, 0.6875), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.1875, 0.125, 0.3125, 0.25, 1, 0.75), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.1875, 0.125, 0.6875, 1, 1, 0.75), BooleanOp.OR);
         return shape;
     }
 
@@ -66,7 +67,8 @@ public class BeachGoalBlock extends BaseEntityBlock {
         shape = Shapes.join(shape, Shapes.box(0.75, 0, 0.1875, 0.875, 1, 0.3125), BooleanOp.OR);
         shape = Shapes.join(shape, Shapes.box(0, 0, 0.6875, 0.875, 0.125, 0.8125), BooleanOp.OR);
         shape = Shapes.join(shape, Shapes.box(0.75, 0, 0.3125, 0.875, 0.125, 0.6875), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0.125, 0.3125, 0.8125, 1, 0.75), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.75, 0.125, 0.3125, 0.8125, 1, 0.75), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0, 0.125, 0.6875, 0.8125, 1, 0.75), BooleanOp.OR);
         return shape;
     }
 
@@ -74,7 +76,8 @@ public class BeachGoalBlock extends BaseEntityBlock {
         VoxelShape shape = Shapes.empty();
         shape = Shapes.join(shape, Shapes.box(0.125, 0, 0.1875, 0.25, 0.625, 0.3125), BooleanOp.OR);
         shape = Shapes.join(shape, Shapes.box(0.125, 0.625, 0.1875, 1, 0.75, 0.3125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0.1875, 0, 0.3125, 1, 0.6875, 0.75), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.1875, 0, 0.3125, 0.25, 0.625, 0.75), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.25, 0, 0.6875, 1, 0.625, 0.75), BooleanOp.OR);
         return shape;
     }
 
@@ -82,7 +85,8 @@ public class BeachGoalBlock extends BaseEntityBlock {
         VoxelShape shape = Shapes.empty();
         shape = Shapes.join(shape, Shapes.box(0.75, 0, 0.1875, 0.875, 0.625, 0.3125), BooleanOp.OR);
         shape = Shapes.join(shape, Shapes.box(0, 0.625, 0.1875, 0.875, 0.75, 0.3125), BooleanOp.OR);
-        shape = Shapes.join(shape, Shapes.box(0, 0, 0.3125, 0.8125, 0.6875, 0.75), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.75, 0, 0.3125, 0.8125, 0.625, 0.75), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0, 0, 0.6875, 0.75, 0.625, 0.75), BooleanOp.OR);
         return shape;
     }
 

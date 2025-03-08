@@ -23,7 +23,7 @@ public class BeachBallModel<T extends Entity> extends EntityModel<T> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition beach_ball = partdefinition.addOrReplaceChild("beach_ball", CubeListBuilder.create().texOffs(0, 20).addBox(-3.0F, -6.0F, -3.0F, 6.0F, 6.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+        PartDefinition beach_ball = partdefinition.addOrReplaceChild("beach_ball", CubeListBuilder.create().texOffs(0, 16).addBox(-12.0F, -8.0F, 4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 24.0F, -8.0F));
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }

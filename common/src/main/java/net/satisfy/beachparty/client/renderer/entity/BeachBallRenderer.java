@@ -19,13 +19,11 @@ public class BeachBallRenderer extends MobRenderer<BeachBallEntity, BeachBallMod
 
         return switch (name) {
             case "MissLilitu" -> new BeachpartyIdentifier("textures/entity/beach_ball_misslilitu.png");
-            case "Raymond" -> new BeachpartyIdentifier("textures/entity/beach_ball_raymond.png");
             case "CR-055" -> new BeachpartyIdentifier("textures/entity/beach_ball_cr055.png");
+            case "Jason" -> new BeachpartyIdentifier("textures/entity/beach_ball_jason.png");
             case "Satisfy" -> new BeachpartyIdentifier("textures/entity/beach_ball_satisfy.png");
             case "Nekonesse" -> new BeachpartyIdentifier("textures/entity/beach_ball_nekonesse.png");
-            case "Jason13" -> new BeachpartyIdentifier("textures/entity/beach_ball_jason13.png");
             case "MarbledNull" -> new BeachpartyIdentifier("textures/entity/beach_ball_marblednull.png");
-            case "TomHanks" -> new BeachpartyIdentifier("textures/entity/beach_ball_tomhanks.png");
             case "Steve" -> new BeachpartyIdentifier("textures/entity/beach_ball_steve.png");
             case "Pixar" -> new BeachpartyIdentifier("textures/entity/beach_ball_pixar.png");
             case "Dirt" -> new BeachpartyIdentifier("textures/entity/beach_ball_dirt.png");

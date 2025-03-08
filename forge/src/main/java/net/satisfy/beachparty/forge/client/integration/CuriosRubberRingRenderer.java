@@ -38,7 +38,7 @@ public class CuriosRubberRingRenderer implements ICurioRenderer {
 
         matrixStack.pushPose();
         if (livingEntity.isCrouching()) {
-            matrixStack.translate(01F, -1F, -1F);
+            matrixStack.translate(0.1F, -0.7F, -1F);
             matrixStack.mulPose(new Quaternionf().rotationX((float) Math.toRadians(20)));
         } else {
             matrixStack.translate(0.1F, -1.4F, -0.5F);

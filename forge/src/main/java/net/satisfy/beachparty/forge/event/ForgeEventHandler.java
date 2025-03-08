@@ -63,6 +63,8 @@ public class ForgeEventHandler {
     @SubscribeEvent
     public static void onLivingDamage(LivingDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
+        if (event.getSource() == null) return;
+
         if (!event.getSource().is(DamageTypes.ON_FIRE) && !event.getSource().is(DamageTypes.IN_FIRE)) return;
 
         float reduction = 0;
@@ -74,7 +76,7 @@ public class ForgeEventHandler {
         }
 
         if (reduction > 0) {
-            float newDamage = event.getAmount() * (1 - reduction);
+            float newDamage = event.getAmount() * (1 - Math.min(reduction, 1.0f));
             event.setAmount(newDamage);
         }
     }
