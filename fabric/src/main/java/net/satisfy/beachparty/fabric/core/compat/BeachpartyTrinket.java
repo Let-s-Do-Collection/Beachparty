@@ -1,6 +1,9 @@
 package net.satisfy.beachparty.fabric.core.compat;
 
 import dev.emi.trinkets.api.*;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -141,7 +144,8 @@ public class BeachpartyTrinket {
             if (!(entity instanceof Player player)) return;
 
             if (player.isInWater()) {
-                if (player instanceof LocalPlayer && Minecraft.getInstance().options.keyJump.isDown()) {
+                
+                if (shouldSkipDueToJumpKeyPress(player)) {
                     return;
                 }
 
@@ -175,6 +179,18 @@ public class BeachpartyTrinket {
 
                 spawnWaterParticles(player, leftPos, rightPos);
             }
+        }
+        
+        private boolean shouldSkipDueToJumpKeyPress(Player player) {
+            if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+                return checkJumpKeyOnClient(player);
+            }
+            return false;
+        }
+
+        @Environment(EnvType.CLIENT)
+        private boolean checkJumpKeyOnClient(Player player) {
+            return player instanceof LocalPlayer && Minecraft.getInstance().options.keyJump.isDown();
         }
 
         private void spawnWaterParticles(Player player, Vec3 leftPos, Vec3 rightPos) {
