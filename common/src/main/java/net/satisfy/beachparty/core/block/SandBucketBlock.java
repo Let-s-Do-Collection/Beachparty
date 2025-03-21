@@ -39,6 +39,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
+import net.satisfy.beachparty.core.util.SandCastleManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -302,6 +303,18 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
         protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
             builder.add(TALL_TOWER, RIGHT_TOWER, TOP_TOWER, LEFT_TOWER, PETRIFIED);
         }
+    }
+
+    @Override
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
+        SandCastleManager.registerSandCastle(pos);
+        super.setPlacedBy(world, pos, state, placer, itemStack);
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+        SandCastleManager.unregisterSandCastle(pos);
+        super.onRemove(state, world, pos, newState, isMoving);
     }
 
     public static class SandPileBlock extends SandBlock {
