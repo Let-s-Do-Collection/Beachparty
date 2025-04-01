@@ -1,4 +1,21 @@
-## [2.0.0.] - 2025.03.08
+## [2.0.1] - 2025.04.01
+
+**Added**
+
+**Changed**
+
+**Fixed**
+- Reduced MessageInABottleSpawner block scans to avoid server hangs
+- Missing Beachball Texture
+- Reduced Zombies ApproachSandcastleGoal tick usage
+- Exception caused when a Player on a Server wears a Rubber Ring and jumps into Water (Thanks to Christopher Stolworthy)
+- RadioBlock: fixed sounds continuing after block was broken or chunk unloaded
+- RadioBlock: fixed client disconnects caused by missing sound instances
+- RadioBlock: fixed overlapping/stacking of multiple tracks at once
+***
+
+
+## [2.0.0] - 2025.03.08
 
 ### **New & Updated Features, Misc**
 - Changed Release Channel to Beta

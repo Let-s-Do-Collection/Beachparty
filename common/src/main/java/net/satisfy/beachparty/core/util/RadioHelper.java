@@ -19,13 +19,11 @@ import java.util.Map;
 
 @Environment(EnvType.CLIENT)
 public class RadioHelper {
+
     private static final Map<BlockPos, List<SimpleSoundInstance>> soundInstances = new HashMap<>();
 
     public static void setPlaying(BlockPos pos, int channel, boolean play, int delay) {
         if (play) {
-            if (!soundInstances.containsKey(pos)) {
-                addSounds(pos);
-            }
             playSound(pos, channel, delay);
         } else {
             stopSounds(pos);
@@ -33,7 +31,9 @@ public class RadioHelper {
     }
 
     public static void tune(BlockPos pos, int channel) {
-        Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(SoundEventRegistry.RADIO_TUNE.get(), SoundSource.RECORDS, 1.0f, 1.0f, RandomSource.create(), pos));
+        Minecraft.getInstance().getSoundManager().play(
+                new SimpleSoundInstance(SoundEventRegistry.RADIO_TUNE.get(), SoundSource.RECORDS, 1.0f, 1.0f, RandomSource.create(), pos)
+        );
         stopSounds(pos);
         if (!soundInstances.containsKey(pos)) {
             addSounds(pos);
@@ -42,30 +42,40 @@ public class RadioHelper {
     }
 
     private static void playSound(BlockPos pos, int channel, int delay) {
+        stopSounds(pos);
+
+        if (!soundInstances.containsKey(pos)) {
+            addSounds(pos);
+        }
+
         SimpleSoundInstance soundInstance = getSound(pos, channel);
         if (soundInstance != null) {
             Minecraft.getInstance().getSoundManager().playDelayed(soundInstance, delay);
         }
-
     }
 
     private static void stopSounds(BlockPos pos) {
-        if (soundInstances.containsKey(pos)) {
-            for (SimpleSoundInstance soundInstance : soundInstances.get(pos)) {
-                Minecraft.getInstance().getSoundManager().stop(soundInstance);
+        List<SimpleSoundInstance> sounds = soundInstances.remove(pos);
+        if (sounds != null) {
+            for (SimpleSoundInstance sound : sounds) {
+                Minecraft.getInstance().getSoundManager().stop(sound);
             }
         }
     }
 
     private static void addSounds(BlockPos blockPos) {
-        List<SimpleSoundInstance> soundInstance = Lists.newArrayList();
+        List<SimpleSoundInstance> soundList = Lists.newArrayList();
         for (RegistrySupplier<SoundEvent> sound : SoundEventRegistry.RADIO_SOUNDS) {
-            soundInstance.add(new SimpleSoundInstance(sound.get().getLocation(), SoundSource.RECORDS, 0.6f, 1.0f, RandomSource.create(), true, 0, SoundInstance.Attenuation.LINEAR, blockPos.getX(), blockPos.getY(), blockPos.getZ(), false));
-            soundInstances.put(blockPos, soundInstance);
+            soundList.add(new SimpleSoundInstance(sound.get().getLocation(), SoundSource.RECORDS, 0.6f, 1.0f, RandomSource.create(), true, 0, SoundInstance.Attenuation.LINEAR, blockPos.getX(), blockPos.getY(), blockPos.getZ(), false
+            ));
         }
+        soundInstances.put(blockPos, soundList);
     }
 
     public static SimpleSoundInstance getSound(BlockPos pos, int channel) {
-        return soundInstances.get(pos).get(channel);
+        List<SimpleSoundInstance> list = soundInstances.get(pos);
+        if (list == null || list.isEmpty()) return null;
+        if (channel < 0 || channel >= list.size()) return null;
+        return list.get(channel);
     }
 }
