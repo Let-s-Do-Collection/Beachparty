@@ -11,8 +11,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.satisfy.beachparty.core.registry.SoundEventRegistry;
-import org.apache.commons.compress.utils.Lists;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +64,7 @@ public class RadioHelper {
     }
 
     private static void addSounds(BlockPos blockPos) {
-        List<SimpleSoundInstance> soundList = Lists.newArrayList();
+        List<SimpleSoundInstance> soundList = new ArrayList<>();
         for (RegistrySupplier<SoundEvent> sound : SoundEventRegistry.RADIO_SOUNDS) {
             soundList.add(new SimpleSoundInstance(sound.get().getLocation(), SoundSource.RECORDS, 0.6f, 1.0f, RandomSource.create(), true, 0, SoundInstance.Attenuation.LINEAR, blockPos.getX(), blockPos.getY(), blockPos.getZ(), false
             ));
