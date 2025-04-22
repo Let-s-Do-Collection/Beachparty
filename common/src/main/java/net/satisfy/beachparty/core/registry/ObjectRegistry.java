@@ -41,7 +41,6 @@ public class ObjectRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Beachparty.MOD_ID, Registries.BLOCK);
     public static final Registrar<Block> BLOCK_REGISTRAR = BLOCKS.getRegistrar();
 
-    public static final RegistrySupplier<Item> OVERGROWN_DISC = registerItem("overgrown_disc", () -> new RecordItem(1, SoundEventRegistry.OVER_THE_RAINBOW.get(), getSettings().stacksTo(1), 214));
     public static final RegistrySupplier<Item> COCONUT_OPEN = registerItem("coconut_open", () -> new Item(getSettings().food(Foods.CARROT)));
     public static final RegistrySupplier<Item> RAW_MUSSEL_MEAT = registerItem("raw_mussel_meat", () -> new Item(getSettings().food(Foods.POTATO)));
     public static final RegistrySupplier<Item> COOKED_MUSSEL_MEAT = registerItem("cooked_mussel_meat", () -> new Item(getSettings().food(Foods.BAKED_POTATO)));
@@ -128,6 +127,13 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> FLOATY_CHEST_BOAT = ITEMS.register("floaty_chest_boat", () -> new PalmBoatItem(true, PalmBoatEntity.Type.FLOATY, new Item.Properties()));
     public static final RegistrySupplier<Block> BEACHPARTY_BANNER = registerWithItem("beachparty_banner", () -> new CompletionistBannerBlock(BlockBehaviour.Properties.of().strength(1F).instrument(NoteBlockInstrument.BASS).noCollission().sound(SoundType.WOOD)));
     public static final RegistrySupplier<Block> BEACHPARTY_WALL_BANNER = registerWithoutItem("beachparty_wall_banner", () -> new CompletionistWallBannerBlock(BlockBehaviour.Properties.of().strength(1F).instrument(NoteBlockInstrument.BASS).noCollission().sound(SoundType.WOOD)));
+
+    public static final RegistrySupplier<Item> OVERGROWN_DISC = registerItem("overgrown_disc", () -> new RecordItem(1, SoundEventRegistry.OVER_THE_RAINBOW.get(), getSettings().stacksTo(1), 214));
+    public static final RegistrySupplier<Item> MUSIC_DISC_BEACHPARTY = registerItem("music_disc_beachparty", () -> new RecordItem(1, SoundEventRegistry.BEACHPARTY.get(), getSettings().stacksTo(1), 2400));
+    public static final RegistrySupplier<Item> MUSIC_DISC_CARIBBEAN_BEACH = registerItem("music_disc_caribbean_beach", () -> new RecordItem(1, SoundEventRegistry.CARIBBEAN_BEACH.get(), getSettings().stacksTo(1), 2400));
+    public static final RegistrySupplier<Item> MUSIC_DISC_PRIDELANDS = registerItem("music_disc_pridelands", () -> new RecordItem(1, SoundEventRegistry.PRIDELANDS.get(), getSettings().stacksTo(1), 2400));
+    public static final RegistrySupplier<Item> MUSIC_DISC_VOCALISTA = registerItem("music_disc_vocalista", () -> new RecordItem(1, SoundEventRegistry.VOCALISTA.get(), getSettings().stacksTo(1), 2400));
+    public static final RegistrySupplier<Item> MUSIC_DISC_WILD_VEINS = registerItem("music_disc_wild_veins", () -> new RecordItem(1, SoundEventRegistry.WILD_VEINS.get(), getSettings().stacksTo(1), 2400));
 
     static Item.Properties getSettings() {
         return getSettings(settings -> {

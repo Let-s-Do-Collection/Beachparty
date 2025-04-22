@@ -36,7 +36,7 @@ public class EntityTypeRegistry {
     public static final RegistrySupplier<BlockEntityType<BeachGoalBlockEntity>> BEACH_GOAL_BLOCK_ENTITY = registerBlockEntity("beach_goal", () -> BlockEntityType.Builder.of(BeachGoalBlockEntity::new, ObjectRegistry.BEACH_GOAL.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<WetHayBaleBlockEntity>> WET_HAY_BALE_BLOCK_ENTITY = registerBlockEntity("wet_hay_bale", () -> BlockEntityType.Builder.of(WetHayBaleBlockEntity::new, WET_HAY_BLOCK.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<CompletionistBannerEntity>> BEACHPARTY_BANNER = registerBlockEntity("beachparty_banner", () -> BlockEntityType.Builder.of(CompletionistBannerEntity::new, ObjectRegistry.BEACHPARTY_BANNER.get(), ObjectRegistry.BEACHPARTY_WALL_BANNER.get()).build(null));
-
+    public static final RegistrySupplier<BlockEntityType<RadioBlockEntity>> RADIO_BLOCK_ENTITY = registerBlockEntity("radio", () -> BlockEntityType.Builder.of(RadioBlockEntity::new, RADIO.get()).build(null));
 
     private static <T extends BlockEntityType<?>> RegistrySupplier<T> registerBlockEntity(final String path, final Supplier<T> type) {
         return BLOCK_ENTITY_TYPES.register(new BeachpartyIdentifier(path), type);

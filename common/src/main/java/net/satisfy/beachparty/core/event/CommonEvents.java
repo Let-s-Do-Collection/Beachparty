@@ -6,8 +6,6 @@ import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -27,7 +25,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.block.BeachParasolBlock;
-import net.satisfy.beachparty.core.block.RadioBlock;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,23 +32,12 @@ public class CommonEvents {
 
     public static void init() {
         LootEvent.MODIFY_LOOT_TABLE.register(CommonEvents::onModifyLootTable);
-        PlayerEvent.PLAYER_JOIN.register(CommonEvents::onPlayerJoin);
         PlayerEvent.ATTACK_ENTITY.register(CommonEvents::onPlayerAttack);
         EntityEvent.LIVING_HURT.register(CommonEvents::onLivingHurt);
     }
 
     public static void onModifyLootTable(@Nullable LootDataManager lootDataManager, ResourceLocation id, LootEvent.LootTableModificationContext ctx, boolean b) {
         LoottableInjector.InjectLoot(id, ctx);
-    }
-
-    private static void onPlayerJoin(ServerPlayer player) {
-        ServerLevel world = player.serverLevel();
-        for (BlockPos pos : RadioBlock.getAllRadioBlocks()) {
-            BlockState state = world.getBlockState(pos);
-            if (state.getBlock() instanceof RadioBlock && state.getValue(RadioBlock.ON)) {
-                RadioBlock.sendPacket(state, world, pos, true);
-            }
-        }
     }
 
     private static EventResult onPlayerAttack(Player player, Level level, Entity entity, InteractionHand hand, @Nullable EntityHitResult result) {

@@ -18,7 +18,6 @@ import net.satisfy.beachparty.client.renderer.block.PalmSignRenderer;
 import net.satisfy.beachparty.client.renderer.entity.BeachBallRenderer;
 import net.satisfy.beachparty.client.renderer.entity.ChairRenderer;
 import net.satisfy.beachparty.client.renderer.entity.PalmBoatRenderer;
-import net.satisfy.beachparty.core.networking.BeachpartyMessages;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
@@ -38,8 +37,6 @@ public class BeachPartyClient {
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_SIGN.get(), PalmSignRenderer::new);
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_HANGING_SIGN.get(), PalmHangingSignRenderer::new);
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_BANNER.get(), CompletionistBannerRenderer::new);
-
-        BeachpartyMessages.registerS2CPackets();
 
         BeachpartyUtil.registerColorArmor(TRUNKS.get(), 16715535);
         BeachpartyUtil.registerColorArmor(BIKINI.get(), 987135);
