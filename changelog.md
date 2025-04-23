@@ -1,12 +1,14 @@
-## [2.0.1] - 2025.04.01
+## [2.0.1] - 2025.04.23
 
 **Added**
+- All Songs being played by the Radio can now also be crafted and collected
 
 **Changed**
 
 **Fixed**
 - Reduced MessageInABottleSpawner block scans to avoid server hangs
 - Missing Beachball Texture
+- Missing Config Translations on Fabric
 - Reduced Zombies ApproachSandcastleGoal tick usage
 - Exception caused when a Player on a Server wears a Rubber Ring and jumps into Water (Thanks to Christopher Stolworthy)
 - RadioBlock: fixed sounds continuing after block was broken or chunk unloaded

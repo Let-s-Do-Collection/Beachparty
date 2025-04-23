@@ -7,16 +7,15 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.platform.PlatformHelper;
 import org.joml.Vector3d;
 
 public class MessageInABottleSpawner {
-    private static final int MAX_COUNT = 2;
-    private static final int SPAWN_INTERVAL = 6000;
     private static BlockPos lastValidSpawn = null;
     private static long lastSpawnTime = 0;
 
     @SuppressWarnings("deprecation")
-    private static void attemptSpawn(ServerLevel level) {
+    private static void attemptSpawn(ServerLevel level, int maxCount) {
         if (level.players().isEmpty()) return;
         RandomSource random = level.random;
         var player = level.players().get(random.nextInt(level.players().size()));
@@ -42,11 +41,11 @@ public class MessageInABottleSpawner {
 
             if (level.getBlockState(pos).getBlock() == ObjectRegistry.MESSAGE_IN_A_BOTTLE.get()) {
                 count++;
-                if (count >= MAX_COUNT) break;
+                if (count >= maxCount) break;
             }
         }
 
-        if (count == MAX_COUNT) return;
+        if (count >= maxCount) return;
 
         BlockState state = ObjectRegistry.MESSAGE_IN_A_BOTTLE.get().defaultBlockState();
         Vector3d vec = new Vector3d(lastValidSpawn.getX() + 0.5, lastValidSpawn.getY(), lastValidSpawn.getZ() + 0.5);
@@ -73,6 +72,9 @@ public class MessageInABottleSpawner {
     }
 
     public static void tick(ServerLevel level) {
-        if (level.getGameTime() % SPAWN_INTERVAL == 0) attemptSpawn(level);
+        if (!PlatformHelper.allowBottleSpawning()) return;
+        int interval = PlatformHelper.getBottleSpawnInterval();
+        int maxCount = PlatformHelper.getBottleMaxCount();
+        if (level.getGameTime() % interval == 0) attemptSpawn(level, maxCount);
     }
 }

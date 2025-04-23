@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.satisfy.beachparty.Beachparty;
+import net.satisfy.beachparty.forge.registry.BeachpartyConfig;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -25,6 +26,18 @@ public class PlatformHelperImpl {
     }
 
     public static void addSeashellTooltip(ItemStack itemStack, Level world, List<Component> tooltip, TooltipFlag tooltipContext) {
+    }
+
+    public static boolean allowBottleSpawning() {
+        return BeachpartyConfig.ALLOW_BOTTLE_SPAWNING.get();
+    }
+
+    public static int getBottleMaxCount() {
+        return BeachpartyConfig.BOTTLE_MAX_COUNT.get();
+    }
+
+    public static int getBottleSpawnInterval() {
+        return BeachpartyConfig.BOTTLE_SPAWN_INTERVAL.get();
     }
 
 

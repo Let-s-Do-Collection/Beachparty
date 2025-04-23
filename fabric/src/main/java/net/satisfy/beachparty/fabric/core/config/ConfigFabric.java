@@ -10,15 +10,30 @@ import net.satisfy.beachparty.Beachparty;
 public class ConfigFabric implements ConfigData {
 
     @ConfigEntry.Category("worldgen")
+    @ConfigEntry.Gui.Tooltip
     public boolean spawnPalms = true;
+
     @ConfigEntry.Category("worldgen")
+    @ConfigEntry.Gui.Tooltip
     public boolean spawnSeashells = true;
+
     @ConfigEntry.Category("worldgen")
+    @ConfigEntry.Gui.Tooltip
     public boolean spawnSandwaves = true;
+
+    @ConfigEntry.Category("message_in_a_bottle")
+    @ConfigEntry.Gui.Tooltip
+    public boolean allowBottleSpawning = true;
+
+    @ConfigEntry.Category("message_in_a_bottle")
+    @ConfigEntry.Gui.Tooltip
+    public int bottleMaxCount = 2;
+
+    @ConfigEntry.Category("message_in_a_bottle")
+    @ConfigEntry.Gui.Tooltip
+    public int bottleSpawnInterval = 6000;
 
     @ConfigEntry.Gui.PrefixText
     @ConfigEntry.Gui.Tooltip
     public boolean destroySandcastle = true;
-
-
 }

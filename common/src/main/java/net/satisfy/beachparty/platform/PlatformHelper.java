@@ -18,6 +18,21 @@ public class PlatformHelper {
     }
 
     @ExpectPlatform
+    public static boolean allowBottleSpawning() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static int getBottleMaxCount() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static int getBottleSpawnInterval() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
     public static <T extends Entity> Supplier<EntityType<T>> registerBoatType(String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height, int clientTrackingRange) {
         throw new AssertionError();
     }
