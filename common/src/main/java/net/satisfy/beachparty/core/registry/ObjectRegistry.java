@@ -127,7 +127,6 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> FLOATY_CHEST_BOAT = ITEMS.register("floaty_chest_boat", () -> new PalmBoatItem(true, PalmBoatEntity.Type.FLOATY, new Item.Properties()));
     public static final RegistrySupplier<Block> BEACHPARTY_BANNER = registerWithItem("beachparty_banner", () -> new CompletionistBannerBlock(BlockBehaviour.Properties.of().strength(1F).instrument(NoteBlockInstrument.BASS).noCollission().sound(SoundType.WOOD)));
     public static final RegistrySupplier<Block> BEACHPARTY_WALL_BANNER = registerWithoutItem("beachparty_wall_banner", () -> new CompletionistWallBannerBlock(BlockBehaviour.Properties.of().strength(1F).instrument(NoteBlockInstrument.BASS).noCollission().sound(SoundType.WOOD)));
-
     public static final RegistrySupplier<Item> OVERGROWN_DISC = registerItem("overgrown_disc", () -> new RecordItem(1, SoundEventRegistry.OVER_THE_RAINBOW.get(), getSettings().stacksTo(1), 214));
     public static final RegistrySupplier<Item> MUSIC_DISC_BEACHPARTY = registerItem("music_disc_beachparty", () -> new RecordItem(1, SoundEventRegistry.BEACHPARTY.get(), getSettings().stacksTo(1), 2400));
     public static final RegistrySupplier<Item> MUSIC_DISC_CARIBBEAN_BEACH = registerItem("music_disc_caribbean_beach", () -> new RecordItem(1, SoundEventRegistry.CARIBBEAN_BEACH.get(), getSettings().stacksTo(1), 2400));

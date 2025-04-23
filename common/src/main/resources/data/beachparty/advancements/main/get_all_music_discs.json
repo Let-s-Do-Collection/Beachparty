@@ -1,0 +1,115 @@
+{
+  "parent": "beachparty:main/find_a_overgrown_disc",
+  "display": {
+    "icon": {
+      "item": "beachparty:music_disc_beachparty"
+    },
+    "title": {
+      "translate": "advancement.beachparty.get_all_music_discs"
+    },
+    "description": {
+      "translate": "advancement.beachparty.get_all_music_discs.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 200
+  },
+  "criteria": {
+    "beachparty:overgrown_disc": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beachparty:overgrown_disc"
+            ]
+          }
+        ]
+      }
+    },
+    "beachparty:music_disc_beachparty": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beachparty:music_disc_beachparty"
+            ]
+          }
+        ]
+      }
+    },
+    "beachparty:music_disc_caribbean_beach": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beachparty:music_disc_caribbean_beach"
+            ]
+          }
+        ]
+      }
+    },
+    "beachparty:music_disc_pridelands": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beachparty:music_disc_pridelands"
+            ]
+          }
+        ]
+      }
+    },
+    "beachparty:music_disc_vocalista": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beachparty:music_disc_vocalista"
+            ]
+          }
+        ]
+      }
+    },
+    "beachparty:music_disc_wild_veins": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beachparty:music_disc_wild_veins"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "beachparty:overgrown_disc"
+    ],
+    [
+      "beachparty:music_disc_beachparty"
+    ],
+    [
+      "beachparty:music_disc_caribbean_beach"
+    ],
+    [
+      "beachparty:music_disc_pridelands"
+    ],
+    [
+      "beachparty:music_disc_vocalista"
+    ],
+    [
+      "beachparty:music_disc_wild_veins"
+    ]
+  ]
+}

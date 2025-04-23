@@ -61,6 +61,11 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.BEACH_TOWEL.get());
                 out.accept(ObjectRegistry.BEACH_PARASOL.get());
                 out.accept(ObjectRegistry.OVERGROWN_DISC.get());
+                out.accept(ObjectRegistry.MUSIC_DISC_BEACHPARTY.get());
+                out.accept(ObjectRegistry.MUSIC_DISC_CARIBBEAN_BEACH.get());
+                out.accept(ObjectRegistry.MUSIC_DISC_PRIDELANDS.get());
+                out.accept(ObjectRegistry.MUSIC_DISC_VOCALISTA.get());
+                out.accept(ObjectRegistry.MUSIC_DISC_WILD_VEINS.get());
                 out.accept(ObjectRegistry.MESSAGE_IN_A_BOTTLE_ITEM.get());
                 out.accept(ObjectRegistry.SEASHELL.get());
                 out.accept(ObjectRegistry.SAND_BUCKET_FILLED.get());

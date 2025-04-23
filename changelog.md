@@ -1,21 +1,24 @@
 ## [2.0.1] - 2025.04.23
 
 **Added**
-- All Songs being played by the Radio can now also be crafted and collected
+- All Songs being played by the Radio can now also be found in Buried Treasured and collected
+- Added an Advancement for collecting all Beachparty exclusive Music Discs
 
 **Changed**
+_no entries_
 
 **Fixed**
 - Reduced MessageInABottleSpawner block scans to avoid server hangs
 - Missing Beachball Texture
 - Missing Config Translations on Fabric
+- Cleaned up duplicate contributors entries in the fabric.mod.json
 - Reduced Zombies ApproachSandcastleGoal tick usage
 - Exception caused when a Player on a Server wears a Rubber Ring and jumps into Water (Thanks to Christopher Stolworthy)
 - RadioBlock: fixed sounds continuing after block was broken or chunk unloaded
 - RadioBlock: fixed client disconnects caused by missing sound instances
 - RadioBlock: fixed overlapping/stacking of multiple tracks at once
-***
 
+***
 
 ## [2.0.0] - 2025.03.08
 
