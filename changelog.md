@@ -1,3 +1,15 @@
+## [2.0.2] - 2025.05.06
+
+**Added**
+
+**Changed**
+- `Message in a Bottle` now only spawns above blocks in the `minecraft:sand` block tag and only if the target block is empty
+
+**Fixed**
+- Fixed server crash caused by an infinite loop in the rubber ring trinket’s tick method by replacing the downward search with a vertical raycast
+
+***
+
 ## [2.0.1] - 2025.04.23
 
 **Added**

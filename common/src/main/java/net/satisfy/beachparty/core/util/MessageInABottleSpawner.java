@@ -3,6 +3,7 @@ package net.satisfy.beachparty.core.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -53,7 +54,9 @@ public class MessageInABottleSpawner {
 
         if (!level.hasChunkAt(placePos)) return;
 
-        level.setBlock(placePos, state, 3);
+        if (level.isEmptyBlock(placePos) && level.getBlockState(placePos.below()).is(BlockTags.SAND)) {
+            level.setBlock(placePos, state, 3);
+        }
     }
 
     private static BlockPos findValidSpawnPos(ServerLevel level, BlockPos center) {
