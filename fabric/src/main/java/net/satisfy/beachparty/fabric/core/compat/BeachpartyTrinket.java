@@ -19,8 +19,10 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.registry.MobEffectRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.fabric.BeachpartyFabric;
 
 import java.util.Map;
 import java.util.Optional;
@@ -163,15 +165,19 @@ public class BeachpartyTrinket {
 
                 player.setDeltaMovement(newMotion);
 
-                if (!player.level().isClientSide && player.level().hasChunkAt(player.blockPosition())) {
-                    BlockHitResult hitResult = player.level().clip(new ClipContext(player.position(), player.position().subtract(0, 256, 0), ClipContext.Block.OUTLINE, ClipContext.Fluid.SOURCE_ONLY, player));
+                if (player.level().isLoaded(player.blockPosition())) {
+                    try {
+                        BlockHitResult hitResult = player.level().clip(new ClipContext(player.position(), player.position().subtract(0, 256, 0), ClipContext.Block.OUTLINE, ClipContext.Fluid.SOURCE_ONLY, player));
 
-                    if (hitResult.getType() != HitResult.Type.MISS) {
-                        BlockPos pos = hitResult.getBlockPos();
-                        double targetY = pos.getY();
-                        if (player.getY() > targetY + 1.0 && !player.isUnderWater()) {
-                            player.setPos(player.getX(), targetY + 1.0, player.getZ());
+                        if (hitResult.getType() != HitResult.Type.MISS) {
+                            BlockPos pos = hitResult.getBlockPos();
+                            double targetY = pos.getY();
+                            if (player.getY() > targetY + 1.0 && !player.isUnderWater()) {
+                                player.setPos(player.getX(), targetY + 1.0, player.getZ());
+                            }
                         }
+                    } catch (Exception ignored) {
+
                     }
                 }
 
