@@ -163,16 +163,17 @@ public class BeachpartyTrinket {
 
                 player.setDeltaMovement(newMotion);
 
-                BlockHitResult hitResult = player.level().clip(new ClipContext(player.position(), player.position().subtract(0, 256, 0), ClipContext.Block.OUTLINE, ClipContext.Fluid.SOURCE_ONLY, player));
+                if (!player.level().isClientSide && player.level().hasChunkAt(player.blockPosition())) {
+                    BlockHitResult hitResult = player.level().clip(new ClipContext(player.position(), player.position().subtract(0, 256, 0), ClipContext.Block.OUTLINE, ClipContext.Fluid.SOURCE_ONLY, player));
 
-                if (hitResult.getType() != HitResult.Type.MISS) {
-                    BlockPos pos = hitResult.getBlockPos();
-                    double targetY = pos.getY();
-                    if (player.getY() > targetY + 1.0 && !player.isUnderWater()) {
-                        player.setPos(player.getX(), targetY + 1.0, player.getZ());
+                    if (hitResult.getType() != HitResult.Type.MISS) {
+                        BlockPos pos = hitResult.getBlockPos();
+                        double targetY = pos.getY();
+                        if (player.getY() > targetY + 1.0 && !player.isUnderWater()) {
+                            player.setPos(player.getX(), targetY + 1.0, player.getZ());
+                        }
                     }
                 }
-
 
                 Vec3 look = player.getLookAngle();
                 Vec3 lookJ = new Vec3(look.x, 0, look.z);
