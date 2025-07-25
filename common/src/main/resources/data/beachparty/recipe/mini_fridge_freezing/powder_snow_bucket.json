@@ -1,0 +1,12 @@
+{
+  "type": "beachparty:mini_fridge_freezing",
+  "ingredients": [
+    {
+      "item": "minecraft:water_bucket"
+    }
+  ],
+  "result": {
+    "id": "minecraft:powder_snow_bucket"
+  },
+  "crafting_time": 600
+}

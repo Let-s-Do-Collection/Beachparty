@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    " A ",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "beachparty:palm_planks"
+    },
+    "W": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "result": {
+    "id": "beachparty:beach_parasol",
+    "count": 3
+  }
+}

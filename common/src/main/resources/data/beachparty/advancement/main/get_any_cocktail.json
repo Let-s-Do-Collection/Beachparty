@@ -1,0 +1,42 @@
+{
+  "parent": "beachparty:main/place_palm_bar",
+  "display": {
+    "icon": {
+      "id": "beachparty:melon_cocktail"
+    },
+    "title": {
+      "translate": "advancement.beachparty.get_any_cocktail"
+    },
+    "description": {
+      "translate": "advancement.beachparty.get_any_cocktail.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "have_any_cocktail": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beachparty:melon_cocktail",
+              "beachparty:cocoa_cocktail",
+              "beachparty:pumpkin_cocktail",
+              "beachparty:honey_cocktail",
+              "beachparty:sweetberries_cocktail",
+              "beachparty:coconut_cocktail"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "have_any_cocktail"
+    ]
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "G#G",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "#": {
+      "item": "beachparty:palm_planks"
+    }
+  },
+  "result": {
+    "id": "beachparty:palm_glass_pane",
+    "count": 8
+  }
+}

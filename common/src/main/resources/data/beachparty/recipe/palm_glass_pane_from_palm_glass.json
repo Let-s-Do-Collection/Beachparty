@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AAA",
+    "AAA"
+  ],
+  "key": {
+    "A": {
+      "item": "beachparty:palm_glass"
+    }
+  },
+  "result": {
+    "id": "beachparty:palm_glass_pane",
+    "count": 16
+  }
+}
