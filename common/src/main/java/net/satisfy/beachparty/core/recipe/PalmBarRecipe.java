@@ -2,6 +2,7 @@ package net.satisfy.beachparty.core.recipe;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,7 +16,7 @@ import net.satisfy.beachparty.core.registry.RecipeRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class PalmBarRecipe implements Recipe<Container> {
+public class PalmBarRecipe implements Recipe<RecipeInput> {
     final ResourceLocation id;
     private final NonNullList<Ingredient> inputs;
     private final ItemStack output;
@@ -37,16 +38,29 @@ public class PalmBarRecipe implements Recipe<Container> {
     }
 
     @Override
+    public boolean matches(RecipeInput recipeInput, Level level) {
+        return false;
+    }
+
+    @Override
+    public ItemStack assemble(RecipeInput recipeInput, HolderLookup.Provider provider) {
+        return null;
+    }
+
+    @Override
     public boolean canCraftInDimensions(int width, int height) {
         return true;
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(RegistryAccess registryAccess) {
+    public ItemStack getResultItem(HolderLookup.Provider provider) {
         return this.output.copy();
     }
 
-    @Override
+    public ItemStack getResultItem() {
+        return this.output.copy();
+    }
+
     public @NotNull ResourceLocation getId() {
         return id;
     }

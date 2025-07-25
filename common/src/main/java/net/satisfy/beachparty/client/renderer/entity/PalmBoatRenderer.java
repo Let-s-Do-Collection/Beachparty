@@ -22,6 +22,7 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.client.model.FloatyBoatModel;
 import net.satisfy.beachparty.core.entity.PalmBoatEntity;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
@@ -40,8 +41,8 @@ public class PalmBoatRenderer<T extends PalmBoatEntity> extends EntityRenderer<T
 
     private ListModel<Boat> createBoatModel(EntityRendererProvider.Context context, PalmBoatEntity.Type type, boolean hasChest) {
         ModelLayerLocation modelLayerLocation = hasChest ?
-                new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getChestModelLocation()), "main")
-                : new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getModelLocation()), "main");
+                new ModelLayerLocation(BeachpartyIdentifier.identifier(type.getChestModelLocation()), "main")
+                : new ModelLayerLocation(BeachpartyIdentifier.identifier(type.getModelLocation()), "main");
         ModelPart modelPart = context.bakeLayer(modelLayerLocation);
         if (type == PalmBoatEntity.Type.FLOATY) {
             return new FloatyBoatModel(modelPart);
@@ -74,7 +75,7 @@ public class PalmBoatRenderer<T extends PalmBoatEntity> extends EntityRenderer<T
         matrixStack.mulPose(Axis.YP.rotationDegrees(90.0f));
         listModel.setupAnim(entity, partialTicks, 0.0f, -0.1f, 0.0f, 0.0f);
         VertexConsumer vertexConsumer = buffer.getBuffer(listModel.renderType(resourceLocation));
-        listModel.renderToBuffer(matrixStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
+        listModel.renderToBuffer(matrixStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
         if (!entity.isUnderWater()) {
             VertexConsumer vertexConsumer2 = buffer.getBuffer(RenderType.waterMask());
             if (listModel instanceof WaterPatchModel waterPatchModel) {

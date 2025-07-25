@@ -10,7 +10,7 @@ import net.satisfy.beachparty.client.gui.handler.PalmBarGuiHandler;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 public class PalmBarGui extends AbstractContainerScreen<PalmBarGuiHandler> {
-    public static final ResourceLocation BG = new BeachpartyIdentifier("textures/gui/palm_bar_gui.png");
+    public static final ResourceLocation BG = BeachpartyIdentifier.identifier("textures/gui/palm_bar_gui.png");
     public static final int ARROW_Y = 35;
     public static final int ARROW_X = 79;
 
@@ -25,7 +25,7 @@ public class PalmBarGui extends AbstractContainerScreen<PalmBarGuiHandler> {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(guiGraphics);
+        renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         renderTooltip(guiGraphics, mouseX, mouseY);
     }

@@ -2,6 +2,7 @@ package net.satisfy.beachparty.core.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -67,22 +68,22 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        super.loadAdditional(nbt, provider);
         this.inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(nbt, this.inventory);
+        ContainerHelper.loadAllItems(nbt, this.inventory, provider);
         this.fermentationTime = nbt.getInt("FermentationTime");
         this.totalFermentationTime = nbt.getInt("TotalFermentationTime");
         this.experience = nbt.getFloat("Experience");
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
-        super.saveAdditional(nbt);
-        ContainerHelper.saveAllItems(nbt, this.inventory);
-        nbt.putInt("FermentationTime", this.fermentationTime);
-        nbt.putInt("TotalFermentationTime", this.totalFermentationTime);
-        nbt.putFloat("Experience", this.experience);
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.saveAdditional(compoundTag, provider);
+        ContainerHelper.saveAllItems(compoundTag, this.inventory, provider);
+        compoundTag.putInt("FermentationTime", this.fermentationTime);
+        compoundTag.putInt("TotalFermentationTime", this.totalFermentationTime);
+        compoundTag.putFloat("Experience", this.experience);
     }
 
     @Override

@@ -11,7 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 public class CrocsModel<T extends Entity> extends EntityModel<T> implements LeggingsModel {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new BeachpartyIdentifier("crocs"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BeachpartyIdentifier.identifier("crocs"), "main");
     private final ModelPart right_leg;
     private final ModelPart left_leg;
 
@@ -37,17 +37,17 @@ public class CrocsModel<T extends Entity> extends EntityModel<T> implements Legg
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        poseStack.pushPose();
-        poseStack.scale(1.09F, 1.09F, 1.09F);
-        right_leg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        left_leg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        poseStack.popPose();
-    }
-
-    @Override
     public void copyBody(ModelPart model, ModelPart left_leg, ModelPart right_leg) {
         this.right_leg.copyFrom(right_leg);
         this.left_leg.copyFrom(left_leg);
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int j, int k) {
+        poseStack.pushPose();
+        poseStack.scale(1.09F, 1.09F, 1.09F);
+        right_leg.render(poseStack, vertexConsumer, i, j, k);
+        left_leg.render(poseStack, vertexConsumer, i, j, k);
+        poseStack.popPose();
     }
 }

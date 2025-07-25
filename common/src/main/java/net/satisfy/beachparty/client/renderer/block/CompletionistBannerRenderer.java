@@ -20,9 +20,10 @@ import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.block.CompletionistBannerBlock;
 import net.satisfy.beachparty.core.block.CompletionistWallBannerBlock;
 import net.satisfy.beachparty.core.block.entity.CompletionistBannerEntity;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 public class CompletionistBannerRenderer implements BlockEntityRenderer<CompletionistBannerEntity> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, "banner"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BeachpartyIdentifier.identifier("banner"), "main");
 
     public static final String FLAG = "flag";
     private static final String POLE = "pole";

@@ -9,6 +9,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.recipe.MiniFridgeRecipe;
 import net.satisfy.beachparty.core.recipe.PalmBarRecipe;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 import java.util.function.Supplier;
 
@@ -35,7 +36,7 @@ public class RecipeRegistry {
                 return name;
             }
         };
-        return RECIPE_TYPES.register(name, type);
+        return RECIPE_TYPES.register(BeachpartyIdentifier.identifier(name), type);
     }
 
     public static void init() {

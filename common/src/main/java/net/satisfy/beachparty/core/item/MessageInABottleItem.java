@@ -39,7 +39,7 @@ public class MessageInABottleItem extends BlockItem {
     }
 
     public static ItemStack createMonumentMap(Entity entity) {
-        return createMap(entity, StructureTags.ON_OCEAN_EXPLORER_MAPS, "filled_map.monument", MapDecoration.Type.MONUMENT);
+        return createMap(entity, StructureTags.ON_OCEAN_EXPLORER_MAPS, "filled_map.monument", MapDecoration.MONUMENT);
     }
 
     public static ItemStack createMansionMap(Entity entity) {

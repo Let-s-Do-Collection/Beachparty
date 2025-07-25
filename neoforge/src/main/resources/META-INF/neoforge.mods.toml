@@ -1,0 +1,42 @@
+modLoader = "javafml"
+loaderVersion="[4,)"
+source = "https://github.com/satisfyu/Beachparty"
+issueTrackerURL = "https://github.com/satisfyu/Let-s-Do-Hub"
+license = "All Rights Reserved"
+
+[[mixins]]
+config = "beachparty-common.mixins.json, beachparty.mixins.json"
+
+[[mods]]
+modId = "beachparty"
+
+version="${mod_version}"
+displayName = "[Let's Do] Beachparty"
+
+credits = "MissLilitu, Cristelknight, BaumeisterJo"
+authors = "Satisfy, Jason13"
+description = '''
+Take a break - build sandcastles, drink cocktails and enjoy your Minecraft Session.
+'''
+logoFile = "pack.png"
+
+[[dependencies.beachparty]]
+modId = "neoforge"
+mandatory = true
+versionRange = "[21.1.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.beachparty]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.beachparty]]
+modId = "architectury"
+mandatory = true
+versionRange = "[13.0.0,)"
+ordering = "AFTER"
+side = "BOTH"

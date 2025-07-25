@@ -42,7 +42,7 @@ public class BeachBallItem extends Item {
             if (level.noCollision(null, aabb) && level.getEntities(null, aabb).isEmpty() && !level.getBlockState(blockpos.below()).isAir()) {
                 if (level instanceof ServerLevel serverlevel) {
                     Consumer<BeachBallEntity> consumer = EntityType.createDefaultStackConfig(serverlevel, itemstack, pContext.getPlayer());
-                    BeachBallEntity pells = EntityTypeRegistry.BEACH_BALL.get().create(serverlevel, itemstack.getTag(), consumer, blockpos, MobSpawnType.SPAWN_EGG, true, true);
+                    BeachBallEntity pells = EntityTypeRegistry.BEACH_BALL.get().create(serverlevel, consumer, blockpos, MobSpawnType.SPAWN_EGG, true, true);
                     if (pells == null) {
                         return InteractionResult.FAIL;
                     }

@@ -11,7 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 public class TrunksModel<T extends Entity> extends EntityModel<T> implements LeggingsModel {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new BeachpartyIdentifier("trunks"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BeachpartyIdentifier.identifier("trunks"), "main");
     private final ModelPart body;
     private final ModelPart right_leg;
     private final ModelPart left_leg;
@@ -41,19 +41,19 @@ public class TrunksModel<T extends Entity> extends EntityModel<T> implements Leg
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        poseStack.pushPose();
-        poseStack.scale(1.09F, 1.09F, 1.09F);
-        body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        right_leg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        left_leg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        poseStack.popPose();
-    }
-
-    @Override
     public void copyBody(ModelPart model, ModelPart left_leg, ModelPart right_leg) {
         this.body.copyFrom(model);
         this.right_leg.copyFrom(right_leg);
         this.left_leg.copyFrom(left_leg);
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int buffer, int packedLight, int color) {
+        poseStack.pushPose();
+        poseStack.scale(1.09F, 1.09F, 1.09F);
+        body.render(poseStack, vertexConsumer, buffer, packedLight, color);
+        right_leg.render(poseStack, vertexConsumer, buffer, packedLight, color);
+        left_leg.render(poseStack, vertexConsumer, buffer, packedLight, color);
+        poseStack.popPose();
     }
 }

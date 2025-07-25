@@ -12,7 +12,7 @@ import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 @SuppressWarnings("unused")
 public class BeachHatModel<T extends Entity> extends EntityModel<T> implements HatModel {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new BeachpartyIdentifier("beach_hat"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BeachpartyIdentifier.identifier("beach_hat"), "main");
     private final ModelPart beach_hat;
 
     public BeachHatModel(ModelPart root) {
@@ -34,19 +34,19 @@ public class BeachHatModel<T extends Entity> extends EntityModel<T> implements H
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        poseStack.pushPose();
-        poseStack.scale(1.05F, 1.05F, 1.05F);
-        beach_hat.render(poseStack, buffer, packedLight, packedOverlay);
-        poseStack.popPose();
-    }
-
-    @Override
     public void setupAnim(T entity, float f, float g, float h, float i, float j) {
 
     }
 
     public void copyHead(ModelPart model) {
         beach_hat.copyFrom(model);
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int buffer, int packedLight, int packedOverlay) {
+        poseStack.pushPose();
+        poseStack.scale(1.05F, 1.05F, 1.05F);
+        beach_hat.render(poseStack, vertexConsumer, buffer, packedLight, packedOverlay);
+        poseStack.popPose();
     }
 }

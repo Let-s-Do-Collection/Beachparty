@@ -16,7 +16,7 @@ import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 @SuppressWarnings("unused")
 public class RubberRingAxolotlModel<T extends Entity> extends EntityModel<T> implements ChestplateModel {
 
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new BeachpartyIdentifier("rubber_ring_axolotl"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BeachpartyIdentifier.identifier("rubber_ring_axolotl"), "main");
 
     private final ModelPart rubber_ring;
 
@@ -47,7 +47,12 @@ public class RubberRingAxolotlModel<T extends Entity> extends EntityModel<T> imp
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void copyBody(ModelPart model, ModelPart leftArm, ModelPart rightArm) {
+        rubber_ring.copyFrom(model);
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int j, int k) {
         poseStack.pushPose();
 
         Player player = Minecraft.getInstance().player;
@@ -57,12 +62,7 @@ public class RubberRingAxolotlModel<T extends Entity> extends EntityModel<T> imp
             poseStack.translate(0.4F, 0.7F, -0.4F);
         }
 
-        rubber_ring.render(poseStack, buffer, packedLight, packedOverlay);
+        rubber_ring.render(poseStack, vertexConsumer, i, j, k);
         poseStack.popPose();
-    }
-
-    @Override
-    public void copyBody(ModelPart model, ModelPart leftArm, ModelPart rightArm) {
-        rubber_ring.copyFrom(model);
     }
 }

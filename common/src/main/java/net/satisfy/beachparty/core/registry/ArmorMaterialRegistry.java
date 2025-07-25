@@ -23,6 +23,7 @@ public class ArmorMaterialRegistry {
     public static final ArmorMaterial CROCS = createMaterial("crocs", Ingredient.of(Items.DRIED_KELP));
 
     private static ArmorMaterial createMaterial(String name, Ingredient repairIngredient) {
+
         return new ArmorMaterial() {
             @Override
             public int getDurabilityForType(ArmorItem.Type type) {

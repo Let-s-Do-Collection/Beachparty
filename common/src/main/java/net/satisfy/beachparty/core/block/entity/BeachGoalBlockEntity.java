@@ -1,6 +1,8 @@
 package net.satisfy.beachparty.core.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
@@ -8,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -76,18 +79,18 @@ public class BeachGoalBlockEntity extends BlockEntity {
             double y = pos.getY() + 2.0;
             double z = pos.getZ() + 0.5;
             ItemStack fireworkItem = new ItemStack(Items.FIREWORK_ROCKET);
-            CompoundTag fireworkTag = new CompoundTag();
-            CompoundTag explosion = new CompoundTag();
+            CustomData fireworkTag = CustomData.of(new CompoundTag());
+            CustomData explosion = CustomData.of(new CompoundTag());
             int[] colors = colorOptions[world.random.nextInt(colorOptions.length)];
-            explosion.putIntArray("Colors", colors);
-            explosion.putByte("Type", (byte) 1);
+            explosion.copyTag().putIntArray("Colors", colors);
+            explosion.copyTag().putByte("Type", (byte) 1);
             ListTag explosionsList = new ListTag();
-            explosionsList.add(explosion);
-            CompoundTag fireworks = new CompoundTag();
-            fireworks.putByte("Flight", (byte) 1);
-            fireworks.put("Explosions", explosionsList);
-            fireworkTag.put("Fireworks", fireworks);
-            fireworkItem.setTag(fireworkTag);
+            explosionsList.add(explosion.copyTag());
+            CustomData fireworks = CustomData.of(new CompoundTag());
+            fireworks.copyTag().putByte("Flight", (byte) 1);
+            fireworks.copyTag().put("Explosions", explosionsList);
+            fireworkTag.copyTag().put("Fireworks", fireworks.copyTag());
+            fireworkItem.set(DataComponents.CUSTOM_DATA, fireworkTag);
             FireworkRocketEntity rocket = new FireworkRocketEntity(world, x, y, z, fireworkItem);
             Vector3d velocity = new Vector3d(dx, dy, dz);
             rocket.setDeltaMovement(velocity.x, velocity.y, velocity.z);
@@ -96,16 +99,16 @@ public class BeachGoalBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.putBoolean("HasBeachBall", hasBeachBall);
-        tag.putInt("BallPresenceCounter", ballPresenceCounter);
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.saveAdditional(compoundTag, provider);
+        compoundTag.putBoolean("HasBeachBall", hasBeachBall);
+        compoundTag.putInt("BallPresenceCounter", ballPresenceCounter);
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        hasBeachBall = tag.getBoolean("HasBeachBall");
-        ballPresenceCounter = tag.getInt("BallPresenceCounter");
+    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.loadAdditional(compoundTag, provider);
+        hasBeachBall = compoundTag.getBoolean("HasBeachBall");
+        ballPresenceCounter = compoundTag.getInt("BallPresenceCounter");
     }
 }

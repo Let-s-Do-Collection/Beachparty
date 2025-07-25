@@ -11,7 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 public class BeachBallModel<T extends Entity> extends EntityModel<T> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new BeachpartyIdentifier("beach_ball"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BeachpartyIdentifier.identifier("beach_ball"), "main");
     private final ModelPart beach_ball;
 
     public BeachBallModel(ModelPart root) {
@@ -33,7 +33,7 @@ public class BeachBallModel<T extends Entity> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        beach_ball.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        beach_ball.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 }

@@ -12,7 +12,7 @@ import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 public class SwimWingsModel<T extends Entity> extends EntityModel<T> implements ChestplateModel {
 
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new BeachpartyIdentifier("swim_wings"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BeachpartyIdentifier.identifier("swim_wings"), "main");
     private final ModelPart right_arm;
     private final ModelPart left_arm;
 
@@ -38,23 +38,23 @@ public class SwimWingsModel<T extends Entity> extends EntityModel<T> implements 
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void copyBody(ModelPart body, ModelPart leftArm, ModelPart rightArm) {
+        this.left_arm.copyFrom(leftArm);
+        this.right_arm.copyFrom(rightArm);
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int buffer, int packedLight, int color) {
         poseStack.pushPose();
         poseStack.translate(0.375F, 0.0F, 0.0F);
         poseStack.scale(1.1F, 1.1F, 1.1F);
-        right_arm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        right_arm.render(poseStack, vertexConsumer, buffer, packedLight, color);
         poseStack.popPose();
 
         poseStack.pushPose();
         poseStack.translate(0.45F, -0.05F, 0.0F);
         poseStack.scale(1.1F, 1.1F, 1.1F);
-        left_arm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        left_arm.render(poseStack, vertexConsumer, buffer, packedLight, color);
         poseStack.popPose();
-    }
-
-    @Override
-    public void copyBody(ModelPart body, ModelPart leftArm, ModelPart rightArm) {
-        this.left_arm.copyFrom(leftArm);
-        this.right_arm.copyFrom(rightArm);
     }
 }

@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "net.satisfy.beachparty.neoforge.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "DyeableArmorMixin",
+    "HelmetItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
