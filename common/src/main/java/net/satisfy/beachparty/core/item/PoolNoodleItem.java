@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class PoolNoodleItem extends SwordItem implements DyeableLeatherItem {
+public class PoolNoodleItem extends SwordItem {
 
     private final Multimap<Attribute, AttributeModifier> attributeModifiers;
 

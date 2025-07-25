@@ -1,5 +1,6 @@
 package net.satisfy.beachparty.core.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,6 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -57,6 +59,13 @@ public class MiniFridgeBlock extends BaseEntityBlock implements EntityBlock {
         super(settings);
     }
 
+    public static final MapCodec<MiniFridgeBlock> CODEC = simpleCodec(MiniFridgeBlock::new);
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(FACING));
@@ -101,10 +110,9 @@ public class MiniFridgeBlock extends BaseEntityBlock implements EntityBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos,
-                                          Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!world.isClientSide) {
-            MenuProvider screenHandlerFactory = state.getMenuProvider(world, pos);
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+        if (!level.isClientSide) {
+            MenuProvider screenHandlerFactory = blockState.getMenuProvider(level, blockPos);
 
             if (screenHandlerFactory != null) {
                 player.openMenu(screenHandlerFactory);
@@ -132,11 +140,12 @@ public class MiniFridgeBlock extends BaseEntityBlock implements EntityBlock {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, BlockGetter world, List<Component> tooltip, TooltipFlag tooltipContext) {
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
         tooltip.add(Component.translatable("tooltip.beachparty.canbeplaced").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))));
     }
 
-    public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type) {
+    @Override
+    protected boolean isPathfindable(BlockState blockState, PathComputationType pathComputationType) {
         return false;
     }
 }

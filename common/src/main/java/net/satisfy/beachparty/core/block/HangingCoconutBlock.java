@@ -1,5 +1,6 @@
 package net.satisfy.beachparty.core.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -45,6 +46,11 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
     public HangingCoconutBlock(Properties settings) {
         super(settings);
         this.registerDefaultState(this.getStateDefinition().any().setValue(AGE, 0));
+    }
+
+    @Override
+    protected MapCodec<? extends FallingBlock> codec() {
+        return null;
     }
 
     @Override
@@ -97,8 +103,8 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
-        return state.getValue(AGE) < 2;
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+        return blockState.getValue(AGE) < 2;
     }
 
     @Override
@@ -117,7 +123,7 @@ public class HangingCoconutBlock extends FallingBlock implements BonemealableBlo
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
+    protected boolean isPathfindable(BlockState blockState, PathComputationType pathComputationType) {
         return false;
     }
 

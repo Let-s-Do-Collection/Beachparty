@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -36,8 +37,8 @@ public class TallPalmTorchBlock extends TorchBlock {
         HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     }
 
-    public TallPalmTorchBlock(Properties settings, ParticleOptions particle) {
-        super(settings, particle);
+    public TallPalmTorchBlock(Properties settings, SimpleParticleType particle) {
+        super(particle, settings);
         this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER));
     }
 

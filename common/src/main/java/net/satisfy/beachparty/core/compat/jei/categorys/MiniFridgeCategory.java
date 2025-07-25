@@ -19,10 +19,11 @@ import net.satisfy.beachparty.client.gui.MiniFridgeGui;
 import net.satisfy.beachparty.core.compat.jei.BeachpartyJEIPlugin;
 import net.satisfy.beachparty.core.recipe.MiniFridgeRecipe;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import org.jetbrains.annotations.NotNull;
 
 public class MiniFridgeCategory implements IRecipeCategory<MiniFridgeRecipe> {
-    public static final RecipeType<MiniFridgeRecipe> MINI_FRIDGE_FREEZING = new RecipeType<>(new ResourceLocation(Beachparty.MOD_ID, "mini_fridge_freezing"), MiniFridgeRecipe.class);
+    public static final RecipeType<MiniFridgeRecipe> MINI_FRIDGE_FREEZING = new RecipeType<>(BeachpartyIdentifier.identifier("mini_fridge_freezing"), MiniFridgeRecipe.class);
     public static final int WIDTH = 124;
     public static final int HEIGHT = 60;
     public static final int WIDTH_OF = 26;

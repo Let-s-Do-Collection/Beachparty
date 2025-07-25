@@ -1,5 +1,6 @@
 package net.satisfy.beachparty.core.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -53,6 +54,13 @@ public class PalmBarBlock extends BaseEntityBlock implements EntityBlock {
         super(settings);
     }
 
+    public static final MapCodec<PalmBarBlock> CODEC = simpleCodec(PalmBarBlock::new);
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(FACING));
@@ -97,10 +105,9 @@ public class PalmBarBlock extends BaseEntityBlock implements EntityBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos,
-                                          Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!world.isClientSide) {
-            MenuProvider screenHandlerFactory = state.getMenuProvider(world, pos);
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+        if (!level.isClientSide) {
+            MenuProvider screenHandlerFactory = blockState.getMenuProvider(level, blockPos);
 
             if (screenHandlerFactory != null) {
                 player.openMenu(screenHandlerFactory);
@@ -122,7 +129,8 @@ public class PalmBarBlock extends BaseEntityBlock implements EntityBlock {
         return BaseEntityBlock.createTickerHelper(type, EntityTypeRegistry.PALM_BAR_BLOCK_ENTITY.get(), PalmBarBlockEntity::tick);
     }
 
-    public boolean isPathfindable(BlockState arg, BlockGetter arg2, BlockPos arg3, PathComputationType arg4) {
+    @Override
+    protected boolean isPathfindable(BlockState blockState, PathComputationType pathComputationType) {
         return false;
     }
 }

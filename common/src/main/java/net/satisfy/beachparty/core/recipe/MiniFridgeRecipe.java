@@ -2,9 +2,13 @@ package net.satisfy.beachparty.core.recipe;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
@@ -15,7 +19,7 @@ import net.satisfy.beachparty.core.registry.RecipeRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class MiniFridgeRecipe implements Recipe<Container> {
+public class MiniFridgeRecipe implements Recipe<RecipeInput> {
 
     final ResourceLocation id;
     private final NonNullList<Ingredient> inputs;
@@ -30,12 +34,12 @@ public class MiniFridgeRecipe implements Recipe<Container> {
     }
 
     @Override
-    public boolean matches(Container inventory, Level world) {
-        return BeachpartyUtil.matchesRecipe(inventory, inputs, 1, 1);
+    public boolean matches(RecipeInput recipeInput, Level level) {
+        return BeachpartyUtil.matchesRecipe(recipeInput, inputs, 1, 1);
     }
 
     @Override
-    public @NotNull ItemStack assemble(Container inventory, RegistryAccess registryAccess) {
+    public ItemStack assemble(RecipeInput recipeInput, HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
@@ -45,13 +49,12 @@ public class MiniFridgeRecipe implements Recipe<Container> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(RegistryAccess registryAccess) {
+    public ItemStack getResultItem(HolderLookup.Provider provider) {
         return this.output.copy();
     }
 
-    @Override
     public @NotNull ResourceLocation getId() {
-        return id;
+        return RecipeRegistry.MINI_FRIDGE_RECIPE_TYPE.getId();
     }
 
     @Override
@@ -79,7 +82,17 @@ public class MiniFridgeRecipe implements Recipe<Container> {
     }
 
     public static class Serializer implements RecipeSerializer<MiniFridgeRecipe> {
+        @Override
+        public MapCodec<MiniFridgeRecipe> codec() {
+            return null;
+        }
 
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, MiniFridgeRecipe> streamCodec() {
+            return null;
+        }
+
+        /*
         @Override
         public @NotNull MiniFridgeRecipe fromJson(ResourceLocation id, JsonObject json) {
             var jsonArray = GsonHelper.getAsJsonArray(json, "ingredients");
@@ -113,6 +126,6 @@ public class MiniFridgeRecipe implements Recipe<Container> {
             }
             buf.writeItem(recipe.output);
             buf.writeVarInt(recipe.craftingTime);
-        }
+        }*/
     }
 }

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class PalmWallHangingSignBlock extends WallHangingSignBlock {
     public PalmWallHangingSignBlock(Properties properties, WoodType type) {
-        super(properties, type);
+        super(type, properties);
     }
 
     @Override

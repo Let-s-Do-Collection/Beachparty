@@ -1,7 +1,9 @@
 package net.satisfy.beachparty.core.item;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.satisfy.beachparty.Beachparty;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,7 +47,7 @@ public class SeashellItem extends BlockItem {
                         .withParameter(LootContextParams.THIS_ENTITY, player)
                         .withParameter(LootContextParams.ORIGIN, player.position())
                         .create(LootContextParamSets.GIFT);
-                LootTable treasure = minecraftServer.getLootData().getLootTable(new ResourceLocation(Beachparty.MOD_ID, "gameplay/seashell"));
+                LootTable treasure = minecraftServer.reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, BeachpartyIdentifier.identifier("gameplay/seashell")));
                 treasure.getRandomItems(lootContext).forEach(player::addItem);
             }
         }
@@ -53,7 +56,7 @@ public class SeashellItem extends BlockItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level world, @NotNull List<Component> tooltip, TooltipFlag context) {
+    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
         tooltip.add(Component.translatable("tooltip.beachparty.canbeplaced").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))));
     }
 }

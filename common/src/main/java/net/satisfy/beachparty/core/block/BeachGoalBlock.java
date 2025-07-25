@@ -1,8 +1,10 @@
 package net.satisfy.beachparty.core.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
@@ -12,8 +14,10 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -111,6 +115,13 @@ public class BeachGoalBlock extends BaseEntityBlock {
     public BeachGoalBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(PART, Part.BOTTOM_LEFT).setValue(FACING, Direction.NORTH));
+    }
+
+    public static final MapCodec<BeachGoalBlock> CODEC = simpleCodec(BeachGoalBlock::new);
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -215,30 +226,31 @@ public class BeachGoalBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, BlockGetter world, List<Component> tooltip, TooltipFlag tooltipContext) {
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
         tooltip.add(Component.translatable("tooltip.beachparty.canbeplaced").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))));
     }
 
     @Override
-    public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
         BlockPos basePos = getBasePos(world.getBlockState(pos), pos);
         var entity = world.getBlockEntity(basePos);
         if (!(entity instanceof BeachGoalBlockEntity beachGoalBlockEntity)) {
             super.playerWillDestroy(world, pos, state, player);
-            return;
+            return state;
         }
         if (world.isClientSide()) {
-            return;
+            return state;
         }
         CompoundTag blockEntityTag = new CompoundTag();
-        beachGoalBlockEntity.saveAdditional(blockEntityTag);
+        beachGoalBlockEntity.saveAdditional(blockEntityTag, world.registryAccess());
         CompoundTag tag = new CompoundTag();
         tag.put("BlockEntityTag", blockEntityTag);
         ItemStack stack = new ItemStack(ObjectRegistry.BEACH_GOAL.get());
-        stack.setTag(tag);
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
         world.addFreshEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack));
         destroyAdjacentBlocks(world, basePos);
         super.playerWillDestroy(world, pos, state, player);
+        return state;
     }
 
     private BlockPos getBasePos(BlockState state, BlockPos pos) {

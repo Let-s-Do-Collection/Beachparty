@@ -2,6 +2,7 @@ package net.satisfy.beachparty.core.item;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.tags.BlockTags;
@@ -40,7 +41,7 @@ public class SandBucketItem extends BlockItem {
     public @NotNull InteractionResult useOn(UseOnContext context) {
         if (Objects.requireNonNull(context.getPlayer()).isShiftKeyDown()) {
             InteractionResult actionResult = this.place(new BlockPlaceContext(context));
-            if (!actionResult.consumesAction() && this.isEdible()) {
+            if (!actionResult.consumesAction() && this.getDefaultInstance().has(DataComponents.FOOD)) {
                 InteractionResult actionResult2 = this.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult();
                 return actionResult2 == InteractionResult.CONSUME ? InteractionResult.CONSUME_PARTIAL : actionResult2;
             }
@@ -104,7 +105,7 @@ public class SandBucketItem extends BlockItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level world, @NotNull List<Component> tooltip, TooltipFlag context) {
+    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
         tooltip.add(Component.translatable("tooltip.beachparty.canbeplaced").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))));
     }
 }

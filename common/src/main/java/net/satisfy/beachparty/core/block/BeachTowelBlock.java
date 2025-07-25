@@ -12,6 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -64,26 +65,26 @@ public class BeachTowelBlock extends BedBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (level.isClientSide) {
             return InteractionResult.CONSUME;
         } else {
-            if (state.getValue(PART) != BedPart.HEAD) {
-                pos = pos.relative(state.getValue(FACING));
-                state = level.getBlockState(pos);
+            if (blockState.getValue(PART) != BedPart.HEAD) {
+                blockPos = blockPos.relative(blockState.getValue(FACING));
+                blockState = level.getBlockState(blockPos);
 
-                if (!state.is(this)) {
+                if (!blockState.is(this)) {
                     return InteractionResult.CONSUME;
                 }
             }
 
-            if (state.getValue(OCCUPIED)) {
-                if (!this.kickVillagerOutOfBed(level, pos)) {
+            if (blockState.getValue(OCCUPIED)) {
+                if (!this.kickVillagerOutOfBed(level, blockPos)) {
                     player.displayClientMessage(Component.translatable("block.minecraft.bed.occupied"), true);
                 }
 
             } else {
-                player.startSleepInBed(pos).ifLeft((failureReason) -> {
+                player.startSleepInBed(blockPos).ifLeft((failureReason) -> {
                     if (failureReason.getMessage() != null) {
                         player.displayClientMessage(failureReason.getMessage(), true);
                     }
@@ -140,8 +141,8 @@ public class BeachTowelBlock extends BedBlock {
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        super.playerWillDestroy(level, pos, state, player);
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Nullable
@@ -189,7 +190,7 @@ public class BeachTowelBlock extends BedBlock {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, BlockGetter world, List<Component> tooltip, TooltipFlag tooltipContext) {
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
         tooltip.add(Component.translatable("tooltip.beachparty.canbeplaced").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))));
     }
 }

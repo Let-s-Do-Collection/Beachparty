@@ -99,7 +99,7 @@ public class BeachGoalBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+    public void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         super.saveAdditional(compoundTag, provider);
         compoundTag.putBoolean("HasBeachBall", hasBeachBall);
         compoundTag.putInt("BallPresenceCounter", ballPresenceCounter);

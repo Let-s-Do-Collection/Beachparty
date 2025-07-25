@@ -102,7 +102,7 @@ public class BeachBallEntity extends Mob {
     public void push(Entity entity) {
         if (entity instanceof Player) {
             float pitch = 0.75F + this.level().getRandom().nextFloat() * 0.1F;
-            this.playSound(SoundEvents.ARMOR_EQUIP_TURTLE, 0.25F, pitch);
+            this.playSound(SoundEvents.ARMOR_EQUIP_TURTLE.value(), 0.25F, pitch);
             if (this.getCustomName() != null && "Steve".equalsIgnoreCase(this.getCustomName().getString())) {
                 if (!this.level().isClientSide) {
                     this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.VILLAGER_HURT, this.getSoundSource(), 0.25F, 1.0F);
@@ -134,10 +134,10 @@ public class BeachBallEntity extends Mob {
                     } else if ("MissLilitu".equalsIgnoreCase(name)) {
                         this.playSound(SoundEvents.FLOWERING_AZALEA_BREAK, 0.25F, pitch);
                     } else {
-                        this.playSound(SoundEvents.ARMOR_EQUIP_TURTLE, 0.25F, pitch);
+                        this.playSound(SoundEvents.ARMOR_EQUIP_TURTLE.value(), 0.25F, pitch);
                     }
                 } else {
-                    this.playSound(SoundEvents.ARMOR_EQUIP_TURTLE, 0.25F, pitch);
+                    this.playSound(SoundEvents.ARMOR_EQUIP_TURTLE.value(), 0.25F, pitch);
                 }
                 boolean invertMovement = this.getCustomName() != null && "CR-055".equalsIgnoreCase(this.getCustomName().getString());
                 Vector3f lookDirection = new Vector3f(

@@ -16,9 +16,9 @@ public class OceanWalkEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int pAmplifier) {
+    public boolean applyEffectTick(LivingEntity entity, int pAmplifier) {
         if (!(entity instanceof Player player) || player.isSpectator() || !player.isSprinting()) {
-            return;
+            return false;
         }
 
         Vec3 pos = entity.position();
@@ -42,11 +42,11 @@ public class OceanWalkEffect extends MobEffect {
             entity.setDeltaMovement(movement.x(), Math.max(movement.y(), movement.y() * 0.5), movement.z());
         }
 
-        super.applyEffectTick(entity, pAmplifier);
+        return super.applyEffectTick(entity, pAmplifier);
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    public boolean shouldApplyEffectTickThisTick(int i, int j) {
         return true;
     }
 }

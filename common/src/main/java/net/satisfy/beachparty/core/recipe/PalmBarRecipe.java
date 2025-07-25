@@ -2,10 +2,13 @@ package net.satisfy.beachparty.core.recipe;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
@@ -28,23 +31,13 @@ public class PalmBarRecipe implements Recipe<RecipeInput> {
     }
 
     @Override
-    public boolean matches(Container inventory, Level world) {
-        return BeachpartyUtil.matchesRecipe(inventory, inputs, 1, 4);
-    }
-
-    @Override
-    public @NotNull ItemStack assemble(Container inventory, RegistryAccess registryAccess) {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
     public boolean matches(RecipeInput recipeInput, Level level) {
-        return false;
+        return BeachpartyUtil.matchesRecipe(recipeInput, inputs, 1, 4);
     }
 
     @Override
     public ItemStack assemble(RecipeInput recipeInput, HolderLookup.Provider provider) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -87,6 +80,7 @@ public class PalmBarRecipe implements Recipe<RecipeInput> {
 
     public static class Serializer implements RecipeSerializer<PalmBarRecipe> {
 
+        /*
         @Override
         public @NotNull PalmBarRecipe fromJson(ResourceLocation id, JsonObject json) {
             final var ingredients = BeachpartyUtil.deserializeIngredients(GsonHelper.getAsJsonArray(json, "ingredients"));
@@ -113,6 +107,16 @@ public class PalmBarRecipe implements Recipe<RecipeInput> {
                 ingredient.toNetwork(buf);
             }
             buf.writeItem(recipe.output);
+        }*/
+
+        @Override
+        public MapCodec<PalmBarRecipe> codec() {
+            return null;
+        }
+
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, PalmBarRecipe> streamCodec() {
+            return null;
         }
     }
 }
