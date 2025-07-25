@@ -50,14 +50,14 @@ public class RubberRingLayer<T extends LivingEntity, M extends HumanoidModel<T>>
 
     private ResourceLocation getRingTexture(ItemStack stack) {
         if (stack.is(ObjectRegistry.RUBBER_RING_PINK.get())) {
-            return new BeachpartyIdentifier("textures/models/armor/rubber_ring_pink.png");
+            return BeachpartyIdentifier.identifier("textures/models/armor/rubber_ring_pink.png");
         } else if (stack.is(ObjectRegistry.RUBBER_RING_STRIPPED.get())) {
-            return new BeachpartyIdentifier("textures/models/armor/rubber_ring_stripped.png");
+            return BeachpartyIdentifier.identifier("textures/models/armor/rubber_ring_stripped.png");
         } else {
-            return new BeachpartyIdentifier("textures/models/armor/rubber_ring_blue.png");
+            return BeachpartyIdentifier.identifier("textures/models/armor/rubber_ring_blue.png");
         }
     }
 
-    private static <T extends LivingEntity, M extends HumanoidModel<T>> void renderColoredCutoutModel(RubberRingColoredModel<T> model, ResourceLocation texture, PoseStack poseStack, MultiBufferSource buffer, int light, T entity, float red, float green, float blue) {model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(texture)), light, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0f);
+    private static <T extends LivingEntity, M extends HumanoidModel<T>> void renderColoredCutoutModel(RubberRingColoredModel<T> model, ResourceLocation texture, PoseStack poseStack, MultiBufferSource buffer, int light, T entity, float red, float green, float blue) {model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(texture)), light, OverlayTexture.NO_OVERLAY);
     }
 }

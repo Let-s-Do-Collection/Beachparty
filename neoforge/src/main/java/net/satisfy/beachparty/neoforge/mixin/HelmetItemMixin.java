@@ -2,6 +2,7 @@ package net.satisfy.beachparty.neoforge.mixin;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -10,7 +11,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.satisfy.beachparty.core.item.TrinketsArmorItem;
 import net.satisfy.beachparty.core.registry.ArmorRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
@@ -27,6 +28,10 @@ public abstract class HelmetItemMixin extends ArmorItem {
     @Shadow
     @Final
     private ResourceLocation getTexture;
+
+    public HelmetItemMixin(Holder<ArmorMaterial> arg, Type arg2, Properties arg3) {
+        super(arg, arg2, arg3);
+    }
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
@@ -58,13 +63,8 @@ public abstract class HelmetItemMixin extends ArmorItem {
         });
     }
 
-    @Override
     public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
         return getTexture.toString();
-    }
-
-    private HelmetItemMixin(ArmorMaterial armorMaterial, Type armorType, Properties itemProperties) {
-        super(armorMaterial, armorType, itemProperties);
     }
 }
 

@@ -15,6 +15,7 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -23,9 +24,9 @@ import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 @SuppressWarnings("deprecation, unused")
 public class VillagerTrades {
-    private static final BeachpartyIdentifier SANDYMERCHANT_POI_IDENTIFIER = new BeachpartyIdentifier("sandymerchant_poi");
+    private static final ResourceLocation SANDYMERCHANT_POI_IDENTIFIER = BeachpartyIdentifier.identifier("sandymerchant_poi");
     public static final PoiType SANDYMERCHANT_POI = PointOfInterestHelper.register(SANDYMERCHANT_POI_IDENTIFIER, 1, 12, ObjectRegistry.PALM_BAR.get());
-    public static final VillagerProfession SANDYMERCHANT = Registry.register(BuiltInRegistries.VILLAGER_PROFESSION, new ResourceLocation("beachparty", "sandymerchant"), VillagerProfessionBuilder.create().id(new ResourceLocation("beachparty", "sandymerchant")).workstation(ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, SANDYMERCHANT_POI_IDENTIFIER)).build());
+    public static final VillagerProfession SANDYMERCHANT = Registry.register(BuiltInRegistries.VILLAGER_PROFESSION, BeachpartyIdentifier.identifier("sandymerchant"), VillagerProfessionBuilder.create().id(BeachpartyIdentifier.identifier("sandymerchant")).workstation(ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, SANDYMERCHANT_POI_IDENTIFIER)).build());
 
     public static void init() {
         TradeOfferHelper.registerVillagerOffers(SANDYMERCHANT, 1, factories -> {
@@ -84,7 +85,7 @@ public class VillagerTrades {
         @Override
         public MerchantOffer getOffer(Entity entity, RandomSource random) {
             ItemStack itemStack = new ItemStack(this.buy, this.price);
-            return new MerchantOffer(itemStack, new ItemStack(Items.EMERALD), this.maxUses, this.experience, this.multiplier);
+            return new MerchantOffer(new ItemCost(Items.EMERALD), itemStack, this.maxUses, this.experience, this.multiplier);
         }
     }
 
@@ -127,8 +128,8 @@ public class VillagerTrades {
 
         @Override
         public MerchantOffer getOffer(Entity entity, RandomSource random) {
-            return new MerchantOffer(
-                    new ItemStack(Items.EMERALD, this.price), new ItemStack(this.sell.getItem(), this.count), this.maxUses, this.experience, this.multiplier
+            return new MerchantOffer(new ItemCost(Items.EMERALD, this.price),
+                    new ItemStack(this.sell.getItem(), this.count), this.maxUses, this.experience, this.multiplier
             );
         }
     }

@@ -3,6 +3,7 @@ package net.satisfy.beachparty.neoforge.client.integration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -72,14 +73,14 @@ public class CuriosWearableTrinket {
         public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
             super.onEquip(slotContext, prevStack, stack);
             LivingEntity entity = slotContext.entity();
-            if (entity instanceof Player player && !player.hasEffect(MobEffectRegistry.OCEAN_WALK.get())) {
-                player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), -1, 0, false, false));
+            if (entity instanceof Player player && !player.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.OCEAN_WALK.get()))) {
+                player.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.OCEAN_WALK.get()), -1, 0, false, false));
             }
         }
 
         @Override
         protected void removeEffect(Player player) {
-            player.removeEffect(MobEffectRegistry.OCEAN_WALK.get());
+            player.removeEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.OCEAN_WALK.get()));
         }
     }
 

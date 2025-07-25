@@ -1,41 +1,38 @@
 package net.satisfy.beachparty.neoforge;
 
 import dev.architectury.platform.Platform;
-import dev.architectury.platform.forge.EventBuses;
+import dev.architectury.platform.hooks.EventBusesHooks;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerSetSpawnEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.InterModComms;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.block.BeachSunLounger;
 import net.satisfy.beachparty.core.block.BeachTowelBlock;
 import net.satisfy.beachparty.core.registry.CompostablesRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.neoforge.client.integration.CuriosWearableTrinket;
-import net.satisfy.beachparty.neoforge.registry.BeachpartyConfig;
 import net.satisfy.beachparty.neoforge.registry.BeachpartyVillagers;
 import net.satisfy.beachparty.platform.neoforge.PlatformHelperImpl;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.SlotTypePreset;
 
-@Mod(Beachparty.MOD_ID)
-public class BeachpartyForge {
-    public BeachpartyForge() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        EventBuses.registerModEventBus(Beachparty.MOD_ID, modEventBus);
+@Mod(Beachparty.MOD_ID) public class BeachpartyForge {
+    public BeachpartyForge(IEventBus modEventBus, ModContainer modContainer) {
+        EventBusesHooks.whenAvailable(Beachparty.MOD_ID, IEventBus::start);
         BeachpartyVillagers.register(modEventBus);
         PlatformHelperImpl.ENTITY_TYPES.register(modEventBus);
-        BeachpartyConfig.loadConfig(BeachpartyConfig.COMMON_CONFIG, Platform.getConfigFolder().resolve("beachparty.toml").toString());
 
         Beachparty.init();
         modEventBus.addListener(this::commonSetup);
@@ -58,7 +55,7 @@ public class BeachpartyForge {
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
-        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("feet").size(1).icon(new ResourceLocation("minecraft", "item/empty_armor_slot_boots")).build());
+        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("feet").size(1).icon(ResourceLocation.withDefaultNamespace("item/empty_armor_slot_boots")).build());
         InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BELT.getMessageBuilder().build());
         InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.HANDS.getMessageBuilder().build());
         InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.HEAD.getMessageBuilder().build());
@@ -73,7 +70,7 @@ public class BeachpartyForge {
         }
     }
 
-    @Mod.EventBusSubscriber(modid = Beachparty.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    @EventBusSubscriber(modid = Beachparty.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
     public static class ForgeEventsHandler {
 
         @SubscribeEvent

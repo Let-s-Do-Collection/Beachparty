@@ -18,15 +18,12 @@ public class DyedArmorModelWrapper<T extends LivingEntity> extends EntityModel<T
     }
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        float r = ((color >> 16) & 255) / 255.0F;
-        float g = ((color >> 8) & 255) / 255.0F;
-        float b = (color & 255) / 255.0F;
-        original.renderToBuffer(poseStack, buffer, packedLight, packedOverlay, r, g, b, alpha);
+    public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        original.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
     }
 
     @Override
-    public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        original.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
+        original.renderToBuffer(poseStack, buffer, packedLight, packedOverlay, color);
     }
 }

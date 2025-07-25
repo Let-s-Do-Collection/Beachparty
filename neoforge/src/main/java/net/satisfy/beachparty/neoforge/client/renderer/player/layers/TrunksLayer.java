@@ -6,15 +6,19 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.satisfy.beachparty.client.model.TrunksModel;
 import net.satisfy.beachparty.core.item.DyeableBeachpartyArmorItem;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class TrunksLayer<T extends LivingEntity, M extends HumanoidModel<T>> extends RenderLayer<T, M> {
 
@@ -48,9 +52,8 @@ public class TrunksLayer<T extends LivingEntity, M extends HumanoidModel<T>> ext
 
         if (!inCurioSlot[0] && !inLegsSlot) return;
 
-        if (trunks[0].hasTag()) {
-            assert trunks[0].getTag() != null;
-            if (trunks[0].getTag().contains("Visible") && !trunks[0].getTag().getBoolean("Visible")) {
+        if (trunks[0].has(DataComponents.CUSTOM_DATA)) {
+            if (trunks[0].getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).contains("Visible") && !trunks[0].getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getBoolean("Visible")) {
                 return;
             }
         }
@@ -59,19 +62,16 @@ public class TrunksLayer<T extends LivingEntity, M extends HumanoidModel<T>> ext
                 ? (DyeableBeachpartyArmorItem) trunks[0].getItem() : null;
         if (item == null) return;
 
-        int colorInt = item.getColor(trunks[0]);
-        float red = ((colorInt >> 16) & 0xFF) / 255f;
-        float green = ((colorInt >> 8) & 0xFF) / 255f;
-        float blue = (colorInt & 0xFF) / 255f;
+        int colorInt = Objects.requireNonNull(trunks[0].get(DataComponents.DYED_COLOR)).rgb();
 
         poseStack.pushPose();
-        renderColoredCutoutModel(this.model, getTextureLocation(entity), poseStack, multiBufferSource, i, entity, red, green, blue);
+        renderColoredCutoutModel(this.model, getTextureLocation(entity), poseStack, multiBufferSource, i, entity, colorInt);
         poseStack.popPose();
     }
 
 
     @Override
     protected @NotNull ResourceLocation getTextureLocation(@NotNull T entity) {
-        return new BeachpartyIdentifier("textures/models/armor/trunks.png");
+        return BeachpartyIdentifier.identifier("textures/models/armor/trunks.png");
     }
 }

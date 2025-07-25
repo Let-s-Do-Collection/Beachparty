@@ -24,7 +24,7 @@ public class CuriosRubberRingAxolotlRenderer implements ICurioRenderer {
 
     public CuriosRubberRingAxolotlRenderer() {
         this.model = new RubberRingAxolotlModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(RubberRingAxolotlModel.LAYER_LOCATION));
-        this.texture = new BeachpartyIdentifier("textures/models/armor/rubber_ring_axolotl.png");
+        this.texture = BeachpartyIdentifier.identifier("textures/models/armor/rubber_ring_axolotl.png");
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CuriosRubberRingAxolotlRenderer implements ICurioRenderer {
             matrixStack.translate(-0.4F, -1.5F, 0.4F);
         }
         model.renderToBuffer(matrixStack, renderTypeBuffer.getBuffer(RenderType.entityCutoutNoCull(texture)),
-                light, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
+                light, OverlayTexture.NO_OVERLAY);
         matrixStack.popPose();
     }
 

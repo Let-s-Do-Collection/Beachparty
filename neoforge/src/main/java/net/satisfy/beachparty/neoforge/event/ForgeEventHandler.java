@@ -61,7 +61,7 @@ public class ForgeEventHandler {
     }
 
     @SubscribeEvent
-    public static void onLivingDamage(LivingDamageEvent.Post event) {
+    public static void onLivingDamage(LivingDamageEvent.Pre event) {
         if (!(event.getEntity() instanceof Player player)) return;
         if (event.getSource() == null) return;
 
@@ -76,7 +76,8 @@ public class ForgeEventHandler {
         }
 
         if (reduction > 0) {
-            event.getNewDamage(newDamage);
+            float newDamage = event.getOriginalDamage() * (1 - Math.min(reduction, 1.0f));
+            event.setNewDamage(newDamage);
         }
     }
 }

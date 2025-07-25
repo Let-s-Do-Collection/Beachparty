@@ -44,7 +44,7 @@ public class CuriosRubberRingRenderer implements ICurioRenderer {
             matrixStack.translate(0.1F, -1.4F, -0.5F);
         }
         model.renderToBuffer(matrixStack, renderTypeBuffer.getBuffer(RenderType.entityCutoutNoCull(texture)),
-                light, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
+                light, OverlayTexture.NO_OVERLAY);
         matrixStack.popPose();
     }
 
@@ -56,11 +56,11 @@ public class CuriosRubberRingRenderer implements ICurioRenderer {
 
     private ResourceLocation getRingTexture(ItemStack stack) {
         if (stack.is(ObjectRegistry.RUBBER_RING_PINK.get())) {
-            return new BeachpartyIdentifier("textures/models/armor/rubber_ring_pink.png");
+            return BeachpartyIdentifier.identifier("textures/models/armor/rubber_ring_pink.png");
         } else if (stack.is(ObjectRegistry.RUBBER_RING_STRIPPED.get())) {
-            return new BeachpartyIdentifier("textures/models/armor/rubber_ring_stripped.png");
+            return BeachpartyIdentifier.identifier("textures/models/armor/rubber_ring_stripped.png");
         } else {
-            return new BeachpartyIdentifier("textures/models/armor/rubber_ring_blue.png");
+            return BeachpartyIdentifier.identifier("textures/models/armor/rubber_ring_blue.png");
         }
     }
 }

@@ -43,13 +43,13 @@ public class RubberRingPelicanLayer<T extends LivingEntity, M extends HumanoidMo
     }
 
     private static ResourceLocation getItemTexture() {
-        return new BeachpartyIdentifier("textures/models/armor/rubber_ring_pelican.png");
+        return BeachpartyIdentifier.identifier("textures/models/armor/rubber_ring_pelican.png");
     }
 
     private static boolean isRubberRing(ItemStack stack) {
         return stack.is(ObjectRegistry.RUBBER_RING_PELICAN.get());
     }
 
-    private static <T extends LivingEntity, M extends HumanoidModel<T>> void renderColoredCutoutModel(RubberRingPelicanModel<T> model, ResourceLocation texture, PoseStack poseStack, MultiBufferSource buffer, int light, T entity, float red, float green, float blue) {model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(texture)), light, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0f);
+    private static <T extends LivingEntity, M extends HumanoidModel<T>> void renderColoredCutoutModel(RubberRingPelicanModel<T> model, ResourceLocation texture, PoseStack poseStack, MultiBufferSource buffer, int light, T entity, float red, float green, float blue) {model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(texture)), light, OverlayTexture.NO_OVERLAY);
     }
 }

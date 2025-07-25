@@ -24,7 +24,7 @@ public class CuriosRubberRingPelicanRenderer implements ICurioRenderer {
 
     public CuriosRubberRingPelicanRenderer() {
         this.model = new RubberRingPelicanModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(RubberRingPelicanModel.LAYER_LOCATION));
-        this.texture = new BeachpartyIdentifier("textures/models/armor/rubber_ring_pelican.png");
+        this.texture = BeachpartyIdentifier.identifier("textures/models/armor/rubber_ring_pelican.png");
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CuriosRubberRingPelicanRenderer implements ICurioRenderer {
             matrixStack.translate(-0.4F, -1.5F, 0.4F);
         }
         model.renderToBuffer(matrixStack, renderTypeBuffer.getBuffer(RenderType.entityCutoutNoCull(texture)),
-                light, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
+                light, OverlayTexture.NO_OVERLAY);
         matrixStack.popPose();
     }
 

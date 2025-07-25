@@ -6,26 +6,27 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.registries.RegisterEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.client.BeachPartyClient;
 import net.satisfy.beachparty.client.model.FloatyBoatModel;
 import net.satisfy.beachparty.core.entity.PalmBoatEntity;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import net.satisfy.beachparty.neoforge.client.integration.*;
 import net.satisfy.beachparty.neoforge.client.renderer.player.layers.*;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
 import java.util.function.Function;
 
-@Mod.EventBusSubscriber(modid = Beachparty.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Beachparty.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class BeachpartyClientForge {
 
     @SubscribeEvent
@@ -49,11 +50,11 @@ public class BeachpartyClientForge {
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         for (PalmBoatEntity.Type type : PalmBoatEntity.Type.values()) {
             if (type == PalmBoatEntity.Type.FLOATY) {
-                event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getModelLocation()), "main"), FloatyBoatModel::createBodyModel);
-                event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getChestModelLocation()), "main"), FloatyBoatModel::createBodyModel);
+                event.registerLayerDefinition(new ModelLayerLocation(BeachpartyIdentifier.identifier(type.getModelLocation()), "main"), FloatyBoatModel::createBodyModel);
+                event.registerLayerDefinition(new ModelLayerLocation(BeachpartyIdentifier.identifier(type.getChestModelLocation()), "main"), FloatyBoatModel::createBodyModel);
             } else {
-                event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getModelLocation()), "main"), BoatModel::createBodyModel);
-                event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, type.getChestModelLocation()), "main"), ChestBoatModel::createBodyModel);
+                event.registerLayerDefinition(new ModelLayerLocation(BeachpartyIdentifier.identifier(type.getModelLocation()), "main"), BoatModel::createBodyModel);
+                event.registerLayerDefinition(new ModelLayerLocation(BeachpartyIdentifier.identifier( type.getChestModelLocation()), "main"), ChestBoatModel::createBodyModel);
             }
         }
     }
@@ -70,7 +71,7 @@ public class BeachpartyClientForge {
 
     private static <E extends Player, M extends HumanoidModel<E>>
     void addLayerToPlayerSkin(EntityRenderersEvent.AddLayers event, String skinName, Function<LivingEntityRenderer<E, M>, ? extends RenderLayer<E, M>> factory) {
-        LivingEntityRenderer<E, M> renderer = event.getSkin(skinName);
+        LivingEntityRenderer<E, M> renderer = event.getSkin(PlayerSkin.Model.valueOf(skinName));
         if (renderer != null) renderer.addLayer(factory.apply(renderer));
     }
 }

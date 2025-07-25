@@ -15,11 +15,11 @@ public class BeachpartyVillagers {
     public static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(Registries.POINT_OF_INTEREST_TYPE, Beachparty.MOD_ID);
     public static final DeferredRegister<VillagerProfession> VILLAGER_PROFESSIONS = DeferredRegister.create(Registries.VILLAGER_PROFESSION, Beachparty.MOD_ID);
 
-    public static final DeferredHolder<VillagerProfession> SANDYMERCHANT_POI = POI_TYPES.register("sandymerchant_poi", () ->
+    public static final DeferredHolder<PoiType, PoiType> SANDYMERCHANT_POI = POI_TYPES.register("sandymerchant_poi", () ->
             new PoiType(ImmutableSet.copyOf(ObjectRegistry.PALM_BAR.get().getStateDefinition().getPossibleStates()), 1, 1));
 
-    public static final DeferredHolder<VillagerProfession> SANDYMERCHANT = VILLAGER_PROFESSIONS.register("sandymerchant", () ->
-            new VillagerProfession("sandymerchant", x -> x.get() == SANDYMERCHANT_POI.get(), x -> x.get() == SANDYMERCHANT_POI.get(), ImmutableSet.of(), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_CLERIC));
+    public static final DeferredHolder<VillagerProfession, VillagerProfession> SANDYMERCHANT = VILLAGER_PROFESSIONS.register("sandymerchant", () ->
+            new VillagerProfession("sandymerchant", x -> x.value() == SANDYMERCHANT_POI.get(), x -> x.value() == SANDYMERCHANT_POI.get(), ImmutableSet.of(), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_CLERIC));
 
     public static void register(IEventBus eventBus) {
         POI_TYPES.register(eventBus);

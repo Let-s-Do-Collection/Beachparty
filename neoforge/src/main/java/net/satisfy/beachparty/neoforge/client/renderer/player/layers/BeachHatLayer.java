@@ -46,20 +46,20 @@ public class BeachHatLayer<T extends LivingEntity, M extends HumanoidModel<T>> e
         // **Feinjustierung der Position (falls nötig)**
         poseStack.translate(0.0F, -1.4F, 0.0F);
 
-        renderColoredCutoutModel(this.model, getItemTexture(), poseStack, multiBufferSource, light, entity, 1.0f, 1.0f, 1.0f);
+        renderColoredCutoutModel(this.model, getItemTexture(), poseStack, multiBufferSource, light);
 
         poseStack.popPose();
     }
 
     private static ResourceLocation getItemTexture() {
-        return new BeachpartyIdentifier("textures/models/armor/beach_hat.png");
+        return BeachpartyIdentifier.identifier("textures/models/armor/beach_hat.png");
     }
 
     private static boolean isBeachHat(ItemStack stack) {
         return stack.is(ObjectRegistry.BEACH_HAT.get());
     }
 
-    private static <T extends LivingEntity, M extends HumanoidModel<T>> void renderColoredCutoutModel(BeachHatModel<T> model, ResourceLocation texture, PoseStack poseStack, MultiBufferSource buffer, int light, T entity, float red, float green, float blue) {
-        model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(texture)), light, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0f);
+    private static <T extends LivingEntity, M extends HumanoidModel<T>> void renderColoredCutoutModel(BeachHatModel<T> model, ResourceLocation texture, PoseStack poseStack, MultiBufferSource buffer, int light) {
+        model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(texture)), light, OverlayTexture.NO_OVERLAY);
     }
 }

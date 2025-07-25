@@ -3,13 +3,15 @@ package net.satisfy.beachparty.neoforge.mixin;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.DyeableArmorItem;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.satisfy.beachparty.core.item.DyeableBeachpartyArmorItem;
 import net.satisfy.beachparty.core.registry.ArmorRegistry;
 import net.satisfy.beachparty.neoforge.model.DyedArmorModelWrapper;
@@ -21,17 +23,17 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.function.Consumer;
 
 @Mixin(DyeableBeachpartyArmorItem.class)
-public abstract class DyeableArmorMixin extends DyeableArmorItem {
+public abstract class DyeableArmorMixin extends ArmorItem {
+
+    public DyeableArmorMixin(Holder<ArmorMaterial> arg, Type arg2, Properties arg3) {
+        super(arg, arg2, arg3);
+    }
 
     @Shadow
     public abstract int getColor(@NotNull ItemStack stack);
 
     @Shadow
     private ResourceLocation getTexture;
-
-    private DyeableArmorMixin(Type type, Properties properties) {
-        super(null , type, properties);
-    }
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {

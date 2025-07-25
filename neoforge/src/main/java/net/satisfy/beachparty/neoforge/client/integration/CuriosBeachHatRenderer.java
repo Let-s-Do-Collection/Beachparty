@@ -23,7 +23,7 @@ public class CuriosBeachHatRenderer implements ICurioRenderer {
 
     public CuriosBeachHatRenderer() {
         this.model = new BeachHatModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(BeachHatModel.LAYER_LOCATION));
-        this.texture = new BeachpartyIdentifier("textures/models/armor/beach_hat.png");
+        this.texture = BeachpartyIdentifier.identifier("textures/models/armor/beach_hat.png");
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CuriosBeachHatRenderer implements ICurioRenderer {
 
         matrixStack.pushPose();
         model.renderToBuffer(matrixStack, renderTypeBuffer.getBuffer(RenderType.entityCutoutNoCull(texture)),
-                light, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
+                light, OverlayTexture.NO_OVERLAY);
 
         matrixStack.popPose();
     }

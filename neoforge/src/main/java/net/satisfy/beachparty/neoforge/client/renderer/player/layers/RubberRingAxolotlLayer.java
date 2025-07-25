@@ -37,19 +37,20 @@ public class RubberRingAxolotlLayer<T extends LivingEntity, M extends HumanoidMo
 
             this.model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             poseStack.pushPose();
-            renderColoredCutoutModel(this.model, getItemTexture(), poseStack, multiBufferSource, light, entity, 1.0f, 1.0f, 1.0f);
+            renderColoredCutoutModel(this.model, getItemTexture(), poseStack, multiBufferSource, light);
             poseStack.popPose();
         }
     }
 
     private static ResourceLocation getItemTexture() {
-        return new BeachpartyIdentifier("textures/models/armor/rubber_ring_axolotl.png");
+        return BeachpartyIdentifier.identifier("textures/models/armor/rubber_ring_axolotl.png");
     }
 
     private static boolean isRubberRing(ItemStack stack) {
         return stack.is(ObjectRegistry.RUBBER_RING_AXOLOTL.get());
     }
 
-    private static <T extends LivingEntity, M extends HumanoidModel<T>> void renderColoredCutoutModel(RubberRingAxolotlModel<T> model, ResourceLocation texture, PoseStack poseStack, MultiBufferSource buffer, int light, T entity, float red, float green, float blue) {model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(texture)), light, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0f);
+    private static <T extends LivingEntity, M extends HumanoidModel<T>> void renderColoredCutoutModel(RubberRingAxolotlModel<T> model, ResourceLocation texture, PoseStack poseStack, MultiBufferSource buffer, int light) {
+        model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(texture)), light, OverlayTexture.NO_OVERLAY);
     }
 }

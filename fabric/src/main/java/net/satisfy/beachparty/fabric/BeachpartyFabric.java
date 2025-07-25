@@ -51,7 +51,7 @@ public class BeachpartyFabric implements ModInitializer {
     private void addBiomeModification() {
         ConfigFabric config = AutoConfig.getConfigHolder(ConfigFabric.class).getConfig();
 
-        BiomeModification world = BiomeModifications.create(new BeachpartyIdentifier("world_features"));
+        BiomeModification world = BiomeModifications.create(BeachpartyIdentifier.identifier("world_features"));
         Predicate<BiomeSelectionContext> beachBiomes = getBeachpartySelector();
 
         if (config.spawnSeashells) {
@@ -82,6 +82,6 @@ public class BeachpartyFabric implements ModInitializer {
     }
 
     private static Predicate<BiomeSelectionContext> getBeachpartySelector() {
-        return BiomeSelectors.tag(TagKey.create(Registries.BIOME, new BeachpartyIdentifier("beach")));
+        return BiomeSelectors.tag(TagKey.create(Registries.BIOME, BeachpartyIdentifier.identifier("beach")));
     }
 }

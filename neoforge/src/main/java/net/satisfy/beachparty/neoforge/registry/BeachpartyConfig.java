@@ -1,12 +1,8 @@
 package net.satisfy.beachparty.neoforge.registry;
 
-import com.electronwill.nightconfig.core.file.CommentedFileConfig;
-import com.electronwill.nightconfig.core.io.WritingMode;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
-
-import java.io.File;
 
 public class BeachpartyConfig {
     public static ModConfigSpec COMMON_CONFIG;
@@ -31,23 +27,24 @@ public class BeachpartyConfig {
         COMMON_CONFIG = COMMON_BUILDER.build();
     }
 
+    private static boolean spawnPalms;
+    private static boolean spawnSeashells;
+    private static boolean spawnSandwaves;
+    private static boolean allowSpawning;
+    private static int maxCount;
+    private static int spawnInterval;
+
     @SubscribeEvent
     public static void onLoad(final ModConfigEvent.Loading configEvent) {
+        spawnPalms = SPAWN_PALMS.get();
+        spawnSeashells = SPAWN_SEASHELLS.get();
+        spawnSandwaves = SPAWN_SANDWAVES.get();
+        allowSpawning = ALLOW_BOTTLE_SPAWNING.get();
+        maxCount = BOTTLE_MAX_COUNT.get();
+        spawnInterval = BOTTLE_SPAWN_INTERVAL.get();
     }
 
     @SubscribeEvent
     public static void onReload(final ModConfigEvent.Reloading configEvent) {
-    }
-
-    public static void loadConfig(ModConfigSpec spec, String path) {
-        final CommentedFileConfig file = CommentedFileConfig.builder(new File(path))
-                .sync()
-                .preserveInsertionOrder()
-                .autosave()
-                .writingMode(WritingMode.REPLACE)
-                .build();
-        file.load();
-        spec.setConfig(file);
-        file.save();
     }
 }
