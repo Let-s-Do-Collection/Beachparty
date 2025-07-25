@@ -110,7 +110,7 @@ public class MiniFridgeRecipe implements Recipe<RecipeInput> {
             NonNullList<Ingredient> nonNullList = NonNullList.withSize(i, Ingredient.EMPTY);
             nonNullList.replaceAll((ingredient) -> Ingredient.CONTENTS_STREAM_CODEC.decode(buf));
             ItemStack itemStack = ItemStack.STREAM_CODEC.decode(buf);
-            int craftingTime = buf.readVarInt();
+            int craftingTime = buf.readInt();
             return new MiniFridgeRecipe(nonNullList, itemStack, craftingTime);
         }
 
