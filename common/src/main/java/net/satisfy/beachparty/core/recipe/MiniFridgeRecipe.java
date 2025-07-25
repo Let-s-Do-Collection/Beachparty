@@ -1,17 +1,14 @@
 package net.satisfy.beachparty.core.recipe;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -21,13 +18,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class MiniFridgeRecipe implements Recipe<RecipeInput> {
 
-    final ResourceLocation id;
     private final NonNullList<Ingredient> inputs;
     private final ItemStack output;
     private final int craftingTime;
 
-    public MiniFridgeRecipe(ResourceLocation id, NonNullList<Ingredient> inputs, ItemStack output, int craftingTime) {
-        this.id = id;
+    public MiniFridgeRecipe(NonNullList<Ingredient> inputs, ItemStack output, int craftingTime) {
         this.inputs = inputs;
         this.output = output;
         this.craftingTime = craftingTime;
@@ -82,50 +77,49 @@ public class MiniFridgeRecipe implements Recipe<RecipeInput> {
     }
 
     public static class Serializer implements RecipeSerializer<MiniFridgeRecipe> {
+
+        public static final StreamCodec<RegistryFriendlyByteBuf, MiniFridgeRecipe> STREAM_CODEC =
+                StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
+
+        public static final MapCodec<MiniFridgeRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                        Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap(list -> {
+                            Ingredient[] ingredients = list.toArray(Ingredient[]::new);
+                            if (ingredients.length == 0) {
+                                return DataResult.error(() -> "No ingredients for Cauldron recipe");
+                            } else {
+                                return ingredients.length > 1 ? DataResult.error(() -> "Too many ingredients for Cauldron recipe") : DataResult.success(NonNullList.of(Ingredient.EMPTY, ingredients));
+                            }
+                        }, DataResult::success).forGetter(MiniFridgeRecipe::getIngredients),
+                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter(miniFridgeRecipe -> miniFridgeRecipe.output),
+                Codec.INT.fieldOf("crafting_time").forGetter(MiniFridgeRecipe::getCraftingTime)
+                ).apply(instance, MiniFridgeRecipe::new)
+        );
+
         @Override
         public MapCodec<MiniFridgeRecipe> codec() {
-            return null;
+            return CODEC;
         }
 
         @Override
         public StreamCodec<RegistryFriendlyByteBuf, MiniFridgeRecipe> streamCodec() {
-            return null;
+            return STREAM_CODEC;
         }
 
-        /*
-        @Override
-        public @NotNull MiniFridgeRecipe fromJson(ResourceLocation id, JsonObject json) {
-            var jsonArray = GsonHelper.getAsJsonArray(json, "ingredients");
-            NonNullList<Ingredient> ingredients = NonNullList.create();
-            jsonArray.forEach(element -> ingredients.add(Ingredient.fromJson(element.getAsJsonObject())));
-            if (ingredients.isEmpty()) {
-                throw new JsonParseException("No ingredients for Mini Fridge Recipe");
-            } else if (ingredients.size() > 1) {
-                throw new JsonParseException("Too many ingredients for Mini Fridge Recipe");
-            }
-            int craftingTime = GsonHelper.getAsInt(json, "crafting_time", 100);
-            JsonObject resultJson = GsonHelper.getAsJsonObject(json, "result");
-            return new MiniFridgeRecipe(id, ingredients, ShapedRecipe.itemStackFromJson(resultJson), craftingTime);
-        }
-
-
-        @Override
-        public @NotNull MiniFridgeRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-            final var ingredients = NonNullList.withSize(buf.readVarInt(), Ingredient.EMPTY);
-            ingredients.replaceAll(ignored -> Ingredient.fromNetwork(buf));
-            ItemStack output = buf.readItem();
+        public static @NotNull MiniFridgeRecipe fromNetwork(RegistryFriendlyByteBuf buf) {
+            int i = buf.readVarInt();
+            NonNullList<Ingredient> nonNullList = NonNullList.withSize(i, Ingredient.EMPTY);
+            nonNullList.replaceAll((ingredient) -> Ingredient.CONTENTS_STREAM_CODEC.decode(buf));
+            ItemStack itemStack = ItemStack.STREAM_CODEC.decode(buf);
             int craftingTime = buf.readVarInt();
-            return new MiniFridgeRecipe(id, ingredients, output, craftingTime);
+            return new MiniFridgeRecipe(nonNullList, itemStack, craftingTime);
         }
 
-        @Override
-        public void toNetwork(FriendlyByteBuf buf, MiniFridgeRecipe recipe) {
+        public static void toNetwork(RegistryFriendlyByteBuf buf, MiniFridgeRecipe recipe) {
             buf.writeVarInt(recipe.inputs.size());
-            for (Ingredient ingredient : recipe.inputs) {
-                ingredient.toNetwork(buf);
+            for (Ingredient ingredient : recipe.getIngredients()) {
+                Ingredient.CONTENTS_STREAM_CODEC.encode(buf, ingredient);
             }
-            buf.writeItem(recipe.output);
             buf.writeVarInt(recipe.craftingTime);
-        }*/
+        }
     }
 }

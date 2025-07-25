@@ -10,6 +10,7 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class BeachpartyUtil {
@@ -162,10 +164,7 @@ public class BeachpartyUtil {
     }
 
     static int getColor(ItemStack itemStack, int defaultColor) {
-        CompoundTag displayTag = itemStack.getTagElement("display");
-        if (null != displayTag && displayTag.contains("color", Tag.TAG_ANY_NUMERIC))
-            return displayTag.getInt("color");
-        return defaultColor;
+        return itemStack.has(DataComponents.DYED_COLOR) ? Objects.requireNonNull(itemStack.get(DataComponents.DYED_COLOR)).rgb() : defaultColor;
     }
 
     private static ResourceLocation getDimensionTypeId(Level world) {
