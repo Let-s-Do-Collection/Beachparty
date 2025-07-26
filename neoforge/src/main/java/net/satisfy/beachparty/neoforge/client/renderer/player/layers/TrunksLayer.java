@@ -62,7 +62,7 @@ public class TrunksLayer<T extends LivingEntity, M extends HumanoidModel<T>> ext
                 ? (DyeableBeachpartyArmorItem) trunks[0].getItem() : null;
         if (item == null) return;
 
-        int colorInt = Objects.requireNonNull(trunks[0].get(DataComponents.DYED_COLOR)).rgb();
+        int colorInt = item.getColor();
 
         poseStack.pushPose();
         renderColoredCutoutModel(this.model, getTextureLocation(entity), poseStack, multiBufferSource, i, entity, colorInt);

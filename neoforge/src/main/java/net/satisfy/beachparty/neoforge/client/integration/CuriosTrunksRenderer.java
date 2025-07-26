@@ -38,7 +38,7 @@ public class CuriosTrunksRenderer implements ICurioRenderer {
         }
         LivingEntity livingEntity = slotContext.entity();
         if (livingEntity == null) return;
-        int colorInt = Objects.requireNonNull(stack.get(DataComponents.DYED_COLOR)).rgb();
+        int colorInt = ((DyeableBeachpartyArmorItem) stack.getItem()).getColor();
         model.setupAnim(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         if (livingEntity.isCrouching()) {
             matrixStack.translate(0F, 0.2F, 0F);
