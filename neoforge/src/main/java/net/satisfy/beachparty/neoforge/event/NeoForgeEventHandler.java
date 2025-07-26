@@ -18,7 +18,7 @@ import net.satisfy.beachparty.neoforge.registry.BeachpartyVillagers;
 import java.util.List;
 
 @EventBusSubscriber(modid = Beachparty.MOD_ID)
-public class ForgeEventHandler {
+public class NeoForgeEventHandler {
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event) {
         if (event.getType().equals(BeachpartyVillagers.SANDYMERCHANT.get())) {

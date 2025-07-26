@@ -27,7 +27,7 @@ import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import java.util.function.Function;
 
 @EventBusSubscriber(modid = Beachparty.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
-public class BeachpartyClientForge {
+public class BeachpartyClientNeoForge {
 
     @SubscribeEvent
     public static void beforeClientSetup(RegisterEvent event) {

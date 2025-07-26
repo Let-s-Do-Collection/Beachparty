@@ -1,6 +1,5 @@
 package net.satisfy.beachparty.neoforge;
 
-import dev.architectury.platform.Platform;
 import dev.architectury.platform.hooks.EventBusesHooks;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -28,8 +27,8 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.SlotTypePreset;
 
-@Mod(Beachparty.MOD_ID) public class BeachpartyForge {
-    public BeachpartyForge(IEventBus modEventBus, ModContainer modContainer) {
+@Mod(Beachparty.MOD_ID) public class BeachpartyNeoForge {
+    public BeachpartyNeoForge(IEventBus modEventBus, ModContainer modContainer) {
         EventBusesHooks.whenAvailable(Beachparty.MOD_ID, IEventBus::start);
         BeachpartyVillagers.register(modEventBus);
         PlatformHelperImpl.ENTITY_TYPES.register(modEventBus);

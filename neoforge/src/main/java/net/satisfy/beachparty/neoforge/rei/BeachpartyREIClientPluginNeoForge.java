@@ -7,7 +7,7 @@ import me.shedaniel.rei.forge.REIPluginClient;
 import net.satisfy.beachparty.core.compat.rei.BeachpartyREIClientPlugin;
 
 @REIPluginClient
-public class BeachpartyREIClientPluginForge implements REIClientPlugin {
+public class BeachpartyREIClientPluginNeoForge implements REIClientPlugin {
 
     @Override
     public void registerCategories(CategoryRegistry registry) {
