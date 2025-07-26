@@ -9,14 +9,11 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.satisfy.beachparty.core.item.DyeableBeachpartyArmorItem;
 import net.satisfy.beachparty.core.registry.ArmorRegistry;
-
-import java.util.Objects;
 
 public class DyeableChestplateTrinketRenderer implements TrinketRenderer {
     @Override
@@ -29,7 +26,7 @@ public class DyeableChestplateTrinketRenderer implements TrinketRenderer {
         if (entityModel instanceof HumanoidModel<?> humanoidModel) {
             Model model = ArmorRegistry.chestplateModel(armorItem, humanoidModel.body, humanoidModel.leftArm, humanoidModel.rightArm);
 
-            int color = Objects.requireNonNull(armorItem.getDefaultInstance().get(DataComponents.DYED_COLOR)).rgb();
+            int color = armorItem.getColor();
 
             model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(armorItem.getTexture())), i, OverlayTexture.NO_OVERLAY, color);
         }

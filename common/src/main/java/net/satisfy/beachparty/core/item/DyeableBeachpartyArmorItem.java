@@ -37,6 +37,10 @@ public class DyeableBeachpartyArmorItem extends ArmorItem {
         return getTexture;
     }
 
+    public int getColor() {
+        return defaultColor;
+    }
+
     @Override
     public @NotNull EquipmentSlot getEquipmentSlot() {
         return this.type.getSlot();

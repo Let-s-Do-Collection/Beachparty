@@ -11,6 +11,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.satisfy.beachparty.core.item.TrinketsArmorItem;
 import net.satisfy.beachparty.core.item.DyeableBeachpartyArmorItem;
@@ -23,19 +24,20 @@ public class ChestplateRenderer implements ArmorRenderer {
     public void render(PoseStack matrices, MultiBufferSource vertexConsumers, ItemStack stack, LivingEntity entity, EquipmentSlot slot, int light, HumanoidModel<LivingEntity> contextModel) {
         Model model;
         ResourceLocation texture;
-        int color = Objects.requireNonNull(stack.get(DataComponents.DYED_COLOR)).rgb();
 
         if (stack.getItem() instanceof DyeableBeachpartyArmorItem dyeableArmorItem) {
             model = ArmorRegistry.chestplateModel(dyeableArmorItem, contextModel.body, contextModel.leftArm, contextModel.rightArm);
             texture = dyeableArmorItem.getTexture();
+            int color = dyeableArmorItem.getColor();
+            VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.renderType(texture));
+            model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, color);
         } else if (stack.getItem() instanceof TrinketsArmorItem beachpartyArmorItem) {
             model = ArmorRegistry.chestplateModel(beachpartyArmorItem, contextModel.body, contextModel.leftArm, contextModel.rightArm);
             texture = beachpartyArmorItem.getTexture();
+            VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.renderType(texture));
+            model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY);
         } else {
             return;
         }
-
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.renderType(texture));
-        model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, color);
     }
 }

@@ -30,7 +30,7 @@ public class DyeableLeggingsTrinketRenderer implements TrinketRenderer {
 
         if (entityModel instanceof HumanoidModel<?> humanoidModel) {
             Model model = ArmorRegistry.LeggingsModel(armorItem, humanoidModel.body, humanoidModel.leftLeg, humanoidModel.rightLeg);
-            int color = Objects.requireNonNull(armorItem.getDefaultInstance().get(DataComponents.DYED_COLOR)).rgb();
+            int color = armorItem.getColor();
 
             model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(armorItem.getTexture())), i, OverlayTexture.NO_OVERLAY, color);
 

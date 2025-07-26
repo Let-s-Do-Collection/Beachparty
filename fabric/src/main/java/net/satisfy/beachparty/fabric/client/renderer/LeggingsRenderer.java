@@ -28,7 +28,7 @@ public class LeggingsRenderer implements ArmorRenderer {
             model = ArmorRegistry.LeggingsModel(dyeableArmorItem, contextModel.body, contextModel.rightLeg, contextModel.leftLeg);
             texture = dyeableArmorItem.getTexture();
 
-            int color = Objects.requireNonNull(dyeableArmorItem.getDefaultInstance().get(DataComponents.DYED_COLOR)).rgb();
+            int color = dyeableArmorItem.getColor();
 
             VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.renderType(texture));
             model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, color);

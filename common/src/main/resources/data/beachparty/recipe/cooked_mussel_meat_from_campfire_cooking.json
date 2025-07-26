@@ -5,5 +5,8 @@
   "ingredient": {
     "item": "beachparty:raw_mussel_meat"
   },
-  "result": "beachparty:cooked_mussel_meat"
+  "result":{
+    "id": "beachparty:cooked_mussel_meat",
+    "count": 1
+  }
 }
