@@ -163,7 +163,10 @@ public class BeachParasolBlock extends Block {
                 level.destroyBlock(otherPartPos, true);
             }
 
-            dropResources(blockState, level, blockPos, null, player, player.getMainHandItem());
+            // @author wdog5 - do not drop item when player is creative mode
+            if (!player.getAbilities().instabuild) {
+                dropResources(blockState, level, blockPos, null, player, player.getMainHandItem());
+            }
         }
 
         return super.playerWillDestroy(level, blockPos, blockState, player);
