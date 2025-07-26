@@ -5,7 +5,10 @@ issueTrackerURL = "https://github.com/satisfyu/Let-s-Do-Hub"
 license = "All Rights Reserved"
 
 [[mixins]]
-config = "beachparty-common.mixins.json, beachparty.mixins.json"
+config = [
+    "beachparty-common.mixins.json",
+    "beachparty.mixins.json"
+]
 
 [[mods]]
 modId = "beachparty"

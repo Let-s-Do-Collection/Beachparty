@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootParams;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.neoforge.registry.BeachpartyConfig;
@@ -18,7 +17,6 @@ import net.satisfy.beachparty.neoforge.registry.BeachpartyConfig;
 import java.util.List;
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = Beachparty.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class PlatformHelperImpl {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, Beachparty.MOD_ID);
 

@@ -71,7 +71,7 @@ public class BeachpartyClientForge {
 
     private static <E extends Player, M extends HumanoidModel<E>>
     void addLayerToPlayerSkin(EntityRenderersEvent.AddLayers event, String skinName, Function<LivingEntityRenderer<E, M>, ? extends RenderLayer<E, M>> factory) {
-        LivingEntityRenderer<E, M> renderer = event.getSkin(PlayerSkin.Model.valueOf(skinName));
+        LivingEntityRenderer<E, M> renderer = event.getSkin(PlayerSkin.Model.byName(skinName));
         if (renderer != null) renderer.addLayer(factory.apply(renderer));
     }
 }
