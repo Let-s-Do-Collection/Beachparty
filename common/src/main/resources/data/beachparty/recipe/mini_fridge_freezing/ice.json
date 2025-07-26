@@ -9,7 +9,8 @@
     }
   ],
   "result": {
-    "id": "minecraft:ice"
+    "id": "minecraft:ice",
+    "count": 1
   },
   "crafting_time": 1200
 }

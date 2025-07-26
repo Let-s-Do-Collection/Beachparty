@@ -6,7 +6,8 @@
     }
   ],
   "result": {
-    "id": "minecraft:powder_snow_bucket"
+    "id": "minecraft:powder_snow_bucket",
+    "count": 1
   },
   "crafting_time": 600
 }

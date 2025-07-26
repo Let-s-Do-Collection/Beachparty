@@ -119,7 +119,8 @@ public class MiniFridgeRecipe implements Recipe<RecipeInput> {
             for (Ingredient ingredient : recipe.getIngredients()) {
                 Ingredient.CONTENTS_STREAM_CODEC.encode(buf, ingredient);
             }
-            buf.writeVarInt(recipe.craftingTime);
+            ItemStack.STREAM_CODEC.encode(buf, recipe.output);
+            buf.writeInt(recipe.craftingTime);
         }
     }
 }

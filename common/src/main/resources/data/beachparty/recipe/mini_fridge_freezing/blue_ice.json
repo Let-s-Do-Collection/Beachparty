@@ -6,7 +6,8 @@
     }
   ],
   "result": {
-    "id": "minecraft:blue_ice"
+    "id": "minecraft:blue_ice",
+    "count": 1
   },
   "crafting_time": 800
 }
