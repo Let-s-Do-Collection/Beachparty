@@ -8,34 +8,34 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.satisfy.beachparty.core.item.DyeableBeachpartyArmorItem;
 import net.satisfy.beachparty.core.registry.ArmorRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
+
+import java.util.Objects;
 
 public class DyeableLeggingsTrinketRenderer implements TrinketRenderer {
     @Override
     public void render(ItemStack itemStack, SlotReference slotReference, EntityModel<? extends LivingEntity> entityModel, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, LivingEntity livingEntity, float v, float v1, float v2, float v3, float v4, float v5) {
 
         if (!(itemStack.getItem() instanceof DyeableBeachpartyArmorItem armorItem)) return;
-        CompoundTag tag = itemStack.getTag();
+        CustomData tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
 
-        if (tag != null && tag.contains("Visible") && !tag.getBoolean("Visible")) return;
+        if (tag != null && tag.contains("Visible") && !tag.copyTag().getBoolean("Visible")) return;
 
         if (entityModel instanceof HumanoidModel<?> humanoidModel) {
             Model model = ArmorRegistry.LeggingsModel(armorItem, humanoidModel.body, humanoidModel.leftLeg, humanoidModel.rightLeg);
-            int color = armorItem.getColor(itemStack);
-            float red = (color >> 16 & 255) / 255.0F;
-            float green = (color >> 8 & 255) / 255.0F;
-            float blue = (color & 255) / 255.0F;
+            int color = armorItem.getColor();
 
-            model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(armorItem.getTexture())), i, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+            model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(armorItem.getTexture())), i, OverlayTexture.NO_OVERLAY, color);
 
-            ResourceLocation overlayTexture = new BeachpartyIdentifier("textures/models/armor/trunks_overlay.png");
-            model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(overlayTexture)), i, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            ResourceLocation overlayTexture = BeachpartyIdentifier.identifier("textures/models/armor/trunks_overlay.png");
+            model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(overlayTexture)), i, OverlayTexture.NO_OVERLAY, color);
         }
     }
 }

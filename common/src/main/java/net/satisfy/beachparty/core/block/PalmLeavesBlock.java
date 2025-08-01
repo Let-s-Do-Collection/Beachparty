@@ -110,8 +110,8 @@ public class PalmLeavesBlock extends LeavesBlock implements BonemealableBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
-        return level.getBlockState(pos.below()).isAir();
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+        return levelReader.getBlockState(blockPos.below()).isAir();
     }
 
     @Override

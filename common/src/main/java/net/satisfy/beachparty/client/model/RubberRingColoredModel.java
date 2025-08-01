@@ -15,7 +15,7 @@ import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 @SuppressWarnings("unused")
 public class RubberRingColoredModel<T extends Entity> extends EntityModel<T> implements ChestplateModel {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new BeachpartyIdentifier("rubber_ring"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BeachpartyIdentifier.identifier("rubber_ring"), "main");
     private final ModelPart rubber_ring;
 
     public RubberRingColoredModel(ModelPart root) {
@@ -41,7 +41,7 @@ public class RubberRingColoredModel<T extends Entity> extends EntityModel<T> imp
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         poseStack.pushPose();
 
         Player player = Minecraft.getInstance().player;
@@ -51,7 +51,7 @@ public class RubberRingColoredModel<T extends Entity> extends EntityModel<T> imp
             poseStack.translate(-0.1F, 0.6F, 0.5F);
         }
 
-        rubber_ring.render(poseStack, buffer, packedLight, packedOverlay);
+        rubber_ring.render(poseStack, buffer, packedLight, packedOverlay, color);
         poseStack.popPose();
     }
 }

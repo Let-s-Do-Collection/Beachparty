@@ -11,7 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 public class SunglassesModel<T extends Entity> extends EntityModel<T> implements HatModel {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new BeachpartyIdentifier("sunglasses"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BeachpartyIdentifier.identifier("sunglasses"), "main");
     private final ModelPart sunglasses;
 
     public SunglassesModel(ModelPart root) {
@@ -28,14 +28,6 @@ public class SunglassesModel<T extends Entity> extends EntityModel<T> implements
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        poseStack.pushPose();
-        sunglasses.render(poseStack, buffer, packedLight, packedOverlay);
-        poseStack.popPose();
-    }
-
     @Override
     public void setupAnim(T entity, float f, float g, float h, float i, float j) {
 
@@ -43,5 +35,12 @@ public class SunglassesModel<T extends Entity> extends EntityModel<T> implements
 
     public void copyHead(ModelPart model) {
         sunglasses.copyFrom(model);
+    }
+
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int buffer, int packedLight, int packedOverlay) {
+        poseStack.pushPose();
+        sunglasses.render(poseStack, vertexConsumer, buffer, packedLight, packedOverlay);
+        poseStack.popPose();
     }
 }

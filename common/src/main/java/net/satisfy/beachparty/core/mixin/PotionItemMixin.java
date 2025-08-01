@@ -2,6 +2,7 @@ package net.satisfy.beachparty.core.mixin;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -13,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PotionItem;
-import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -26,6 +26,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Objects;
+
 @Mixin(PotionItem.class)
 public class PotionItemMixin {
     @Inject(at = @At("HEAD"), method = "useOn", cancellable = true)
@@ -37,7 +39,7 @@ public class PotionItemMixin {
         BlockState state = world.getBlockState(pos);
         if (context.getClickedFace() != Direction.DOWN
                 && (state.getBlock() == Blocks.SAND || state.getBlock() == Blocks.GRAVEL)
-                && PotionUtils.getPotion(stack) == Potions.WATER) {
+                && Objects.requireNonNull(stack.get(DataComponents.POTION_CONTENTS)).is(Potions.WATER)) {
             world.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.PLAYERS, 1.0F, 1.0F);
             assert player != null;
             player.setItemInHand(context.getHand(), ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
@@ -56,7 +58,7 @@ public class PotionItemMixin {
         }
         if (context.getClickedFace() != Direction.DOWN
                 && state.getBlock() == Blocks.HAY_BLOCK
-                && PotionUtils.getPotion(stack) == Potions.WATER) {
+                && Objects.requireNonNull(stack.get(DataComponents.POTION_CONTENTS)).is(Potions.WATER)) {
             world.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.PLAYERS, 1.0F, 1.0F);
             assert player != null;
             player.setItemInHand(context.getHand(), ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));

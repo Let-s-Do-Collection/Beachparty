@@ -2,6 +2,7 @@ package net.satisfy.beachparty.core.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,7 +28,9 @@ import net.satisfy.beachparty.core.registry.RecipeRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
@@ -36,7 +40,7 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
     private static final int[] SLOTS_FOR_DOWN = new int[]{0};
     private static final int OUTPUT_SLOT = 0;
     protected float experience;
-    private NonNullList<ItemStack> inventory;
+    private static NonNullList<ItemStack> inventory;
     private int shakingTime = 0;
     private int totalShakingTime;
     private final ContainerData propertyDelegate = new ContainerData() {
@@ -66,24 +70,24 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
 
     public PalmBarBlockEntity(BlockPos pos, BlockState state) {
         super(EntityTypeRegistry.PALM_BAR_BLOCK_ENTITY.get(), pos, state);
-        this.inventory = NonNullList.withSize(CAPACITY, ItemStack.EMPTY);
+        inventory = NonNullList.withSize(CAPACITY, ItemStack.EMPTY);
     }
 
     public static void tick(Level world, BlockPos pos, BlockState state, PalmBarBlockEntity blockEntity) {
         if (world.isClientSide) return;
 
         boolean dirty = false;
-        PalmBarRecipe recipe = world.getRecipeManager()
-                .getRecipeFor(RecipeRegistry.PALM_BAR_RECIPE_TYPE.get(), blockEntity, world)
-                .orElse(null);
+        List<RecipeHolder<PalmBarRecipe>> recipes = world.getRecipeManager()
+                .getAllRecipesFor(RecipeRegistry.PALM_BAR_RECIPE_TYPE.get());
+        Optional<PalmBarRecipe> recipe = Optional.ofNullable(getRecipe(recipes));
         RegistryAccess access = world.registryAccess();
 
-        if (blockEntity.canCraft(recipe, access)) {
+        if (recipe.isPresent() && blockEntity.canCraft(recipe.get(), access)) {
             blockEntity.shakingTime++;
 
             if (blockEntity.shakingTime >= blockEntity.totalShakingTime) {
                 blockEntity.shakingTime = 0;
-                blockEntity.craft(recipe, access);
+                blockEntity.craft(recipe.get(), access);
                 dirty = true;
             }
         } else {
@@ -97,24 +101,23 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
-        this.inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(nbt, this.inventory);
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        super.loadAdditional(nbt, provider);
+        inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(nbt, inventory, provider);
         this.shakingTime = nbt.getShort("ShakingTime");
         this.totalShakingTime = nbt.getShort("TotalShakingTime");
         this.experience = nbt.getFloat("Experience");
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
-        super.saveAdditional(nbt);
-        ContainerHelper.saveAllItems(nbt, this.inventory);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        super.saveAdditional(nbt, provider);
+        ContainerHelper.saveAllItems(nbt, this.inventory, provider);
         nbt.putFloat("Experience", this.experience);
         nbt.putShort("ShakingTime", (short) this.shakingTime);
         nbt.putShort("TotalShakingTime", (short) this.totalShakingTime);
     }
-
 
     private boolean canCraft(@Nullable PalmBarRecipe recipe, RegistryAccess access) {
         if (recipe == null) return false;
@@ -259,5 +262,27 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
     @Override
     public void clearContent() {
         this.inventory.clear();
+    }
+
+    private static PalmBarRecipe getRecipe(List<RecipeHolder<PalmBarRecipe>> recipes) {
+        recipeLoop:
+        for (RecipeHolder<PalmBarRecipe> recipeHolder : recipes) {
+            PalmBarRecipe recipe = recipeHolder.value();
+            for (Ingredient ingredient : recipe.getIngredients()) {
+                boolean ingredientFound = false;
+                for (int slotIndex = 1; slotIndex < inventory.size(); slotIndex++) {
+                    ItemStack slotItem = inventory.get(slotIndex);
+                    if (ingredient.test(slotItem)) {
+                        ingredientFound = true;
+                        break;
+                    }
+                }
+                if (!ingredientFound) {
+                    continue recipeLoop;
+                }
+            }
+            return recipe;
+        }
+        return null;
     }
 }

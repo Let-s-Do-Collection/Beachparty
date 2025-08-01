@@ -2,6 +2,7 @@ package net.satisfy.beachparty.core.world.placers;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,7 +21,8 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 public class CrookedTrunkPlacer extends TrunkPlacer {
-    public static final Codec<CrookedTrunkPlacer> CODEC = RecordCodecBuilder.create((placer) -> trunkPlacerParts(placer).apply(placer, CrookedTrunkPlacer::new));
+    public static final MapCodec<CrookedTrunkPlacer> CODEC =
+            RecordCodecBuilder.mapCodec((placer) -> trunkPlacerParts(placer).apply(placer, CrookedTrunkPlacer::new));
 
     public CrookedTrunkPlacer(int pBaseHeight, int pHeightRandA, int pHeightRandB) {
         super(pBaseHeight, pHeightRandA, pHeightRandB);

@@ -1,0 +1,99 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "8.0.0"
+}
+
+architectury {
+    platformSetupLoomIde()
+    neoForge()
+}
+
+def jarFileName = 'letsdo-beachparty-neoforge'
+
+archivesBaseName = jarFileName
+
+
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+
+    neoForge {
+    }
+}
+
+configurations {
+    common
+    shadowCommon
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentNeoForge.extendsFrom common
+}
+
+dependencies {
+    neoForge "net.neoforged:neoforge:${rootProject.forge_version}"
+    modApi "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
+    modImplementation "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
+    modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+
+
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
+
+    runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
+}
+
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            mod_version            : mod_version,
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
+    }
+}
+
+shadowJar {
+    exclude "fabric.mod.json"
+    exclude "architectury.common.json"
+
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier.set("dev-shadow")
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    atAccessWideners.add(loom.accessWidenerPath.get().asFile.getName())
+}
+
+jar {
+    archiveClassifier.set("dev")
+    archiveFileName = "letsdo-beachparty-forge-${project.version}"
+}
+
+sourcesJar {
+
+    def commonSources = project(":common").sourcesJar
+    dependsOn commonSources
+    from commonSources.archiveFile.map { zipTree(it) }
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}
+
+publishing {
+    publications {
+        mavenForge(MavenPublication) {
+            artifactId = rootProject.archives_base_name + "-" + project.name
+            from components.java
+        }
+    }
+
+    repositories {
+    }
+}

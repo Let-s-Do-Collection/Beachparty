@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.Item;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
@@ -37,9 +39,9 @@ public class PalmBoatEntity extends Boat {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(WOOD_TYPE, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(WOOD_TYPE, 0);
     }
 
     @Override
@@ -69,8 +71,8 @@ public class PalmBoatEntity extends Boat {
     }
 
     @Override
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this);
+    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
+        return new ClientboundAddEntityPacket(this, serverEntity);
     }
 
     public enum Type {
@@ -111,9 +113,9 @@ public class PalmBoatEntity extends Boat {
 
         public ResourceLocation getTexture(boolean hasChest) {
             if (hasChest) {
-                return new ResourceLocation(Beachparty.MOD_ID, "textures/entity/chest_boat/" + name + ".png");
+                return BeachpartyIdentifier.identifier("textures/entity/chest_boat/" + name + ".png");
             }
-            return new ResourceLocation(Beachparty.MOD_ID, "textures/entity/boat/" + name + ".png");
+            return BeachpartyIdentifier.identifier("textures/entity/boat/" + name + ".png");
         }
 
         public String getModelLocation() {

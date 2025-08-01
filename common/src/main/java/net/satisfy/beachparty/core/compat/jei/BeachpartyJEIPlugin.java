@@ -11,6 +11,7 @@ import mezz.jei.api.registration.IRecipeTransferRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.satisfy.beachparty.client.gui.handler.MiniFridgeGuiHandler;
 import net.satisfy.beachparty.client.gui.handler.PalmBarGuiHandler;
@@ -24,6 +25,7 @@ import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,15 +44,23 @@ public class BeachpartyJEIPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager rm = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
-        List<MiniFridgeRecipe> fridgeRecipes = rm.getAllRecipesFor(RecipeRegistry.MINI_FRIDGE_RECIPE_TYPE.get());
+        List<RecipeHolder<MiniFridgeRecipe>> fridgeRecipeHolders = rm.getAllRecipesFor(RecipeRegistry.MINI_FRIDGE_RECIPE_TYPE.get());
+        List<MiniFridgeRecipe> fridgeRecipes = new ArrayList<>();
+        fridgeRecipeHolders.forEach(miniFridgeRecipeRecipeHolder -> {
+            fridgeRecipes.add(miniFridgeRecipeRecipeHolder.value());
+        });
         registration.addRecipes(MiniFridgeCategory.MINI_FRIDGE_FREEZING, fridgeRecipes);
-        List<PalmBarRecipe> barRecipes = rm.getAllRecipesFor(RecipeRegistry.PALM_BAR_RECIPE_TYPE.get());
+        List<RecipeHolder<PalmBarRecipe>> barHolders = rm.getAllRecipesFor(RecipeRegistry.PALM_BAR_RECIPE_TYPE.get());
+        List<PalmBarRecipe> barRecipes = new ArrayList<>();
+        barHolders.forEach(palmBarRecipeRecipeHolder -> {
+            barRecipes.add(palmBarRecipeRecipeHolder.value());
+        });
         registration.addRecipes(PalmBarCategory.PALM_BAR, barRecipes);
     }
 
     @Override
     public @NotNull ResourceLocation getPluginUid() {
-        return new BeachpartyIdentifier("jei_plugin");
+        return BeachpartyIdentifier.identifier("jei_plugin");
     }
 
     @Override

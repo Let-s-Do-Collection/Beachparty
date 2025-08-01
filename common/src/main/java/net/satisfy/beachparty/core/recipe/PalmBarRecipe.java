@@ -1,13 +1,13 @@
 package net.satisfy.beachparty.core.recipe;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -15,24 +15,22 @@ import net.satisfy.beachparty.core.registry.RecipeRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class PalmBarRecipe implements Recipe<Container> {
-    final ResourceLocation id;
+public class PalmBarRecipe implements Recipe<RecipeInput> {
     private final NonNullList<Ingredient> inputs;
     private final ItemStack output;
 
-    public PalmBarRecipe(ResourceLocation id, NonNullList<Ingredient> inputs, ItemStack output) {
-        this.id = id;
+    public PalmBarRecipe(NonNullList<Ingredient> inputs, ItemStack output) {
         this.inputs = inputs;
         this.output = output;
     }
 
     @Override
-    public boolean matches(Container inventory, Level world) {
-        return BeachpartyUtil.matchesRecipe(inventory, inputs, 1, 4);
+    public boolean matches(RecipeInput recipeInput, Level level) {
+        return BeachpartyUtil.matchesRecipe(recipeInput, inputs, 1, 4);
     }
 
     @Override
-    public @NotNull ItemStack assemble(Container inventory, RegistryAccess registryAccess) {
+    public ItemStack assemble(RecipeInput recipeInput, HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
@@ -42,13 +40,16 @@ public class PalmBarRecipe implements Recipe<Container> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(RegistryAccess registryAccess) {
+    public ItemStack getResultItem(HolderLookup.Provider provider) {
         return this.output.copy();
     }
 
-    @Override
+    public ItemStack getResultItem() {
+        return this.output.copy();
+    }
+
     public @NotNull ResourceLocation getId() {
-        return id;
+        return RecipeRegistry.PALM_BAR_RECIPE_TYPE.getId();
     }
 
     @Override
@@ -73,32 +74,50 @@ public class PalmBarRecipe implements Recipe<Container> {
 
     public static class Serializer implements RecipeSerializer<PalmBarRecipe> {
 
-        @Override
-        public @NotNull PalmBarRecipe fromJson(ResourceLocation id, JsonObject json) {
-            final var ingredients = BeachpartyUtil.deserializeIngredients(GsonHelper.getAsJsonArray(json, "ingredients"));
-            if (ingredients.isEmpty()) {
-                throw new JsonParseException("No ingredients for Palm Bar Recipe");
-            } else if (ingredients.size() > 4) {
-                throw new JsonParseException("Too many ingredients for Palm Bar Recipe");
-            } else {
-                return new PalmBarRecipe(id, ingredients, ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result")));
-            }
+        public static final StreamCodec<RegistryFriendlyByteBuf, PalmBarRecipe> STREAM_CODEC =
+                StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
+
+        public static final MapCodec<PalmBarRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                        Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap(list -> {
+                            Ingredient[] ingredients = list.toArray(Ingredient[]::new);
+                            if (ingredients.length == 0) {
+                                return DataResult.error(() -> "No ingredients for PalmBar recipe");
+                            } else {
+                                return ingredients.length > 4 ? DataResult.error(() -> {
+                                    return "Too many ingredients for PalmBar recipe";
+                                }) : DataResult.success(NonNullList.of(Ingredient.EMPTY, ingredients));
+                            }
+                        }, DataResult::success).forGetter(PalmBarRecipe::getIngredients),
+                        ItemStack.STRICT_CODEC.fieldOf("result").forGetter(palmBarRecipe -> {
+                            return palmBarRecipe.output;
+                        })
+                ).apply(instance, PalmBarRecipe::new)
+        );
+
+        public static @NotNull PalmBarRecipe fromNetwork(RegistryFriendlyByteBuf buf) {
+            int i = buf.readVarInt();
+            NonNullList<Ingredient> nonNullList = NonNullList.withSize(i, Ingredient.EMPTY);
+            nonNullList.replaceAll((ingredient) -> Ingredient.CONTENTS_STREAM_CODEC.decode(buf));
+            ItemStack itemStack = ItemStack.STREAM_CODEC.decode(buf);
+            return new PalmBarRecipe(nonNullList, itemStack);
         }
 
-        @Override
-        public @NotNull PalmBarRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-            final var ingredients = NonNullList.withSize(buf.readVarInt(), Ingredient.EMPTY);
-            ingredients.replaceAll(ignored -> Ingredient.fromNetwork(buf));
-            return new PalmBarRecipe(id, ingredients, buf.readItem());
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buf, PalmBarRecipe recipe) {
+        public static void toNetwork(RegistryFriendlyByteBuf buf, PalmBarRecipe recipe) {
             buf.writeVarInt(recipe.inputs.size());
-            for (Ingredient ingredient : recipe.inputs) {
-                ingredient.toNetwork(buf);
+            for (Ingredient ingredient : recipe.getIngredients()) {
+                Ingredient.CONTENTS_STREAM_CODEC.encode(buf, ingredient);
             }
-            buf.writeItem(recipe.output);
+            ItemStack.STREAM_CODEC.encode(buf, recipe.output);
+        }
+
+        @Override
+        public MapCodec<PalmBarRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, PalmBarRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

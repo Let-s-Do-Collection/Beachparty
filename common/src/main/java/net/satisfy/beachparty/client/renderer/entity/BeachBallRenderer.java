@@ -18,16 +18,16 @@ public class BeachBallRenderer extends MobRenderer<BeachBallEntity, BeachBallMod
         String name = entity.getCustomName() != null ? entity.getCustomName().getString() : "";
 
         return switch (name) {
-            case "MissLilitu" -> new BeachpartyIdentifier("textures/entity/beach_ball_misslilitu.png");
-            case "CR-055" -> new BeachpartyIdentifier("textures/entity/beach_ball_cr055.png");
-            case "Jason" -> new BeachpartyIdentifier("textures/entity/beach_ball_jason.png");
-            case "Satisfy" -> new BeachpartyIdentifier("textures/entity/beach_ball_satisfy.png");
-            case "Nekonesse" -> new BeachpartyIdentifier("textures/entity/beach_ball_nekonesse.png");
-            case "MarbledNull" -> new BeachpartyIdentifier("textures/entity/beach_ball_marblednull.png");
-            case "Steve" -> new BeachpartyIdentifier("textures/entity/beach_ball_steve.png");
-            case "Pixar" -> new BeachpartyIdentifier("textures/entity/beach_ball_pixar.png");
-            case "Dirt" -> new BeachpartyIdentifier("textures/entity/beach_ball_dirt.png");
-            default -> new BeachpartyIdentifier("textures/entity/beach_ball.png");
+            case "MissLilitu" -> BeachpartyIdentifier.identifier("textures/entity/beach_ball_misslilitu.png");
+            case "CR-055" -> BeachpartyIdentifier.identifier("textures/entity/beach_ball_cr055.png");
+            case "Jason" -> BeachpartyIdentifier.identifier("textures/entity/beach_ball_jason.png");
+            case "Satisfy" -> BeachpartyIdentifier.identifier("textures/entity/beach_ball_satisfy.png");
+            case "Nekonesse" -> BeachpartyIdentifier.identifier("textures/entity/beach_ball_nekonesse.png");
+            case "MarbledNull" -> BeachpartyIdentifier.identifier("textures/entity/beach_ball_marblednull.png");
+            case "Steve" -> BeachpartyIdentifier.identifier("textures/entity/beach_ball_steve.png");
+            case "Pixar" -> BeachpartyIdentifier.identifier("textures/entity/beach_ball_pixar.png");
+            case "Dirt" -> BeachpartyIdentifier.identifier("textures/entity/beach_ball_dirt.png");
+            default -> BeachpartyIdentifier.identifier("textures/entity/beach_ball.png");
         };
     }
 

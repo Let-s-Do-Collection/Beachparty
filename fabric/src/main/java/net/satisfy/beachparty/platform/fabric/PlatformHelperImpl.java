@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import net.satisfy.beachparty.fabric.core.config.ConfigFabric;
 
 import java.util.function.Supplier;
@@ -40,7 +41,7 @@ public class PlatformHelperImpl {
     }
 
     public static <T extends Entity> Supplier<EntityType<T>> registerBoatType(String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height, int clientTrackingRange) {
-        EntityType<T> registry = Registry.register(BuiltInRegistries.ENTITY_TYPE, new ResourceLocation(Beachparty.MOD_ID, name), FabricEntityTypeBuilder.create(category, factory).dimensions(EntityDimensions.scalable(width, height)).trackRangeChunks(clientTrackingRange).build());
+        EntityType<T> registry = Registry.register(BuiltInRegistries.ENTITY_TYPE, BeachpartyIdentifier.identifier(name), FabricEntityTypeBuilder.create(category, factory).dimensions(EntityDimensions.scalable(width, height)).trackRangeChunks(clientTrackingRange).build());
         return () -> registry;
     }
 

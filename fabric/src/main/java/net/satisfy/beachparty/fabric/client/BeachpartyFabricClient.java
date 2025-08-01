@@ -44,13 +44,13 @@ public class BeachpartyFabricClient implements ClientModInitializer {
     private void registerBoatModels() {
         for (PalmBoatEntity.Type type : PalmBoatEntity.Type.values()) {
             String modId = Beachparty.MOD_ID;
-            ModelLayerLocation modelLayerLocation = new ModelLayerLocation(new ResourceLocation(modId, type.getModelLocation()), "main");
+            ModelLayerLocation modelLayerLocation = new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(modId, type.getModelLocation()), "main");
             if (type == PalmBoatEntity.Type.FLOATY) {
                 EntityModelLayerRegistry.registerModelLayer(modelLayerLocation, FloatyBoatModel::createBodyModel);
             } else {
                 EntityModelLayerRegistry.registerModelLayer(modelLayerLocation, BoatModel::createBodyModel);
             }
-            EntityModelLayerRegistry.registerModelLayer(new ModelLayerLocation(new ResourceLocation(modId, type.getChestModelLocation()), "main"), ChestBoatModel::createBodyModel);
+            EntityModelLayerRegistry.registerModelLayer(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(modId, type.getChestModelLocation()), "main"), ChestBoatModel::createBodyModel);
         }
     }
 }

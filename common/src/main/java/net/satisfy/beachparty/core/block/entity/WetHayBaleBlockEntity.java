@@ -21,7 +21,7 @@ import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 public class WetHayBaleBlockEntity extends BlockEntity {
-    public static final TagKey<Biome> HOT_BIOME = TagKey.create(Registries.BIOME, new BeachpartyIdentifier("hot_biome"));
+    public static final TagKey<Biome> HOT_BIOME = TagKey.create(Registries.BIOME, BeachpartyIdentifier.identifier("hot_biome"));
     private int timer;
     private boolean isProtected = false;
 

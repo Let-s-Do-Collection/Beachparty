@@ -11,6 +11,6 @@ public class PlacedFeatures {
     public static final ResourceKey<PlacedFeature> SANDWAVES_KEY = registerKey("sandwaves");
 
     public static ResourceKey<PlacedFeature> registerKey(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, new BeachpartyIdentifier(name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, BeachpartyIdentifier.identifier(name));
     }
 }

@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -196,10 +197,10 @@ public class HoodedBeachChair extends LineConnectingBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        DoubleBlockHalf half = state.getValue(HALF);
-        BlockPos basePos = (half == DoubleBlockHalf.LOWER) ? pos : pos.below();
-        return BeachpartyUtil.onUse(world, player, hand, new BlockHitResult(hit.getLocation(), hit.getDirection(), basePos, hit.isInside()), 0);
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        DoubleBlockHalf half = blockState.getValue(HALF);
+        BlockPos basePos = (half == DoubleBlockHalf.LOWER) ? blockPos : blockPos.below();
+        return BeachpartyUtil.onUse(level, player, interactionHand, new BlockHitResult(blockHitResult.getLocation(), blockHitResult.getDirection(), basePos, blockHitResult.isInside()), 0);
     }
 
     @Override

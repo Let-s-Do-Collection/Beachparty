@@ -15,12 +15,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.satisfy.beachparty.Beachparty;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 @SuppressWarnings("unused")
 public class FloatyBoatModel extends ListModel<Boat> implements WaterPatchModel {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Beachparty.MOD_ID, "floaty_boat"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BeachpartyIdentifier.identifier("floaty_boat"), "main");
 
     private static final String LEFT_PADDLE = "left_paddle";
     private static final String RIGHT_PADDLE = "right_paddle";
@@ -104,19 +105,19 @@ public class FloatyBoatModel extends ListModel<Boat> implements WaterPatchModel 
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         poseStack.pushPose();
 
         poseStack.translate(0.0F, -1.1F, 0.0F);
         for (ModelPart part : this.parts) {
             if (part != this.leftPaddle && part != this.rightPaddle) {
-                part.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+                part.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
             }
         }
         poseStack.popPose();
 
-        this.leftPaddle.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        this.rightPaddle.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        this.leftPaddle.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        this.rightPaddle.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     private static void animatePaddle(Boat boat, int i, ModelPart modelPart, float f) {

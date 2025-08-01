@@ -125,11 +125,11 @@ public class BeachSunLounger extends BedBlock {
         }
     }
 
-    public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
         if (!world.isClientSide && player.isCreative()) {
             removeOtherPart(world, pos, state, player);
         }
-        super.playerWillDestroy(world, pos, state, player);
+        return super.playerWillDestroy(world, pos, state, player);
     }
 
     @Nullable
@@ -211,7 +211,7 @@ public class BeachSunLounger extends BedBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (level.isClientSide) {
             return InteractionResult.CONSUME;
         }

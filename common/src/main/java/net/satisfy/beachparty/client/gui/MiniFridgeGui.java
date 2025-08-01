@@ -10,7 +10,7 @@ import net.satisfy.beachparty.client.gui.handler.MiniFridgeGuiHandler;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 public class MiniFridgeGui extends AbstractContainerScreen<MiniFridgeGuiHandler> {
-    public static final ResourceLocation BG = new BeachpartyIdentifier("textures/gui/freezer_gui.png");
+    public static final ResourceLocation BG = BeachpartyIdentifier.identifier("textures/gui/freezer_gui.png");
     public static final int ARROW_Y = 35;
     public static final int ARROW_X = 79;
 
@@ -25,7 +25,7 @@ public class MiniFridgeGui extends AbstractContainerScreen<MiniFridgeGuiHandler>
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(guiGraphics);
+        renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         renderTooltip(guiGraphics, mouseX, mouseY);
     }

@@ -1,5 +1,6 @@
 package net.satisfy.beachparty.core.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -52,6 +53,13 @@ public class RadioBlock extends BaseEntityBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(ON, false).setValue(SEARCHING, false).setValue(FACING, Direction.NORTH));
     }
 
+    public static final MapCodec<RadioBlock> CODEC = simpleCodec(RadioBlock::new);
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(ON, SEARCHING, FACING);
@@ -95,7 +103,7 @@ public class RadioBlock extends BaseEntityBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult blockHitResult) {
         if (!(level.getBlockEntity(pos) instanceof RadioBlockEntity radio)) return InteractionResult.PASS;
 
         level.setBlock(pos, state.setValue(SEARCHING, true), 3);

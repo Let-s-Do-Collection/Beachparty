@@ -1,6 +1,7 @@
 package net.satisfy.beachparty.core.world.placers;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +18,7 @@ import net.satisfy.beachparty.core.registry.PlacerTypesRegistry;
 import org.jetbrains.annotations.NotNull;
 
 public class PalmFoliagePlacer extends FoliagePlacer {
-    public static final Codec<PalmFoliagePlacer> CODEC = RecordCodecBuilder.create((placer) -> foliagePlacerParts(placer).apply(placer, PalmFoliagePlacer::new));
+    public static final MapCodec<PalmFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((placer) -> foliagePlacerParts(placer).apply(placer, PalmFoliagePlacer::new));
 
     public PalmFoliagePlacer(IntProvider pRadius, IntProvider pOffset) {
         super(pRadius, pOffset);

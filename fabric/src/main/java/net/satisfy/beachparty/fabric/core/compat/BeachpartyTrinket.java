@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -108,7 +109,7 @@ public class BeachpartyTrinket {
         public void onEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.onEquip(stack, slot, entity);
             if (entity instanceof Player player) {
-                player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), Integer.MAX_VALUE, 0, false, false));
+                player.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.OCEAN_WALK.get()), Integer.MAX_VALUE, 0, false, false));
             }
         }
 
@@ -116,7 +117,7 @@ public class BeachpartyTrinket {
         public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.onUnequip(stack, slot, entity);
             if (entity instanceof Player player) {
-                player.removeEffect(MobEffectRegistry.OCEAN_WALK.get());
+                player.removeEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.OCEAN_WALK.get()));
             }
         }
 
@@ -124,8 +125,8 @@ public class BeachpartyTrinket {
         public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
             super.tick(stack, slot, entity);
             if (entity instanceof Player player) {
-                if (!player.hasEffect(MobEffectRegistry.OCEAN_WALK.get())) {
-                    player.addEffect(new MobEffectInstance(MobEffectRegistry.OCEAN_WALK.get(), Integer.MAX_VALUE, 0, false, false));
+                if (!player.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.OCEAN_WALK.get()))) {
+                    player.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.OCEAN_WALK.get()), Integer.MAX_VALUE, 0, false, false));
                 }
             }
         }

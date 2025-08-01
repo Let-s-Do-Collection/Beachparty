@@ -12,7 +12,7 @@ import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 public class BikiniModel<T extends Entity> extends EntityModel<T> implements ChestplateModel {
 
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new BeachpartyIdentifier("bikini"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BeachpartyIdentifier.identifier("bikini"), "main");
 
     private final ModelPart bikini;
 
@@ -35,15 +35,15 @@ public class BikiniModel<T extends Entity> extends EntityModel<T> implements Che
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        poseStack.pushPose();
-        poseStack.scale(1.075F, 1.075F, 1.075F);
-        bikini.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        poseStack.popPose();
+    public void copyBody(ModelPart model, ModelPart leftArm, ModelPart rightArm) {
+        bikini.copyFrom(model);
     }
 
     @Override
-    public void copyBody(ModelPart model, ModelPart leftArm, ModelPart rightArm) {
-        bikini.copyFrom(model);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int j, int k) {
+        poseStack.pushPose();
+        poseStack.scale(1.075F, 1.075F, 1.075F);
+        bikini.render(poseStack, vertexConsumer, i, j, k);
+        poseStack.popPose();
     }
 }

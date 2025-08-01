@@ -1,16 +1,19 @@
 package net.satisfy.beachparty.core.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.ColorRGBA;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,7 +21,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -26,8 +29,9 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ColoredFallingBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.SandBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -60,6 +64,13 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
         super(settings);
     }
 
+    public static final MapCodec<SandBucketBlock> CODEC = simpleCodec(SandBucketBlock::new);
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
+    }
+
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(FACING));
@@ -71,18 +82,17 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        ItemStack itemStack = player.getItemInHand(hand);
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         Block emptySandBucketBlock = ObjectRegistry.SAND_BUCKET_BLOCK_EMPTY.get();
         Block sandBucketBlock = ObjectRegistry.SAND_BUCKET_BLOCK_FILLED.get();
 
-        if (state.getBlock() == emptySandBucketBlock && itemStack.getItem() == Items.SAND) {
+        if (blockState.getBlock() == emptySandBucketBlock && itemStack.getItem() == Items.SAND) {
             itemStack.shrink(1);
-            world.setBlockAndUpdate(pos, sandBucketBlock.defaultBlockState().setValue(FACING, state.getValue(FACING)));
-            return InteractionResult.SUCCESS;
+            level.setBlockAndUpdate(blockPos, sandBucketBlock.defaultBlockState().setValue(FACING, blockState.getValue(FACING)));
+            return ItemInteractionResult.SUCCESS;
         }
 
-        return super.use(state, world, pos, player, hand, hit);
+        return super.useItemOn(itemStack, blockState, level, blockPos, player, interactionHand, blockHitResult);
     }
 
     public static class SandCastleBlock extends Block {
@@ -134,10 +144,8 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
         }
 
         @Override
-        public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-            ItemStack handStack = player.getItemInHand(hand);
-
-            if (PotionUtils.getPotion(handStack) == Potions.WATER && !state.getValue(PETRIFIED)) {
+        protected ItemInteractionResult useItemOn(ItemStack handStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+            if (handStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER) && !state.getValue(PETRIFIED)) {
                 if (!player.getAbilities().instabuild) {
                     handStack.shrink(1);
                 }
@@ -160,7 +168,7 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
                                 0, 0.1, 0);
                     }
                 }
-                return InteractionResult.sidedSuccess(world.isClientSide);
+                return ItemInteractionResult.sidedSuccess(world.isClientSide);
             }
 
             if (handStack.getItem() == ObjectRegistry.SAND_BUCKET_FILLED.get() && !hasAllTowers(state)) {
@@ -175,7 +183,7 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
                         }
                         world.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.SAND_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f, false);
                     }
-                    return InteractionResult.sidedSuccess(world.isClientSide);
+                    return ItemInteractionResult.sidedSuccess(world.isClientSide);
                 }
             } else if (handStack.getItem() == ObjectRegistry.SAND_BUCKET_EMPTY.get()) {
                 if (hasNoTowers(state)) {
@@ -188,7 +196,7 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
                         }
                         world.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.SAND_BREAK, SoundSource.BLOCKS, 1.0f, 1.0f, false);
                     }
-                    return InteractionResult.sidedSuccess(world.isClientSide);
+                    return ItemInteractionResult.sidedSuccess(world.isClientSide);
                 } else {
                     BooleanProperty tower = getTowerHitPos(hit);
                     if (state.getValue(tower)) {
@@ -201,11 +209,11 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
                             }
                             world.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.SAND_BREAK, SoundSource.BLOCKS, 1.0f, 1.0f, false);
                         }
-                        return InteractionResult.sidedSuccess(world.isClientSide);
+                        return ItemInteractionResult.sidedSuccess(world.isClientSide);
                     }
                 }
             }
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         @Override
@@ -291,7 +299,7 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
         }
 
         @Override
-        public @NotNull ItemStack getCloneItemStack(BlockGetter world, BlockPos pos, BlockState state) {
+        public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
             return new ItemStack(ObjectRegistry.SAND_BUCKET_FILLED.get());
         }
 
@@ -317,11 +325,12 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
         super.onRemove(state, world, pos, newState, isMoving);
     }
 
-    public static class SandPileBlock extends SandBlock {
+    public static class SandPileBlock extends ColoredFallingBlock {
+
         private static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 3.0, 14.0);
 
-        public SandPileBlock(int color, Properties settings) {
-            super(color, settings);
+        public SandPileBlock(ColorRGBA colorRGBA, BlockBehaviour.Properties settings) {
+            super(colorRGBA, settings);
         }
 
         public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {

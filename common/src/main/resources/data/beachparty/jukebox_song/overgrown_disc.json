@@ -1,0 +1,8 @@
+{
+  "comparator_output": 1,
+  "description": {
+    "translate": "item.beachparty.overgrown_disc.desc"
+  },
+  "length_in_seconds": 214.0,
+  "sound_event": "beachparty:over_the_rainbow"
+}

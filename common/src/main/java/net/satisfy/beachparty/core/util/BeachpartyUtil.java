@@ -10,6 +10,7 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -17,11 +18,13 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -37,6 +40,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class BeachpartyUtil {
@@ -50,11 +54,11 @@ public class BeachpartyUtil {
     }
 
     public static <T extends Block> RegistrySupplier<T> registerWithoutItem(DeferredRegister<Block> register, Registrar<Block> registrar, ResourceLocation path, Supplier<T> block) {
-        return Platform.isForge() ? register.register(path.getPath(), block) : registrar.register(path, block);
+        return Platform.isNeoForge() ? register.register(path.getPath(), block) : registrar.register(path, block);
     }
 
     public static <T extends Item> RegistrySupplier<T> registerItem(DeferredRegister<Item> register, Registrar<Item> registrar, ResourceLocation path, Supplier<T> itemSupplier) {
-        return Platform.isForge() ? register.register(path.getPath(), itemSupplier) : registrar.register(path, itemSupplier);
+        return Platform.isNeoForge() ? register.register(path.getPath(), itemSupplier) : registrar.register(path, itemSupplier);
     }
 
     public static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape) {
@@ -70,11 +74,11 @@ public class BeachpartyUtil {
         return buffer[0];
     }
 
-    public static InteractionResult onUse(Level world, Player player, InteractionHand hand, BlockHitResult hit, double extraHeight) {
-        if (world.isClientSide) return InteractionResult.PASS;
-        if (player.isShiftKeyDown()) return InteractionResult.PASS;
-        if (BeachpartyUtil.isPlayerSitting(player)) return InteractionResult.PASS;
-        if (hit.getDirection() == Direction.DOWN) return InteractionResult.PASS;
+    public static ItemInteractionResult onUse(Level world, Player player, InteractionHand hand, BlockHitResult hit, double extraHeight) {
+        if (world.isClientSide) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (player.isShiftKeyDown()) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (BeachpartyUtil.isPlayerSitting(player)) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (hit.getDirection() == Direction.DOWN) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         BlockPos hitPos = hit.getBlockPos();
         if (!BeachpartyUtil.isOccupied(world, hitPos) && player.getItemInHand(hand).isEmpty()) {
             ChairEntity chair = EntityTypeRegistry.CHAIR.get().create(world);
@@ -83,10 +87,10 @@ public class BeachpartyUtil {
             if (BeachpartyUtil.addChairEntity(world, hitPos, chair, player.blockPosition())) {
                 world.addFreshEntity(chair);
                 player.startRiding(chair);
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     public static void onStateReplaced(Level world, BlockPos pos) {
@@ -160,17 +164,14 @@ public class BeachpartyUtil {
     }
 
     static int getColor(ItemStack itemStack, int defaultColor) {
-        CompoundTag displayTag = itemStack.getTagElement("display");
-        if (null != displayTag && displayTag.contains("color", Tag.TAG_ANY_NUMERIC))
-            return displayTag.getInt("color");
-        return defaultColor;
+        return itemStack.has(DataComponents.DYED_COLOR) ? Objects.requireNonNull(itemStack.get(DataComponents.DYED_COLOR)).rgb() : defaultColor;
     }
 
     private static ResourceLocation getDimensionTypeId(Level world) {
-        return world.dimensionTypeId().location();
+        return world.dimension().location();
     }
 
-    public static boolean matchesRecipe(Container inventory, NonNullList<Ingredient> recipe, int startIndex, int endIndex) {
+    public static boolean matchesRecipe(RecipeInput inventory, NonNullList<Ingredient> recipe, int startIndex, int endIndex) {
         final List<ItemStack> validStacks = new ArrayList<>();
         for (int i = startIndex; i <= endIndex; i++) {
             final ItemStack stackInSlot = inventory.getItem(i);
@@ -191,17 +192,6 @@ public class BeachpartyUtil {
             }
         }
         return true;
-    }
-
-    public static NonNullList<Ingredient> deserializeIngredients(JsonArray json) {
-        NonNullList<Ingredient> ingredients = NonNullList.create();
-        for (int i = 0; i < json.size(); i++) {
-            Ingredient ingredient = Ingredient.fromJson(json.get(i));
-            if (!ingredient.isEmpty()) {
-                ingredients.add(ingredient);
-            }
-        }
-        return ingredients;
     }
 
     public enum LineConnectingType implements StringRepresentable {

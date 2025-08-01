@@ -1,27 +1,23 @@
 package net.satisfy.beachparty.core.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.grower.AbstractTreeGrower;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.satisfy.beachparty.core.world.ConfiguredFeatures;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class PalmSproutBlock extends SaplingBlock {
+
     public PalmSproutBlock() {
-        super(new AbstractTreeGrower() {
-            @Override
-            protected @NotNull ResourceKey<ConfiguredFeature<?, ?>> getConfiguredFeature(RandomSource randomSource, boolean bl) {
-                return ConfiguredFeatures.PALM_TREE_KEY;
-            }
-        }, Properties.copy(Blocks.ACACIA_SAPLING).noCollission().randomTicks().instabreak().sound(SoundType.GRASS));
+        super(new TreeGrower("palm", Optional.empty(), Optional.of(ConfiguredFeatures.PALM_TREE_KEY), Optional.empty()), Properties.ofFullCopy(Blocks.ACACIA_SAPLING).mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY));
     }
 
     @Override

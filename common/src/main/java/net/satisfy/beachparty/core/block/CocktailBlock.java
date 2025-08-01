@@ -2,9 +2,9 @@ package net.satisfy.beachparty.core.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -82,12 +82,11 @@ public class CocktailBlock extends Block {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult blockHitResult) {
         if (!world.isClientSide()) {
             int stage = state.getValue(STAGE);
             if (stage > 1) {
-                player.addEffect(new MobEffectInstance(effect, effectDuration, 0));
+                player.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect), effectDuration, 0));
                 world.playSound(null, pos, SoundEvents.GENERIC_DRINK, SoundSource.BLOCKS, 1.0F, 1.0F);
                 world.setBlock(pos, state.setValue(STAGE, stage - 1), 3);
             } else if (stage == 1) {
@@ -98,5 +97,4 @@ public class CocktailBlock extends Block {
         }
         return InteractionResult.SUCCESS;
     }
-
 }

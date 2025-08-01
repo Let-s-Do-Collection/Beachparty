@@ -1,0 +1,8 @@
+{
+  "comparator_output": 1,
+  "description": {
+    "translate": "item.beachparty.music_disc_caribbean_beach.desc"
+  },
+  "length_in_seconds": 2400.0,
+  "sound_event": "beachparty:caribbean_beach"
+}

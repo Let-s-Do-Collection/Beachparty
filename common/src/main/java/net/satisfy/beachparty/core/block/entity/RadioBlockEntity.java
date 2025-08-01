@@ -1,6 +1,7 @@
 package net.satisfy.beachparty.core.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -124,18 +125,18 @@ public class RadioBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        this.currentIndex = tag.getInt("CurrentIndex");
-        this.ticks = tag.getInt("Ticks");
-        this.tickCount = tag.getLong("TickCount");
-        this.startTick = tag.getLong("StartTick");
-        this.isPlaying = tag.getBoolean("IsPlaying");
+    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.loadAdditional(compoundTag, provider);
+        this.currentIndex = compoundTag.getInt("CurrentIndex");
+        this.ticks = compoundTag.getInt("Ticks");
+        this.tickCount = compoundTag.getLong("TickCount");
+        this.startTick = compoundTag.getLong("StartTick");
+        this.isPlaying = compoundTag.getBoolean("IsPlaying");
         this.syncedWithClient = false;
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         tag.putInt("CurrentIndex", currentIndex);
         tag.putInt("Ticks", ticks);
         tag.putLong("TickCount", tickCount);

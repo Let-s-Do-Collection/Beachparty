@@ -5,7 +5,8 @@ import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -17,15 +18,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootDataManager;
 import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.block.BeachParasolBlock;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import org.jetbrains.annotations.Nullable;
 
 public class CommonEvents {
@@ -36,7 +37,7 @@ public class CommonEvents {
         EntityEvent.LIVING_HURT.register(CommonEvents::onLivingHurt);
     }
 
-    public static void onModifyLootTable(@Nullable LootDataManager lootDataManager, ResourceLocation id, LootEvent.LootTableModificationContext ctx, boolean b) {
+    private static void onModifyLootTable(ResourceKey<LootTable> id, LootEvent.LootTableModificationContext ctx, boolean b) {
         LoottableInjector.InjectLoot(id, ctx);
     }
 
@@ -90,7 +91,7 @@ public class CommonEvents {
     }
 
     public static class LoottableInjector {
-        public static void InjectLoot(ResourceLocation id, LootEvent.LootTableModificationContext context) {
+        public static void InjectLoot(ResourceKey id, LootEvent.LootTableModificationContext context) {
             String prefix = "minecraft:chests/";
             String name = id.toString();
 
@@ -106,13 +107,13 @@ public class CommonEvents {
             }
         }
 
-        public static LootPool getPool(String entryName) {
-            return LootPool.lootPool().add(getPoolEntry(entryName)).build();
+        public static LootPool.Builder getPool(String entryName) {
+            return LootPool.lootPool().add(getPoolEntry(entryName));
         }
 
         private static LootPoolEntryContainer.Builder<?> getPoolEntry(String name) {
-            ResourceLocation table = new ResourceLocation(Beachparty.MOD_ID, "chests/" + name);
-            return LootTableReference.lootTableReference(table);
+            ResourceKey table = ResourceKey.create(Registries.LOOT_TABLE, BeachpartyIdentifier.identifier( "chests/" + name));
+            return NestedLootTable.lootTableReference(table);
         }
     }
 }

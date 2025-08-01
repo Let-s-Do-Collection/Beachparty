@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#W#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:dried_kelp"
+    },
+    "W": {
+      "item": "minecraft:wooden_shovel"
+    }
+  },
+  "result": {
+    "id": "beachparty:sand_bucket_empty",
+    "count": 1
+  }
+}
