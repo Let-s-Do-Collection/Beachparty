@@ -44,6 +44,7 @@ public class BeachpartyForge {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(CompostablesRegistry::init);
+        Beachparty.commonSetup();
         CuriosApi.registerCurio(ObjectRegistry.BEACH_HAT.get(), new CuriosWearableTrinket.BaseCurio());
         CuriosApi.registerCurio(ObjectRegistry.SUNGLASSES.get(), new CuriosWearableTrinket.BaseCurio());
         CuriosApi.registerCurio(ObjectRegistry.SWIM_WINGS.get(), new CuriosWearableTrinket.SwimWingsCurio());

@@ -40,10 +40,8 @@ public class BeachHatLayer<T extends LivingEntity, M extends HumanoidModel<T>> e
 
         poseStack.pushPose();
 
-        // **Kopfbewegung auf das Hutmodell übertragen**
         getParentModel().head.translateAndRotate(poseStack);
 
-        // **Feinjustierung der Position (falls nötig)**
         poseStack.translate(0.0F, -1.4F, 0.0F);
 
         renderColoredCutoutModel(this.model, getItemTexture(), poseStack, multiBufferSource, light, entity, 1.0f, 1.0f, 1.0f);
