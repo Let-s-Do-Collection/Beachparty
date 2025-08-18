@@ -41,8 +41,8 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
         @Override
         public int get(int index) {
             return switch (index) {
-                case 0 -> MiniFridgeBlockEntity.this.fermentationTime;
-                case 1 -> MiniFridgeBlockEntity.this.totalFermentationTime;
+                case 0 -> fermentationTime;
+                case 1 -> totalFermentationTime;
                 default -> 0;
             };
         }
@@ -50,8 +50,8 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
         @Override
         public void set(int index, int value) {
             switch (index) {
-                case 0 -> MiniFridgeBlockEntity.this.fermentationTime = value;
-                case 1 -> MiniFridgeBlockEntity.this.totalFermentationTime = value;
+                case 0 -> fermentationTime = value;
+                case 1 -> totalFermentationTime = value;
             }
         }
 
@@ -89,16 +89,21 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
     public void tick(Level world, BlockPos pos, BlockState state, MiniFridgeBlockEntity blockEntity) {
         if (world.isClientSide) return;
         boolean dirty = false;
+
         final var recipeType = world.getRecipeManager()
                 .getRecipeFor(RecipeRegistry.MINI_FRIDGE_RECIPE_TYPE.get(), blockEntity, world)
                 .orElse(null);
+
         assert level != null;
         RegistryAccess access = level.registryAccess();
+
         if (canCraft(recipeType, access)) {
             if (this.fermentationTime == 0) {
                 this.totalFermentationTime = recipeType.getCraftingTime();
             }
+
             this.fermentationTime++;
+
             if (this.fermentationTime >= this.totalFermentationTime) {
                 this.fermentationTime = 0;
                 craft(recipeType, access);
@@ -107,6 +112,7 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
         } else {
             this.fermentationTime = 0;
         }
+
         if (dirty) {
             setChanged();
         }
@@ -116,20 +122,40 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
         if (recipe == null || recipe.getResultItem(access).isEmpty()) {
             return false;
         }
+
         ItemStack inputStack = this.getItem(INPUT_SLOT);
         ItemStack outputStack = this.getItem(OUTPUT_SLOT);
-        return !inputStack.isEmpty() && (outputStack.isEmpty() || outputStack == recipe.getResultItem(access));
+        ItemStack result = recipe.getResultItem(access);
+
+        if (inputStack.isEmpty() || !ItemStack.isSameItemSameTags(inputStack, recipe.getIngredients().get(0).getItems()[0])) {
+            return false;
+        }
+
+        if (outputStack.isEmpty()) {
+            return true;
+        }
+
+        if (!ItemStack.isSameItemSameTags(outputStack, result)) {
+            return false;
+        }
+
+        return outputStack.getCount() + result.getCount() <= outputStack.getMaxStackSize();
     }
 
     private void craft(MiniFridgeRecipe recipe, RegistryAccess access) {
         if (!canCraft(recipe, access)) {
             return;
         }
-        final ItemStack recipeOutput = recipe.getResultItem(access);
-        final ItemStack outputSlotStack = this.getItem(OUTPUT_SLOT);
-        if (outputSlotStack.isEmpty()) {
-            setItem(OUTPUT_SLOT, recipeOutput.copy());
+
+        ItemStack result = recipe.getResultItem(access).copy();
+        ItemStack outputStack = this.getItem(OUTPUT_SLOT);
+
+        if (outputStack.isEmpty()) {
+            setItem(OUTPUT_SLOT, result);
+        } else {
+            outputStack.grow(result.getCount());
         }
+
         ItemStack inputStack = this.getItem(INPUT_SLOT);
         inputStack.shrink(1);
         setItem(INPUT_SLOT, inputStack.isEmpty() ? ItemStack.EMPTY : inputStack);
@@ -152,11 +178,7 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
     @Override
     public void setItem(int slot, ItemStack stack) {
         this.inventory.set(slot, stack);
-        if (slot == INPUT_SLOT) {
-            this.totalFermentationTime = 50;
-            this.fermentationTime = 0;
-            setChanged();
-        }
+        setChanged();
     }
 
     @Override

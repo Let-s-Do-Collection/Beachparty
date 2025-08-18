@@ -169,12 +169,7 @@ public class BeachGoalBlock extends BaseEntityBlock {
 
         world.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
         world.playSound(null, pos, SoundEvents.CHERRY_WOOD_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-
-        if (placer instanceof Player player && !player.isCreative()) {
-            stack.shrink(1);
-        }
     }
-
 
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
