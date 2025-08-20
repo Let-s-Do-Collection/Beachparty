@@ -27,17 +27,19 @@ public class TrunksModel<T extends Entity> extends EntityModel<T> implements Leg
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 14).addBox(-4.0F, 9.6F, -2.0F, 8.0F, 1.0F, 4.0F, new CubeDeformation(0.225F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 14).addBox(-4.0F, 9.6F, -2.0F, 8.0F, 1.0F, 4.0F, new CubeDeformation(0.325F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition right_leg = partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2F)), PartPose.offset(-1.9F, 12.0F, 0.0F));
+        PartDefinition right_leg = partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.3F)), PartPose.offset(-1.9F, 12.0F, 0.0F));
 
-        PartDefinition left_leg = partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(16, 0).mirror().addBox(-2.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2F)).mirror(false), PartPose.offset(1.9F, 12.0F, 0.0F));
+        PartDefinition left_leg = partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(16, 0).mirror().addBox(-2.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.3F)).mirror(false), PartPose.offset(1.9F, 12.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
     @Override
-    public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.right_leg.xRot = (float) Math.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        this.left_leg.xRot = (float) Math.cos(limbSwing * 0.6662F + Math.PI) * 1.4F * limbSwingAmount;
     }
 
     @Override
@@ -50,7 +52,7 @@ public class TrunksModel<T extends Entity> extends EntityModel<T> implements Leg
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int buffer, int packedLight, int color) {
         poseStack.pushPose();
-        poseStack.scale(1.09F, 1.09F, 1.09F);
+        poseStack.scale(1.1F, 1.1F, 1.1F);
         body.render(poseStack, vertexConsumer, buffer, packedLight, color);
         right_leg.render(poseStack, vertexConsumer, buffer, packedLight, color);
         left_leg.render(poseStack, vertexConsumer, buffer, packedLight, color);
