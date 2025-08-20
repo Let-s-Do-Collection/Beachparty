@@ -47,8 +47,8 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
         @Override
         public int get(int index) {
             return switch (index) {
-                case 0 -> MiniFridgeBlockEntity.this.fermentationTime;
-                case 1 -> MiniFridgeBlockEntity.this.totalFermentationTime;
+                case 0 -> fermentationTime;
+                case 1 -> totalFermentationTime;
                 default -> 0;
             };
         }
@@ -56,8 +56,8 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
         @Override
         public void set(int index, int value) {
             switch (index) {
-                case 0 -> MiniFridgeBlockEntity.this.fermentationTime = value;
-                case 1 -> MiniFridgeBlockEntity.this.totalFermentationTime = value;
+                case 0 -> fermentationTime = value;
+                case 1 -> totalFermentationTime = value;
             }
         }
 

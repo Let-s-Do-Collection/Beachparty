@@ -61,7 +61,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> WET_HAY_BLOCK = registerWithItem("wet_hay_block", () -> new WetHayBaleBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK)));
     public static final RegistrySupplier<Block> THATCH = registerWithItem("thatch", () -> new HayBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK)));
     public static final RegistrySupplier<Block> THATCH_STAIRS = registerWithItem("thatch_stairs", () -> new StairBlock(THATCH.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(THATCH.get()).sound(SoundType.GRASS)));
-    public static final RegistrySupplier<Block> THATCH_SLAB = registerWithItem("thatch_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK).strength(2.0F).sound(SoundType.GRASS).explosionResistance(3.0F)));
+    public static final RegistrySupplier<Block> THATCH_SLAB = registerWithItem("thatch_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK)));
     public static final RegistrySupplier<Block> PALM_LEAVES = registerWithItem("palm_leaves", () -> new PalmLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)));
     public static final Supplier<SaplingBlock> PALM_SPROUT = registerWithItem("palm_sprout", PalmSproutBlock::new);
     public static final RegistrySupplier<Block> STRIPPED_PALM_LOG = registerWithItem("stripped_palm_log", () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BAMBOO_PLANKS).strength(2.0F).sound(SoundType.WOOD)));
@@ -123,10 +123,10 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> PALM_WALL_HANGING_SIGN = registerWithoutItem("palm_wall_hanging_sign", () -> new PalmWallHangingSignBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WALL_HANGING_SIGN), BeachpartyWoodType.PALM));
     public static final RegistrySupplier<Item> PALM_SIGN_ITEM = ITEMS.register("palm_sign", () -> new SignItem(new Item.Properties().stacksTo(16), ObjectRegistry.PALM_SIGN.get(), ObjectRegistry.PALM_WALL_SIGN.get()));
     public static final RegistrySupplier<Item> PALM_HANGING_SIGN_ITEM = ITEMS.register("palm_hanging_sign", () -> new HangingSignItem(ObjectRegistry.PALM_HANGING_SIGN.get(), ObjectRegistry.PALM_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
-    public static final RegistrySupplier<Item> PALM_BOAT = ITEMS.register("palm_boat", () -> new PalmBoatItem(false, PalmBoatEntity.Type.PALM, new Item.Properties()));
-    public static final RegistrySupplier<Item> PALM_CHEST_BOAT = ITEMS.register("palm_chest_boat", () -> new PalmBoatItem(true, PalmBoatEntity.Type.PALM, new Item.Properties()));
-    public static final RegistrySupplier<Item> FLOATY_BOAT = ITEMS.register("floaty_boat", () -> new PalmBoatItem(false, PalmBoatEntity.Type.FLOATY, new Item.Properties()));
-    public static final RegistrySupplier<Item> FLOATY_CHEST_BOAT = ITEMS.register("floaty_chest_boat", () -> new PalmBoatItem(true, PalmBoatEntity.Type.FLOATY, new Item.Properties()));
+    public static final RegistrySupplier<Item> PALM_BOAT = ITEMS.register("palm_boat", () -> new PalmBoatItem(false, PalmBoatEntity.Type.PALM, new Item.Properties().stacksTo(1)));
+    public static final RegistrySupplier<Item> PALM_CHEST_BOAT = ITEMS.register("palm_chest_boat", () -> new PalmBoatItem(true, PalmBoatEntity.Type.PALM, new Item.Properties().stacksTo(1)));
+    public static final RegistrySupplier<Item> FLOATY_BOAT = ITEMS.register("floaty_boat", () -> new PalmBoatItem(false, PalmBoatEntity.Type.FLOATY, new Item.Properties().stacksTo(1)));
+    public static final RegistrySupplier<Item> FLOATY_CHEST_BOAT = ITEMS.register("floaty_chest_boat", () -> new PalmBoatItem(true, PalmBoatEntity.Type.FLOATY, new Item.Properties().stacksTo(1)));
     public static final RegistrySupplier<Block> BEACHPARTY_BANNER = registerWithItem("beachparty_banner", () -> new CompletionistBannerBlock(BlockBehaviour.Properties.of().strength(1F).instrument(NoteBlockInstrument.BASS).noCollission().sound(SoundType.WOOD)));
     public static final RegistrySupplier<Block> BEACHPARTY_WALL_BANNER = registerWithoutItem("beachparty_wall_banner", () -> new CompletionistWallBannerBlock(BlockBehaviour.Properties.of().strength(1F).instrument(NoteBlockInstrument.BASS).noCollission().sound(SoundType.WOOD)));
     public static final RegistrySupplier<Item> OVERGROWN_DISC = registerItem("overgrown_disc", () -> new Item(getSettings().stacksTo(1).jukeboxPlayable(JukeboxSongRegistry.OVER_THE_RAINBOW).rarity(Rarity.RARE)));
