@@ -19,10 +19,8 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.registry.MobEffectRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
-import net.satisfy.beachparty.fabric.BeachpartyFabric;
 
 import java.util.Map;
 import java.util.Optional;

@@ -27,7 +27,7 @@ import static net.satisfy.beachparty.core.registry.ObjectRegistry.*;
 @Environment(EnvType.CLIENT)
 public class BeachPartyClient {
     public static void initClient() {
-        RenderTypeRegistry.register(RenderType.cutout(), PALM_TABLE.get(), PALM_CHAIR.get(), PALM_TORCH.get(), PALM_WALL_TORCH.get(), TALL_PALM_TORCH.get(), THATCH.get(), THATCH_SLAB.get(), MELON_COCKTAIL.get(), COCONUT_COCKTAIL.get(), HONEY_COCKTAIL.get(), THATCH_STAIRS.get(), SWEETBERRIES_COCKTAIL.get(), PUMPKIN_COCKTAIL.get(), COCOA_COCKTAIL.get(), SANDCASTLE.get(), MESSAGE_IN_A_BOTTLE.get(), PALM_SPROUT.get(), BEACH_PARASOL.get(), BEACH_TOWEL.get(), BEACH_SUN_LOUNGER.get(), SEASHELL_BLOCK.get(), SAND_BUCKET_BLOCK_EMPTY.get(), BEACH_GOAL.get(), PALM_DOOR.get(), PALM_TRAPDOOR.get(), PALM_BAR_STOOL.get());
+        RenderTypeRegistry.register(RenderType.cutout(), PALM_TABLE.get(), PALM_CHAIR.get(), PALM_TORCH.get(), PALM_WALL_TORCH.get(), TALL_PALM_TORCH.get(), THATCH.get(), THATCH_SLAB.get(), MELON_COCKTAIL.get(), COCONUT_COCKTAIL.get(), HONEY_COCKTAIL.get(), THATCH_STAIRS.get(), SWEETBERRIES_COCKTAIL.get(), PUMPKIN_COCKTAIL.get(), COCOA_COCKTAIL.get(), SANDCASTLE.get(), MESSAGE_IN_A_BOTTLE.get(), PALM_SPROUT.get(), BEACH_PARASOL.get(), BEACH_TOWEL.get(), BEACH_SUN_LOUNGER.get(), SEASHELL_BLOCK.get(), SAND_BUCKET_BLOCK_EMPTY.get(), SAND_BUCKET_BLOCK_FILLED.get(), BEACH_GOAL.get(), PALM_DOOR.get(), PALM_TRAPDOOR.get(), PALM_BAR_STOOL.get());
 
         RenderTypeRegistry.register(RenderType.translucent(), PALM_GLASS_PANE.get(), PALM_GLASS.get());
 

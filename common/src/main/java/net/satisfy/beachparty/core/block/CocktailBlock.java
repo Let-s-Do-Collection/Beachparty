@@ -86,17 +86,14 @@ public class CocktailBlock extends Block {
     public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!world.isClientSide()) {
             int stage = state.getValue(STAGE);
-            if (stage > 1) {
+            if (stage > 0) {
                 player.addEffect(new MobEffectInstance(effect, effectDuration, 0));
                 world.playSound(null, pos, SoundEvents.GENERIC_DRINK, SoundSource.BLOCKS, 1.0F, 1.0F);
                 world.setBlock(pos, state.setValue(STAGE, stage - 1), 3);
-            } else if (stage == 1) {
-                world.setBlock(pos, state.setValue(STAGE, 0), 3);
             } else {
                 world.destroyBlock(pos, false);
             }
         }
         return InteractionResult.SUCCESS;
     }
-
 }
