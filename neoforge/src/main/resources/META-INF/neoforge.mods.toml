@@ -5,10 +5,8 @@ issueTrackerURL = "https://github.com/satisfyu/Let-s-Do-Hub"
 license = "All Rights Reserved"
 
 [[mixins]]
-config = [
-    "beachparty-common.mixins.json",
-    "beachparty.mixins.json"
-]
+config = "beachparty.mixins.json"
+
 
 [[mods]]
 modId = "beachparty"
@@ -16,7 +14,7 @@ modId = "beachparty"
 version="${mod_version}"
 displayName = "[Let's Do] Beachparty"
 
-credits = "MissLilitu, Cristelknight, BaumeisterJo"
+credits = "MissLilitu"
 authors = "Satisfy, Jason13"
 description = '''
 Take a break - build sandcastles, drink cocktails and enjoy your Minecraft Session.

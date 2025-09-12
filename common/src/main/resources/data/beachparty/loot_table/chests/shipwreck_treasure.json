@@ -63,7 +63,9 @@
           "functions": [
             {
               "function": "minecraft:set_components",
-              "tag": "{display:{color:3947580}}"
+              "components": {
+                "minecraft:dyed_color": 3947580
+              }
             }
           ]
         },
@@ -74,7 +76,9 @@
           "functions": [
             {
               "function": "minecraft:set_components",
-              "tag": "{display:{color:11184810}}"
+              "components": {
+                "minecraft:dyed_color": 11184810
+              }
             }
           ]
         },
@@ -85,7 +89,9 @@
           "functions": [
             {
               "function": "minecraft:set_components",
-              "tag": "{display:{color:7303023}}"
+              "components": {
+                "minecraft:dyed_color": 7303023
+              }
             }
           ]
         },
@@ -96,7 +102,9 @@
           "functions": [
             {
               "function": "minecraft:set_components",
-              "tag": "{display:{color:2236962}}"
+              "components": {
+                "minecraft:dyed_color": 2236962
+              }
             }
           ]
         },
@@ -107,7 +115,9 @@
           "functions": [
             {
               "function": "minecraft:set_components",
-              "tag": "{display:{color:1973790}}"
+              "components": {
+                "minecraft:dyed_color": 1973790
+              }
             }
           ]
         },

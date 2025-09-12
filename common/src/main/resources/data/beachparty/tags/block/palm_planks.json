@@ -3,7 +3,6 @@
   "values": [
     "beachparty:palm_planks",
     "beachparty:palm_floorboard",
-    "#c:palm_planks",
-    "#forge:palm_planks"
+    "#c:palm_planks"
   ]
 }

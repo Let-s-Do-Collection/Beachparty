@@ -6,8 +6,11 @@
   "client": [
   ],
   "mixins": [
-    "DyeableArmorMixin",
-    "HelmetItemMixin"
+    "HayBaleBlockMixin",
+    "MobAccessor",
+    "PotionItemMixin",
+    "ServerLevelTickMixin",
+    "ZombieMixin"
   ],
   "injectors": {
     "defaultRequire": 1

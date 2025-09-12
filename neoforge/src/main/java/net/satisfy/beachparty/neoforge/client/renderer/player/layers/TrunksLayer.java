@@ -18,8 +18,6 @@ import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 public class TrunksLayer<T extends LivingEntity, M extends HumanoidModel<T>> extends RenderLayer<T, M> {
 
     private final TrunksModel<T> model;

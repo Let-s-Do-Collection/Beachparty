@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.satisfy.beachparty.core.block.entity.WetHayBaleBlockEntity;
-import org.jetbrains.annotations.NotNull;
 
 public class WetHayBaleBlock extends RotatedPillarBlock implements EntityBlock {
     public WetHayBaleBlock(BlockBehaviour.Properties properties) {

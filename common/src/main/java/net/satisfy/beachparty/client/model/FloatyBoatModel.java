@@ -11,10 +11,8 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.vehicle.Boat;
-import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import org.jetbrains.annotations.NotNull;
 

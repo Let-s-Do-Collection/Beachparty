@@ -14,37 +14,55 @@
   "over_the_rainbow": {
     "subtitle": "subtitles.beachparty.sound.over_the_rainbow",
     "sounds": [
-      "beachparty:over_the_rainbow"
+      {
+        "name": "beachparty:over_the_rainbow",
+        "stream": true
+      }
     ]
   },
+
   "beachparty": {
     "subtitle": "subtitles.beachparty.sound.beachparty",
     "sounds": [
-      "beachparty:beachparty_kevin_macleod"
+      {
+        "name": "beachparty:beachparty_kevin_macleod",
+        "stream": true
+      }
     ]
   },
   "caribbean_beach": {
     "subtitle": "subtitles.beachparty.sound.caribbean_beach",
     "sounds": [
-      "beachparty:caribbeanbeach_pecan_pie"
+      {
+        "name": "beachparty:caribbeanbeach_pecan_pie",
+        "stream": true
+      }
     ]
   },
   "pridelands": {
     "subtitle": "subtitles.beachparty.sound.pridelands",
     "sounds": [
-      "beachparty:pridelands_andey_rossi"
+      {
+        "name": "beachparty:pridelands_andey_rossi",
+        "stream": true
+      }
     ]
   },
   "vocalista": {
     "subtitle": "subtitles.beachparty.sound.vocalista",
     "sounds": [
-      "beachparty:vocalista_pecan_pie"
-    ]
+      {
+        "name": "beachparty:vocalista_pecan_pie",
+        "stream": true
+      }    ]
   },
   "wild_veins": {
     "subtitle": "subtitles.beachparty.sound.wild_veins",
     "sounds": [
-      "beachparty:wildveins_adams"
+      {
+      "name": "beachparty:wildveins_adams",
+      "stream": true
+      }
     ]
   }
 }

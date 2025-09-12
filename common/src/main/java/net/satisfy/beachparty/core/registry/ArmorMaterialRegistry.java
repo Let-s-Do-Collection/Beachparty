@@ -2,22 +2,16 @@ package net.satisfy.beachparty.core.registry;
 
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.function.Supplier;
 

@@ -1,6 +1,5 @@
 package net.satisfy.beachparty.core.util;
 
-import com.google.gson.JsonArray;
 import com.mojang.datafixers.util.Pair;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
@@ -11,13 +10,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -36,11 +31,7 @@ import net.satisfy.beachparty.core.entity.ChairEntity;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class BeachpartyUtil {

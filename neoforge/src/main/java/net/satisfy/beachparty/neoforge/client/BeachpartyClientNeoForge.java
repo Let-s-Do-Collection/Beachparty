@@ -24,8 +24,12 @@ import net.satisfy.beachparty.core.entity.PalmBoatEntity;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
-import net.satisfy.beachparty.neoforge.client.integration.*;
-import net.satisfy.beachparty.neoforge.client.renderer.player.layers.*;
+import net.satisfy.beachparty.neoforge.client.integration.CuriosRubberRingAxolotlRenderer;
+import net.satisfy.beachparty.neoforge.client.integration.CuriosRubberRingPelicanRenderer;
+import net.satisfy.beachparty.neoforge.client.integration.CuriosRubberRingRenderer;
+import net.satisfy.beachparty.neoforge.client.renderer.player.layers.RubberRingAxolotlLayer;
+import net.satisfy.beachparty.neoforge.client.renderer.player.layers.RubberRingLayer;
+import net.satisfy.beachparty.neoforge.client.renderer.player.layers.RubberRingPelicanLayer;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
 import java.util.function.Function;
