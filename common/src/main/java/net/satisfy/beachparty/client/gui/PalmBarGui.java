@@ -3,6 +3,7 @@ package net.satisfy.beachparty.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -24,21 +25,18 @@ public class PalmBarGui extends AbstractContainerScreen<PalmBarGuiHandler> {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(guiGraphics, mouseX, mouseY, partialTick);
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
-        renderTooltip(guiGraphics, mouseX, mouseY);
+    protected void renderBg(GuiGraphics g, float f, int x, int y) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, BG);
+        g.blit(BG, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        int w = menu.getShakeXProgress();
+        g.blit(BG, leftPos + ARROW_X, topPos + ARROW_Y, 177, 14, w, 14);
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        RenderSystem.setShaderTexture(0, BG);
-        guiGraphics.blit(BG, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-        renderProgressArrow(guiGraphics);
-    }
-
-    protected void renderProgressArrow(GuiGraphics guiGraphics) {
-        int progressX = menu.getShakeXProgress();
-        guiGraphics.blit(BG, leftPos + ARROW_X, topPos + ARROW_Y, 177, 14, progressX, 14);
+    public void render(GuiGraphics g, int mx, int my, float dt) {
+        renderBackground(g, mx, my, dt);
+        super.render(g, mx, my, dt);
+        renderTooltip(g, mx, my);
     }
 }
