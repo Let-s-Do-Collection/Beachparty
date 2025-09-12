@@ -10,6 +10,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.satisfy.beachparty.client.gui.MiniFridgeGui;
+
 import net.satisfy.beachparty.client.gui.PalmBarGui;
 import net.satisfy.beachparty.client.model.*;
 import net.satisfy.beachparty.client.renderer.block.CompletionistBannerRenderer;

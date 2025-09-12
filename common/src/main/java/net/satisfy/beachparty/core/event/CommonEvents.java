@@ -112,7 +112,7 @@ public class CommonEvents {
         }
 
         private static LootPoolEntryContainer.Builder<?> getPoolEntry(String name) {
-            ResourceKey table = ResourceKey.create(Registries.LOOT_TABLE, BeachpartyIdentifier.identifier( "chests/" + name));
+            ResourceKey<LootTable> table = ResourceKey.create(Registries.LOOT_TABLE, BeachpartyIdentifier.identifier( "chests/" + name));
             return NestedLootTable.lootTableReference(table);
         }
     }

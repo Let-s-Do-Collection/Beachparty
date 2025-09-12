@@ -6,7 +6,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,6 +18,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BedPart;
@@ -46,6 +46,8 @@ public class BeachSunLounger extends BedBlock {
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 
+    private final DyeColor color;
+
     private static final Supplier<VoxelShape> bottomShapeSupplier = () -> {
         VoxelShape shape = Shapes.empty();
         shape = Shapes.or(shape, Shapes.box(0, 0.25, 0, 1, 0.375, 1));
@@ -69,11 +71,13 @@ public class BeachSunLounger extends BedBlock {
         shape = Shapes.or(shape, Shapes.box(0.1875, 0, 0.875, 0.3125, 0.25, 1));
         return shape;
     };
+
     public static final Map<Direction, VoxelShape> TOP_SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             map.put(direction, BeachpartyUtil.rotateShape(Direction.EAST, direction, topShapeSupplier.get()));
         }
     });
+
     private static final Supplier<VoxelShape> topShapeDownSupplier = () -> {
         VoxelShape shape = Shapes.empty();
         shape = Shapes.or(shape, Shapes.box(0, 0.25, 0, 0.375, 0.375, 1));
@@ -84,6 +88,7 @@ public class BeachSunLounger extends BedBlock {
         shape = Shapes.or(shape, Shapes.box(0.375, 0.25, 0, 1, 0.375, 1));
         return shape;
     };
+
     public static final Map<Direction, VoxelShape> TOP_SHAPE_DOWN = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             map.put(direction, BeachpartyUtil.rotateShape(Direction.EAST, direction, topShapeDownSupplier.get()));
@@ -92,6 +97,7 @@ public class BeachSunLounger extends BedBlock {
 
     public BeachSunLounger(DyeColor dyeColor, Properties properties) {
         super(dyeColor, properties.forceSolidOn());
+        this.color = dyeColor;
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(PART, BedPart.FOOT)
@@ -108,6 +114,7 @@ public class BeachSunLounger extends BedBlock {
         return state.getValue(PART) == BedPart.HEAD ? direction.getOpposite() : direction;
     }
 
+    @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction direction = state.getValue(FACING);
         if (state.getValue(PART) == BedPart.HEAD) {
@@ -117,6 +124,7 @@ public class BeachSunLounger extends BedBlock {
         }
     }
 
+    @Override
     public @NotNull BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
         if (direction == getDirectionTowardsOtherPart(state.getValue(PART), state.getValue(FACING))) {
             return neighborState.is(this) && neighborState.getValue(PART) != state.getValue(PART) ? state : Blocks.AIR.defaultBlockState();
@@ -125,7 +133,8 @@ public class BeachSunLounger extends BedBlock {
         }
     }
 
-    public BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
+    @Override
+    public @NotNull BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
         if (!world.isClientSide && player.isCreative()) {
             removeOtherPart(world, pos, state, player);
         }
@@ -133,14 +142,18 @@ public class BeachSunLounger extends BedBlock {
     }
 
     @Nullable
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
         Direction direction = ctx.getHorizontalDirection().getClockWise();
         BlockPos blockPos = ctx.getClickedPos();
         BlockPos blockPos2 = blockPos.relative(direction);
         Level world = ctx.getLevel();
-        return world.getBlockState(blockPos2).canBeReplaced(ctx) && world.getWorldBorder().isWithinBounds(blockPos2) ? this.defaultBlockState().setValue(FACING, direction) : null;
+        return world.getBlockState(blockPos2).canBeReplaced(ctx) && world.getWorldBorder().isWithinBounds(blockPos2)
+                ? this.defaultBlockState().setValue(FACING, direction)
+                : null;
     }
 
+    @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.setPlacedBy(world, pos, state, placer, itemStack);
         if (!world.isClientSide) {
@@ -162,8 +175,9 @@ public class BeachSunLounger extends BedBlock {
             BlockState blockState = world.getBlockState(blockPos);
             if (blockState.is(this) && blockState.getValue(PART) == BedPart.HEAD) {
                 world.setBlock(blockPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL | Block.UPDATE_SUPPRESS_DROPS);
-                if (player != null)
+                if (player != null) {
                     world.levelEvent(player, LevelEvent.PARTICLES_DESTROY_BLOCK, blockPos, Block.getId(blockState));
+                }
             }
         }
     }
@@ -211,10 +225,8 @@ public class BeachSunLounger extends BedBlock {
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
-        if (level.isClientSide) {
-            return InteractionResult.CONSUME;
-        }
+    protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+        if (level.isClientSide) return InteractionResult.CONSUME;
 
         if (blockState.getValue(PART) == BedPart.HEAD && player.isShiftKeyDown()) {
             level.setBlock(blockPos, blockState.setValue(DOWN, !blockState.getValue(DOWN)), Block.UPDATE_ALL);
@@ -225,21 +237,15 @@ public class BeachSunLounger extends BedBlock {
         if (blockState.getValue(PART) != BedPart.HEAD) {
             blockPos = blockPos.relative(blockState.getValue(FACING));
             blockState = level.getBlockState(blockPos);
-            if (!blockState.is(this)) {
-                return InteractionResult.CONSUME;
-            }
+            if (!blockState.is(this)) return InteractionResult.CONSUME;
         }
 
-        if (!blockState.getValue(DOWN)) {
-            return InteractionResult.CONSUME;
-        }
+        if (!blockState.getValue(DOWN)) return InteractionResult.CONSUME;
 
         if (!canSetSpawn(level)) {
             level.removeBlock(blockPos, false);
             BlockPos blockPos2 = blockPos.relative(blockState.getValue(FACING).getOpposite());
-            if (level.getBlockState(blockPos2).is(this)) {
-                level.removeBlock(blockPos2, false);
-            }
+            if (level.getBlockState(blockPos2).is(this)) level.removeBlock(blockPos2, false);
 
             Vec3 vec3 = blockPos.getCenter();
             level.explode(null, level.damageSources().badRespawnPointExplosion(vec3), null, vec3, 5.0F, true, Level.ExplosionInteraction.BLOCK);
@@ -256,12 +262,23 @@ public class BeachSunLounger extends BedBlock {
         final BlockState finalBlockState = blockState;
         final BlockPos finalBlockPos = blockPos;
 
-        player.startSleepInBed(finalBlockPos).ifRight(success -> level.setBlock(finalBlockPos, finalBlockState.setValue(OCCUPIED, true), Block.UPDATE_ALL)).ifLeft(bedSleepingProblem -> {
-            if (bedSleepingProblem.getMessage() != null) {
-                player.displayClientMessage(bedSleepingProblem.getMessage(), true);
-            }
-        });
+        player.startSleepInBed(finalBlockPos)
+                .ifRight(success -> level.setBlock(finalBlockPos, finalBlockState.setValue(OCCUPIED, true), Block.UPDATE_ALL))
+                .ifLeft(bedSleepingProblem -> {
+                    if (bedSleepingProblem.getMessage() != null) {
+                        player.displayClientMessage(bedSleepingProblem.getMessage(), true);
+                    }
+                });
         return InteractionResult.SUCCESS;
     }
-}
 
+    public DyeColor getDyeColor() {
+        return this.color;
+    }
+
+    @Override
+    @Nullable
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return null;
+    }
+}

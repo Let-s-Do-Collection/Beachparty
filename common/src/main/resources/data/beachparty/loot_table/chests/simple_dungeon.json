@@ -39,7 +39,7 @@
               }
             },
             {
-              "function": "minecraft:set_nbt",
+              "function": "minecraft:set_components",
               "tag": "{display:{color:16711680}}"
             }
           ],

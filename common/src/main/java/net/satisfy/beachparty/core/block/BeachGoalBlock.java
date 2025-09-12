@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
 public class BeachGoalBlock extends BaseEntityBlock {
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -120,7 +119,7 @@ public class BeachGoalBlock extends BaseEntityBlock {
     public static final MapCodec<BeachGoalBlock> CODEC = simpleCodec(BeachGoalBlock::new);
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
 
@@ -227,7 +226,7 @@ public class BeachGoalBlock extends BaseEntityBlock {
     }
 
     @Override
-    public BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
+    public @NotNull BlockState playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
         BlockPos basePos = getBasePos(world.getBlockState(pos), pos);
         var entity = world.getBlockEntity(basePos);
         if (!(entity instanceof BeachGoalBlockEntity beachGoalBlockEntity)) {

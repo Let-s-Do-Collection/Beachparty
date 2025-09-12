@@ -32,7 +32,7 @@
           "name": "beachparty:trunks",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
+              "function": "minecraft:set_components",
               "tag": "{display:{color:255}}"
             }
           ]
@@ -43,7 +43,7 @@
           "name": "beachparty:bikini",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
+              "function": "minecraft:set_components",
               "tag": "{display:{color:16711935}}"
             }
           ]
@@ -54,7 +54,7 @@
           "name": "beachparty:crocs",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
+              "function": "minecraft:set_components",
               "tag": "{display:{color:652480}}"
             }
           ]
@@ -65,7 +65,7 @@
           "name": "beachparty:swim_wings",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
+              "function": "minecraft:set_components",
               "tag": "{display:{color:16776960}}"
             }
           ]
@@ -76,7 +76,7 @@
           "name": "beachparty:pool_noodle",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
+              "function": "minecraft:set_components",
               "tag": "{display:{color:16711680}}"
             }
           ]
