@@ -2,30 +2,35 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "beachparty:sweetberries_cocktail",
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "minecraft:custom_data": {
+                  "stage": 3
+                }
+              }
+            }
+          ]
+        }
+      ],
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
         },
         {
-          "condition": "minecraft:match_tool",
-          "predicate": {}
-        },
-        {
           "condition": "minecraft:block_state_property",
           "block": "beachparty:sweetberries_cocktail",
           "properties": {
-            "stage": 3
+            "stage": "3"
           }
         }
-      ],
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "beachparty:sweetberries_cocktail"
-        }
-      ],
-      "rolls": 1.0
+      ]
     }
   ]
 }

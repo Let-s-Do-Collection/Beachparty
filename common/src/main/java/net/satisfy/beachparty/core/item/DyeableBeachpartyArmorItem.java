@@ -19,26 +19,52 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.DyedItemColor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class DyeableBeachpartyArmorItem extends ArmorItem {
-    private final ResourceLocation getTexture;
     private final int defaultColor;
+    private final ResourceLocation texture;
+    private final ResourceLocation overlayTexture;
+    private final ResourceLocation normalizedTexture;
+    private final ResourceLocation normalizedOverlayTexture;
 
-    public DyeableBeachpartyArmorItem(ArmorMaterial armorMaterial, ArmorItem.Type type, int color, Item.Properties properties, ResourceLocation getTexture) {
+    public DyeableBeachpartyArmorItem(ArmorMaterial armorMaterial, ArmorItem.Type type, int color, Item.Properties properties, ResourceLocation texture) {
         super(BuiltInRegistries.ARMOR_MATERIAL.wrapAsHolder(armorMaterial), type, properties);
         this.defaultColor = color;
-        this.getTexture = getTexture;
+        this.texture = texture;
+        this.overlayTexture = null;
+        this.normalizedTexture = normalize(texture);
+        this.normalizedOverlayTexture = null;
+    }
+
+    public DyeableBeachpartyArmorItem(ArmorMaterial armorMaterial, ArmorItem.Type type, int color, Item.Properties properties, ResourceLocation texture, ResourceLocation overlayTexture) {
+        super(BuiltInRegistries.ARMOR_MATERIAL.wrapAsHolder(armorMaterial), type, properties);
+        this.defaultColor = color;
+        this.texture = texture;
+        this.overlayTexture = overlayTexture;
+        this.normalizedTexture = normalize(texture);
+        this.normalizedOverlayTexture = normalize(overlayTexture);
+    }
+
+    public int getColor(ItemStack stack) {
+        DyedItemColor dyed = stack.get(DataComponents.DYED_COLOR);
+        if (dyed != null) return dyed.rgb();
+        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getCompound("display");
+        if (tag.contains("color", 99)) return tag.getInt("color");
+        return defaultColor;
     }
 
     public ResourceLocation getTexture() {
-        return getTexture;
+        return normalizedTexture;
     }
 
-    public int getColor() {
-        return defaultColor;
+    @Nullable
+    public ResourceLocation getOverlayTexture() {
+        return normalizedOverlayTexture;
     }
 
     @Override
@@ -59,34 +85,30 @@ public class DyeableBeachpartyArmorItem extends ArmorItem {
             toggleVisibility(slotStack);
             return true;
         }
-
         return super.overrideOtherStackedOnMe(slotStack, holdingStack, slot, clickAction, player, slotAccess);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
         if (Platform.isFabric()) {
-            tooltip.add(Component.translatable("tooltip.beachparty.trinketsslot")
-                    .withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFAF3E0))));
+            tooltip.add(Component.translatable("tooltip.beachparty.trinketsslot").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFAF3E0))));
         } else if (Platform.isNeoForge()) {
-            tooltip.add(Component.translatable("tooltip.beachparty.curiosslot")
-                    .withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFAF3E0))));
+            tooltip.add(Component.translatable("tooltip.beachparty.curiosslot").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFAF3E0))));
         }
-
-        tooltip.add(Component.translatable("tooltip.beachparty.effect." + this.getDescriptionId())
-                .withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xD4B483))));
-
+        tooltip.add(Component.translatable("tooltip.beachparty.effect." + this.getDescriptionId()).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xD4B483))));
         tooltip.add(Component.empty());
-
         if (Platform.isFabric()) {
             CustomData tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.of(new CompoundTag()));
             boolean isVisible = !tag.contains("Visible") || tag.copyTag().getBoolean("Visible");
-
-            Component toggleText = isVisible
-                    ? Component.translatable("tooltip.beachparty.toggle.hide").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x5CB85C)))
-                    : Component.translatable("tooltip.beachparty.toggle.show").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x5CB85C)));
-
+            Component toggleText = isVisible ? Component.translatable("tooltip.beachparty.toggle.hide").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x5CB85C))) : Component.translatable("tooltip.beachparty.toggle.show").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x5CB85C)));
             tooltip.add(toggleText);
         }
+    }
+
+    private static ResourceLocation normalize(ResourceLocation loc) {
+        String path = loc.getPath();
+        if (!path.startsWith("textures/")) path = "textures/" + path;
+        if (!path.endsWith(".png")) path = path + ".png";
+        return ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), path);
     }
 }

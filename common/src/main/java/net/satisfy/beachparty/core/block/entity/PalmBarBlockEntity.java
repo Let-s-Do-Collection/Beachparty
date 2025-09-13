@@ -1,10 +1,6 @@
 package net.satisfy.beachparty.core.block.entity;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.ContainerHelper;
@@ -40,11 +36,10 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
     private static final int[] SLOTS_FOR_DOWN = new int[]{0};
     private static final int OUTPUT_SLOT = 0;
     protected float experience;
-    private static NonNullList<ItemStack> inventory;
+    private NonNullList<ItemStack> inventory;
     private int shakingTime = 0;
     private int totalShakingTime;
     private final ContainerData propertyDelegate = new ContainerData() {
-
         @Override
         public int get(int index) {
             return switch (index) {
@@ -53,7 +48,6 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
                 default -> 0;
             };
         }
-
         @Override
         public void set(int index, int value) {
             switch (index) {
@@ -61,7 +55,6 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
                 case 1 -> PalmBarBlockEntity.this.totalShakingTime = value;
             }
         }
-
         @Override
         public int getCount() {
             return 2;
@@ -75,16 +68,12 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
 
     public static void tick(Level world, BlockPos pos, BlockState state, PalmBarBlockEntity blockEntity) {
         if (world.isClientSide) return;
-
         boolean dirty = false;
-        List<RecipeHolder<PalmBarRecipe>> recipes = world.getRecipeManager()
-                .getAllRecipesFor(RecipeRegistry.PALM_BAR_RECIPE_TYPE.get());
-        Optional<PalmBarRecipe> recipe = Optional.ofNullable(getRecipe(recipes));
+        List<RecipeHolder<PalmBarRecipe>> recipes = world.getRecipeManager().getAllRecipesFor(RecipeRegistry.PALM_BAR_RECIPE_TYPE.get());
+        Optional<PalmBarRecipe> recipe = Optional.ofNullable(blockEntity.getRecipe(recipes));
         RegistryAccess access = world.registryAccess();
-
         if (recipe.isPresent() && blockEntity.canCraft(recipe.get(), access)) {
             blockEntity.shakingTime++;
-
             if (blockEntity.shakingTime >= blockEntity.totalShakingTime) {
                 blockEntity.shakingTime = 0;
                 blockEntity.craft(recipe.get(), access);
@@ -93,7 +82,6 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         } else {
             blockEntity.shakingTime = 0;
         }
-
         if (dirty) {
             blockEntity.setChanged();
             world.sendBlockUpdated(pos, state, state, 3);
@@ -121,15 +109,11 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
 
     private boolean canCraft(@Nullable PalmBarRecipe recipe, RegistryAccess access) {
         if (recipe == null) return false;
-
         ItemStack recipeResultItem = recipe.getResultItem(access);
         if (recipeResultItem.isEmpty() || areInputsEmpty()) return false;
-
         ItemStack outputSlotItem = getItem(OUTPUT_SLOT);
         if (outputSlotItem.isEmpty()) return true;
-
-        return ItemStack.isSameItem(outputSlotItem, recipeResultItem) &&
-                outputSlotItem.getCount() + recipeResultItem.getCount() <= outputSlotItem.getMaxStackSize();
+        return ItemStack.isSameItem(outputSlotItem, recipeResultItem) && outputSlotItem.getCount() + recipeResultItem.getCount() <= outputSlotItem.getMaxStackSize();
     }
 
     private boolean areInputsEmpty() {
@@ -142,12 +126,9 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
     }
 
     private void craft(PalmBarRecipe recipe, RegistryAccess access) {
-        if (!canCraft(recipe, access)) {
-            return;
-        }
+        if (!canCraft(recipe, access)) return;
         ItemStack recipeOutput = recipe.getResultItem(access).copy();
         ItemStack outputSlotStack = getItem(OUTPUT_SLOT);
-
         if (outputSlotStack.isEmpty()) {
             setItem(OUTPUT_SLOT, recipeOutput);
         } else if (ItemStack.isSameItem(outputSlotStack, recipeOutput)) {
@@ -156,7 +137,6 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
                 outputSlotStack.setCount(outputSlotStack.getMaxStackSize());
             }
         }
-
         consumeIngredients(recipe);
     }
 
@@ -244,8 +224,7 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
 
     @Override
     public boolean stillValid(Player player) {
-        return this.level != null && this.level.getBlockEntity(this.worldPosition) == this &&
-                player.distanceToSqr(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5) <= 64.0;
+        return this.level != null && this.level.getBlockEntity(this.worldPosition) == this && player.distanceToSqr(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5) <= 64.0;
     }
 
     @Override
@@ -264,22 +243,20 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
         this.inventory.clear();
     }
 
-    private static PalmBarRecipe getRecipe(List<RecipeHolder<PalmBarRecipe>> recipes) {
+    private PalmBarRecipe getRecipe(List<RecipeHolder<PalmBarRecipe>> recipes) {
         recipeLoop:
-        for (RecipeHolder<PalmBarRecipe> recipeHolder : recipes) {
-            PalmBarRecipe recipe = recipeHolder.value();
+        for (RecipeHolder<PalmBarRecipe> holder : recipes) {
+            PalmBarRecipe recipe = holder.value();
             for (Ingredient ingredient : recipe.getIngredients()) {
-                boolean ingredientFound = false;
+                boolean ok = false;
                 for (int slotIndex = 1; slotIndex < inventory.size(); slotIndex++) {
                     ItemStack slotItem = inventory.get(slotIndex);
                     if (ingredient.test(slotItem)) {
-                        ingredientFound = true;
+                        ok = true;
                         break;
                     }
                 }
-                if (!ingredientFound) {
-                    continue recipeLoop;
-                }
+                if (!ok) continue recipeLoop;
             }
             return recipe;
         }

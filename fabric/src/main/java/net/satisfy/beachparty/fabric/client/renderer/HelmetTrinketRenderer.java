@@ -9,7 +9,6 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
@@ -22,7 +21,7 @@ public class HelmetTrinketRenderer implements TrinketRenderer {
         if (!(itemStack.getItem() instanceof TrinketsArmorItem armorItem)) return;
         CustomData tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
 
-        if (tag != null && tag.contains("Visible") && !tag.copyTag().getBoolean("Visible")) return;
+        if (tag.contains("Visible") && !tag.copyTag().getBoolean("Visible")) return;
 
         Model model = ArmorRegistry.HelmetModel(armorItem, ((HumanoidModel<?>) entityModel).hat);
 

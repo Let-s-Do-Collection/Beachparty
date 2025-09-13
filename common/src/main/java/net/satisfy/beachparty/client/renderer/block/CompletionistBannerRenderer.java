@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
-import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.block.CompletionistBannerBlock;
 import net.satisfy.beachparty.core.block.CompletionistWallBannerBlock;
 import net.satisfy.beachparty.core.block.entity.CompletionistBannerEntity;

@@ -4,7 +4,6 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +17,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -30,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
 public class BeachChairBlock extends Block {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
@@ -61,8 +58,8 @@ public class BeachChairBlock extends Block {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        return BeachpartyUtil.onUse(level, player, interactionHand, blockHitResult, -0.1);
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        return BeachpartyUtil.onUse(level, player, interactionHand, blockHitResult, 0.05);
     }
 
     @Override
@@ -90,10 +87,6 @@ public class BeachChairBlock extends Block {
     @Override
     public @NotNull BlockState mirror(BlockState state, Mirror mirror) {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
-    }
-
-    public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type) {
-        return false;
     }
 }
 

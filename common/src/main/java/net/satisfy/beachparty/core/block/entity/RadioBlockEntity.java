@@ -4,9 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.JukeboxSong;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -16,10 +17,9 @@ import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.registry.SoundEventRegistry;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public class RadioBlockEntity extends BlockEntity {
-    private static final List<SoundEvent> TRACKS = SoundEventRegistry.RADIO_SOUNDS.stream().map(Supplier::get).toList();
+    private static final List<ResourceKey<JukeboxSong>> TRACKS = SoundEventRegistry.RADIO_SONGS;
 
     private int currentIndex = -1;
     private int ticks;

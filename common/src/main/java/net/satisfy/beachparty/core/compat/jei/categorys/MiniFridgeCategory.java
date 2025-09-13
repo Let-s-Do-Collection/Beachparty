@@ -13,8 +13,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.client.gui.MiniFridgeGui;
 import net.satisfy.beachparty.core.compat.jei.BeachpartyJEIPlugin;
 import net.satisfy.beachparty.core.recipe.MiniFridgeRecipe;

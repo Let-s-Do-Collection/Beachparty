@@ -17,8 +17,6 @@ import net.satisfy.beachparty.core.item.DyeableBeachpartyArmorItem;
 import net.satisfy.beachparty.core.registry.ArmorRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
-import java.util.Objects;
-
 public class DyeableLeggingsTrinketRenderer implements TrinketRenderer {
     @Override
     public void render(ItemStack itemStack, SlotReference slotReference, EntityModel<? extends LivingEntity> entityModel, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, LivingEntity livingEntity, float v, float v1, float v2, float v3, float v4, float v5) {
@@ -26,11 +24,11 @@ public class DyeableLeggingsTrinketRenderer implements TrinketRenderer {
         if (!(itemStack.getItem() instanceof DyeableBeachpartyArmorItem armorItem)) return;
         CustomData tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
 
-        if (tag != null && tag.contains("Visible") && !tag.copyTag().getBoolean("Visible")) return;
+        if (tag.contains("Visible") && !tag.copyTag().getBoolean("Visible")) return;
 
         if (entityModel instanceof HumanoidModel<?> humanoidModel) {
             Model model = ArmorRegistry.LeggingsModel(armorItem, humanoidModel.body, humanoidModel.leftLeg, humanoidModel.rightLeg);
-            int color = armorItem.getColor();
+            int color = armorItem.getColor(itemStack);
 
             model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(armorItem.getTexture())), i, OverlayTexture.NO_OVERLAY, color);
 

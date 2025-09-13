@@ -13,15 +13,23 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.client.BeachPartyClient;
+import net.satisfy.beachparty.client.gui.MiniFridgeGui;
+import net.satisfy.beachparty.client.gui.PalmBarGui;
 import net.satisfy.beachparty.client.model.FloatyBoatModel;
 import net.satisfy.beachparty.core.entity.PalmBoatEntity;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
-import net.satisfy.beachparty.neoforge.client.integration.*;
-import net.satisfy.beachparty.neoforge.client.renderer.player.layers.*;
+import net.satisfy.beachparty.neoforge.client.integration.CuriosRubberRingAxolotlRenderer;
+import net.satisfy.beachparty.neoforge.client.integration.CuriosRubberRingPelicanRenderer;
+import net.satisfy.beachparty.neoforge.client.integration.CuriosRubberRingRenderer;
+import net.satisfy.beachparty.neoforge.client.renderer.player.layers.RubberRingAxolotlLayer;
+import net.satisfy.beachparty.neoforge.client.renderer.player.layers.RubberRingLayer;
+import net.satisfy.beachparty.neoforge.client.renderer.player.layers.RubberRingPelicanLayer;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
 import java.util.function.Function;
@@ -32,6 +40,12 @@ public class BeachpartyClientNeoForge {
     @SubscribeEvent
     public static void beforeClientSetup(RegisterEvent event) {
         BeachPartyClient.preInitClient();
+    }
+
+    @SubscribeEvent
+    public static void clientSetup(RegisterMenuScreensEvent event) {
+        event.register(ScreenHandlerTypesRegistry.PALM_BAR_GUI_HANDLER.get(), PalmBarGui::new);
+        event.register(ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeGui::new);
     }
 
     @SubscribeEvent

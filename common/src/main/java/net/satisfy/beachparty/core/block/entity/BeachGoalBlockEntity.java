@@ -1,16 +1,19 @@
 package net.satisfy.beachparty.core.block.entity;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.FireworkExplosion;
+import net.minecraft.world.item.component.Fireworks;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +24,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.satisfy.beachparty.core.block.BeachGoalBlock;
 import net.satisfy.beachparty.core.entity.BeachBallEntity;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
-import org.joml.Vector3d;
 
 import java.util.List;
 
@@ -29,6 +31,10 @@ public class BeachGoalBlockEntity extends BlockEntity {
     private static final int PRESENCE_THRESHOLD = 10;
     private boolean hasBeachBall = false;
     private int ballPresenceCounter = 0;
+    private static final int[] FW_PALETTE = {
+            0xFF0000, 0xFFA500, 0xFFFF00, 0x00FF00, 0x00FFFF, 0x0000FF, 0x8A2BE2, 0xFF00FF,
+            0xFFFFFF, 0xADD8E6, 0xF4A460, 0xFF7F50, 0x7FFF00, 0xFFD700
+    };
 
     public BeachGoalBlockEntity(BlockPos pos, BlockState state) {
         super(EntityTypeRegistry.BEACH_GOAL_BLOCK_ENTITY.get(), pos, state);
@@ -69,33 +75,48 @@ public class BeachGoalBlockEntity extends BlockEntity {
     }
 
     private void fireRockets(ServerLevel world, BlockPos pos) {
-        int rocketCount = world.random.nextInt(5) + 3;
-        int[][] colorOptions = new int[][]{{0xADD8E6}, {0xFFFFFF}, {0xF4A460}};
+        int rocketCount = 3 + world.random.nextInt(3);
         for (int i = 0; i < rocketCount; i++) {
-            double dx = (world.random.nextDouble() - 0.5) * 0.2;
-            double dz = (world.random.nextDouble() - 0.5) * 0.2;
-            double dy = 1.2 + (world.random.nextDouble() - 0.5) * 0.1;
+            double dx = (world.random.nextDouble() - 0.5) * 0.18;
+            double dz = (world.random.nextDouble() - 0.5) * 0.18;
+            double dy = 1.15 + world.random.nextDouble() * 0.25;
             double x = pos.getX() + 0.5;
             double y = pos.getY() + 2.0;
             double z = pos.getZ() + 0.5;
+
+            int flight = 1 + world.random.nextInt(3);
+            int explosions = 1 + world.random.nextInt(3);
+
             ItemStack fireworkItem = new ItemStack(Items.FIREWORK_ROCKET);
-            CustomData fireworkTag = CustomData.of(new CompoundTag());
-            CustomData explosion = CustomData.of(new CompoundTag());
-            int[] colors = colorOptions[world.random.nextInt(colorOptions.length)];
-            explosion.copyTag().putIntArray("Colors", colors);
-            explosion.copyTag().putByte("Type", (byte) 1);
-            ListTag explosionsList = new ListTag();
-            explosionsList.add(explosion.copyTag());
-            CustomData fireworks = CustomData.of(new CompoundTag());
-            fireworks.copyTag().putByte("Flight", (byte) 1);
-            fireworks.copyTag().put("Explosions", explosionsList);
-            fireworkTag.copyTag().put("Fireworks", fireworks.copyTag());
-            fireworkItem.set(DataComponents.CUSTOM_DATA, fireworkTag);
-            FireworkRocketEntity rocket = new FireworkRocketEntity(world, x, y, z, fireworkItem);
-            Vector3d velocity = new Vector3d(dx, dy, dz);
-            rocket.setDeltaMovement(velocity.x, velocity.y, velocity.z);
+            List<FireworkExplosion> list = new java.util.ArrayList<>(explosions);
+            for (int e = 0; e < explosions; e++) {
+                list.add(randomExplosion(world.random));
+            }
+            fireworkItem.set(DataComponents.FIREWORKS, new Fireworks(flight, list));
+
+            FireworkRocketEntity rocket = new FireworkRocketEntity(world, fireworkItem, x, y, z, false);
+            rocket.setDeltaMovement(dx, dy, dz);
             world.addFreshEntity(rocket);
         }
+    }
+
+    private FireworkExplosion randomExplosion(RandomSource random) {
+        FireworkExplosion.Shape[] shapes = FireworkExplosion.Shape.values();
+        FireworkExplosion.Shape shape = shapes[random.nextInt(shapes.length)];
+        IntList colors = randomPaletteColors(random, 1, 4);
+        IntList fade = randomPaletteColors(random, 0, 3);
+        boolean trail = random.nextBoolean();
+        boolean twinkle = random.nextBoolean();
+        return new FireworkExplosion(shape, colors, fade, trail, twinkle);
+    }
+
+    private IntList randomPaletteColors(RandomSource random, int min, int maxInclusive) {
+        int n = min + random.nextInt(maxInclusive - min + 1);
+        IntList out = new IntArrayList(n);
+        for (int i = 0; i < n; i++) {
+            out.add(FW_PALETTE[random.nextInt(FW_PALETTE.length)]);
+        }
+        return out;
     }
 
     @Override

@@ -14,7 +14,6 @@ import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.neoforge.client.integration.CuriosWearableTrinket;
 import net.satisfy.beachparty.neoforge.registry.BeachpartyVillagers;
 
-
 import java.util.List;
 
 @EventBusSubscriber(modid = Beachparty.MOD_ID)
@@ -63,7 +62,7 @@ public class NeoForgeEventHandler {
     @SubscribeEvent
     public static void onLivingDamage(LivingDamageEvent.Pre event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (event.getSource() == null) return;
+        event.getSource();
 
         if (!event.getSource().is(DamageTypes.ON_FIRE) && !event.getSource().is(DamageTypes.IN_FIRE)) return;
 

@@ -5,7 +5,6 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +34,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
 public class PalmBarBlock extends BaseEntityBlock implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
@@ -57,7 +55,7 @@ public class PalmBarBlock extends BaseEntityBlock implements EntityBlock {
     public static final MapCodec<PalmBarBlock> CODEC = simpleCodec(PalmBarBlock::new);
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
 
@@ -105,16 +103,14 @@ public class PalmBarBlock extends BaseEntityBlock implements EntityBlock {
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
-        if (!level.isClientSide) {
-            MenuProvider screenHandlerFactory = blockState.getMenuProvider(level, blockPos);
-
-            if (screenHandlerFactory != null) {
-                player.openMenu(screenHandlerFactory);
-            }
+    public @NotNull InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        final BlockEntity entity = world.getBlockEntity(pos);
+        if (entity instanceof MenuProvider factory) {
+            player.openMenu(factory);
+            return InteractionResult.sidedSuccess(world.isClientSide());
+        } else {
+            return InteractionResult.PASS;
         }
-
-        return InteractionResult.SUCCESS;
     }
 
     @Nullable

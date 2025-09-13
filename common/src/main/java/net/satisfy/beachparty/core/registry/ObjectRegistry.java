@@ -129,12 +129,12 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> FLOATY_CHEST_BOAT = ITEMS.register("floaty_chest_boat", () -> new PalmBoatItem(true, PalmBoatEntity.Type.FLOATY, new Item.Properties().stacksTo(1)));
     public static final RegistrySupplier<Block> BEACHPARTY_BANNER = registerWithItem("beachparty_banner", () -> new CompletionistBannerBlock(BlockBehaviour.Properties.of().strength(1F).instrument(NoteBlockInstrument.BASS).noCollission().sound(SoundType.WOOD)));
     public static final RegistrySupplier<Block> BEACHPARTY_WALL_BANNER = registerWithoutItem("beachparty_wall_banner", () -> new CompletionistWallBannerBlock(BlockBehaviour.Properties.of().strength(1F).instrument(NoteBlockInstrument.BASS).noCollission().sound(SoundType.WOOD)));
-    public static final RegistrySupplier<Item> OVERGROWN_DISC = registerItem("overgrown_disc", () -> new Item(getSettings().stacksTo(1).jukeboxPlayable(JukeboxSongRegistry.OVER_THE_RAINBOW).rarity(Rarity.RARE)));
-    public static final RegistrySupplier<Item> MUSIC_DISC_BEACHPARTY = registerItem("music_disc_beachparty", () -> new Item(getSettings().stacksTo(1).jukeboxPlayable(JukeboxSongRegistry.BEACHPARTY).rarity(Rarity.RARE)));
-    public static final RegistrySupplier<Item> MUSIC_DISC_CARIBBEAN_BEACH = registerItem("music_disc_caribbean_beach", () -> new Item(getSettings().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(JukeboxSongRegistry.CARIBBEAN_BEACH)));
-    public static final RegistrySupplier<Item> MUSIC_DISC_PRIDELANDS = registerItem("music_disc_pridelands", () -> new Item(getSettings().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(JukeboxSongRegistry.PRIDELANDS)));
-    public static final RegistrySupplier<Item> MUSIC_DISC_VOCALISTA = registerItem("music_disc_vocalista", () -> new Item(getSettings().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(JukeboxSongRegistry.VOCALISTA)));
-    public static final RegistrySupplier<Item> MUSIC_DISC_WILD_VEINS = registerItem("music_disc_wild_veins", () -> new Item(getSettings().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(JukeboxSongRegistry.WILD_VEINS)));
+    public static final RegistrySupplier<Item> OVERGROWN_DISC = registerItem("overgrown_disc", () -> new Item(getSettings().stacksTo(1).jukeboxPlayable(SoundEventRegistry.OVER_THE_RAINBOW).rarity(Rarity.RARE)));
+    public static final RegistrySupplier<Item> MUSIC_DISC_BEACHPARTY = registerItem("music_disc_beachparty", () -> new Item(getSettings().stacksTo(1).jukeboxPlayable(SoundEventRegistry.BEACHPARTY).rarity(Rarity.RARE)));
+    public static final RegistrySupplier<Item> MUSIC_DISC_CARIBBEAN_BEACH = registerItem("music_disc_caribbean_beach", () -> new Item(getSettings().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(SoundEventRegistry.CARIBBEAN_BEACH)));
+    public static final RegistrySupplier<Item> MUSIC_DISC_PRIDELANDS = registerItem("music_disc_pridelands", () -> new Item(getSettings().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(SoundEventRegistry.PRIDELANDS)));
+    public static final RegistrySupplier<Item> MUSIC_DISC_VOCALISTA = registerItem("music_disc_vocalista", () -> new Item(getSettings().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(SoundEventRegistry.VOCALISTA)));
+    public static final RegistrySupplier<Item> MUSIC_DISC_WILD_VEINS = registerItem("music_disc_wild_veins", () -> new Item(getSettings().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(SoundEventRegistry.WILD_VEINS)));
 
     static Item.Properties getSettings() {
         return getSettings(settings -> {

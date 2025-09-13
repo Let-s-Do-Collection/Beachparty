@@ -2,7 +2,6 @@ package net.satisfy.beachparty.core.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -19,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
 public class PalmBarStoolBlock extends Block {
     private static final Supplier<VoxelShape> voxelShapeSupplier = () ->
             Shapes.box(0.3125, 0, 0.3125, 0.6875, 0.6875, 0.6875);
@@ -34,8 +32,8 @@ public class PalmBarStoolBlock extends Block {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level world, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hit) {
-        return BeachpartyUtil.onUse(world, player, hand, hit, 0.25);
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level world, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hit) {
+        return BeachpartyUtil.onUse(world, player, hand, hit, 0.35);
     }
 }
 

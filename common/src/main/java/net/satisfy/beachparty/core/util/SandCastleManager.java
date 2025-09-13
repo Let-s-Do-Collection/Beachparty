@@ -1,7 +1,11 @@
 package net.satisfy.beachparty.core.util;
 
 import net.minecraft.core.BlockPos;
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class SandCastleManager {
     private static final Map<Long, Set<BlockPos>> sandCastleChunks = new HashMap<>();

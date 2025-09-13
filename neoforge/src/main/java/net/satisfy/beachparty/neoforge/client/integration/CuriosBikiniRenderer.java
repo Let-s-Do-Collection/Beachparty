@@ -19,8 +19,6 @@ import org.joml.Quaternionf;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
-import java.util.Objects;
-
 public class CuriosBikiniRenderer implements ICurioRenderer {
     private final BikiniModel<LivingEntity> model;
     private final ResourceLocation texture;

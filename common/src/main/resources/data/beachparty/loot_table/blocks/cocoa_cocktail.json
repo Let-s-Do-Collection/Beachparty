@@ -2,30 +2,25 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        },
-        {
-          "condition": "minecraft:match_tool",
-          "predicate": {}
-        },
-        {
-          "condition": "minecraft:block_state_property",
-          "block": "beachparty:cocoa_cocktail",
-          "properties": {
-            "stage": 3
-          }
-        }
-      ],
+      "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "beachparty:cocoa_cocktail"
         }
       ],
-      "rolls": 1.0
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        },
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "beachparty:cocoa_cocktail",
+          "properties": {
+            "stage": "3"
+          }
+        }
+      ]
     }
   ]
 }

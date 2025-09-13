@@ -4,7 +4,6 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +34,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
 public class HoodedBeachChair extends LineConnectingBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF = EnumProperty.create("half", DoubleBlockHalf.class);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -197,10 +195,10 @@ public class HoodedBeachChair extends LineConnectingBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         DoubleBlockHalf half = blockState.getValue(HALF);
         BlockPos basePos = (half == DoubleBlockHalf.LOWER) ? blockPos : blockPos.below();
-        return BeachpartyUtil.onUse(level, player, interactionHand, new BlockHitResult(blockHitResult.getLocation(), blockHitResult.getDirection(), basePos, blockHitResult.isInside()), 0);
+        return BeachpartyUtil.onUse(level, player, interactionHand, new BlockHitResult(blockHitResult.getLocation(), blockHitResult.getDirection(), basePos, blockHitResult.isInside()), 0.2);
     }
 
     @Override

@@ -13,7 +13,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;

@@ -32,8 +32,10 @@
           "name": "beachparty:trunks",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
-              "tag": "{display:{color:255}}"
+              "function": "minecraft:set_components",
+              "components": {
+                "minecraft:dyed_color": 255
+              }
             }
           ]
         },
@@ -43,8 +45,10 @@
           "name": "beachparty:bikini",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
-              "tag": "{display:{color:16711935}}"
+              "function": "minecraft:set_components",
+              "components": {
+                "minecraft:dyed_color": 16711935
+              }
             }
           ]
         },
@@ -54,8 +58,10 @@
           "name": "beachparty:crocs",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
-              "tag": "{display:{color:652480}}"
+              "function": "minecraft:set_components",
+              "components": {
+                "minecraft:dyed_color": 652480
+              }
             }
           ]
         },
@@ -65,8 +71,10 @@
           "name": "beachparty:swim_wings",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
-              "tag": "{display:{color:16776960}}"
+              "function": "minecraft:set_components",
+              "components": {
+                "minecraft:dyed_color": 16776960
+              }
             }
           ]
         },
@@ -76,8 +84,10 @@
           "name": "beachparty:pool_noodle",
           "functions": [
             {
-              "function": "minecraft:set_nbt",
-              "tag": "{display:{color:16711680}}"
+              "function": "minecraft:set_components",
+              "components": {
+                "minecraft:dyed_color": 16711680
+              }
             }
           ]
         },
