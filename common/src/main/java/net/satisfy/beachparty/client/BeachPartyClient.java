@@ -38,11 +38,11 @@ public class BeachPartyClient {
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_HANGING_SIGN.get(), PalmHangingSignRenderer::new);
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_BANNER.get(), CompletionistBannerRenderer::new);
 
-        BeachpartyUtil.registerColorArmor(TRUNKS.get(), 16715535);
-        BeachpartyUtil.registerColorArmor(BIKINI.get(), 987135);
-        BeachpartyUtil.registerColorArmor(CROCS.get(), 1048335);
-        BeachpartyUtil.registerColorArmor(SWIM_WINGS.get(), 0xFF5800);
-        BeachpartyUtil.registerColorArmor(POOL_NOODLE.get(), 1017855);
+        BeachpartyUtil.registerColorArmor(TRUNKS.get(), 0xFFFF0F0F);
+        BeachpartyUtil.registerColorArmor(BIKINI.get(), 0xFFFF0FFF);
+        BeachpartyUtil.registerColorArmor(CROCS.get(), 0xFFFF0F0F);
+        BeachpartyUtil.registerColorArmor(SWIM_WINGS.get(), 0xFFFF5800);
+        BeachpartyUtil.registerColorArmor(POOL_NOODLE.get(), 0xFFFF87FF);
     }
 
     public static void preInitClient() {

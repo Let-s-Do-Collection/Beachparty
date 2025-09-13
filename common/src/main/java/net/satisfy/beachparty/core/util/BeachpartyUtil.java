@@ -23,6 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.Level;
@@ -160,11 +161,7 @@ public class BeachpartyUtil {
     }
 
     public static void registerColorArmor(Item item, int defaultColor) {
-        ColorHandlerRegistry.registerItemColors((stack, tintIndex) -> 0 < tintIndex ? 0x00FFFFFF : getColor(stack, defaultColor), item);
-    }
-
-    static int getColor(ItemStack itemStack, int defaultColor) {
-        return itemStack.has(DataComponents.DYED_COLOR) ? Objects.requireNonNull(itemStack.get(DataComponents.DYED_COLOR)).rgb() : defaultColor;
+        ColorHandlerRegistry.registerItemColors((stack, tintIndex) -> tintIndex > 0 ? 0xFFFFFFFF : DyedItemColor.getOrDefault(stack, defaultColor), item);
     }
 
     private static ResourceLocation getDimensionTypeId(Level world) {
