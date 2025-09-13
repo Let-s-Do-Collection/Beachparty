@@ -35,11 +35,10 @@ public class TrunksLayer<T extends LivingEntity, M extends HumanoidModel<T>> ext
 
         top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(entity).ifPresent(curios -> {
             if (curios.isEquipped(ObjectRegistry.TRUNKS.get())) {
-                curios.findFirstCurio(stack -> stack.is(ObjectRegistry.TRUNKS.get()))
-                        .ifPresent(curio -> {
-                            inCurioSlot[0] = true;
-                            trunks[0] = curio.stack();
-                        });
+                curios.findFirstCurio(stack -> stack.is(ObjectRegistry.TRUNKS.get())).ifPresent(curio -> {
+                    inCurioSlot[0] = true;
+                    trunks[0] = curio.stack();
+                });
             }
         });
 
@@ -47,26 +46,24 @@ public class TrunksLayer<T extends LivingEntity, M extends HumanoidModel<T>> ext
         if (inLegsSlot) {
             trunks[0] = entity.getItemBySlot(EquipmentSlot.LEGS);
         }
-
         if (!inCurioSlot[0] && !inLegsSlot) return;
 
         if (trunks[0].has(DataComponents.CUSTOM_DATA)) {
-            if (trunks[0].getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).contains("Visible") && !trunks[0].getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getBoolean("Visible")) {
+            if (trunks[0].getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).contains("Visible")
+                    && !trunks[0].getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getBoolean("Visible")) {
                 return;
             }
         }
 
-        DyeableBeachpartyArmorItem item = trunks[0].getItem() instanceof DyeableBeachpartyArmorItem
-                ? (DyeableBeachpartyArmorItem) trunks[0].getItem() : null;
+        DyeableBeachpartyArmorItem item = trunks[0].getItem() instanceof DyeableBeachpartyArmorItem ? (DyeableBeachpartyArmorItem) trunks[0].getItem() : null;
         if (item == null) return;
 
-        int colorInt = item.getColor();
+        int argb = 0xFF000000 | item.getColor(trunks[0]);
 
         poseStack.pushPose();
-        renderColoredCutoutModel(this.model, getTextureLocation(entity), poseStack, multiBufferSource, i, entity, colorInt);
+        renderColoredCutoutModel(this.model, getTextureLocation(entity), poseStack, multiBufferSource, i, entity, argb);
         poseStack.popPose();
     }
-
 
     @Override
     protected @NotNull ResourceLocation getTextureLocation(@NotNull T entity) {

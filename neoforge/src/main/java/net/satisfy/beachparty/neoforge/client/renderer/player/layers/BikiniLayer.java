@@ -34,7 +34,7 @@ public class BikiniLayer<T extends LivingEntity, M extends HumanoidModel<T>> ext
             if (legsStack.has(DataComponents.CUSTOM_DATA)) {
                 if (legsStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).contains("Visible") && !legsStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getBoolean("Visible")) return;
             }
-            int colorInt = ((DyeableBeachpartyArmorItem) legsStack.getItem()).getColor();
+            int colorInt = ((DyeableBeachpartyArmorItem) legsStack.getItem()).getColor(legsStack);
             this.model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             poseStack.pushPose();
             renderColoredCutoutModel(this.model, getTextureLocation(entity), poseStack, multiBufferSource, light, entity, colorInt);

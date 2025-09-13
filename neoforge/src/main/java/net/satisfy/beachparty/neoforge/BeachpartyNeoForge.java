@@ -11,6 +11,7 @@ import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -21,19 +22,21 @@ import net.satisfy.beachparty.core.block.BeachTowelBlock;
 import net.satisfy.beachparty.core.registry.CompostablesRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.neoforge.client.integration.CuriosWearableTrinket;
-import net.satisfy.beachparty.neoforge.registry.BeachpartyVillagers;
+import net.satisfy.beachparty.neoforge.core.config.BeachpartyNeoForgeConfig;
+import net.satisfy.beachparty.neoforge.core.registry.BeachpartyVillagers;
 import net.satisfy.beachparty.platform.neoforge.PlatformHelperImpl;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import top.theillusivec4.curios.api.SlotTypePreset;
 
-@Mod(Beachparty.MOD_ID) public class BeachpartyNeoForge {
+@Mod(Beachparty.MOD_ID)
+public class BeachpartyNeoForge {
     public BeachpartyNeoForge(IEventBus modEventBus, ModContainer modContainer) {
         EventBusesHooks.whenAvailable(Beachparty.MOD_ID, IEventBus::start);
         BeachpartyVillagers.register(modEventBus);
         PlatformHelperImpl.ENTITY_TYPES.register(modEventBus);
-
         Beachparty.init();
+        modContainer.registerConfig(ModConfig.Type.COMMON, BeachpartyNeoForgeConfig.COMMON_CONFIG);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::enqueueIMC);
     }
@@ -61,25 +64,19 @@ import top.theillusivec4.curios.api.SlotTypePreset;
         InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.HEAD.getMessageBuilder().build());
     }
 
-
     @SubscribeEvent
     public static void onBlockRightClick(PlayerInteractEvent.RightClickBlock event) {
         BlockState state = event.getLevel().getBlockState(event.getPos());
-        if (state.getBlock() == ObjectRegistry.RADIO.get()) {
-            event.setCanceled(true);
-        }
+        if (state.getBlock() == ObjectRegistry.RADIO.get()) event.setCanceled(true);
     }
 
-    @EventBusSubscriber(modid = Beachparty.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+    @EventBusSubscriber(modid = Beachparty.MOD_ID)
     public static class ForgeEventsHandler {
-
         @SubscribeEvent
         public static void playerSetSpawn(PlayerSetSpawnEvent event) {
             Level level = event.getEntity().level();
-
             if (event.getNewSpawn() != null) {
                 Block block = level.getBlockState(event.getNewSpawn()).getBlock();
-
                 if (!level.isClientSide && (block instanceof BeachTowelBlock || block instanceof BeachSunLounger) && !event.isForced()) {
                     event.setCanceled(true);
                 }

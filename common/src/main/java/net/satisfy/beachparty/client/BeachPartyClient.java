@@ -42,7 +42,7 @@ public class BeachPartyClient {
         BeachpartyUtil.registerColorArmor(BIKINI.get(), 987135);
         BeachpartyUtil.registerColorArmor(CROCS.get(), 1048335);
         BeachpartyUtil.registerColorArmor(SWIM_WINGS.get(), 0xFF5800);
-        BeachpartyUtil.registerColorArmor(POOL_NOODLE.get(), 1017855);
+        BeachpartyUtil.registerColorWeapon(POOL_NOODLE.get(), 1017855);
     }
 
     public static void preInitClient() {

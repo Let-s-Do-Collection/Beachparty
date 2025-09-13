@@ -159,6 +159,15 @@ public class BeachpartyUtil {
         ColorHandlerRegistry.registerItemColors((stack, tintIndex) -> tintIndex == 0 ? getColor(stack, defaultColor) : 0xFFFFFFFF, item);
     }
 
+    public static void registerColorWeapon(Item item, int defaultColor) {
+        ColorHandlerRegistry.registerItemColors((stack, tintIndex) -> tintIndex == 0 ? getColor(stack, defaultColor) : 0xFFFFFFFF, item);
+    }
+
+    public static void registerColorWeapon(int defaultColor, Item... items) {
+        ColorHandlerRegistry.registerItemColors((stack, tintIndex) -> tintIndex == 0 ? getColor(stack, defaultColor) : 0xFFFFFFFF, items);
+    }
+
+
     static int getColor(ItemStack itemStack, int defaultColor) {
         DyedItemColor dyed = itemStack.get(DataComponents.DYED_COLOR);
         if (dyed != null) return 0xFF000000 | dyed.rgb();

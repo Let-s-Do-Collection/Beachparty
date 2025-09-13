@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.satisfy.beachparty.Beachparty;
-import net.satisfy.beachparty.neoforge.registry.BeachpartyConfig;
+import net.satisfy.beachparty.neoforge.core.config.BeachpartyNeoForgeConfig;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -27,15 +27,15 @@ public class PlatformHelperImpl {
     }
 
     public static boolean allowBottleSpawning() {
-        return BeachpartyConfig.ALLOW_BOTTLE_SPAWNING.get();
+        return BeachpartyNeoForgeConfig.ALLOW_BOTTLE_SPAWNING.get();
     }
 
     public static int getBottleMaxCount() {
-        return BeachpartyConfig.BOTTLE_MAX_COUNT.get();
+        return BeachpartyNeoForgeConfig.BOTTLE_MAX_COUNT.get();
     }
 
     public static int getBottleSpawnInterval() {
-        return BeachpartyConfig.BOTTLE_SPAWN_INTERVAL.get();
+        return BeachpartyNeoForgeConfig.BOTTLE_SPAWN_INTERVAL.get();
     }
 
 

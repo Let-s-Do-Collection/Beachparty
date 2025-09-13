@@ -14,6 +14,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.client.BeachPartyClient;
@@ -24,12 +25,11 @@ import net.satisfy.beachparty.core.entity.PalmBoatEntity;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
-import net.satisfy.beachparty.neoforge.client.integration.CuriosRubberRingAxolotlRenderer;
-import net.satisfy.beachparty.neoforge.client.integration.CuriosRubberRingPelicanRenderer;
-import net.satisfy.beachparty.neoforge.client.integration.CuriosRubberRingRenderer;
-import net.satisfy.beachparty.neoforge.client.renderer.player.layers.RubberRingAxolotlLayer;
-import net.satisfy.beachparty.neoforge.client.renderer.player.layers.RubberRingLayer;
-import net.satisfy.beachparty.neoforge.client.renderer.player.layers.RubberRingPelicanLayer;
+import net.satisfy.beachparty.neoforge.client.extensions.BeachpartyChestplateExtensions;
+import net.satisfy.beachparty.neoforge.client.extensions.BeachpartyHatExtensions;
+import net.satisfy.beachparty.neoforge.client.extensions.DyeableBeachpartyArmorExtensions;
+import net.satisfy.beachparty.neoforge.client.integration.*;
+import net.satisfy.beachparty.neoforge.client.renderer.player.layers.*;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
 import java.util.function.Function;
@@ -46,6 +46,21 @@ public class BeachpartyClientNeoForge {
     public static void clientSetup(RegisterMenuScreensEvent event) {
         event.register(ScreenHandlerTypesRegistry.PALM_BAR_GUI_HANDLER.get(), PalmBarGui::new);
         event.register(ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeGui::new);
+    }
+
+    @SubscribeEvent
+    public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+        event.registerItem(new BeachpartyChestplateExtensions(), ObjectRegistry.RUBBER_RING_BLUE.get());
+        event.registerItem(new BeachpartyChestplateExtensions(), ObjectRegistry.RUBBER_RING_PINK.get());
+        event.registerItem(new BeachpartyChestplateExtensions(), ObjectRegistry.RUBBER_RING_STRIPPED.get());
+        event.registerItem(new BeachpartyChestplateExtensions(), ObjectRegistry.RUBBER_RING_AXOLOTL.get());
+        event.registerItem(new BeachpartyChestplateExtensions(), ObjectRegistry.RUBBER_RING_PELICAN.get());
+        event.registerItem(new BeachpartyHatExtensions(), ObjectRegistry.BEACH_HAT.get());
+        event.registerItem(new BeachpartyHatExtensions(), ObjectRegistry.SUNGLASSES.get());
+        event.registerItem(new DyeableBeachpartyArmorExtensions(), ObjectRegistry.TRUNKS.get());
+        event.registerItem(new DyeableBeachpartyArmorExtensions(), ObjectRegistry.BIKINI.get());
+        event.registerItem(new DyeableBeachpartyArmorExtensions(), ObjectRegistry.SWIM_WINGS.get());
+        event.registerItem(new DyeableBeachpartyArmorExtensions(), ObjectRegistry.CROCS.get());
     }
 
     @SubscribeEvent

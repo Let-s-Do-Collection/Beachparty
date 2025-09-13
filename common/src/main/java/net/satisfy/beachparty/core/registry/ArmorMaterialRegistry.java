@@ -32,7 +32,7 @@ public class ArmorMaterialRegistry {
 
     private static ArmorMaterial createMaterial(String name, Ingredient repairIngredient, boolean dyeable) {
         return register(
-                slots(1, 2, 2, 1, 1),
+                slots(1, 1, 1, 1, 1),
                 ENCHANTMENT_VALUE,
                 EQUIP_SOUND,
                 TOUGHNESS,

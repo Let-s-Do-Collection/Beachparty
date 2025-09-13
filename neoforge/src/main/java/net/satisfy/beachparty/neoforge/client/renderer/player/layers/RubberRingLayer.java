@@ -28,16 +28,14 @@ public class RubberRingLayer<T extends LivingEntity, M extends HumanoidModel<T>>
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int light, @NotNull T entity,
-                       float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
-                       float netHeadYaw, float headPitch) {
+    public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int light, @NotNull T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (entity instanceof Player) {
             ItemStack ringStack = entity.getItemBySlot(EquipmentSlot.LEGS);
             if (ringStack.isEmpty() || !isRubberRing(ringStack)) return;
 
             this.model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             poseStack.pushPose();
-            renderColoredCutoutModel(this.model, getRingTexture(ringStack), poseStack, multiBufferSource, light, entity, 1.0f, 1.0f, 1.0f);
+            renderColoredCutoutModel(this.model, getRingTexture(ringStack), poseStack, multiBufferSource, light);
             poseStack.popPose();
         }
     }
@@ -58,6 +56,6 @@ public class RubberRingLayer<T extends LivingEntity, M extends HumanoidModel<T>>
         }
     }
 
-    private static <T extends LivingEntity, M extends HumanoidModel<T>> void renderColoredCutoutModel(RubberRingColoredModel<T> model, ResourceLocation texture, PoseStack poseStack, MultiBufferSource buffer, int light, T entity, float red, float green, float blue) {model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(texture)), light, OverlayTexture.NO_OVERLAY);
+    private static <T extends LivingEntity> void renderColoredCutoutModel(RubberRingColoredModel<T> model, ResourceLocation texture, PoseStack poseStack, MultiBufferSource buffer, int light) {model.renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(texture)), light, OverlayTexture.NO_OVERLAY);
     }
 }

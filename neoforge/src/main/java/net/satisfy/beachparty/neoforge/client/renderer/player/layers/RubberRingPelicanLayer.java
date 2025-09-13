@@ -28,9 +28,7 @@ public class RubberRingPelicanLayer<T extends LivingEntity, M extends HumanoidMo
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int light, @NotNull T entity,
-                       float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
-                       float netHeadYaw, float headPitch) {
+    public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int light, @NotNull T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (entity instanceof Player) {
             ItemStack ringStack = entity.getItemBySlot(EquipmentSlot.LEGS);
             if (ringStack.isEmpty() || !isRubberRing(ringStack)) return;
