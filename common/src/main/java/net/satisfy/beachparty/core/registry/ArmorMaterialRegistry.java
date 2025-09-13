@@ -1,7 +1,7 @@
 package net.satisfy.beachparty.core.registry;
 
-import net.minecraft.Util;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
@@ -15,11 +15,13 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Supplier;
 
+@SuppressWarnings("SameParameterValue")
 public class ArmorMaterialRegistry {
     private static final int ENCHANTMENT_VALUE = 15;
     private static final Holder<SoundEvent> EQUIP_SOUND = SoundEvents.ARMOR_EQUIP_LEATHER;
     private static final float TOUGHNESS = 0.0F;
     private static final float KNOCKBACK_RESISTANCE = 0.0F;
+
     public static final ArmorMaterial TRUNKS = createMaterial("trunks", Ingredient.of(Items.STRING), true);
     public static final ArmorMaterial BIKINI = createMaterial("bikini", Ingredient.of(Items.STRING), true);
     public static final ArmorMaterial RING = createMaterial("ring", Ingredient.of(Items.DRIED_KELP), false);
@@ -29,25 +31,39 @@ public class ArmorMaterialRegistry {
     public static final ArmorMaterial CROCS = createMaterial("crocs", Ingredient.of(Items.DRIED_KELP), true);
 
     private static ArmorMaterial createMaterial(String name, Ingredient repairIngredient, boolean dyeable) {
-        return register(name, Util.make(new EnumMap(ArmorItem.Type.class), (enumMap) -> {
-            enumMap.put(ArmorItem.Type.BOOTS, 112);
-            enumMap.put(ArmorItem.Type.LEGGINGS, 136);
-            enumMap.put(ArmorItem.Type.CHESTPLATE, 144);
-            enumMap.put(ArmorItem.Type.HELMET, 128);
-            enumMap.put(ArmorItem.Type.BODY, 3);
-        }), ENCHANTMENT_VALUE, EQUIP_SOUND, TOUGHNESS, KNOCKBACK_RESISTANCE, () -> {
-            return repairIngredient;
-        }, List.of(new ArmorMaterial.Layer(BeachpartyIdentifier.identifier(name), "", true), new ArmorMaterial.Layer(BeachpartyIdentifier.identifier(name), "_overlay", dyeable)));
+        return register(
+                slots(1, 2, 2, 1, 1),
+                ENCHANTMENT_VALUE,
+                EQUIP_SOUND,
+                TOUGHNESS,
+                KNOCKBACK_RESISTANCE,
+                () -> repairIngredient,
+                layers(name, dyeable)
+        );
     }
 
-    private static ArmorMaterial register(String string, EnumMap<ArmorItem.Type, Integer> enumMap, int i, Holder<SoundEvent> arg, float f, float g, Supplier<Ingredient> supplier, List<ArmorMaterial.Layer> list) {
-        EnumMap<ArmorItem.Type, Integer> enumMap2 = new EnumMap<>(ArmorItem.Type.class);
-        ArmorItem.Type[] var9 = ArmorItem.Type.values();
+    private static EnumMap<ArmorItem.Type, Integer> slots(int boots, int leggings, int chestplate, int helmet, int body) {
+        EnumMap<ArmorItem.Type, Integer> map = new EnumMap<>(ArmorItem.Type.class);
+        map.put(ArmorItem.Type.BOOTS, boots);
+        map.put(ArmorItem.Type.LEGGINGS, leggings);
+        map.put(ArmorItem.Type.CHESTPLATE, chestplate);
+        map.put(ArmorItem.Type.HELMET, helmet);
+        map.put(ArmorItem.Type.BODY, body);
+        return map;
+    }
 
-        for (ArmorItem.Type type : var9) {
-            enumMap2.put(type, enumMap.get(type));
-        }
+    private static List<ArmorMaterial.Layer> layers(String name, boolean dyeable) {
+        ResourceLocation base = BeachpartyIdentifier.identifier(name);
+        ResourceLocation overlay = BeachpartyIdentifier.identifier(name);
+        return List.of(
+                new ArmorMaterial.Layer(base, "", false),
+                new ArmorMaterial.Layer(overlay, "_overlay", dyeable)
+        );
+    }
 
-        return new ArmorMaterial(enumMap2, i, arg, supplier, list, f, g);
+    private static ArmorMaterial register(EnumMap<ArmorItem.Type, Integer> health, int enchantValue, Holder<SoundEvent> equipSound, float toughness, float knockback, Supplier<Ingredient> repair, List<ArmorMaterial.Layer> layers) {
+        EnumMap<ArmorItem.Type, Integer> copy = new EnumMap<>(ArmorItem.Type.class);
+        copy.putAll(health);
+        return new ArmorMaterial(copy, enchantValue, equipSound, repair, layers, toughness, knockback);
     }
 }

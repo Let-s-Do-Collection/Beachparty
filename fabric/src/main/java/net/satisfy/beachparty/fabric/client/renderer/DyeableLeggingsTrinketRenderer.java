@@ -24,11 +24,11 @@ public class DyeableLeggingsTrinketRenderer implements TrinketRenderer {
         if (!(itemStack.getItem() instanceof DyeableBeachpartyArmorItem armorItem)) return;
         CustomData tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
 
-        if (tag != null && tag.contains("Visible") && !tag.copyTag().getBoolean("Visible")) return;
+        if (tag.contains("Visible") && !tag.copyTag().getBoolean("Visible")) return;
 
         if (entityModel instanceof HumanoidModel<?> humanoidModel) {
             Model model = ArmorRegistry.LeggingsModel(armorItem, humanoidModel.body, humanoidModel.leftLeg, humanoidModel.rightLeg);
-            int color = armorItem.getColor();
+            int color = armorItem.getColor(itemStack);
 
             model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(armorItem.getTexture())), i, OverlayTexture.NO_OVERLAY, color);
 

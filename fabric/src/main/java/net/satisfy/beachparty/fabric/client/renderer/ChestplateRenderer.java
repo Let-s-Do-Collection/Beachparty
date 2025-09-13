@@ -17,23 +17,21 @@ import net.satisfy.beachparty.core.registry.ArmorRegistry;
 
 public class ChestplateRenderer implements ArmorRenderer {
     @Override
-    public void render(PoseStack matrices, MultiBufferSource vertexConsumers, ItemStack stack, LivingEntity entity, EquipmentSlot slot, int light, HumanoidModel<LivingEntity> contextModel) {
+    public void render(PoseStack matrices, MultiBufferSource vertexConsumers, ItemStack itemStack, LivingEntity entity, EquipmentSlot slot, int light, HumanoidModel<LivingEntity> contextModel) {
         Model model;
         ResourceLocation texture;
 
-        if (stack.getItem() instanceof DyeableBeachpartyArmorItem dyeableArmorItem) {
+        if (itemStack.getItem() instanceof DyeableBeachpartyArmorItem dyeableArmorItem) {
             model = ArmorRegistry.chestplateModel(dyeableArmorItem, contextModel.body, contextModel.leftArm, contextModel.rightArm);
             texture = dyeableArmorItem.getTexture();
-            int color = dyeableArmorItem.getColor();
+            int color = dyeableArmorItem.getColor(itemStack);
             VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.renderType(texture));
             model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, color);
-        } else if (stack.getItem() instanceof TrinketsArmorItem beachpartyArmorItem) {
+        } else if (itemStack.getItem() instanceof TrinketsArmorItem beachpartyArmorItem) {
             model = ArmorRegistry.chestplateModel(beachpartyArmorItem, contextModel.body, contextModel.leftArm, contextModel.rightArm);
             texture = beachpartyArmorItem.getTexture();
             VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.renderType(texture));
             model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY);
-        } else {
-            return;
         }
     }
 }

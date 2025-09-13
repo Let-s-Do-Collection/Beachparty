@@ -21,7 +21,7 @@ public class HelmetTrinketRenderer implements TrinketRenderer {
         if (!(itemStack.getItem() instanceof TrinketsArmorItem armorItem)) return;
         CustomData tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
 
-        if (tag != null && tag.contains("Visible") && !tag.copyTag().getBoolean("Visible")) return;
+        if (tag.contains("Visible") && !tag.copyTag().getBoolean("Visible")) return;
 
         Model model = ArmorRegistry.HelmetModel(armorItem, ((HumanoidModel<?>) entityModel).hat);
 

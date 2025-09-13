@@ -22,7 +22,8 @@ public class ChestplateTrinketRenderer implements TrinketRenderer {
         if (!(itemStack.getItem() instanceof TrinketsArmorItem armorItem)) return;
         CustomData tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.of(new CompoundTag()));
 
-        if (tag.copyTag() != null && tag.contains("Visible") && !tag.copyTag().getBoolean("Visible")) return;
+        tag.copyTag();
+        if (tag.contains("Visible") && !tag.copyTag().getBoolean("Visible")) return;
 
         if (entityModel instanceof HumanoidModel<?> humanoidModel) {
             Model model = ArmorRegistry.chestplateModel(armorItem, humanoidModel.body, humanoidModel.leftArm, humanoidModel.rightArm);
