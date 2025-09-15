@@ -19,7 +19,7 @@ import net.satisfy.beachparty.client.renderer.entity.BeachBallRenderer;
 import net.satisfy.beachparty.client.renderer.entity.ChairRenderer;
 import net.satisfy.beachparty.client.renderer.entity.PalmBoatRenderer;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
-import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
+import net.satisfy.beachparty.core.registry.ScreenHandlerTypeRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
 
 import static net.satisfy.beachparty.core.registry.ObjectRegistry.*;
@@ -31,18 +31,18 @@ public class BeachPartyClient {
 
         RenderTypeRegistry.register(RenderType.translucent(), PALM_GLASS_PANE.get(), PALM_GLASS.get());
 
-        MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.PALM_BAR_GUI_HANDLER.get(), PalmBarGui::new);
-        MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeGui::new);
+        MenuRegistry.registerScreenFactory(ScreenHandlerTypeRegistry.PALM_BAR_GUI_HANDLER.get(), PalmBarGui::new);
+        MenuRegistry.registerScreenFactory(ScreenHandlerTypeRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeGui::new);
 
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_SIGN.get(), PalmSignRenderer::new);
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_HANGING_SIGN.get(), PalmHangingSignRenderer::new);
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_BANNER.get(), CompletionistBannerRenderer::new);
 
-        BeachpartyUtil.registerColorArmor(TRUNKS.get(), 0xFFFF0F0F);
-        BeachpartyUtil.registerColorArmor(BIKINI.get(), 0xFFFF0FFF);
-        BeachpartyUtil.registerColorArmor(CROCS.get(), 0xFFFF0F0F);
-        BeachpartyUtil.registerColorArmor(SWIM_WINGS.get(), 0xFFFF5800);
-        BeachpartyUtil.registerColorArmor(POOL_NOODLE.get(), 0xFFFF87FF);
+        BeachpartyUtil.registerColorArmor(TRUNKS.get(), 16715535);
+        BeachpartyUtil.registerColorArmor(BIKINI.get(), 987135);
+        BeachpartyUtil.registerColorArmor(CROCS.get(), 1048335);
+        BeachpartyUtil.registerColorArmor(SWIM_WINGS.get(), 0xFF5800);
+        BeachpartyUtil.registerColorWeapon(POOL_NOODLE.get(), 1017855);
     }
 
     public static void preInitClient() {

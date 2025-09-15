@@ -1,6 +1,8 @@
 package net.satisfy.beachparty.fabric.core.compat.trinkets;
 
+import dev.architectury.event.events.common.TickEvent;
 import dev.emi.trinkets.api.TrinketsApi;
+import net.satisfy.beachparty.core.effect.OceanWalkEffect;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.fabric.core.compat.BeachpartyTrinket;
 
@@ -17,5 +19,11 @@ public class TrinketsCompatibility {
         TrinketsApi.registerTrinket(ObjectRegistry.RUBBER_RING_BLUE.get(), new BeachpartyTrinket.RubberRingTrinket());
         TrinketsApi.registerTrinket(ObjectRegistry.RUBBER_RING_PELICAN.get(), new BeachpartyTrinket.RubberRingTrinket());
         TrinketsApi.registerTrinket(ObjectRegistry.RUBBER_RING_AXOLOTL.get(), new BeachpartyTrinket.RubberRingTrinket());
+
+        TickEvent.PLAYER_POST.register(player -> {
+            if (!player.level().isClientSide) return;
+            boolean equipped = TrinketsApi.getTrinketComponent(player).map(c -> c.isEquipped(ObjectRegistry.CROCS.get())).orElse(false);
+            if (equipped) OceanWalkEffect.tick(player);
+        });
     }
 }

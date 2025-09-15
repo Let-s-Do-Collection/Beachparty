@@ -10,8 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -20,7 +18,6 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.satisfy.beachparty.core.registry.MobEffectRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 
 import java.util.Map;
@@ -80,10 +77,6 @@ public class BeachpartyTrinket {
         }
 
         @Override
-        public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
-        }
-
-        @Override
         public boolean canEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
             if (!(entity instanceof Player player)) {
                 return false;
@@ -98,35 +91,10 @@ public class BeachpartyTrinket {
         }
     }
 
+
     public static class CrocsTrinket extends BaseTrinket {
         public CrocsTrinket() {
-            super(0, ObjectRegistry.CROCS.get());
-        }
-
-        @Override
-        public void onEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
-            super.onEquip(stack, slot, entity);
-            if (entity instanceof Player player) {
-                player.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.OCEAN_WALK.get()), Integer.MAX_VALUE, 0, false, false));
-            }
-        }
-
-        @Override
-        public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
-            super.onUnequip(stack, slot, entity);
-            if (entity instanceof Player player) {
-                player.removeEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.OCEAN_WALK.get()));
-            }
-        }
-
-        @Override
-        public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
-            super.tick(stack, slot, entity);
-            if (entity instanceof Player player) {
-                if (!player.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.OCEAN_WALK.get()))) {
-                    player.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.OCEAN_WALK.get()), Integer.MAX_VALUE, 0, false, false));
-                }
-            }
+            super(0);
         }
     }
 
@@ -134,13 +102,7 @@ public class BeachpartyTrinket {
         private static final Random RANDOM = new Random();
 
         public RubberRingTrinket() {
-            super(0,
-                    ObjectRegistry.RUBBER_RING_AXOLOTL.get(),
-                    ObjectRegistry.RUBBER_RING_PELICAN.get(),
-                    ObjectRegistry.RUBBER_RING_BLUE.get(),
-                    ObjectRegistry.RUBBER_RING_STRIPPED.get(),
-                    ObjectRegistry.RUBBER_RING_PINK.get()
-            );
+            super(0, ObjectRegistry.RUBBER_RING_AXOLOTL.get(), ObjectRegistry.RUBBER_RING_PELICAN.get(), ObjectRegistry.RUBBER_RING_BLUE.get(), ObjectRegistry.RUBBER_RING_STRIPPED.get(), ObjectRegistry.RUBBER_RING_PINK.get());
         }
 
         @Override

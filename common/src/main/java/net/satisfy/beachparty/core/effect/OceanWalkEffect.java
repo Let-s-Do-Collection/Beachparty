@@ -16,37 +16,37 @@ public class OceanWalkEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity entity, int pAmplifier) {
-        if (!(entity instanceof Player player) || player.isSpectator() || !player.isSprinting()) {
-            return false;
-        }
-
-        Vec3 pos = entity.position();
-        Vec3 movement = entity.getDeltaMovement();
-        Vec3 futurePos = pos.add(movement);
-        BlockPos onPos = entity.getOnPos();
-        BlockPos futureBlockPos = new BlockPos((int) futurePos.x, (int) futurePos.y, (int) futurePos.z);
-
-        if (entity.isInWater()) {
-            entity.setDeltaMovement(movement.add(0, 0.1, 0));
-        } else if (entity.level().getFluidState(onPos).is(FluidTags.WATER)) {
-            if (entity.level() instanceof ServerLevel level) {
-                level.sendParticles(ParticleTypes.FALLING_WATER, pos.x(), pos.y() + 0.1D, pos.z(), 10, 0.2, 0.1, 0.2, 1.5);
-            }
-            entity.setDeltaMovement(movement.x(), Math.max(movement.y(), 0D), movement.z());
-            entity.setOnGround(true);
-        } else if (entity.level().getFluidState(futureBlockPos).is(FluidTags.WATER) && movement.y() > -0.8) {
-            if (entity.level() instanceof ServerLevel level) {
-                level.sendParticles(ParticleTypes.FALLING_WATER, pos.x(), pos.y() + 0.1D, pos.z(), 10, 0.2, 0.1, 0.2, 1.5);
-            }
-            entity.setDeltaMovement(movement.x(), Math.max(movement.y(), movement.y() * 0.5), movement.z());
-        }
-
-        return super.applyEffectTick(entity, pAmplifier);
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+        return false;
     }
 
     @Override
-    public boolean shouldApplyEffectTickThisTick(int i, int j) {
-        return true;
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+        return false;
+    }
+
+    public static void tick(Player player) {
+        if (player.isSpectator() || !player.isSprinting()) return;
+
+        Vec3 pos = player.position();
+        Vec3 movement = player.getDeltaMovement();
+        Vec3 futurePos = pos.add(movement);
+        BlockPos onPos = player.getOnPos();
+        BlockPos futureBlockPos = new BlockPos((int) futurePos.x, (int) futurePos.y, (int) futurePos.z);
+
+        if (player.isInWater()) {
+            player.setDeltaMovement(movement.add(0, 0.1, 0));
+        } else if (player.level().getFluidState(onPos).is(FluidTags.WATER)) {
+            if (player.level() instanceof ServerLevel level) {
+                level.sendParticles(ParticleTypes.FALLING_WATER, pos.x(), pos.y() + 0.1D, pos.z(), 10, 0.2, 0.1, 0.2, 1.5);
+            }
+            player.setDeltaMovement(movement.x(), Math.max(movement.y(), 0D), movement.z());
+            player.setOnGround(true);
+        } else if (player.level().getFluidState(futureBlockPos).is(FluidTags.WATER) && movement.y() > -0.8) {
+            if (player.level() instanceof ServerLevel level) {
+                level.sendParticles(ParticleTypes.FALLING_WATER, pos.x(), pos.y() + 0.1D, pos.z(), 10, 0.2, 0.1, 0.2, 1.5);
+            }
+            player.setDeltaMovement(movement.x(), Math.max(movement.y(), movement.y() * 0.5), movement.z());
+        }
     }
 }

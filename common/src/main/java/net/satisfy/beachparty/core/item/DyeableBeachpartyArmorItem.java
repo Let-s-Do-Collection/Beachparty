@@ -73,10 +73,11 @@ public class DyeableBeachpartyArmorItem extends ArmorItem {
     }
 
     public void toggleVisibility(ItemStack itemStack) {
-        CustomData tag = CustomData.of(new CompoundTag());
-        boolean isVisible = !tag.contains("Visible") || tag.copyTag().getBoolean("Visible");
-        tag.copyTag().putBoolean("Visible", !isVisible);
-        itemStack.set(DataComponents.CUSTOM_DATA, tag);
+        CustomData existing = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.of(new CompoundTag()));
+        CompoundTag data = existing.copyTag();
+        boolean isVisible = !data.contains("Visible") || data.getBoolean("Visible");
+        data.putBoolean("Visible", !isVisible);
+        itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(data));
     }
 
     @Override
@@ -99,7 +100,7 @@ public class DyeableBeachpartyArmorItem extends ArmorItem {
         tooltip.add(Component.empty());
         if (Platform.isFabric()) {
             CustomData tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.of(new CompoundTag()));
-            boolean isVisible = !tag.contains("Visible") || tag.copyTag().getBoolean("Visible");
+            boolean isVisible = !tag.copyTag().contains("Visible") || tag.copyTag().getBoolean("Visible");
             Component toggleText = isVisible ? Component.translatable("tooltip.beachparty.toggle.hide").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x5CB85C))) : Component.translatable("tooltip.beachparty.toggle.show").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x5CB85C)));
             tooltip.add(toggleText);
         }

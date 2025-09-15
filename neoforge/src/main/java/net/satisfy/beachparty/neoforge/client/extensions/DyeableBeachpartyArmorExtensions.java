@@ -30,7 +30,7 @@ public class DyeableBeachpartyArmorExtensions implements IClientItemExtensions {
         if (!(stack.getItem() instanceof DyeableBeachpartyArmorItem item)) return fallbackColor;
         CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         if (tag.contains("Visible") && !tag.getBoolean("Visible")) return 0x00FFFFFF;
-        if (layerIdx == 0) return 0xFF000000 | item.getColor(stack);
+        if (layer.dyeable()) return 0xFF000000 | item.getColor(stack);
         return 0xFFFFFFFF;
     }
 }
