@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
-import net.satisfy.beachparty.core.registry.PlacerTypesRegistry;
+import net.satisfy.beachparty.core.registry.PlacerTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class CrookedTrunkPlacer extends TrunkPlacer {
 
     @Override
     protected @NotNull TrunkPlacerType<?> type() {
-        return PlacerTypesRegistry.CROOKED_TRUNK_PLACER.get();
+        return PlacerTypeRegistry.CROOKED_TRUNK_PLACER.get();
     }
 
     @Override

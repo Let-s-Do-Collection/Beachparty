@@ -70,7 +70,7 @@ public class PalmBoatEntity extends Boat {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
         return new ClientboundAddEntityPacket(this, serverEntity);
     }
 

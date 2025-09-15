@@ -16,7 +16,6 @@ import org.joml.Vector3i;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 public class PalmGlassBlock extends Block {
     public static final EnumProperty<VerticalPart> PART = EnumProperty.create("part", VerticalPart.class);
 

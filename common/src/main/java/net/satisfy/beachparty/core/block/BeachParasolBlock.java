@@ -92,7 +92,7 @@ public class BeachParasolBlock extends Block {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         ItemStack heldItem = player.getItemInHand(interactionHand);
 
         if (heldItem.isEmpty() && player.isCrouching()) {
@@ -152,7 +152,7 @@ public class BeachParasolBlock extends Block {
     }
 
     @Override
-    public BlockState playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
+    public @NotNull BlockState playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
         if (!level.isClientSide) {
             DoubleBlockHalf doubleBlockHalf = blockState.getValue(HALF);
             BlockPos otherPartPos = (doubleBlockHalf == DoubleBlockHalf.LOWER) ? blockPos.above() : blockPos.below();
@@ -162,7 +162,6 @@ public class BeachParasolBlock extends Block {
                 level.destroyBlock(otherPartPos, true);
             }
 
-            // @author wdog5 - do not drop item when player is creative mode
             if (!player.getAbilities().instabuild) {
                 dropResources(blockState, level, blockPos, null, player, player.getMainHandItem());
             }

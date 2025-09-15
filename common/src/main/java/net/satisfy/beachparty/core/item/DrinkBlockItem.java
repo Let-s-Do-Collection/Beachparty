@@ -34,7 +34,6 @@ public class DrinkBlockItem extends BlockItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag context) {
         PotionContents potionContents = stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
-        List<Pair<Attribute, AttributeModifier>> list3 = Lists.newArrayList();
         if (!potionContents.hasEffects()) {
             tooltip.add(Component.translatable("effect.none").withStyle(ChatFormatting.GRAY));
         } else {
@@ -53,10 +52,8 @@ public class DrinkBlockItem extends BlockItem {
                 itemAttributeModifiers.modifiers().forEach(entry -> {
                     Attribute attribute = entry.attribute().value();
                     double amount = entry.modifier().amount();
-                    if (attribute != null) {
-                        AttributeModifier modifier = new AttributeModifier(entry.modifier().id(), amount, entry.modifier().operation());
-                        attributeModifiers.add(new Pair<>(attribute, modifier));
-                    }
+                    AttributeModifier modifier = new AttributeModifier(entry.modifier().id(), amount, entry.modifier().operation());
+                    attributeModifiers.add(new Pair<>(attribute, modifier));
                 });
             }
 

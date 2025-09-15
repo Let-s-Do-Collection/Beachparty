@@ -30,7 +30,6 @@ import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
-@SuppressWarnings("deprecation")
 public class HangingCoconutBlock extends FallingBlock implements BonemealableBlock {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
     protected static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{

@@ -9,7 +9,7 @@ import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.world.placers.CrookedTrunkPlacer;
 import net.satisfy.beachparty.core.world.placers.PalmFoliagePlacer;
 
-public class PlacerTypesRegistry {
+public class PlacerTypeRegistry {
     public static final DeferredRegister<FoliagePlacerType<?>> FOLIAGE_PLACER_TYPES = DeferredRegister.create(Beachparty.MOD_ID, Registries.FOLIAGE_PLACER_TYPE);
     public static final DeferredRegister<TrunkPlacerType<?>> TRUNK_PLACER_TYPES = DeferredRegister.create(Beachparty.MOD_ID, Registries.TRUNK_PLACER_TYPE);
 

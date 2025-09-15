@@ -9,7 +9,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
+import net.satisfy.beachparty.core.registry.ScreenHandlerTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 
 public class PalmBarGuiHandler extends AbstractContainerMenu {
@@ -21,7 +21,7 @@ public class PalmBarGuiHandler extends AbstractContainerMenu {
     }
 
     public PalmBarGuiHandler(int syncId, Inventory playerInventory, Container inventory, ContainerData propertyDelegate) {
-        super(ScreenHandlerTypesRegistry.PALM_BAR_GUI_HANDLER.get(), syncId);
+        super(ScreenHandlerTypeRegistry.PALM_BAR_GUI_HANDLER.get(), syncId);
         this.inventory = inventory;
         this.propertyDelegate = propertyDelegate;
         this.addDataSlots(propertyDelegate);

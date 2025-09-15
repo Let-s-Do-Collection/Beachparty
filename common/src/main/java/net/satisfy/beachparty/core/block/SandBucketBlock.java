@@ -35,7 +35,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -50,7 +49,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
 public class SandBucketBlock extends HorizontalDirectionalBlock {
     private static final Supplier<VoxelShape> voxelShapeSupplier = () -> box(4, 0, 6, 10, 8, 12);
 
@@ -67,7 +65,7 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
     public static final MapCodec<SandBucketBlock> CODEC = simpleCodec(SandBucketBlock::new);
 
     @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+    protected @NotNull MapCodec<? extends HorizontalDirectionalBlock> codec() {
         return CODEC;
     }
 
@@ -82,7 +80,7 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         Block emptySandBucketBlock = ObjectRegistry.SAND_BUCKET_BLOCK_EMPTY.get();
         Block sandBucketBlock = ObjectRegistry.SAND_BUCKET_BLOCK_FILLED.get();
 
@@ -144,7 +142,7 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
         }
 
         @Override
-        protected ItemInteractionResult useItemOn(ItemStack handStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        protected @NotNull ItemInteractionResult useItemOn(ItemStack handStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
             if (handStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER) && !state.getValue(PETRIFIED)) {
                 if (!player.getAbilities().instabuild) {
                     handStack.shrink(1);
@@ -299,12 +297,8 @@ public class SandBucketBlock extends HorizontalDirectionalBlock {
         }
 
         @Override
-        public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+        public @NotNull ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
             return new ItemStack(ObjectRegistry.SAND_BUCKET_FILLED.get());
-        }
-
-        public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type) {
-            return false;
         }
 
         @Override

@@ -21,7 +21,6 @@ import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("deprecation")
 public class LineConnectingBlock extends Block {
     public static final DirectionProperty FACING;
     public static final EnumProperty<BeachpartyUtil.LineConnectingType> TYPE;

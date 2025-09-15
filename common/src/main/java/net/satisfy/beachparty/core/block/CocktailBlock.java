@@ -70,7 +70,6 @@ public class CocktailBlock extends Block {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return shapeSupplier.get();
     }
@@ -82,7 +81,7 @@ public class CocktailBlock extends Block {
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult blockHitResult) {
+    protected @NotNull InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult blockHitResult) {
         if (!world.isClientSide()) {
             int stage = state.getValue(STAGE);
             if (stage > 0) {

@@ -18,7 +18,6 @@ import org.joml.Vector3i;
 
 import java.util.*;
 
-@SuppressWarnings("deprecation")
 public class PalmGlassPaneBlock extends IronBarsBlock {
     public static final IntegerProperty PART = IntegerProperty.create("part", 0, 3);
 

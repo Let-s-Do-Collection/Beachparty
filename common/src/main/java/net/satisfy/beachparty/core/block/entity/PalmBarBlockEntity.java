@@ -20,7 +20,7 @@ import net.satisfy.beachparty.client.gui.handler.PalmBarGuiHandler;
 import net.satisfy.beachparty.core.recipe.PalmBarRecipe;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
-import net.satisfy.beachparty.core.registry.RecipeRegistry;
+import net.satisfy.beachparty.core.registry.RecipeTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,7 +69,7 @@ public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer,
     public static void tick(Level world, BlockPos pos, BlockState state, PalmBarBlockEntity blockEntity) {
         if (world.isClientSide) return;
         boolean dirty = false;
-        List<RecipeHolder<PalmBarRecipe>> recipes = world.getRecipeManager().getAllRecipesFor(RecipeRegistry.PALM_BAR_RECIPE_TYPE.get());
+        List<RecipeHolder<PalmBarRecipe>> recipes = world.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.PALM_BAR_RECIPE_TYPE.get());
         Optional<PalmBarRecipe> recipe = Optional.ofNullable(blockEntity.getRecipe(recipes));
         RegistryAccess access = world.registryAccess();
         if (recipe.isPresent() && blockEntity.canCraft(recipe.get(), access)) {

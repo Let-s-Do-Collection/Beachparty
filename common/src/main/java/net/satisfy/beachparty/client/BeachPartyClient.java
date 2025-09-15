@@ -19,7 +19,7 @@ import net.satisfy.beachparty.client.renderer.entity.BeachBallRenderer;
 import net.satisfy.beachparty.client.renderer.entity.ChairRenderer;
 import net.satisfy.beachparty.client.renderer.entity.PalmBoatRenderer;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
-import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
+import net.satisfy.beachparty.core.registry.ScreenHandlerTypeRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
 
 import static net.satisfy.beachparty.core.registry.ObjectRegistry.*;
@@ -31,8 +31,8 @@ public class BeachPartyClient {
 
         RenderTypeRegistry.register(RenderType.translucent(), PALM_GLASS_PANE.get(), PALM_GLASS.get());
 
-        MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.PALM_BAR_GUI_HANDLER.get(), PalmBarGui::new);
-        MenuRegistry.registerScreenFactory(ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeGui::new);
+        MenuRegistry.registerScreenFactory(ScreenHandlerTypeRegistry.PALM_BAR_GUI_HANDLER.get(), PalmBarGui::new);
+        MenuRegistry.registerScreenFactory(ScreenHandlerTypeRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeGui::new);
 
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_SIGN.get(), PalmSignRenderer::new);
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEACHPARTY_HANGING_SIGN.get(), PalmHangingSignRenderer::new);

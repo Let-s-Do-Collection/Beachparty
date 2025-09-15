@@ -20,7 +20,7 @@ import net.satisfy.beachparty.client.gui.handler.MiniFridgeGuiHandler;
 import net.satisfy.beachparty.core.recipe.MiniFridgeRecipe;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
-import net.satisfy.beachparty.core.registry.RecipeRegistry;
+import net.satisfy.beachparty.core.registry.RecipeTypeRegistry;
 import net.satisfy.beachparty.core.world.ImplementedInventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -92,7 +92,7 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
         if (world.isClientSide) return;
         boolean dirty = false;
         List<RecipeHolder<MiniFridgeRecipe>> recipes = world.getRecipeManager()
-                .getAllRecipesFor(RecipeRegistry.MINI_FRIDGE_RECIPE_TYPE.get());
+                .getAllRecipesFor(RecipeTypeRegistry.MINI_FRIDGE_RECIPE_TYPE.get());
         Optional<MiniFridgeRecipe> recipeType = Optional.ofNullable(getRecipe(recipes, inventory));
         assert level != null;
         RegistryAccess access = level.registryAccess();

@@ -11,12 +11,12 @@ public class Beachparty {
         ObjectRegistry.init();
         EntityTypeRegistry.init();
         TabRegistry.init();
-        PlacerTypesRegistry.init();
+        PlacerTypeRegistry.init();
         MobEffectRegistry.init();
         SoundEventRegistry.init();
-        ScreenHandlerTypesRegistry.init();
+        ScreenHandlerTypeRegistry.init();
         CommonEvents.init();
-        RecipeRegistry.init();
+        RecipeTypeRegistry.init();
     }
 
     public static void commonSetup() {

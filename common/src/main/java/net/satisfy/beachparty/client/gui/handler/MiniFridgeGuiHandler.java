@@ -10,7 +10,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.satisfy.beachparty.client.gui.handler.slot.PalmBarOutputSlot;
-import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
+import net.satisfy.beachparty.core.registry.ScreenHandlerTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 
 public class MiniFridgeGuiHandler extends AbstractContainerMenu {
@@ -21,7 +21,7 @@ public class MiniFridgeGuiHandler extends AbstractContainerMenu {
     }
 
     public MiniFridgeGuiHandler(int syncId, Inventory playerInventory, Container inventory, ContainerData propertyDelegate) {
-        super(ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), syncId);
+        super(ScreenHandlerTypeRegistry.MINI_FRIDGE_GUI_HANDLER.get(), syncId);
         this.propertyDelegate = propertyDelegate;
 
         buildBlockEntityContainer(playerInventory, inventory);

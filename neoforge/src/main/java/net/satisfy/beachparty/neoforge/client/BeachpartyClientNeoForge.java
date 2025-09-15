@@ -23,7 +23,7 @@ import net.satisfy.beachparty.client.gui.PalmBarGui;
 import net.satisfy.beachparty.client.model.FloatyBoatModel;
 import net.satisfy.beachparty.core.entity.PalmBoatEntity;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
-import net.satisfy.beachparty.core.registry.ScreenHandlerTypesRegistry;
+import net.satisfy.beachparty.core.registry.ScreenHandlerTypeRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import net.satisfy.beachparty.neoforge.client.extensions.BeachpartyChestplateExtensions;
 import net.satisfy.beachparty.neoforge.client.extensions.BeachpartyHatExtensions;
@@ -44,8 +44,8 @@ public class BeachpartyClientNeoForge {
 
     @SubscribeEvent
     public static void clientSetup(RegisterMenuScreensEvent event) {
-        event.register(ScreenHandlerTypesRegistry.PALM_BAR_GUI_HANDLER.get(), PalmBarGui::new);
-        event.register(ScreenHandlerTypesRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeGui::new);
+        event.register(ScreenHandlerTypeRegistry.PALM_BAR_GUI_HANDLER.get(), PalmBarGui::new);
+        event.register(ScreenHandlerTypeRegistry.MINI_FRIDGE_GUI_HANDLER.get(), MiniFridgeGui::new);
     }
 
     @SubscribeEvent

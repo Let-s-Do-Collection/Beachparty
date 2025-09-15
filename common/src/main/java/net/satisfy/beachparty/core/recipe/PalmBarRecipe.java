@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.satisfy.beachparty.core.registry.RecipeRegistry;
+import net.satisfy.beachparty.core.registry.RecipeTypeRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,17 +49,17 @@ public class PalmBarRecipe implements Recipe<RecipeInput> {
     }
 
     public @NotNull ResourceLocation getId() {
-        return RecipeRegistry.PALM_BAR_RECIPE_TYPE.getId();
+        return RecipeTypeRegistry.PALM_BAR_RECIPE_TYPE.getId();
     }
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return RecipeRegistry.PALM_BAR_RECIPE_SERIALIZER.get();
+        return RecipeTypeRegistry.PALM_BAR_RECIPE_SERIALIZER.get();
     }
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return RecipeRegistry.PALM_BAR_RECIPE_TYPE.get();
+        return RecipeTypeRegistry.PALM_BAR_RECIPE_TYPE.get();
     }
 
     @Override

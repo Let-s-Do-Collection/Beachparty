@@ -15,7 +15,6 @@ import net.satisfy.beachparty.core.world.ConfiguredFeatures;
 import java.util.Optional;
 
 public class PalmSproutBlock extends SaplingBlock {
-
     public PalmSproutBlock() {
         super(new TreeGrower("palm", Optional.empty(), Optional.of(ConfiguredFeatures.PALM_TREE_KEY), Optional.empty()), Properties.ofFullCopy(Blocks.ACACIA_SAPLING).mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY));
     }

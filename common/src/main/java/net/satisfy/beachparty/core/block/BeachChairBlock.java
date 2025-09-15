@@ -39,7 +39,6 @@ public class BeachChairBlock extends Block {
         shape = Shapes.or(shape, Shapes.box(0.1875, 0.375, 0.375, 0.8125, 0.375, 0.6625));
         shape = Shapes.or(shape, Shapes.box(0.125, 0.90625, 0.90625, 0.875, 1.03125, 1.03125));
 
-
         return shape;
     };
     public static final Map<Direction, VoxelShape> SHAPE = Util.make(new HashMap<>(), map -> {

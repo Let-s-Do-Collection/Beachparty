@@ -46,7 +46,6 @@ public class TallPalmTorchBlock extends TorchBlock {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public @NotNull VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return state.getValue(HALF) == DoubleBlockHalf.UPPER ? TOP_SHAPE : BOTTOM_SHAPE;
     }

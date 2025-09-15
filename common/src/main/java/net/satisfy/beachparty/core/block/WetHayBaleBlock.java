@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.satisfy.beachparty.core.block.entity.WetHayBaleBlockEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class WetHayBaleBlock extends RotatedPillarBlock implements EntityBlock {
     public WetHayBaleBlock(BlockBehaviour.Properties properties) {
@@ -41,7 +42,7 @@ public class WetHayBaleBlock extends RotatedPillarBlock implements EntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (itemStack.is(Items.CLAY_BALL)) {
             if (level.getBlockEntity(pos) instanceof WetHayBaleBlockEntity be) {

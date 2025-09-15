@@ -12,7 +12,7 @@ import net.satisfy.beachparty.client.gui.handler.PalmBarGuiHandler;
 import java.util.function.Supplier;
 
 
-public class ScreenHandlerTypesRegistry {
+public class ScreenHandlerTypeRegistry {
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Beachparty.MOD_ID, Registries.MENU);
 
     public static final RegistrySupplier<MenuType<MiniFridgeGuiHandler>> MINI_FRIDGE_GUI_HANDLER = create("mini_fridge_gui_handler", () -> new MenuType<>(MiniFridgeGuiHandler::new, FeatureFlags.VANILLA_SET));

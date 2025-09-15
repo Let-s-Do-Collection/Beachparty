@@ -10,6 +10,7 @@ import net.satisfy.beachparty.core.compat.rei.display.PalmBarDisplay;
 import net.satisfy.beachparty.core.recipe.MiniFridgeRecipe;
 import net.satisfy.beachparty.core.recipe.PalmBarRecipe;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.core.registry.RecipeTypeRegistry;
 
 public class BeachpartyREIClientPlugin {
     public static void registerCategories(CategoryRegistry registry) {
@@ -21,7 +22,15 @@ public class BeachpartyREIClientPlugin {
     }
 
     public static void registerDisplays(DisplayRegistry registry) {
-        registry.registerFiller(MiniFridgeRecipe.class, MiniFridgeDisplay::new);
-        registry.registerFiller(PalmBarRecipe.class, PalmBarDisplay::new);
+        registry.registerRecipeFiller(
+                MiniFridgeRecipe.class,
+                RecipeTypeRegistry.MINI_FRIDGE_RECIPE_TYPE.get(),
+                holder -> new MiniFridgeDisplay(holder.value())
+        );
+        registry.registerRecipeFiller(
+                PalmBarRecipe.class,
+                RecipeTypeRegistry.PALM_BAR_RECIPE_TYPE.get(),
+                holder -> new PalmBarDisplay(holder.value())
+        );
     }
 }

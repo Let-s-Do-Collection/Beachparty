@@ -39,7 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
 public class MiniFridgeBlock extends BaseEntityBlock implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
@@ -61,7 +60,7 @@ public class MiniFridgeBlock extends BaseEntityBlock implements EntityBlock {
     public static final MapCodec<MiniFridgeBlock> CODEC = simpleCodec(MiniFridgeBlock::new);
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
 
@@ -109,7 +108,7 @@ public class MiniFridgeBlock extends BaseEntityBlock implements EntityBlock {
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+    protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (!level.isClientSide) {
             MenuProvider screenHandlerFactory = blockState.getMenuProvider(level, blockPos);
 

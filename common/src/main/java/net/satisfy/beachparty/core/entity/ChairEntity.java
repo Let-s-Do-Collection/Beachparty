@@ -56,7 +56,7 @@ public class ChairEntity extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
         return new ClientboundAddEntityPacket(this, serverEntity);
     }
 }

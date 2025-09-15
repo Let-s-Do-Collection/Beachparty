@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 import net.satisfy.beachparty.core.block.HangingCoconutBlock;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
-import net.satisfy.beachparty.core.registry.PlacerTypesRegistry;
+import net.satisfy.beachparty.core.registry.PlacerTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 
 public class PalmFoliagePlacer extends FoliagePlacer {
@@ -62,7 +62,7 @@ public class PalmFoliagePlacer extends FoliagePlacer {
 
     @Override
     protected @NotNull FoliagePlacerType<?> type() {
-        return PlacerTypesRegistry.PALM_FOLIAGE_PLACER.get();
+        return PlacerTypeRegistry.PALM_FOLIAGE_PLACER.get();
     }
 
     @Override

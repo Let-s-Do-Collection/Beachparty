@@ -13,7 +13,7 @@ import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 
 import java.util.function.Supplier;
 
-public class RecipeRegistry {
+public class RecipeTypeRegistry {
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Beachparty.MOD_ID, Registries.RECIPE_SERIALIZER);
     private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Beachparty.MOD_ID, Registries.RECIPE_TYPE);
 

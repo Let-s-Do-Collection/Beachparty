@@ -32,7 +32,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation, unused")
 public class PalmCabinetBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
@@ -47,7 +46,7 @@ public class PalmCabinetBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+    protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -131,9 +130,5 @@ public class PalmCabinetBlock extends BaseEntityBlock {
 
     public void playSound(Level world, BlockPos pos, boolean isOpen) {
         world.playSound(null, pos, isOpen ? openSound.get() : closeSound.get(), SoundSource.BLOCKS, 1.0f, 1.1f);
-    }
-
-    public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type) {
-        return false;
     }
 }

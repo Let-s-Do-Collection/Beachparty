@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.satisfy.beachparty.core.registry.RecipeRegistry;
+import net.satisfy.beachparty.core.registry.RecipeTypeRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,17 +49,17 @@ public class MiniFridgeRecipe implements Recipe<RecipeInput> {
     }
 
     public @NotNull ResourceLocation getId() {
-        return RecipeRegistry.MINI_FRIDGE_RECIPE_TYPE.getId();
+        return RecipeTypeRegistry.MINI_FRIDGE_RECIPE_TYPE.getId();
     }
 
     @Override
     public @NotNull RecipeSerializer<?> getSerializer() {
-        return RecipeRegistry.MINI_FRIDGE_RECIPE_SERIALIZER.get();
+        return RecipeTypeRegistry.MINI_FRIDGE_RECIPE_SERIALIZER.get();
     }
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return RecipeRegistry.MINI_FRIDGE_RECIPE_TYPE.get();
+        return RecipeTypeRegistry.MINI_FRIDGE_RECIPE_TYPE.get();
     }
 
     @Override

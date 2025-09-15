@@ -1,6 +1,5 @@
 package net.satisfy.beachparty.core.compat.jei.categorys;
 
-
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -15,10 +14,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.client.gui.PalmBarGui;
-import net.satisfy.beachparty.core.compat.jei.BeachpartyJEIPlugin;
 import net.satisfy.beachparty.core.recipe.PalmBarRecipe;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -40,11 +37,6 @@ public class PalmBarCategory implements IRecipeCategory<PalmBarRecipe> {
     }
 
     @Override
-    public void draw(PalmBarRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        arrow.draw(guiGraphics, 53, 22);
-    }
-
-    @Override
     public @NotNull RecipeType<PalmBarRecipe> getRecipeType() {
         return PALM_BAR;
     }
@@ -55,27 +47,35 @@ public class PalmBarCategory implements IRecipeCategory<PalmBarRecipe> {
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
-        return this.background;
+    public int getWidth() {
+        return WIDTH;
     }
 
     @Override
-    public IDrawable getIcon() {
+    public int getHeight() {
+        return HEIGHT;
+    }
+
+    @Override
+    public void draw(PalmBarRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        background.draw(guiGraphics, 0, 0);
+        arrow.draw(guiGraphics, 53, 22);
+    }
+
+    @Override
+    public @NotNull IDrawable getIcon() {
         return this.icon;
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, PalmBarRecipe recipe, IFocusGroup focuses) {
-        NonNullList<Ingredient> ingredients = recipe.getIngredients();
+        NonNullList<net.minecraft.world.item.crafting.Ingredient> ingredients = recipe.getIngredients();
         int s = ingredients.size();
-
-        if (s > 0) BeachpartyJEIPlugin.addSlot(builder, 38 - WIDTH_OF, 25 - HEIGHT_OF, ingredients.get(0));
-        if (s > 1) BeachpartyJEIPlugin.addSlot(builder, 38 - WIDTH_OF, 43 - HEIGHT_OF, ingredients.get(1));
-        if (s > 2) BeachpartyJEIPlugin.addSlot(builder, 56 - WIDTH_OF, 25 - HEIGHT_OF, ingredients.get(2));
-        if (s > 3) BeachpartyJEIPlugin.addSlot(builder, 56 - WIDTH_OF, 43 - HEIGHT_OF, ingredients.get(3));
-
+        if (s > 0) builder.addSlot(RecipeIngredientRole.INPUT, 38 - WIDTH_OF, 25 - HEIGHT_OF).addIngredients(ingredients.get(0));
+        if (s > 1) builder.addSlot(RecipeIngredientRole.INPUT, 38 - WIDTH_OF, 43 - HEIGHT_OF).addIngredients(ingredients.get(1));
+        if (s > 2) builder.addSlot(RecipeIngredientRole.INPUT, 56 - WIDTH_OF, 25 - HEIGHT_OF).addIngredients(ingredients.get(2));
+        if (s > 3) builder.addSlot(RecipeIngredientRole.INPUT, 56 - WIDTH_OF, 43 - HEIGHT_OF).addIngredients(ingredients.get(3));
         assert Minecraft.getInstance().level != null;
         builder.addSlot(RecipeIngredientRole.OUTPUT, 116 - WIDTH_OF, 35 - HEIGHT_OF).addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
     }
 }
-
