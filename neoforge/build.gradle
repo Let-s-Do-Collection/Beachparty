@@ -1,6 +1,9 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "8.0.0"
+    id "com.modrinth.minotaur" version "2.+"
+    id "com.matthewprenger.cursegradle" version "1.4.0"
 }
+
 
 architectury {
     platformSetupLoomIde()
@@ -8,7 +11,7 @@ architectury {
 }
 
 def jarFileName = 'letsdo-beachparty-neoforge'
-
+def changelogText = rootProject.file("CHANGELOG.md").text
 archivesBaseName = jarFileName
 
 
@@ -28,7 +31,7 @@ configurations {
 }
 
 dependencies {
-    neoForge "net.neoforged:neoforge:${rootProject.forge_version}"
+    neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
     modApi "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
     modImplementation "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
@@ -97,3 +100,42 @@ publishing {
     repositories {
     }
 }
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = "lets-do-beachparty"
+    versionNumber = rootProject.mod_version
+    versionName = "${rootProject.archives_base_name}-${rootProject.mod_version} [${rootProject.minecraft_version}-neoforge]"
+    versionType = "release"
+    changelog = rootProject.file("CHANGELOG.md").exists() ? rootProject.file("CHANGELOG.md").text : " "
+    gameVersions = [rootProject.minecraft_version]
+    loaders = ["neoforge"]
+    uploadFile = remapJar
+    additionalFiles = [tasks.sourcesJar.archiveFile]
+
+    dependencies {
+        required.project "architectury-api"
+        required.project "curios"
+    }
+}
+
+curseforge {
+    apiKey = System.getenv("CURSEFORGE_API_KEY")
+    project {
+        id = "858691"
+        releaseType = "release"
+        addGameVersion rootProject.minecraft_version
+        addGameVersion "NeoForge"
+        mainArtifact(remapJar) {
+            displayName = "Beachparty - ${rootProject.mod_version} - NEOFORGE - ${rootProject.minecraft_version}"
+            changelog = changelogText
+            changelogType = "markdown"
+        }
+
+        relations {
+            requiredDependency "architectury-api"
+            requiredDependency "curios"
+        }
+    }
+}
+

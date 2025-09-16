@@ -1,4 +1,10 @@
-## [2.0.2] - 2025.05.08
+[2.1.0]
+
+**Welcome to 1.21.1**
+
+***
+
+[2.0.2] 
 
 **Added**
 - Added pt_br translation (thanks fo Fabiano)
@@ -12,7 +18,7 @@
 
 ***
 
-## [2.0.1] - 2025.04.23
+[2.0.1]
 
 **Added**
 - All Songs being played by the Radio can now also be found in Buried Treasured and collected
@@ -34,7 +40,7 @@ _no entries_
 
 ***
 
-## [2.0.0] - 2025.03.08
+[2.0.0] 
 
 ### **New & Updated Features, Misc**
 - Changed Release Channel to Beta
