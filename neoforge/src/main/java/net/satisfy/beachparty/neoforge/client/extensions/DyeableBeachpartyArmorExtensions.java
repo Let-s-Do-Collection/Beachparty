@@ -21,7 +21,7 @@ public class DyeableBeachpartyArmorExtensions implements IClientItemExtensions {
         if (slot != item.getEquipmentSlot()) return original;
         if (slot == EquipmentSlot.CHEST) return ArmorRegistry.chestplateModel(stack.getItem(), original.body, original.leftArm, original.rightArm);
         if (slot == EquipmentSlot.LEGS) return ArmorRegistry.LeggingsModel(stack.getItem(), original.body, original.leftLeg, original.rightLeg);
-        if (slot == EquipmentSlot.FEET) return original;
+        if (slot == EquipmentSlot.FEET) return ArmorRegistry.LeggingsModel(stack.getItem(), original.body, original.leftLeg, original.rightLeg);
         return original;
     }
 

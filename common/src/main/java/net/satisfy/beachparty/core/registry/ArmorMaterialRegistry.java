@@ -31,14 +31,7 @@ public class ArmorMaterialRegistry {
     public static final ArmorMaterial CROCS = createMaterial("crocs", Ingredient.of(Items.DRIED_KELP), true);
 
     private static ArmorMaterial createMaterial(String name, Ingredient repairIngredient, boolean dyeable) {
-        return register(
-                slots(1, 1, 1, 1, 1),
-                ENCHANTMENT_VALUE,
-                EQUIP_SOUND,
-                TOUGHNESS,
-                KNOCKBACK_RESISTANCE,
-                () -> repairIngredient,
-                layers(name, dyeable)
+        return register(slots(1, 1, 1, 1, 1), ENCHANTMENT_VALUE, EQUIP_SOUND, TOUGHNESS, KNOCKBACK_RESISTANCE, () -> repairIngredient, layers(name, dyeable)
         );
     }
 
@@ -54,12 +47,9 @@ public class ArmorMaterialRegistry {
 
     private static List<ArmorMaterial.Layer> layers(String name, boolean dyeable) {
         ResourceLocation base = BeachpartyIdentifier.identifier(name);
-        ResourceLocation overlay = BeachpartyIdentifier.identifier(name);
-        return List.of(
-                new ArmorMaterial.Layer(base, "", false),
-                new ArmorMaterial.Layer(overlay, "_overlay", dyeable)
-        );
+        return List.of(new ArmorMaterial.Layer(base, "", dyeable));
     }
+
 
     private static ArmorMaterial register(EnumMap<ArmorItem.Type, Integer> health, int enchantValue, Holder<SoundEvent> equipSound, float toughness, float knockback, Supplier<Ingredient> repair, List<ArmorMaterial.Layer> layers) {
         EnumMap<ArmorItem.Type, Integer> copy = new EnumMap<>(ArmorItem.Type.class);
