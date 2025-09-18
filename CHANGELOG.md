@@ -1,3 +1,10 @@
+[2.1.1]
+
+**Fixed**
+- Crash when placing waterlogged `Seashells`
+
+***
+
 [2.1.0]
 
 **Welcome to 1.21.1**
