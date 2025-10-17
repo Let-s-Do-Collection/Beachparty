@@ -1,3 +1,12 @@
+[2.1.2]
+
+**Fixed**
+- `Palm Leaves` loot table
+- `Rubber Ring` texture not showing on NeoForge when worn in chest slot
+- `Trunks` not showing rubber band texture
+
+***
+
 [2.1.1]
 
 **Fixed**

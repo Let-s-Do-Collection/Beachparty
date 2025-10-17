@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ArmorRegistry {
-    private static final Map<Item, HatModel> hatModel = new HashMap<>();
-    private static final Map<Item, ChestplateModel> chestplateModel = new HashMap<>();
-    private static final Map<Item, LeggingsModel> leggingsModel = new HashMap<>();
+    public static final Map<Item, HatModel> hatModel = new HashMap<>();
+    public static final Map<Item, ChestplateModel> chestplateModel = new HashMap<>();
+    public static final Map<Item, LeggingsModel> leggingsModel = new HashMap<>();
 
     public static Model chestplateModel(Item item, ModelPart baseBody, ModelPart leftArm, ModelPart rightArm) {
         EntityModelSet modelSet = Minecraft.getInstance().getEntityModels();
