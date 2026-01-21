@@ -1,0 +1,14 @@
+{
+    "structures": [
+        {
+            "structure": "beachparty:excavated_treasure",
+            "weight": 1
+        }
+    ],
+    "placement": {
+        "type": "minecraft:random_spread",
+        "spacing": 15,
+        "separation": 2,
+        "salt": 1458759643
+    }
+}

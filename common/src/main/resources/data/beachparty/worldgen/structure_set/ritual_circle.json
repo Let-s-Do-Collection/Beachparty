@@ -1,0 +1,14 @@
+{
+    "structures": [
+        {
+            "structure": "beachparty:ritual_circle",
+            "weight": 1
+        }
+    ],
+    "placement": {
+        "type": "minecraft:random_spread",
+        "spacing": 15,
+        "separation": 2,
+        "salt": 2147483629
+    }
+}

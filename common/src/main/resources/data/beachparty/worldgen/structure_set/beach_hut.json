@@ -1,0 +1,14 @@
+{
+    "structures": [
+        {
+            "structure": "beachparty:beach_hut",
+            "weight": 1
+        }
+    ],
+    "placement": {
+        "type": "minecraft:random_spread",
+        "spacing": 15,
+        "separation": 2,
+        "salt": 56987458246
+    }
+}
