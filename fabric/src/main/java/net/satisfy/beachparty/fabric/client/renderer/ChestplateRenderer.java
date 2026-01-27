@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -24,13 +25,13 @@ public class ChestplateRenderer implements ArmorRenderer {
         if (itemStack.getItem() instanceof DyeableBeachpartyArmorItem dyeableArmorItem) {
             model = ArmorRegistry.chestplateModel(dyeableArmorItem, contextModel.body, contextModel.leftArm, contextModel.rightArm);
             texture = dyeableArmorItem.getTexture();
-            int color = dyeableArmorItem.getColor(itemStack);
-            VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.renderType(texture));
-            model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, color);
+            int packedColor = 0xFF000000 | (dyeableArmorItem.getColor(itemStack) & 0xFFFFFF);
+            VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.armorCutoutNoCull(texture));
+            model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, packedColor);
         } else if (itemStack.getItem() instanceof TrinketsArmorItem beachpartyArmorItem) {
             model = ArmorRegistry.chestplateModel(beachpartyArmorItem, contextModel.body, contextModel.leftArm, contextModel.rightArm);
             texture = beachpartyArmorItem.getTexture();
-            VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.renderType(texture));
+            VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.armorCutoutNoCull(texture));
             model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY);
         }
     }

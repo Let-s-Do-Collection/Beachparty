@@ -6,44 +6,45 @@ import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.satisfy.beachparty.core.item.DyeableBeachpartyArmorItem;
 import net.satisfy.beachparty.core.item.TrinketsArmorItem;
 import net.satisfy.beachparty.core.registry.ArmorRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
-
-import java.util.Objects;
 
 public class LeggingsRenderer implements ArmorRenderer {
     @Override
     public void render(PoseStack matrices, MultiBufferSource vertexConsumers, ItemStack itemStack, LivingEntity entity, EquipmentSlot slot, int light, HumanoidModel<LivingEntity> contextModel) {
         Model model;
         ResourceLocation texture;
+
         if (itemStack.getItem() instanceof DyeableBeachpartyArmorItem dyeableArmorItem) {
             model = ArmorRegistry.LeggingsModel(dyeableArmorItem, contextModel.body, contextModel.rightLeg, contextModel.leftLeg);
             texture = dyeableArmorItem.getTexture();
+            int packedColor = 0xFF000000 | (dyeableArmorItem.getColor(itemStack) & 0xFFFFFF);
 
-            int color = dyeableArmorItem.getColor(itemStack);
-
-            VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.renderType(texture));
-            model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, color);
+            VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.armorCutoutNoCull(texture));
+            model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, packedColor);
 
             ResourceLocation overlayTexture = BeachpartyIdentifier.identifier("textures/models/armor/trunks_overlay.png");
-            VertexConsumer overlayConsumer = vertexConsumers.getBuffer(model.renderType(overlayTexture));
-            model.renderToBuffer(matrices, overlayConsumer, light, OverlayTexture.NO_OVERLAY, color);
-
+            VertexConsumer overlayConsumer = vertexConsumers.getBuffer(RenderType.armorCutoutNoCull(overlayTexture));
+            model.renderToBuffer(matrices, overlayConsumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
         } else if (itemStack.getItem() instanceof TrinketsArmorItem beachpartyArmorItem) {
             model = ArmorRegistry.LeggingsModel(beachpartyArmorItem, contextModel.body, contextModel.rightLeg, contextModel.leftLeg);
             texture = beachpartyArmorItem.getTexture();
 
-            VertexConsumer vertexConsumer = vertexConsumers.getBuffer(model.renderType(texture));
-            model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, Objects.requireNonNull(beachpartyArmorItem.getDefaultInstance().get(DataComponents.DYED_COLOR)).rgb());
+            DyedItemColor dyedItemColor = beachpartyArmorItem.getDefaultInstance().get(DataComponents.DYED_COLOR);
+            int packedColor = dyedItemColor == null ? 0xFFFFFFFF : 0xFF000000 | (dyedItemColor.rgb() & 0xFFFFFF);
+
+            VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.armorCutoutNoCull(texture));
+            model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, packedColor);
         }
     }
 }
-

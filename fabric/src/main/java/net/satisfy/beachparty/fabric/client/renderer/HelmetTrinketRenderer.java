@@ -7,8 +7,10 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
@@ -19,12 +21,14 @@ public class HelmetTrinketRenderer implements TrinketRenderer {
     @Override
     public void render(ItemStack itemStack, SlotReference slotReference, EntityModel<? extends LivingEntity> entityModel, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, LivingEntity livingEntity, float v, float v1, float v2, float v3, float v4, float v5) {
         if (!(itemStack.getItem() instanceof TrinketsArmorItem armorItem)) return;
-        CustomData tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
 
-        if (tag.contains("Visible") && !tag.copyTag().getBoolean("Visible")) return;
+        CustomData tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.of(new CompoundTag()));
+        CompoundTag data = tag.copyTag();
+        if (data.contains("Visible") && !data.getBoolean("Visible")) return;
 
-        Model model = ArmorRegistry.HelmetModel(armorItem, ((HumanoidModel<?>) entityModel).hat);
+        if (!(entityModel instanceof HumanoidModel<?> humanoidModel)) return;
 
-        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(armorItem.getTexture())), i, OverlayTexture.NO_OVERLAY);
+        Model model = ArmorRegistry.HelmetModel(armorItem, humanoidModel.hat);
+        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(RenderType.armorCutoutNoCull(armorItem.getTexture())), i, OverlayTexture.NO_OVERLAY);
     }
 }

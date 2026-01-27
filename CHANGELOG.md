@@ -1,3 +1,14 @@
+[2.1.3]
+
+**Fixed**
+- Armor and clothing items rendering invisible when using shaders (Fabric)
+- Loot tables for structures not being loaded correctly
+
+**Changed**
+- Added missing Curios/Trinkets compatibility tags for Beachparty equipment
+
+***
+
 [2.1.2]
 
 **Fixed**

@@ -7,6 +7,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -20,15 +21,14 @@ public class ChestplateTrinketRenderer implements TrinketRenderer {
     @Override
     public void render(ItemStack itemStack, SlotReference slotReference, EntityModel<? extends LivingEntity> entityModel, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, LivingEntity livingEntity, float v, float v1, float v2, float v3, float v4, float v5) {
         if (!(itemStack.getItem() instanceof TrinketsArmorItem armorItem)) return;
+
         CustomData tag = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.of(new CompoundTag()));
+        CompoundTag data = tag.copyTag();
+        if (data.contains("Visible") && !data.getBoolean("Visible")) return;
 
-        tag.copyTag();
-        if (tag.contains("Visible") && !tag.copyTag().getBoolean("Visible")) return;
+        if (!(entityModel instanceof HumanoidModel<?> humanoidModel)) return;
 
-        if (entityModel instanceof HumanoidModel<?> humanoidModel) {
-            Model model = ArmorRegistry.chestplateModel(armorItem, humanoidModel.body, humanoidModel.leftArm, humanoidModel.rightArm);
-
-            model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(armorItem.getTexture())), i, OverlayTexture.NO_OVERLAY);
-        }
+        Model model = ArmorRegistry.chestplateModel(armorItem, humanoidModel.body, humanoidModel.leftArm, humanoidModel.rightArm);
+        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(RenderType.armorCutoutNoCull(armorItem.getTexture())), i, OverlayTexture.NO_OVERLAY);
     }
 }
