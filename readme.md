@@ -1,64 +1,129 @@
-<p align="center"><img src="https://imgur.com/A7uz27g.png" width="1200" /></p>
+![Beachparty](https://lets-do.ch/assets/mod-logos/beachparty.png)
 
-<h1 align="center">Welcome to Beachparty!</h1>
-
-<p align="center" style="color:beige;">Dive into the ultimate beach experience!<br>
-
-<p align="center" style="color:beige;">Collect sea stars for rare items, decorate with beach-themed blocks, and craft treats like ice cream, popsicles, and cocktails.<br>
-
-<p align="center" style="color:beige;">Need tunes? Try the new radio! Gear up with swim trunks, bikinis, sunglasses, or a pool noodle weapon.<br>
-
-<hr />
-
-## Features:
-
-- **New Collectibles & Trinkets**: Trunks, bikinis, sunglasses, and more to collect! Many items come with bonuses to make
-  beach life even better.
-- **Decorative Blocks**: Beach chairs in various styles, tables, a palm bar, and more! Perfect for building with bamboo.
-- **Cocktails**: Refreshing treats to craft and enjoy.
-- **Radio**: Now works seamlessly without disconnecting everyone. Hopefully!
-
-<h1 align="center">Available for</h1>
-<p align="center"><img src="https://imgur.com/gREqi3m.png" width="240" height="120" /></p>
-
-<h1 align="center">Be Part of Our Journey</h1>
+<br>
 
 <p align="center">
-    <a title="discord" href="https://discord.gg/Vqu6wYZwdZ">
-        <img style="display: block; margin-left: auto; margin-right: auto;" src="https://1000logos.net/wp-content/uploads/2021/06/Discord-logo-2015.png" alt="Discord" width="140" height="140" />
-    </a>
-    <a title="patreon" href="https://www.patreon.com/user?u=78595058">
-        <picture>
-            <source style="display: block; margin-left: auto; margin-right: auto;" media="(prefers-color-scheme: dark)" srcset="https://i.ibb.co/4R738W0/patreon-logo-icon-170869-dark.png" width="140" height="80" />
-            <img style="display: block; margin-left: auto; margin-right: auto;" src="https://cdn.icon-icons.com/icons2/2699/PNG/512/patreon_logo_icon_170869.png" alt="Patreon" width="140" height="80" />
-        </picture>
-    </a>
+  <strong>Sunny Shores & Tropical Vibes</strong>
+</p>
+
+<p align="center">
+  <em>The laid-back chapter of the Let's Do collection</em>
 </p>
 
 <br>
 
-<hr>
+<p align="center">
+  <em>"Catch the sun. Feel the breeze."</em>
+</p>
 
-## Installation Instructions:
+<br>
 
-### Download the Mod:
+Get your suncream out, we're going to the beach.
 
-1. Find and download the mod. It is available on Modrinth and Curseforge.
+<br>
 
-### Download All Dependencies:
+Beachparty turns your coastline into a vibrant summer escape. Collect stylish trinkets, mix refreshing drinks and build the ultimate seaside hangout.
 
-1. Find and download the following dependencies: Architectury API, and if you're on Fabric: Fabric API.
+<br>
 
-<p><strong><em><span style="color:gold;">Note:</span></em></strong> We strongly advise against downloading the mod or its dependencies from any other source to avoid potential security risks.</p>
+Relax. Unwind. Let the tide roll in.
 
-### Place the Mod and its Dependencies in the Mods Folder:
+<br>
 
-1. Navigate to your Minecraft installation folder (`%appdata%/.minecraft` on
-   Windows, `~/Library/Application Support/minecraft` on macOS).
-2. Open the `mods` folder (create it if it doesn't exist) and place the downloaded mod and its dependencies (
-   usually `.jar` files) inside.
+## Beach Essentials
 
-### Run Minecraft:
+<br>
 
-1. Launch Minecraft again with your Mod Profile, and the mod should be loaded.
-2. **Have fun!**
+- Trunks, bikinis, sunglasses and more collectibles  
+- Many items grant small bonuses to enhance beach life  
+- Wear your summer style with confidence  
+
+<br>
+
+Sun out. Shades on.
+
+<br>
+
+## Build the Perfect Spot
+
+<br>
+
+- Beach chairs in various styles  
+- Tables, palm bar and tropical decor  
+- Perfect building palette for bamboo and coastal builds  
+
+<br>
+
+Design your own shoreline retreat.
+
+<br>
+
+## Drinks & Tunes
+
+<br>
+
+- Craft refreshing cocktails  
+- Enjoy laid-back beach vibes  
+- A radio that now works seamlessly without disconnecting everyone  
+
+<br>
+
+Turn up the volume. Watch the sunset.
+
+<br>
+
+<p align="center">
+  <strong>Step into the sand.</strong>
+</p>
+
+<p align="center">
+  <strong>Raise your glass.</strong>
+</p>
+
+<p align="center">
+  <strong>Stay for the sunset.</strong>
+</p>
+
+<br>
+
+<p align="center">
+  <em>I wish you lots of fun with this cute little mod.</em>
+</p>
+
+<br>
+
+<p align="center">
+  <em>Dedicated to MissLilitu</em>
+</p>
+
+<br>
+
+<div align="center">
+
+# The Let’s Do Collection
+
+<br>
+
+<a href="https://lets-do.ch/mods/">
+  <img src="https://github.com/Let-s-Do-Collection/Let-s-Do-Collection/raw/main/LOGO.png?raw=true" width="350" alt="The Let’s Do Collection">
+</a>
+
+<br>
+
+# Support & Community
+
+</div>
+
+<br>
+
+<p align="center">
+  Let’s Do grows through its community.
+</p>
+
+<br>
+
+<p align="center">
+  <a href="https://github.com/Let-s-Do-Collection/Let-s-Do-Collection">GitHub</a> •
+  <a href="https://discord.gg/Jb2bgpYr">Discord</a> •
+  <a href="https://www.patreon.com/c/u78595058">Patreon</a>
+</p>
