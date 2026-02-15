@@ -1,4 +1,4 @@
-![Beachparty](https://lets-do.ch/assets/mod-logos/beachparty.png)
+![Beachparty](https://lets-do.ch/assets/mod-logos/beachparty.webp)
 
 <br>
 
