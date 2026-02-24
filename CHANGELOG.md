@@ -1,3 +1,10 @@
+[2.1.4]
+
+**Fixed**
+- Palm Leaves loottable only dropping leaves instead of Palm Sprouts / Sticks
+
+***
+
 [2.1.3]
 
 **Fixed**
