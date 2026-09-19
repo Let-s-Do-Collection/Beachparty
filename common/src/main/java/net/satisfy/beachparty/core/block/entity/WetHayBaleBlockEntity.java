@@ -35,6 +35,10 @@ public class WetHayBaleBlockEntity extends BlockEntity {
             level.scheduleTick(pos, state.getBlock(), 1);
             return;
         }
+        if (level.dimensionType().ultraWarm()) {
+            level.setBlock(pos, ObjectRegistry.THATCH.get().defaultBlockState(), 3);
+            return;
+        }
         if (!level.canSeeSky(pos.above()) || level.getFluidState(pos).is(net.minecraft.world.level.material.Fluids.WATER)) {
             level.scheduleTick(pos, state.getBlock(), 1);
             return;

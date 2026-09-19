@@ -3,6 +3,10 @@ package net.satisfy.beachparty.core.entity;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -11,10 +15,15 @@ import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import org.jetbrains.annotations.NotNull;
 
 public class ThrowableCoconutEntity extends ThrowableItemProjectile {
@@ -66,10 +75,14 @@ public class ThrowableCoconutEntity extends ThrowableItemProjectile {
         if (!level.isClientSide) {
             level.broadcastEntityEvent(this, (byte) 3);
             this.playSound(SoundEvents.WOOD_FALL, 1.0F, 1.0F);
-            this.spawnAtLocation(ObjectRegistry.COCONUT_OPEN.get());
-            this.spawnAtLocation(ObjectRegistry.COCONUT_OPEN.get());
-            if (level.getRandom().nextFloat() < 0.45F) {
-                this.spawnAtLocation(ObjectRegistry.PALM_SPROUT.get());
+            MinecraftServer server = level.getServer();
+            if (server != null && level instanceof ServerLevel serverLevel) {
+                LootParams lootParams = new LootParams.Builder(serverLevel)
+                        .withParameter(LootContextParams.THIS_ENTITY, this)
+                        .withParameter(LootContextParams.ORIGIN, this.position())
+                        .create(LootContextParamSets.GIFT);
+                LootTable lootTable = server.reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, BeachpartyIdentifier.identifier("gameplay/throwable_coconut")));
+                lootTable.getRandomItems(lootParams).forEach(this::spawnAtLocation);
             }
             this.discard();
         }
