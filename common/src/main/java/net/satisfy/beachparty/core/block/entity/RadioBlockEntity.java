@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.GameEvent.Context;
+import net.satisfy.beachparty.core.block.RadioBlock;
 import net.satisfy.beachparty.core.registry.SoundEventRegistry;
 
 import java.util.List;
@@ -45,6 +46,10 @@ public class RadioBlockEntity extends BlockEntity {
 
         if (server.getGameTime() >= entity.startTick + 20 * 60) {
             entity.stop();
+            BlockState state = level.getBlockState(pos);
+            if (state.hasProperty(RadioBlock.ON) && state.getValue(RadioBlock.ON)) {
+                level.setBlock(pos, state.setValue(RadioBlock.ON, false), 3);
+            }
             return;
         }
 

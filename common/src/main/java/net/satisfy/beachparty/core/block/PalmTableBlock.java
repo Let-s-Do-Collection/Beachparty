@@ -1,6 +1,13 @@
 package net.satisfy.beachparty.core.block;
 
+import net.satisfy.foundation.block.LineConnectingBlock;
+import net.satisfy.foundation.block.LineConnectingType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -18,7 +25,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -41,7 +47,7 @@ public class PalmTableBlock extends LineConnectingBlock implements SimpleWaterlo
 
     public PalmTableBlock(BlockBehaviour.Properties settings) {
         super(settings);
-        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false).setValue(DyeableFurniture.COLOR, DyeableFurniture.DEFAULT_COLOR));
     }
 
     @Override
@@ -53,13 +59,13 @@ public class PalmTableBlock extends LineConnectingBlock implements SimpleWaterlo
             boolean leftConnected = world.getBlockState(leftPos).getBlock() == this;
             boolean rightConnected = world.getBlockState(rightPos).getBlock() == this;
             if (leftConnected && rightConnected) {
-                state = state.setValue(TYPE, BeachpartyUtil.LineConnectingType.MIDDLE);
+                state = state.setValue(TYPE, LineConnectingType.MIDDLE);
             } else if (leftConnected) {
-                state = state.setValue(TYPE, BeachpartyUtil.LineConnectingType.RIGHT);
+                state = state.setValue(TYPE, LineConnectingType.RIGHT);
             } else if (rightConnected) {
-                state = state.setValue(TYPE, BeachpartyUtil.LineConnectingType.LEFT);
+                state = state.setValue(TYPE, LineConnectingType.LEFT);
             } else {
-                state = state.setValue(TYPE, BeachpartyUtil.LineConnectingType.NONE);
+                state = state.setValue(TYPE, LineConnectingType.NONE);
             }
         }
         return super.updateShape(state, direction, neighborState, world, pos, neighborPos);
@@ -68,33 +74,41 @@ public class PalmTableBlock extends LineConnectingBlock implements SimpleWaterlo
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction direction = state.getValue(FACING);
-        BeachpartyUtil.LineConnectingType type = state.getValue(TYPE);
+        LineConnectingType type = state.getValue(TYPE);
 
-        if (type == BeachpartyUtil.LineConnectingType.MIDDLE) {
+        if (type == LineConnectingType.MIDDLE) {
             return TOP_SHAPE;
         }
 
-        if ((direction == Direction.NORTH && type == BeachpartyUtil.LineConnectingType.RIGHT) ||
-                (direction == Direction.SOUTH && type == BeachpartyUtil.LineConnectingType.LEFT)) {
+        if ((direction == Direction.NORTH && type == LineConnectingType.RIGHT) ||
+                (direction == Direction.SOUTH && type == LineConnectingType.LEFT)) {
             return Shapes.or(TOP_SHAPE, LEG_SHAPES[1], LEG_SHAPES[2]);
         }
 
-        if ((direction == Direction.NORTH && type == BeachpartyUtil.LineConnectingType.LEFT) ||
-                (direction == Direction.SOUTH && type == BeachpartyUtil.LineConnectingType.RIGHT)) {
+        if ((direction == Direction.NORTH && type == LineConnectingType.LEFT) ||
+                (direction == Direction.SOUTH && type == LineConnectingType.RIGHT)) {
             return Shapes.or(TOP_SHAPE, LEG_SHAPES[0], LEG_SHAPES[3]);
         }
 
-        if ((direction == Direction.EAST && type == BeachpartyUtil.LineConnectingType.LEFT) ||
-                (direction == Direction.WEST && type == BeachpartyUtil.LineConnectingType.RIGHT)) {
+        if ((direction == Direction.EAST && type == LineConnectingType.LEFT) ||
+                (direction == Direction.WEST && type == LineConnectingType.RIGHT)) {
             return Shapes.or(TOP_SHAPE, LEG_SHAPES[0], LEG_SHAPES[1]);
         }
 
-        if ((direction == Direction.EAST && type == BeachpartyUtil.LineConnectingType.RIGHT) ||
-                (direction == Direction.WEST && type == BeachpartyUtil.LineConnectingType.LEFT)) {
+        if ((direction == Direction.EAST && type == LineConnectingType.RIGHT) ||
+                (direction == Direction.WEST && type == LineConnectingType.LEFT)) {
             return Shapes.or(TOP_SHAPE, LEG_SHAPES[2], LEG_SHAPES[3]);
         }
 
         return Shapes.or(TOP_SHAPE, LEG_SHAPES);
+    }
+
+    @Override
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (DyeableFurniture.canDye(itemStack, blockState)) {
+            return DyeableFurniture.dye(itemStack, blockState, level, blockPos, player);
+        }
+        return super.useItemOn(itemStack, blockState, level, blockPos, player, interactionHand, blockHitResult);
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -105,7 +119,7 @@ public class PalmTableBlock extends LineConnectingBlock implements SimpleWaterlo
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(WATERLOGGED);
+        builder.add(WATERLOGGED, DyeableFurniture.COLOR);
     }
 
     public @NotNull FluidState getFluidState(BlockState state) {

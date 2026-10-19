@@ -23,6 +23,10 @@ public class CrookedTrunkPlacer extends TrunkPlacer {
     public static final MapCodec<CrookedTrunkPlacer> CODEC =
             RecordCodecBuilder.mapCodec((placer) -> trunkPlacerParts(placer).apply(placer, CrookedTrunkPlacer::new));
 
+    private static final int STRAIGHT_BASE = 2;
+    private static final float BOTTOM_LEAN_CHANCE = 0.1F;
+    private static final float TOP_LEAN_CHANCE = 0.7F;
+
     public CrookedTrunkPlacer(int pBaseHeight, int pHeightRandA, int pHeightRandB) {
         super(pBaseHeight, pHeightRandA, pHeightRandB);
     }
@@ -39,7 +43,7 @@ public class CrookedTrunkPlacer extends TrunkPlacer {
         placeLog(pLevel, pBlockSetter, pRandom, mutableBlockPos.relative(direction.getOpposite()), pConfig, (state) -> state.setValue(RotatedPillarBlock.AXIS, direction.getAxis()));
         placeLog(pLevel, pBlockSetter, pRandom, mutableBlockPos.relative(pRandom.nextInt(2) == 0 ? direction.getClockWise() : direction.getCounterClockWise()), pConfig);
         for (int i = 0; i < pFreeTreeHeight; i++) {
-            if (pRandom.nextFloat() < 0.4F && i > 2) {
+            if (i > STRAIGHT_BASE && pRandom.nextFloat() < leanChance(i, pFreeTreeHeight)) {
                 mutableBlockPos.move(direction);
             }
             placeLog(pLevel, pBlockSetter, pRandom, mutableBlockPos, pConfig);
@@ -47,5 +51,9 @@ public class CrookedTrunkPlacer extends TrunkPlacer {
         }
 
         return ImmutableList.of(new FoliagePlacer.FoliageAttachment(mutableBlockPos, 0, false));
+    }
+
+    private static float leanChance(int height, int totalHeight) {
+        return BOTTOM_LEAN_CHANCE + (TOP_LEAN_CHANCE - BOTTOM_LEAN_CHANCE) * height / totalHeight;
     }
 }

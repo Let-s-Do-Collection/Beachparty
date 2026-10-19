@@ -1,64 +1,348 @@
 {
-  "variants": {
-    "facing=north,type=none": {
-      "model": "beachparty:block/palm_table"
+  "multipart": [
+    {
+      "when": {
+        "facing": "north",
+        "type": "none",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table"
+      }
     },
-    "facing=east,type=none": {
-      "model": "beachparty:block/palm_table",
-      "y": 90
+    {
+      "when": {
+        "facing": "north",
+        "type": "none",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_dyed"
+      }
     },
-    "facing=south,type=none": {
-      "model": "beachparty:block/palm_table",
-      "y": 180
+    {
+      "when": {
+        "facing": "east",
+        "type": "none",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table",
+        "y": 90
+      }
     },
-    "facing=west,type=none": {
-      "model": "beachparty:block/palm_table",
-      "y": 270
+    {
+      "when": {
+        "facing": "east",
+        "type": "none",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_dyed",
+        "y": 90
+      }
     },
-    "facing=north,type=middle": {
-      "model": "beachparty:block/palm_table_middle"
+    {
+      "when": {
+        "facing": "south",
+        "type": "none",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table",
+        "y": 180
+      }
     },
-    "facing=east,type=middle": {
-      "model": "beachparty:block/palm_table_middle",
-      "y": 90
+    {
+      "when": {
+        "facing": "south",
+        "type": "none",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_dyed",
+        "y": 180
+      }
     },
-    "facing=south,type=middle": {
-      "model": "beachparty:block/palm_table_middle",
-      "y": 180
+    {
+      "when": {
+        "facing": "west",
+        "type": "none",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table",
+        "y": 270
+      }
     },
-    "facing=west,type=middle": {
-      "model": "beachparty:block/palm_table_middle",
-      "y": 270
+    {
+      "when": {
+        "facing": "west",
+        "type": "none",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_dyed",
+        "y": 270
+      }
     },
-    "facing=north,type=left": {
-      "model": "beachparty:block/palm_table_connected_support"
+    {
+      "when": {
+        "facing": "north",
+        "type": "middle",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_middle"
+      }
     },
-    "facing=east,type=left": {
-      "model": "beachparty:block/palm_table_connected_support",
-      "y": 90
+    {
+      "when": {
+        "facing": "north",
+        "type": "middle",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_middle_dyed"
+      }
     },
-    "facing=south,type=left": {
-      "model": "beachparty:block/palm_table_connected_support",
-      "y": 180
+    {
+      "when": {
+        "facing": "east",
+        "type": "middle",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_middle",
+        "y": 90
+      }
     },
-    "facing=west,type=left": {
-      "model": "beachparty:block/palm_table_connected_support",
-      "y": 270
+    {
+      "when": {
+        "facing": "east",
+        "type": "middle",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_middle_dyed",
+        "y": 90
+      }
     },
-    "facing=north,type=right": {
-      "model": "beachparty:block/palm_table_connected_support",
-      "y": 180
+    {
+      "when": {
+        "facing": "south",
+        "type": "middle",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_middle",
+        "y": 180
+      }
     },
-    "facing=east,type=right": {
-      "model": "beachparty:block/palm_table_connected_support",
-      "y": 270
+    {
+      "when": {
+        "facing": "south",
+        "type": "middle",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_middle_dyed",
+        "y": 180
+      }
     },
-    "facing=south,type=right": {
-      "model": "beachparty:block/palm_table_connected_support"
+    {
+      "when": {
+        "facing": "west",
+        "type": "middle",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_middle",
+        "y": 270
+      }
     },
-    "facing=west,type=right": {
-      "model": "beachparty:block/palm_table_connected_support",
-      "y": 90
+    {
+      "when": {
+        "facing": "west",
+        "type": "middle",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_middle_dyed",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "type": "left",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support"
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "type": "left",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support_dyed"
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "type": "left",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "type": "left",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support_dyed",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "type": "left",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "type": "left",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support_dyed",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "type": "left",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "type": "left",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support_dyed",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "type": "right",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "type": "right",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support_dyed",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "type": "right",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "type": "right",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support_dyed",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "type": "right",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "type": "right",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support_dyed"
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "type": "right",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "type": "right",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_table_connected_support_dyed",
+        "y": 90
+      }
     }
-  }
+  ]
 }

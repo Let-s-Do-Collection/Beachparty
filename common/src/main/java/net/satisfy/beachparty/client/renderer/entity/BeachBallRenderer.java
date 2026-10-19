@@ -1,16 +1,37 @@
 package net.satisfy.beachparty.client.renderer.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.satisfy.beachparty.client.model.BeachBallModel;
 import net.satisfy.beachparty.core.entity.BeachBallEntity;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import org.jetbrains.annotations.NotNull;
 
-public class BeachBallRenderer extends MobRenderer<BeachBallEntity, BeachBallModel<BeachBallEntity>> {
+public class BeachBallRenderer extends EntityRenderer<BeachBallEntity> {
+    private final BeachBallModel<BeachBallEntity> model;
+
     public BeachBallRenderer(EntityRendererProvider.Context context) {
-        super(context, new BeachBallModel<>(context.bakeLayer(BeachBallModel.LAYER_LOCATION)), 0.2f);
+        super(context);
+        this.model = new BeachBallModel<>(context.bakeLayer(BeachBallModel.LAYER_LOCATION));
+        this.shadowRadius = 0.2f;
+    }
+
+    @Override
+    public void render(BeachBallEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        float radius = BeachBallEntity.getRadius();
+        poseStack.pushPose();
+        poseStack.translate(0, radius, 0);
+        poseStack.mulPose(entity.getOrientation(partialTick));
+        poseStack.translate(0, -radius, 0);
+        poseStack.scale(-1.0F, -1.0F, 1.0F);
+        poseStack.translate(0.0F, -1.501F, 0.0F);
+        model.renderToBuffer(poseStack, buffer.getBuffer(model.renderType(getTextureLocation(entity))), packedLight, OverlayTexture.NO_OVERLAY, -1);
+        poseStack.popPose();
+        super.render(entity, entityYaw, partialTick, poseStack, buffer, packedLight);
     }
 
     @Override
@@ -30,5 +51,4 @@ public class BeachBallRenderer extends MobRenderer<BeachBallEntity, BeachBallMod
             default -> BeachpartyIdentifier.identifier("textures/entity/beach_ball.png");
         };
     }
-
 }

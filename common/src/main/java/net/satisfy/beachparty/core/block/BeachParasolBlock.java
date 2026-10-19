@@ -1,10 +1,10 @@
 package net.satisfy.beachparty.core.block;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -47,7 +47,7 @@ public class BeachParasolBlock extends Block {
 
     public BeachParasolBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(OPEN, false).setValue(DyeableFurniture.COLOR, DyeableFurniture.DEFAULT_COLOR));
     }
 
     public static void placeAt(LevelAccessor levelAccessor, BlockState blockState, BlockPos blockPos, int i) {
@@ -83,7 +83,7 @@ public class BeachParasolBlock extends Block {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(HALF, OPEN);
+        builder.add(HALF, OPEN, DyeableFurniture.COLOR);
     }
 
     @Override
@@ -93,6 +93,9 @@ public class BeachParasolBlock extends Block {
 
     @Override
     protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (DyeableFurniture.canDye(itemStack, blockState)) {
+            return DyeableFurniture.dye(itemStack, blockState, level, blockPos, player, blockState.getValue(HALF) == DoubleBlockHalf.LOWER ? blockPos.above() : blockPos.below());
+        }
         ItemStack heldItem = player.getItemInHand(interactionHand);
 
         if (heldItem.isEmpty() && player.isCrouching()) {
@@ -203,7 +206,7 @@ public class BeachParasolBlock extends Block {
 
     @Override
     public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        tooltip.add(Component.translatable("tooltip.beachparty.canbeplaced").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))));
+        tooltip.add(Component.translatable("tooltip.foundation.canbeplaced").withStyle(ChatFormatting.GRAY));
 
     }
 }

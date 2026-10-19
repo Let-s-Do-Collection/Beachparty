@@ -4,17 +4,21 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -25,12 +29,13 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.satisfy.beachparty.core.block.entity.PalmBarBlockEntity;
-import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
-import net.satisfy.beachparty.core.util.BeachpartyUtil;
+import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.foundation.util.ShapeUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -44,7 +49,7 @@ public class PalmBarBlock extends BaseEntityBlock implements EntityBlock {
     };
     public static final Map<Direction, VoxelShape> SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
+            map.put(direction, ShapeUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
         }
     });
 
@@ -93,23 +98,130 @@ public class PalmBarBlock extends BaseEntityBlock implements EntityBlock {
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof PalmBarBlockEntity) {
-                Containers.dropContents(world, pos, (PalmBarBlockEntity) blockEntity);
-                world.updateNeighbourForOutputSignal(pos, this);
+            if (world.getBlockEntity(pos) instanceof PalmBarBlockEntity bar) {
+                Containers.dropContents(world, pos, bar.getDrops());
+                bar.clearContents();
             }
             super.onRemove(state, world, pos, newState, moved);
+            if (hasGlass(world, pos)) {
+                world.removeBlock(pos.above(), false);
+            }
         }
     }
 
     @Override
-    public @NotNull InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
-        final BlockEntity entity = world.getBlockEntity(pos);
-        if (entity instanceof MenuProvider factory) {
-            player.openMenu(factory);
-            return InteractionResult.sidedSuccess(world.isClientSide());
-        } else {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (hasGlass(level, pos)) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+        return useItem(stack, level, pos, player);
+    }
+
+    @Override
+    protected @NotNull InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+        if (hasGlass(level, pos) && !(level.getBlockEntity(pos) instanceof PalmBarBlockEntity bar && bar.hasLeftovers())) {
             return InteractionResult.PASS;
+        }
+        return useEmpty(level, pos, player);
+    }
+
+    public static ItemInteractionResult useItem(ItemStack stack, Level level, BlockPos pos, Player player) {
+        if (!(level.getBlockEntity(pos) instanceof PalmBarBlockEntity bar)) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+        if (!level.isClientSide) {
+            updateGlass(level, pos, bar);
+        }
+        if (bar.hasLeftovers()) {
+            if (!level.isClientSide) {
+                bar.takeLeftovers().forEach(leftover -> give(player, leftover));
+            }
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        }
+        if (stack.isEmpty() || !hasRoom(level, pos) || !bar.canAdd(stack)) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+        if (!level.isClientSide) {
+            ItemStack added = player.getAbilities().instabuild ? stack.copy() : stack;
+            bar.add(added);
+            updateGlass(level, pos, bar);
+            level.playSound(null, pos.above(), SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 0.8F, 1.2F + level.random.nextFloat() * 0.3F);
+        }
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    public static InteractionResult useEmpty(Level level, BlockPos pos, Player player) {
+        if (!player.getMainHandItem().isEmpty() || !(level.getBlockEntity(pos) instanceof PalmBarBlockEntity bar)) {
+            return InteractionResult.PASS;
+        }
+        if (!level.isClientSide) {
+            updateGlass(level, pos, bar);
+        }
+        if (bar.hasLeftovers()) {
+            if (!level.isClientSide) {
+                bar.takeLeftovers().forEach(leftover -> give(player, leftover));
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        if (bar.isShaking(level.getGameTime())) {
+            return InteractionResult.CONSUME;
+        }
+        if (!bar.getResult().isEmpty()) {
+            if (!level.isClientSide) {
+                give(player, bar.takeResult());
+                updateGlass(level, pos, bar);
+                level.playSound(null, pos.above(), SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.6F, 1.0F);
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        if (player.isShiftKeyDown()) {
+            if (bar.getIngredients().isEmpty() || bar.isLocked()) {
+                return InteractionResult.PASS;
+            }
+            if (!level.isClientSide) {
+                give(player, bar.takeBack());
+                updateGlass(level, pos, bar);
+                level.playSound(null, pos.above(), SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 0.6F, 1.2F);
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        if (bar.getMatched() == null || !hasRoom(level, pos)) {
+            return InteractionResult.PASS;
+        }
+        if (!level.isClientSide) {
+            List<ItemStack> remainders = bar.shake(level.getGameTime());
+            remainders.forEach(remainder -> give(player, remainder));
+            boolean done = !bar.getResult().isEmpty();
+            level.playSound(null, pos.above(), done ? SoundEvents.AMETHYST_BLOCK_CHIME : SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, done ? 1.2F : 0.7F, done ? 1.4F : 1.3F + level.random.nextFloat() * 0.4F);
+            if (level instanceof ServerLevel server) {
+                server.sendParticles(done ? ParticleTypes.HAPPY_VILLAGER : ParticleTypes.SPLASH, pos.getX() + 0.5, pos.getY() + 1.4, pos.getZ() + 0.5, done ? 6 : 8, 0.15, 0.1, 0.15, 0.05);
+            }
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    public static void updateGlass(Level level, BlockPos pos, PalmBarBlockEntity bar) {
+        BlockPos above = pos.above();
+        boolean wanted = !bar.getIngredients().isEmpty() || !bar.getResult().isEmpty();
+        boolean present = hasGlass(level, pos);
+        if (wanted && !present && level.getBlockState(above).canBeReplaced()) {
+            level.setBlock(above, ObjectRegistry.PALM_BAR_GLASS.get().defaultBlockState(), Block.UPDATE_ALL);
+        } else if (!wanted && present) {
+            level.removeBlock(above, false);
+        }
+    }
+
+    public static boolean hasGlass(BlockGetter level, BlockPos pos) {
+        return level.getBlockState(pos.above()).getBlock() instanceof PalmBarGlassBlock;
+    }
+
+    public static boolean hasRoom(BlockGetter level, BlockPos pos) {
+        return hasGlass(level, pos) || level.getBlockState(pos.above()).canBeReplaced();
+    }
+
+    private static void give(Player player, ItemStack stack) {
+        if (!stack.isEmpty() && !player.addItem(stack)) {
+            player.drop(stack, false);
         }
     }
 
@@ -117,12 +229,6 @@ public class PalmBarBlock extends BaseEntityBlock implements EntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new PalmBarBlockEntity(pos, state);
-    }
-
-    @Override
-    @Nullable
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return BaseEntityBlock.createTickerHelper(type, EntityTypeRegistry.PALM_BAR_BLOCK_ENTITY.get(), PalmBarBlockEntity::tick);
     }
 
     @Override

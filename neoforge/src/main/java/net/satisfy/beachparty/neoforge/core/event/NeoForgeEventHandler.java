@@ -1,17 +1,13 @@
 package net.satisfy.beachparty.neoforge.core.event;
 
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.BasicItemListing;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
-import net.satisfy.beachparty.neoforge.client.integration.CuriosWearableTrinket;
 import net.satisfy.beachparty.neoforge.core.registry.BeachpartyVillagers;
 
 import java.util.List;
@@ -56,27 +52,6 @@ public class NeoForgeEventHandler {
             level5.add(new BasicItemListing(22, new ItemStack(ObjectRegistry.MESSAGE_IN_A_BOTTLE_ITEM.get()), 1, 4, 0.25F));
             level5.add(new BasicItemListing(39, new ItemStack(ObjectRegistry.FLOATY_BOAT.get()), 1, 8, 0.25F));
             level5.add(new BasicItemListing(45, new ItemStack(ObjectRegistry.BEACH_HAT.get()), 1, 8, 0.25F));
-        }
-    }
-
-    @SubscribeEvent
-    public static void onLivingDamage(LivingDamageEvent.Pre event) {
-        if (!(event.getEntity() instanceof Player player)) return;
-        event.getSource();
-
-        if (!event.getSource().is(DamageTypes.ON_FIRE) && !event.getSource().is(DamageTypes.IN_FIRE)) return;
-
-        float reduction = 0;
-        if (CuriosWearableTrinket.isCurioEquipped(player, ObjectRegistry.BEACH_HAT.get())) {
-            reduction += 0.10f;
-        }
-        if (CuriosWearableTrinket.isCurioEquipped(player, ObjectRegistry.SUNGLASSES.get())) {
-            reduction += 0.12f;
-        }
-
-        if (reduction > 0) {
-            float newDamage = event.getOriginalDamage() * (1 - Math.min(reduction, 1.0f));
-            event.setNewDamage(newDamage);
         }
     }
 }

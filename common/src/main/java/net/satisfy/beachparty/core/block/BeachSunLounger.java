@@ -1,7 +1,10 @@
 package net.satisfy.beachparty.core.block;
 
+import net.satisfy.foundation.util.ShapeUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -31,7 +34,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,7 +61,7 @@ public class BeachSunLounger extends BedBlock {
 
     public static final Map<Direction, VoxelShape> BOTTOM_SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.EAST, direction, bottomShapeSupplier.get()));
+            map.put(direction, ShapeUtil.rotateShape(Direction.EAST, direction, bottomShapeSupplier.get()));
         }
     });
 
@@ -74,7 +76,7 @@ public class BeachSunLounger extends BedBlock {
 
     public static final Map<Direction, VoxelShape> TOP_SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.EAST, direction, topShapeSupplier.get()));
+            map.put(direction, ShapeUtil.rotateShape(Direction.EAST, direction, topShapeSupplier.get()));
         }
     });
 
@@ -91,7 +93,7 @@ public class BeachSunLounger extends BedBlock {
 
     public static final Map<Direction, VoxelShape> TOP_SHAPE_DOWN = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.EAST, direction, topShapeDownSupplier.get()));
+            map.put(direction, ShapeUtil.rotateShape(Direction.EAST, direction, topShapeDownSupplier.get()));
         }
     });
 
@@ -102,7 +104,8 @@ public class BeachSunLounger extends BedBlock {
                 .setValue(FACING, Direction.NORTH)
                 .setValue(PART, BedPart.FOOT)
                 .setValue(DOWN, false)
-                .setValue(OCCUPIED, false));
+                .setValue(OCCUPIED, false)
+                .setValue(DyeableFurniture.COLOR, DyeableFurniture.DEFAULT_COLOR));
     }
 
     private static Direction getDirectionTowardsOtherPart(BedPart part, Direction direction) {
@@ -184,7 +187,7 @@ public class BeachSunLounger extends BedBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, PART, DOWN, OCCUPIED);
+        builder.add(FACING, PART, DOWN, OCCUPIED, DyeableFurniture.COLOR);
     }
 
     @Override
@@ -225,19 +228,27 @@ public class BeachSunLounger extends BedBlock {
     }
 
     @Override
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (DyeableFurniture.canDye(itemStack, blockState)) {
+            return DyeableFurniture.dye(itemStack, blockState, level, blockPos, player, blockPos.relative(getDirectionTowardsOtherPart(blockState.getValue(PART), blockState.getValue(FACING))));
+        }
+        return super.useItemOn(itemStack, blockState, level, blockPos, player, interactionHand, blockHitResult);
+    }
+
+    @Override
     protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (level.isClientSide) return InteractionResult.CONSUME;
-
-        if (blockState.getValue(PART) == BedPart.HEAD && player.isShiftKeyDown()) {
-            level.setBlock(blockPos, blockState.setValue(DOWN, !blockState.getValue(DOWN)), Block.UPDATE_ALL);
-            level.playSound(null, blockPos, SoundEvents.BAMBOO_WOOD_TRAPDOOR_CLOSE, SoundSource.BLOCKS, 1.0f, 1.0f);
-            return InteractionResult.SUCCESS;
-        }
 
         if (blockState.getValue(PART) != BedPart.HEAD) {
             blockPos = blockPos.relative(blockState.getValue(FACING));
             blockState = level.getBlockState(blockPos);
             if (!blockState.is(this)) return InteractionResult.CONSUME;
+        }
+
+        if (player.isShiftKeyDown()) {
+            level.setBlock(blockPos, blockState.setValue(DOWN, !blockState.getValue(DOWN)), Block.UPDATE_ALL);
+            level.playSound(null, blockPos, SoundEvents.BAMBOO_WOOD_TRAPDOOR_CLOSE, SoundSource.BLOCKS, 1.0f, 1.0f);
+            return InteractionResult.SUCCESS;
         }
 
         if (!blockState.getValue(DOWN)) return InteractionResult.CONSUME;

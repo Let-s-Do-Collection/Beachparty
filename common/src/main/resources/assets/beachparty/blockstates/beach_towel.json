@@ -1,36 +1,180 @@
 {
-  "variants": {
-    "facing=east,part=foot": {
-      "y": 0,
-      "model": "beachparty:block/beach_towel_left"
+  "multipart": [
+    {
+      "when": {
+        "facing": "east",
+        "part": "foot",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 0,
+        "model": "beachparty:block/beach_towel_left"
+      }
     },
-    "facing=east,part=head": {
-      "y": 0,
-      "model": "beachparty:block/beach_towel_right"
+    {
+      "when": {
+        "facing": "east",
+        "part": "foot",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 0,
+        "model": "beachparty:block/beach_towel_left_dyed"
+      }
     },
-    "facing=north,part=foot": {
-      "y": 270,
-      "model": "beachparty:block/beach_towel_left"
+    {
+      "when": {
+        "facing": "east",
+        "part": "head",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 0,
+        "model": "beachparty:block/beach_towel_right"
+      }
     },
-    "facing=north,part=head": {
-      "y": 270,
-      "model": "beachparty:block/beach_towel_right"
+    {
+      "when": {
+        "facing": "east",
+        "part": "head",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 0,
+        "model": "beachparty:block/beach_towel_right_dyed"
+      }
     },
-    "facing=south,part=foot": {
-      "y": 90,
-      "model": "beachparty:block/beach_towel_left"
+    {
+      "when": {
+        "facing": "north",
+        "part": "foot",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 270,
+        "model": "beachparty:block/beach_towel_left"
+      }
     },
-    "facing=south,part=head": {
-      "y": 90,
-      "model": "beachparty:block/beach_towel_right"
+    {
+      "when": {
+        "facing": "north",
+        "part": "foot",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 270,
+        "model": "beachparty:block/beach_towel_left_dyed"
+      }
     },
-    "facing=west,part=foot": {
-      "y": 180,
-      "model": "beachparty:block/beach_towel_left"
+    {
+      "when": {
+        "facing": "north",
+        "part": "head",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 270,
+        "model": "beachparty:block/beach_towel_right"
+      }
     },
-    "facing=west,part=head": {
-      "y": 180,
-      "model": "beachparty:block/beach_towel_right"
+    {
+      "when": {
+        "facing": "north",
+        "part": "head",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 270,
+        "model": "beachparty:block/beach_towel_right_dyed"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "part": "foot",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 90,
+        "model": "beachparty:block/beach_towel_left"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "part": "foot",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 90,
+        "model": "beachparty:block/beach_towel_left_dyed"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "part": "head",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 90,
+        "model": "beachparty:block/beach_towel_right"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "part": "head",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 90,
+        "model": "beachparty:block/beach_towel_right_dyed"
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "part": "foot",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 180,
+        "model": "beachparty:block/beach_towel_left"
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "part": "foot",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 180,
+        "model": "beachparty:block/beach_towel_left_dyed"
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "part": "head",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 180,
+        "model": "beachparty:block/beach_towel_right"
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "part": "head",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 180,
+        "model": "beachparty:block/beach_towel_right_dyed"
+      }
     }
-  }
+  ]
 }

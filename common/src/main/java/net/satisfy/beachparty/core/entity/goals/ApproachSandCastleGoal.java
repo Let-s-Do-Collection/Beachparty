@@ -1,25 +1,26 @@
 package net.satisfy.beachparty.core.entity.goals;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.beachparty.core.block.SandBucketBlock;
-import net.satisfy.beachparty.core.util.SandCastleManager;
+import net.satisfy.beachparty.core.registry.PoiTypeKeys;
+
+import java.util.EnumSet;
 
 public class ApproachSandCastleGoal extends Goal {
+    private static final int SEARCH_RADIUS = 24;
+    private static final int SEARCH_INTERVAL = 60;
     private final Mob mob;
     private BlockPos targetPos;
     private int cooldown;
-    private int recalculateCooldown;
-    private boolean isMoving;
 
     public ApproachSandCastleGoal(Mob mob) {
         this.mob = mob;
-        this.cooldown = 0;
-        this.recalculateCooldown = 0;
-        this.isMoving = false;
+        this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override
@@ -28,75 +29,29 @@ public class ApproachSandCastleGoal extends Goal {
             cooldown--;
             return false;
         }
-        cooldown = 60;  
-
-        if (recalculateCooldown > 0) {
-            recalculateCooldown--;
-        } else {
-            recalculateCooldown = 200;  
-            BlockPos mobPos = this.mob.blockPosition();
-            BlockPos newTargetPos = SandCastleManager.getNearestSandCastle(mobPos);
-
-            if (newTargetPos == null || newTargetPos.equals(targetPos)) {
-                return false;
-            }
-
-            targetPos = newTargetPos;
-            isMoving = false;  
-        }
-
+        cooldown = SEARCH_INTERVAL;
+        if (!(mob.level() instanceof ServerLevel level)) return false;
+        targetPos = level.getPoiManager().findClosest(type -> type.is(PoiTypeKeys.SANDCASTLE), pos -> isIntactSandCastle(level.getBlockState(pos)), mob.blockPosition(), SEARCH_RADIUS, PoiManager.Occupancy.ANY).orElse(null);
         return targetPos != null;
     }
 
     @Override
     public void start() {
-        if (targetPos != null) {
-            moveToTarget();
-        }
-    }
-
-    private void moveToTarget() {
-        this.mob.getNavigation().moveTo(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, 1.0);
-        isMoving = true;
+        mob.getNavigation().moveTo(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5, 1.0);
     }
 
     @Override
     public boolean canContinueToUse() {
-        if (targetPos == null) return false;
-        Level level = this.mob.level();
-        BlockState state = level.getBlockState(targetPos);
-
-        if (!(state.getBlock() instanceof SandBucketBlock.SandCastleBlock)) return false;
-
-        double distanceSquared = this.mob.distanceToSqr(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5);
-        return distanceSquared <= 16.0;
-    }
-
-    @Override
-    public void tick() {
-        if (targetPos == null) return;
-
-        Level level = this.mob.level();
-        BlockState state = level.getBlockState(targetPos);
-
-        if (!(state.getBlock() instanceof SandBucketBlock.SandCastleBlock)) {
-            stop();
-            return;
-        }
-
-        double distanceSquared = this.mob.distanceToSqr(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5);
-        if (distanceSquared > 2.25) {
-            if (!isMoving) {
-                moveToTarget();
-            }
-        } else {
-            isMoving = false;
-        }
+        return targetPos != null && !mob.getNavigation().isDone() && isIntactSandCastle(mob.level().getBlockState(targetPos));
     }
 
     @Override
     public void stop() {
         targetPos = null;
-        isMoving = false;
+        mob.getNavigation().stop();
+    }
+
+    private static boolean isIntactSandCastle(BlockState state) {
+        return state.getBlock() instanceof SandBucketBlock.SandCastleBlock && !state.getValue(SandBucketBlock.SandCastleBlock.PETRIFIED);
     }
 }

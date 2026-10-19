@@ -1,20 +1,20 @@
 package net.satisfy.beachparty.core.registry;
 
-import net.minecraft.world.level.block.ComposterBlock;
+import net.satisfy.foundation.compostable.FoundationCompostables;
 
 public class CompostablesRegistry {
     public static void init() {
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.PALM_SPROUT.get().asItem(), 0.6F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.PALM_LEAVES.get().asItem(), 0.6F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COCONUT.get().asItem(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COCONUT_OPEN.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COOKED_MUSSEL_MEAT.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.RAW_MUSSEL_MEAT.get(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COCONUT_COCKTAIL.get().asItem(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.SWEETBERRIES_COCKTAIL.get().asItem(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.COCOA_COCKTAIL.get().asItem(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.PUMPKIN_COCKTAIL.get().asItem(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.MELON_COCKTAIL.get().asItem(), 0.3F);
-        ComposterBlock.COMPOSTABLES.put(ObjectRegistry.HONEY_COCKTAIL.get().asItem(), 0.3F);
+        FoundationCompostables.register(0.6F, ObjectRegistry.PALM_SPROUT);
+        FoundationCompostables.register(0.6F, ObjectRegistry.PALM_LEAVES);
+        FoundationCompostables.register(0.3F, ObjectRegistry.COCONUT);
+        FoundationCompostables.register(0.3F, ObjectRegistry.COCONUT_OPEN);
+        FoundationCompostables.register(0.3F, ObjectRegistry.COOKED_MUSSEL_MEAT);
+        FoundationCompostables.register(0.3F, ObjectRegistry.RAW_MUSSEL_MEAT);
+        FoundationCompostables.register(0.3F, ObjectRegistry.COCONUT_COCKTAIL);
+        FoundationCompostables.register(0.3F, ObjectRegistry.SWEETBERRIES_COCKTAIL);
+        FoundationCompostables.register(0.3F, ObjectRegistry.COCOA_COCKTAIL);
+        FoundationCompostables.register(0.3F, ObjectRegistry.PUMPKIN_COCKTAIL);
+        FoundationCompostables.register(0.3F, ObjectRegistry.MELON_COCKTAIL);
+        FoundationCompostables.register(0.3F, ObjectRegistry.HONEY_COCKTAIL);
     }
 }

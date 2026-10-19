@@ -1,83 +1,62 @@
 package net.satisfy.beachparty.core.util;
 
+import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.platform.PlatformHelper;
-import org.joml.Vector3d;
+
+import java.util.List;
 
 public class MessageInABottleSpawner {
-    private static BlockPos lastValidSpawn = null;
-    private static long lastSpawnTime = 0;
+    private static final int SPAWN_RADIUS = 48;
+    private static final int COUNT_RADIUS = 32;
+    private static final int ATTEMPTS = 16;
 
-    @SuppressWarnings("deprecation")
-    private static void attemptSpawn(ServerLevel level, int maxCount) {
-        if (level.players().isEmpty()) return;
+    public static void init() {
+        TickEvent.SERVER_LEVEL_POST.register(MessageInABottleSpawner::tick);
+    }
+
+    private static void tick(ServerLevel level) {
+        if (!PlatformHelper.isMessageInABottleEnabled()) return;
+        if (level.getGameTime() % PlatformHelper.getMessageInABottleInterval() != 0) return;
+        List<ServerPlayer> players = level.players();
+        if (players.isEmpty()) return;
         RandomSource random = level.random;
-        var player = level.players().get(random.nextInt(level.players().size()));
+        attemptSpawn(level, players.get(random.nextInt(players.size())).blockPosition(), random, PlatformHelper.getMessageInABottleMaxCount());
+    }
 
-        if (lastValidSpawn == null || (level.getGameTime() - lastSpawnTime) > 12000) {
-            lastValidSpawn = findValidSpawnPos(level, player.blockPosition());
-            lastSpawnTime = level.getGameTime();
+    private static void attemptSpawn(ServerLevel level, BlockPos center, RandomSource random, int maxCount) {
+        for (int i = 0; i < ATTEMPTS; i++) {
+            int x = center.getX() + random.nextInt(SPAWN_RADIUS * 2 + 1) - SPAWN_RADIUS;
+            int z = center.getZ() + random.nextInt(SPAWN_RADIUS * 2 + 1) - SPAWN_RADIUS;
+            if (!level.hasChunk(x >> 4, z >> 4)) continue;
+            BlockPos pos = new BlockPos(x, level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z), z);
+            if (!level.getBiome(pos).is(BiomeTags.IS_BEACH)) continue;
+            if (!level.isEmptyBlock(pos) || !level.getBlockState(pos.below()).is(BlockTags.SAND)) continue;
+            if (countNearby(level, pos) >= maxCount) return;
+            level.setBlock(pos, ObjectRegistry.MESSAGE_IN_A_BOTTLE.get().defaultBlockState(), Block.UPDATE_ALL);
+            return;
         }
+    }
 
-        if (lastValidSpawn == null) return;
-
-        int spawnX = lastValidSpawn.getX();
-        int spawnY = lastValidSpawn.getY();
-        int spawnZ = lastValidSpawn.getZ();
+    private static int countNearby(ServerLevel level, BlockPos center) {
+        Block bottle = ObjectRegistry.MESSAGE_IN_A_BOTTLE.get();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         int count = 0;
-
-        for (int i = 0; i < 200; i++) {
-            int x = spawnX - 50 + random.nextInt(101);
-            int z = spawnZ - 50 + random.nextInt(101);
-            BlockPos pos = new BlockPos(x, spawnY, z);
-
-            if (!level.hasChunkAt(pos)) continue;
-
-            if (level.getBlockState(pos).getBlock() == ObjectRegistry.MESSAGE_IN_A_BOTTLE.get()) {
-                count++;
-                if (count >= maxCount) break;
+        for (int x = center.getX() - COUNT_RADIUS; x <= center.getX() + COUNT_RADIUS; x++) {
+            for (int z = center.getZ() - COUNT_RADIUS; z <= center.getZ() + COUNT_RADIUS; z++) {
+                if (!level.hasChunk(x >> 4, z >> 4)) continue;
+                pos.set(x, level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) - 1, z);
+                if (level.getBlockState(pos).is(bottle)) count++;
             }
         }
-
-        if (count >= maxCount) return;
-
-        BlockState state = ObjectRegistry.MESSAGE_IN_A_BOTTLE.get().defaultBlockState();
-        Vector3d vec = new Vector3d(lastValidSpawn.getX() + 0.5, lastValidSpawn.getY(), lastValidSpawn.getZ() + 0.5);
-        BlockPos placePos = new BlockPos((int) vec.x, (int) vec.y, (int) vec.z);
-
-        if (!level.hasChunkAt(placePos)) return;
-
-        if (level.isEmptyBlock(placePos) && level.getBlockState(placePos.below()).is(BlockTags.SAND)) {
-            level.setBlock(placePos, state, 3);
-        }
-    }
-
-    private static BlockPos findValidSpawnPos(ServerLevel level, BlockPos center) {
-        RandomSource random = level.random;
-        for (int i = 0; i < 10; i++) {
-            int offsetX = random.nextInt(200) - 100;
-            int offsetZ = random.nextInt(200) - 100;
-            BlockPos newPos = center.offset(offsetX, 0, offsetZ);
-            var biome = level.getBiome(newPos);
-            if (biome.is(BiomeTags.IS_BEACH)) {
-                int spawnY = level.getHeight(Heightmap.Types.WORLD_SURFACE, newPos.getX(), newPos.getZ()) - 2;
-                return new BlockPos(newPos.getX(), spawnY, newPos.getZ());
-            }
-        }
-        return null;
-    }
-
-    public static void tick(ServerLevel level) {
-        if (!PlatformHelper.allowBottleSpawning()) return;
-        int interval = PlatformHelper.getBottleSpawnInterval();
-        int maxCount = PlatformHelper.getBottleMaxCount();
-        if (level.getGameTime() % interval == 0) attemptSpawn(level, maxCount);
+        return count;
     }
 }

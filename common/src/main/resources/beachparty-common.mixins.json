@@ -9,7 +9,6 @@
     "HayBaleBlockMixin",
     "MobAccessor",
     "PotionItemMixin",
-    "ServerLevelTickMixin",
     "ZombieMixin"
   ],
   "injectors": {

@@ -1,13 +1,14 @@
 package net.satisfy.beachparty.core.block;
 
+import net.satisfy.foundation.util.ShapeUtil;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringRepresentable;
@@ -31,6 +32,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -38,14 +41,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.satisfy.beachparty.core.block.entity.BeachGoalBlockEntity;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
-import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class BeachGoalBlock extends BaseEntityBlock {
     public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
@@ -96,18 +97,11 @@ public class BeachGoalBlock extends BaseEntityBlock {
     public static final Map<Direction, Map<Part, VoxelShape>> SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
             Map<Part, VoxelShape> partShapeMap = new HashMap<>();
-            partShapeMap.put(Part.BOTTOM_LEFT, BeachpartyUtil.rotateShape(Direction.NORTH, direction, SHAPE_BOTTOM_LEFT));
-            partShapeMap.put(Part.BOTTOM_RIGHT, BeachpartyUtil.rotateShape(Direction.NORTH, direction, SHAPE_BOTTOM_RIGHT));
-            partShapeMap.put(Part.TOP_LEFT, BeachpartyUtil.rotateShape(Direction.NORTH, direction, SHAPE_TOP_LEFT));
-            partShapeMap.put(Part.TOP_RIGHT, BeachpartyUtil.rotateShape(Direction.NORTH, direction, SHAPE_TOP_RIGHT));
+            partShapeMap.put(Part.BOTTOM_LEFT, ShapeUtil.rotateShape(Direction.NORTH, direction, SHAPE_BOTTOM_LEFT));
+            partShapeMap.put(Part.BOTTOM_RIGHT, ShapeUtil.rotateShape(Direction.NORTH, direction, SHAPE_BOTTOM_RIGHT));
+            partShapeMap.put(Part.TOP_LEFT, ShapeUtil.rotateShape(Direction.NORTH, direction, SHAPE_TOP_LEFT));
+            partShapeMap.put(Part.TOP_RIGHT, ShapeUtil.rotateShape(Direction.NORTH, direction, SHAPE_TOP_RIGHT));
             map.put(direction, partShapeMap);
-        }
-    });
-
-    private static final Supplier<VoxelShape> detectionShapeSupplier = () -> Shapes.box(0.125, 0, 0.1875, 0.875, 0.6875, 0.75);
-    public static final Map<Direction, VoxelShape> DETECTION_SHAPE = net.minecraft.Util.make(new HashMap<>(), map -> {
-        for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, detectionShapeSupplier.get()));
         }
     });
 
@@ -151,8 +145,37 @@ public class BeachGoalBlock extends BaseEntityBlock {
         return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
     }
 
-    public VoxelShape getDetectionShape(BlockState state) {
-        return DETECTION_SHAPE.get(state.getValue(FACING));
+    public static Vec3 toWorld(BlockPos base, Direction facing, double x, double y, double z) {
+        double rx;
+        double rz;
+        switch (facing) {
+            case EAST -> {
+                rx = 1 - z;
+                rz = x;
+            }
+            case SOUTH -> {
+                rx = 1 - x;
+                rz = 1 - z;
+            }
+            case WEST -> {
+                rx = z;
+                rz = 1 - x;
+            }
+            default -> {
+                rx = x;
+                rz = z;
+            }
+        }
+        return new Vec3(base.getX() + rx, base.getY() + y, base.getZ() + rz);
+    }
+
+    public static AABB goalArea(BlockPos base, Direction facing) {
+        return new AABB(toWorld(base, facing, 0.25, 0.0, 0.3125), toWorld(base, facing, 1.75, 1.625, 0.75));
+    }
+
+    public static List<BlockPos> partPositions(BlockPos base, Direction facing) {
+        BlockPos right = base.relative(facing.getClockWise());
+        return List.of(base, base.above(), right, right.above());
     }
 
     @Override
@@ -207,7 +230,7 @@ public class BeachGoalBlock extends BaseEntityBlock {
 
     @Override
     public int getSignal(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
-        BlockEntity blockEntity = world.getBlockEntity(pos);
+        BlockEntity blockEntity = world.getBlockEntity(getBasePos(state, pos));
         if (blockEntity instanceof BeachGoalBlockEntity goalBlockEntity) {
             return goalBlockEntity.hasBeachBall() ? 15 : 0;
         }
@@ -215,14 +238,25 @@ public class BeachGoalBlock extends BaseEntityBlock {
     }
 
     @Override
+    protected boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
+        if (id == BeachGoalBlockEntity.EVENT_FIREWORK) {
+            if (level.isClientSide) {
+                BeachGoalBlockEntity.spawnFirework(level, pos, state.getValue(FACING), param);
+            }
+            return true;
+        }
+        return super.triggerEvent(state, level, pos, id, param);
+    }
+
+    @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : BaseEntityBlock.createTickerHelper(type, EntityTypeRegistry.BEACH_GOAL_BLOCK_ENTITY.get(), BeachGoalBlockEntity::tick);
+        return level.isClientSide || state.getValue(PART) != Part.BOTTOM_LEFT ? null : BaseEntityBlock.createTickerHelper(type, EntityTypeRegistry.BEACH_GOAL_BLOCK_ENTITY.get(), BeachGoalBlockEntity::tick);
     }
 
     @Override
     public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        tooltip.add(Component.translatable("tooltip.beachparty.canbeplaced").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))));
+        tooltip.add(Component.translatable("tooltip.foundation.canbeplaced").withStyle(ChatFormatting.GRAY));
     }
 
     @Override

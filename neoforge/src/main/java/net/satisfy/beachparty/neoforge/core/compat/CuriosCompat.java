@@ -1,0 +1,15 @@
+package net.satisfy.beachparty.neoforge.core.compat;
+
+import net.satisfy.foundation.armor.Wearing;
+import top.theillusivec4.curios.api.CuriosApi;
+
+public final class CuriosCompat {
+    private CuriosCompat() {
+    }
+
+    public static void init() {
+        Wearing.registerSlotProvider((entity, item) -> CuriosApi.getCuriosInventory(entity)
+                .map(handler -> handler.isEquipped(item))
+                .orElse(false));
+    }
+}

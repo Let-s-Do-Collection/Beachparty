@@ -1,7 +1,20 @@
 {
-  "variants": {
-    "": {
-      "model": "beachparty:block/palm_bar_stool"
+  "multipart": [
+    {
+      "when": {
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_bar_stool"
+      }
+    },
+    {
+      "when": {
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_bar_stool_dyed"
+      }
     }
-  }
+  ]
 }

@@ -13,24 +13,20 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.satisfy.beachparty.Beachparty;
 import net.satisfy.beachparty.core.block.BeachSunLounger;
 import net.satisfy.beachparty.core.block.BeachTowelBlock;
-import net.satisfy.beachparty.core.registry.CompostablesRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import net.satisfy.beachparty.core.world.PlacedFeatures;
-import net.satisfy.beachparty.fabric.core.compat.trinkets.TrinketsCompatibility;
-import net.satisfy.beachparty.fabric.core.config.ConfigFabric;
+import net.satisfy.beachparty.fabric.core.compat.TrinketsCompat;
+import net.satisfy.beachparty.fabric.core.config.BeachpartyFabricConfig;
 import net.satisfy.beachparty.fabric.core.world.entity.npc.VillagerTrades;
 
 import java.util.function.Predicate;
 
 public class BeachpartyFabric implements ModInitializer {
-    public static boolean trinketsLoaded;
-
     @Override
     public void onInitialize() {
 
-        AutoConfig.register(ConfigFabric.class, GsonConfigSerializer::new);
+        AutoConfig.register(BeachpartyFabricConfig.class, GsonConfigSerializer::new);
         Beachparty.init();
-        CompostablesRegistry.init();
         Beachparty.commonSetup();
         addBiomeModification();
         VillagerTrades.init();
@@ -40,43 +36,32 @@ public class BeachpartyFabric implements ModInitializer {
             return !(onClient || blockState.getBlock() instanceof BeachTowelBlock || blockState.getBlock() instanceof BeachSunLounger);
         });
 
-
-        trinketsLoaded = FabricLoader.getInstance().isModLoaded("trinkets");
-
-        if (trinketsLoaded) {
-            TrinketsCompatibility.load();
+        if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+            TrinketsCompat.init();
         }
     }
 
     private void addBiomeModification() {
-        ConfigFabric config = AutoConfig.getConfigHolder(ConfigFabric.class).getConfig();
+        BeachpartyFabricConfig config = AutoConfig.getConfigHolder(BeachpartyFabricConfig.class).getConfig();
 
         BiomeModification world = BiomeModifications.create(BeachpartyIdentifier.identifier("world_features"));
         Predicate<BiomeSelectionContext> beachBiomes = getBeachpartySelector();
 
-        if (config.spawnSeashells) {
+        if (config.worldGeneration.enableSeashells) {
             world.add(ModificationPhase.ADDITIONS, beachBiomes, ctx ->
                     ctx.getGenerationSettings().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SEASHELLS_KEY)
             );
         }
 
-        if (config.spawnPalms) {
+        if (config.worldGeneration.enablePalmTrees) {
             world.add(ModificationPhase.ADDITIONS, beachBiomes, ctx ->
                     ctx.getGenerationSettings().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.PALM_TREE_KEY)
             );
-        } else {
-            world.add(ModificationPhase.REMOVALS, beachBiomes, ctx ->
-                    ctx.getGenerationSettings().removeFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.PALM_TREE_KEY)
-            );
         }
 
-        if (config.spawnSandwaves) {
+        if (config.worldGeneration.enableSandwaves) {
             world.add(ModificationPhase.ADDITIONS, beachBiomes, ctx ->
                     ctx.getGenerationSettings().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SANDWAVES_KEY)
-            );
-        } else {
-            world.add(ModificationPhase.REMOVALS, beachBiomes, ctx ->
-                    ctx.getGenerationSettings().removeFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SANDWAVES_KEY)
             );
         }
     }

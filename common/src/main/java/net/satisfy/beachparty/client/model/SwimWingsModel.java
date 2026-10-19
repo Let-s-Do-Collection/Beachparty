@@ -2,59 +2,47 @@ package net.satisfy.beachparty.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
+import org.jetbrains.annotations.NotNull;
 
-public class SwimWingsModel<T extends Entity> extends EntityModel<T> implements ChestplateModel {
-
+public class SwimWingsModel<T extends LivingEntity> extends HumanoidModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BeachpartyIdentifier.identifier("swim_wings"), "main");
-    private final ModelPart right_arm;
-    private final ModelPart left_arm;
 
     public SwimWingsModel(ModelPart root) {
-        this.right_arm = root.getChild("right_arm");
-        this.left_arm = root.getChild("left_arm");
+        super(root);
     }
 
-    @SuppressWarnings("unused")
     public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
+        MeshDefinition meshDefinition = new MeshDefinition();
+        PartDefinition root = meshDefinition.getRoot();
+        root.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
+        root.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+        root.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.ZERO);
+        root.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(0, 3).addBox(-8.0F, 1.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
+        root.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(0, 3).mirror().addBox(-8.0F, 1.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
+        root.addOrReplaceChild("right_leg", CubeListBuilder.create(), PartPose.ZERO);
+        root.addOrReplaceChild("left_leg", CubeListBuilder.create(), PartPose.ZERO);
 
-        PartDefinition right_arm = partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(0, 3).addBox(-8.0F, 1.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.25F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-        PartDefinition left_arm = partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(0, 3).mirror().addBox(-8.0F, 1.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.25F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-        return LayerDefinition.create(meshdefinition, 16, 16);
+        return LayerDefinition.create(meshDefinition, 16, 16);
     }
 
     @Override
-    public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
-    public void copyBody(ModelPart body, ModelPart leftArm, ModelPart rightArm) {
-        this.left_arm.copyFrom(leftArm);
-        this.right_arm.copyFrom(rightArm);
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int buffer, int packedLight, int color) {
+    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, int packedColor) {
         poseStack.pushPose();
         poseStack.translate(0.375F, 0.0F, 0.0F);
         poseStack.scale(1.1F, 1.1F, 1.1F);
-        right_arm.render(poseStack, vertexConsumer, buffer, packedLight, color);
+        rightArm.render(poseStack, buffer, packedLight, packedOverlay, packedColor);
         poseStack.popPose();
-
         poseStack.pushPose();
         poseStack.translate(0.45F, -0.05F, 0.0F);
         poseStack.scale(1.1F, 1.1F, 1.1F);
-        left_arm.render(poseStack, vertexConsumer, buffer, packedLight, color);
+        leftArm.render(poseStack, buffer, packedLight, packedOverlay, packedColor);
         poseStack.popPose();
     }
 }

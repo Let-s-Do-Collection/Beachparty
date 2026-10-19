@@ -4,15 +4,40 @@
 * zh_tw translation (thanks to CherryPuff)
 * Palm Sprouts can now be placed in Flower Pots
 * Wet Hay Bale now instantly dries into Thatch in the Nether, matching Vanilla's Sponge drying behavior
+* Creative tab tooltip with a rarity frame, the tab icon and @beachparty
+* Palm Bar Stool, Beach Chair, Palm Chair, Palm Table, Hooded Beach Chair, Beach Sun Lounger, Beach Towel and Beach Parasol can be dyed with any dye, Light Blue stays the default
+* Placed cocktails show their drink as a liquid that sinks smoothly and sloshes with every sip
+* Accessories support on Fabric and NeoForge: Beach Hat, Sunglasses, Rubber Rings, Bikini, Trunks, Swim Wings and Crocs fit into Accessories slots and are rendered there
+* EMI support: Palm Bar and Mini Fridge recipes show up in EMI with their own categories
 
 **Fixed**
+* German translation not loading because the language file was broken
+* Sandcastle Trampling option did nothing
+* Armor and clothing no longer stack, each piece takes its own slot
+* Beach Hat, Sunglasses, Bikini, Trunks, Crocs and Swim Wings not showing when worn in a Curios slot
+* Trunks and Crocs drawing the left and right leg swapped on Fabric
+* Crocs getting the Trunks overlay drawn on top on Fabric
+* Crocs did nothing in a Curios slot, and equipping a Beach Hat or Sunglasses in a Trinkets slot hurt the player
+* Hiding the 3D model of the Beach Hat, Sunglasses and Rubber Rings with Right-Click did nothing
 * Radio not playing any music: it broadcast the record item's registry id instead of the Jukebox Song's registry id, so the client could never resolve a matching track
 
 **Changed**
 * Updated zh_cn translation for 1.21.1 (thanks to Number_Sir)
 * Fixed and updated the Italian translation (thanks to Serena)
 * Refined Portuguese (pt_br) translations (thanks to Leirbag)
+* Curios and Trinkets are now optional. Clothing effects work the same on every platform and in every slot: normal armor slots, Curios, Trinkets and Accessories
+* Clothing effects now match their tooltips: Beach Hat reduces fire damage by 8%, Sunglasses by 12%, Swim Wings always halve fall damage without a cooldown
+* Banner, Palm Signs, Palm and Floaty Boats, seats, Palm Table, Palm Cabinet, villager trades and all clothing (items, models and rendering) now use Foundation instead of their own copies
+* Floaty Chest Boat now shows its chest
+* Mini Fridge has no menu anymore: Right-Click with an ingredient to put it in, Right-Click with an Empty Hand to take it out, and an info tooltip shows what is inside
+* Mini Fridge hums, frosts over and shakes a little while it is freezing something
+* Palm Bar has no menu anymore: Right-Click with the base ingredient of a cocktail to set out its glass on the counter, then Right-Click the glass to add the other ingredients as colored layers, then Right-Click with an Empty Hand to shake the glass until the cocktail is ready, and an info tooltip shows what is inside, what comes next and what you will get
+* Config reworked: options are grouped into World Generation, Beach and Info Tooltips, every option has a tooltip, and Fabric and NeoForge now have the same options. Old config files are reset to defaults
+* World generation toggles for Palm Trees, Seashells and Sandwaves now also work on NeoForge
 * Throwable Coconut drops (Open Coconuts / chance for a Palm Sprout) are now driven by a datapack-editable loot table (`beachparty:gameplay/throwable_coconut`) instead of being hardcoded
+* Beach Ball has new physics: it bounces off the ground and walls, floats on water, rolls visibly, slows down depending on the ground (ice keeps it rolling) and always comes to rest on a flat side
+* Beach Ball kicks: walk into it to nudge, sprint for a strong kick, sneak to dribble, Right-Click to pass in your look direction, Left-Click to shoot, projectiles knock it away. A named Beach Ball keeps its name when picked up
+* Beach Goal detects the ball across the whole goal, the net catches it and a goal launches three fireworks from the posts that burst above the goal instead of real rockets that could hurt nearby players. Redstone works on every part of the goal
 
 ***
 

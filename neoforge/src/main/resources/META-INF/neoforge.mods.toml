@@ -1,43 +1,69 @@
 modLoader = "javafml"
-loaderVersion="[4,)"
-source = "https://github.com/satisfyu/Beachparty"
+loaderVersion = "[4,)"
+license = "Custom"
 issueTrackerURL = "https://github.com/satisfyu/Let-s-Do-Hub"
-license = "All Rights Reserved"
 
 [[mixins]]
-config = "beachparty.mixins.json"
+config = "beachparty-common.mixins.json"
 
+[[mixins]]
+config = "beachparty-wearables.mixins.json"
 
 [[mods]]
 modId = "beachparty"
-
-version="${mod_version}"
+version = "${version}"
 displayName = "[Let's Do] Beachparty"
-
-credits = "MissLilitu"
-authors = "Satisfy, Jason13"
+authors = "satisfy, Jason13Official"
+credits = "MissLilitu, Iri, Dev_Myst"
+logoFile = "pack.png"
+displayURL = "https://www.lets-do.ch"
 description = '''
 Take a break - build sandcastles, drink cocktails and enjoy your Minecraft Session.
+
+Website: https://www.lets-do.ch
+Wiki: https://lets-do.ch/wiki/beachparty/
+Source: https://github.com/Let-s-Do-Collection/Beachparty
+Issues: https://github.com/satisfyu/Let-s-Do-Hub
 '''
-logoFile = "pack.png"
 
 [[dependencies.beachparty]]
 modId = "neoforge"
-mandatory = true
-versionRange = "[21.1.0,)"
+type = "required"
+versionRange = "[21.1,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.beachparty]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.21.1,)"
+type = "required"
+versionRange = "[1.21.1]"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.beachparty]]
 modId = "architectury"
-mandatory = true
-versionRange = "[13.0.0,)"
+type = "required"
+versionRange = "[13.0.8,)"
 ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.beachparty]]
+modId = "foundation"
+type = "required"
+versionRange = "[1.0.12,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.beachparty]]
+modId = "curios"
+type = "optional"
+versionRange = "[9.0.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.beachparty]]
+modId = "accessories"
+type = "optional"
+versionRange = "[1.1.0-beta,)"
+ordering = "NONE"
 side = "BOTH"

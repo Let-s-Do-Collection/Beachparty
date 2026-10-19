@@ -12,6 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ZombieMixin {
     @Inject(method = "registerGoals", at = @At("TAIL"))
     private void addApproachSandCastleGoal(CallbackInfo ci) {
-        ((MobAccessor) this).getGoalSelector().addGoal(1, new ApproachSandCastleGoal((Mob)(Object)this));
+        ((MobAccessor) this).getGoalSelector().addGoal(5, new ApproachSandCastleGoal((Mob)(Object)this));
     }
 }

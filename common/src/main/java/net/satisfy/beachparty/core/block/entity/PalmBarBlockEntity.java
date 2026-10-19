@@ -1,265 +1,346 @@
 package net.satisfy.beachparty.core.block.entity;
 
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.WorldlyContainer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.satisfy.beachparty.client.gui.handler.PalmBarGuiHandler;
+import net.satisfy.beachparty.core.block.CocktailBlock;
 import net.satisfy.beachparty.core.recipe.PalmBarRecipe;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
-import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.registry.RecipeTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Predicate;
+import java.util.Set;
 
-public class PalmBarBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
-    public static final int CAPACITY = 5;
-    private static final int[] SLOTS_FOR_SIDE = new int[]{2, 3, 4};
-    private static final int[] SLOTS_FOR_UP = new int[]{1};
-    private static final int[] SLOTS_FOR_DOWN = new int[]{0};
-    private static final int OUTPUT_SLOT = 0;
-    protected float experience;
-    private NonNullList<ItemStack> inventory;
-    private int shakingTime = 0;
-    private int totalShakingTime;
-    private final ContainerData propertyDelegate = new ContainerData() {
-        @Override
-        public int get(int index) {
-            return switch (index) {
-                case 0 -> PalmBarBlockEntity.this.shakingTime;
-                case 1 -> PalmBarBlockEntity.this.totalShakingTime;
-                default -> 0;
-            };
-        }
-        @Override
-        public void set(int index, int value) {
-            switch (index) {
-                case 0 -> PalmBarBlockEntity.this.shakingTime = value;
-                case 1 -> PalmBarBlockEntity.this.totalShakingTime = value;
-            }
-        }
-        @Override
-        public int getCount() {
-            return 2;
-        }
-    };
+public class PalmBarBlockEntity extends BlockEntity {
+    public static final int MAX_INGREDIENTS = 4;
+    public static final int SHAKES = 5;
+    public static final int SHAKE_COOLDOWN = 10;
+    private final List<ItemStack> ingredients = new ArrayList<>();
+    private final NonNullList<ItemStack> leftovers = NonNullList.create();
+    private ItemStack result = ItemStack.EMPTY;
+    private int shakes;
+    private long lastShake = -SHAKE_COOLDOWN;
+    private boolean previewDirty = true;
+    private List<PalmBarRecipe> candidates = List.of();
+    @Nullable
+    private PalmBarRecipe matched;
 
     public PalmBarBlockEntity(BlockPos pos, BlockState state) {
         super(EntityTypeRegistry.PALM_BAR_BLOCK_ENTITY.get(), pos, state);
-        inventory = NonNullList.withSize(CAPACITY, ItemStack.EMPTY);
     }
 
-    public static void tick(Level world, BlockPos pos, BlockState state, PalmBarBlockEntity blockEntity) {
-        if (world.isClientSide) return;
-        boolean dirty = false;
-        List<RecipeHolder<PalmBarRecipe>> recipes = world.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.PALM_BAR_RECIPE_TYPE.get());
-        Optional<PalmBarRecipe> recipe = Optional.ofNullable(blockEntity.getRecipe(recipes));
-        RegistryAccess access = world.registryAccess();
-        if (recipe.isPresent() && blockEntity.canCraft(recipe.get(), access)) {
-            blockEntity.shakingTime++;
-            if (blockEntity.shakingTime >= blockEntity.totalShakingTime) {
-                blockEntity.shakingTime = 0;
-                blockEntity.craft(recipe.get(), access);
-                dirty = true;
+    public static List<PalmBarRecipe> getRecipes(Level level) {
+        return level.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.PALM_BAR_RECIPE_TYPE.get()).stream()
+                .map(RecipeHolder::value)
+                .sorted(Comparator.comparingInt((PalmBarRecipe recipe) -> recipe.getIngredients().size()).thenComparing(recipe -> recipe.getResultItem().getDescriptionId()))
+                .toList();
+    }
+
+    public static List<ItemStack> getStartItems(Level level) {
+        return distinctItems(getRecipes(level).stream().map(recipe -> recipe.getIngredients().getFirst()).toList(), List.of());
+    }
+
+    private static List<ItemStack> distinctItems(List<Ingredient> ingredients, List<ItemStack> present) {
+        Set<Item> seen = new LinkedHashSet<>();
+        present.forEach(stack -> seen.add(stack.getItem()));
+        List<ItemStack> items = new ArrayList<>();
+        for (Ingredient ingredient : ingredients) {
+            ItemStack[] options = ingredient.getItems();
+            if (options.length > 0 && seen.add(options[0].getItem())) {
+                items.add(options[0].copyWithCount(1));
             }
-        } else {
-            blockEntity.shakingTime = 0;
         }
-        if (dirty) {
-            blockEntity.setChanged();
-            world.sendBlockUpdated(pos, state, state, 3);
+        return items;
+    }
+
+    private static boolean fits(PalmBarRecipe recipe, List<ItemStack> stacks) {
+        List<Ingredient> needed = recipe.getIngredients();
+        if (stacks.isEmpty()) {
+            return true;
         }
+        if (stacks.size() > needed.size() || !needed.getFirst().test(stacks.getFirst())) {
+            return false;
+        }
+        boolean[] used = new boolean[needed.size()];
+        used[0] = true;
+        return assign(needed, stacks, 1, used);
+    }
+
+    private static boolean assign(List<Ingredient> needed, List<ItemStack> stacks, int index, boolean[] used) {
+        if (index == stacks.size()) {
+            return true;
+        }
+        for (int i = 0; i < needed.size(); i++) {
+            if (!used[i] && needed.get(i).test(stacks.get(index))) {
+                used[i] = true;
+                if (assign(needed, stacks, index + 1, used)) {
+                    return true;
+                }
+                used[i] = false;
+            }
+        }
+        return false;
+    }
+
+    private void refreshPreview() {
+        if (!previewDirty || this.level == null) {
+            return;
+        }
+        previewDirty = false;
+        candidates = getRecipes(this.level).stream().filter(recipe -> fits(recipe, ingredients)).toList();
+        matched = ingredients.isEmpty() ? null : candidates.stream().filter(recipe -> recipe.getIngredients().size() == ingredients.size()).findFirst().orElse(null);
+    }
+
+    public List<PalmBarRecipe> getCandidates() {
+        refreshPreview();
+        return candidates;
+    }
+
+    @Nullable
+    public PalmBarRecipe getMatched() {
+        refreshPreview();
+        return matched;
+    }
+
+    @Nullable
+    public PalmBarRecipe getPreview() {
+        PalmBarRecipe recipe = getMatched();
+        if (recipe != null) {
+            return recipe;
+        }
+        List<PalmBarRecipe> options = getCandidates();
+        return ingredients.isEmpty() || options.isEmpty() ? null : options.getFirst();
+    }
+
+    public List<ItemStack> getNextItems() {
+        if (isLocked() || ingredients.size() >= MAX_INGREDIENTS) {
+            return List.of();
+        }
+        List<Ingredient> missing = new ArrayList<>();
+        for (PalmBarRecipe recipe : getCandidates()) {
+            for (Ingredient ingredient : recipe.getIngredients()) {
+                if (ingredients.stream().noneMatch(ingredient)) {
+                    missing.add(ingredient);
+                }
+            }
+        }
+        return distinctItems(missing, ingredients);
+    }
+
+    public boolean canAdd(ItemStack stack) {
+        if (stack.isEmpty() || isLocked() || ingredients.size() >= MAX_INGREDIENTS || this.level == null) {
+            return false;
+        }
+        List<ItemStack> next = new ArrayList<>(ingredients);
+        next.add(stack.copyWithCount(1));
+        return getCandidates().stream().anyMatch(recipe -> fits(recipe, next));
+    }
+
+    public void add(ItemStack stack) {
+        ingredients.add(stack.split(1));
+        markIngredientsChanged();
+    }
+
+    public ItemStack takeBack() {
+        if (ingredients.isEmpty() || isLocked()) {
+            return ItemStack.EMPTY;
+        }
+        ItemStack stack = ingredients.removeLast();
+        markIngredientsChanged();
+        return stack;
+    }
+
+    public List<ItemStack> shake(long time) {
+        PalmBarRecipe recipe = getMatched();
+        if (recipe == null || !result.isEmpty() || isShaking(time)) {
+            return List.of();
+        }
+        shakes++;
+        lastShake = time;
+        if (shakes < SHAKES) {
+            setChanged();
+            return List.of();
+        }
+        List<ItemStack> remainders = new ArrayList<>();
+        for (ItemStack ingredient : ingredients) {
+            Item remainder = ingredient.getItem().getCraftingRemainingItem();
+            if (remainder != null) {
+                remainders.add(new ItemStack(remainder));
+            }
+        }
+        result = recipe.getResultItem().copy();
+        ingredients.clear();
+        shakes = 0;
+        markIngredientsChanged();
+        return remainders;
+    }
+
+    public ItemStack takeResult() {
+        ItemStack taken = result;
+        result = ItemStack.EMPTY;
+        setChanged();
+        return taken;
+    }
+
+    public List<ItemStack> takeLeftovers() {
+        List<ItemStack> taken = new ArrayList<>(leftovers);
+        leftovers.clear();
+        setChanged();
+        return taken;
+    }
+
+    public NonNullList<ItemStack> clearContents() {
+        NonNullList<ItemStack> contents = NonNullList.create();
+        contents.addAll(ingredients);
+        if (!result.isEmpty()) {
+            contents.add(result);
+        }
+        ingredients.clear();
+        result = ItemStack.EMPTY;
+        shakes = 0;
+        markIngredientsChanged();
+        return contents;
+    }
+
+    @Nullable
+    public Block getGlassBlock() {
+        PalmBarRecipe recipe = getPreview();
+        ItemStack stack = !result.isEmpty() ? result : recipe != null ? recipe.getResultItem() : ItemStack.EMPTY;
+        if (stack.getItem() instanceof BlockItem item && item.getBlock() instanceof CocktailBlock) {
+            return item.getBlock();
+        }
+        return null;
+    }
+
+    public NonNullList<ItemStack> getDrops() {
+        NonNullList<ItemStack> drops = NonNullList.create();
+        drops.addAll(ingredients);
+        drops.addAll(leftovers);
+        if (!result.isEmpty()) {
+            drops.add(result);
+        }
+        return drops;
+    }
+
+    private void markIngredientsChanged() {
+        if (ingredients.isEmpty()) {
+            shakes = 0;
+        }
+        previewDirty = true;
+        setChanged();
+    }
+
+    public boolean isLocked() {
+        return shakes > 0 || !result.isEmpty();
+    }
+
+    public List<ItemStack> getIngredients() {
+        return ingredients;
+    }
+
+    public ItemStack getResult() {
+        return result;
+    }
+
+    public List<ItemStack> getLeftovers() {
+        return leftovers;
+    }
+
+    public boolean hasLeftovers() {
+        return !leftovers.isEmpty();
+    }
+
+    public int getShakes() {
+        return shakes;
+    }
+
+    public boolean isShaking(long time) {
+        return time - lastShake < SHAKE_COOLDOWN && time >= lastShake;
+    }
+
+    public long getLastShake() {
+        return lastShake;
     }
 
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
         super.loadAdditional(nbt, provider);
-        inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(nbt, inventory, provider);
-        this.shakingTime = nbt.getShort("ShakingTime");
-        this.totalShakingTime = nbt.getShort("TotalShakingTime");
-        this.experience = nbt.getFloat("Experience");
+        ingredients.clear();
+        leftovers.clear();
+        result = ItemStack.EMPTY;
+        if (nbt.contains("Bar")) {
+            CompoundTag bar = nbt.getCompound("Bar");
+            NonNullList<ItemStack> stored = NonNullList.withSize(MAX_INGREDIENTS, ItemStack.EMPTY);
+            ContainerHelper.loadAllItems(bar.getCompound("Ingredients"), stored, provider);
+            stored.stream().filter(stack -> !stack.isEmpty()).forEach(ingredients::add);
+            result = ItemStack.parseOptional(provider, bar.getCompound("Result"));
+            shakes = bar.getInt("Shakes");
+            lastShake = Math.max(bar.getLong("LastShake"), -SHAKE_COOLDOWN);
+            NonNullList<ItemStack> rest = NonNullList.withSize(bar.getInt("LeftoverCount"), ItemStack.EMPTY);
+            ContainerHelper.loadAllItems(bar.getCompound("Leftovers"), rest, provider);
+            rest.stream().filter(stack -> !stack.isEmpty()).forEach(leftovers::add);
+        } else if (nbt.contains("Items")) {
+            NonNullList<ItemStack> old = NonNullList.withSize(5, ItemStack.EMPTY);
+            ContainerHelper.loadAllItems(nbt, old, provider);
+            old.stream().filter(stack -> !stack.isEmpty()).forEach(leftovers::add);
+            shakes = 0;
+        }
+        previewDirty = true;
     }
 
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
         super.saveAdditional(nbt, provider);
-        ContainerHelper.saveAllItems(nbt, this.inventory, provider);
-        nbt.putFloat("Experience", this.experience);
-        nbt.putShort("ShakingTime", (short) this.shakingTime);
-        nbt.putShort("TotalShakingTime", (short) this.totalShakingTime);
-    }
-
-    private boolean canCraft(@Nullable PalmBarRecipe recipe, RegistryAccess access) {
-        if (recipe == null) return false;
-        ItemStack recipeResultItem = recipe.getResultItem(access);
-        if (recipeResultItem.isEmpty() || areInputsEmpty()) return false;
-        ItemStack outputSlotItem = getItem(OUTPUT_SLOT);
-        if (outputSlotItem.isEmpty()) return true;
-        return ItemStack.isSameItem(outputSlotItem, recipeResultItem) && outputSlotItem.getCount() + recipeResultItem.getCount() <= outputSlotItem.getMaxStackSize();
-    }
-
-    private boolean areInputsEmpty() {
-        for (int i = 1; i <= 4; i++) {
-            if (!this.getItem(i).isEmpty()) {
-                return false;
-            }
+        CompoundTag bar = new CompoundTag();
+        NonNullList<ItemStack> stored = NonNullList.withSize(MAX_INGREDIENTS, ItemStack.EMPTY);
+        for (int i = 0; i < ingredients.size() && i < MAX_INGREDIENTS; i++) {
+            stored.set(i, ingredients.get(i));
         }
-        return true;
-    }
-
-    private void craft(PalmBarRecipe recipe, RegistryAccess access) {
-        if (!canCraft(recipe, access)) return;
-        ItemStack recipeOutput = recipe.getResultItem(access).copy();
-        ItemStack outputSlotStack = getItem(OUTPUT_SLOT);
-        if (outputSlotStack.isEmpty()) {
-            setItem(OUTPUT_SLOT, recipeOutput);
-        } else if (ItemStack.isSameItem(outputSlotStack, recipeOutput)) {
-            outputSlotStack.grow(recipeOutput.getCount());
-            if (outputSlotStack.getCount() > outputSlotStack.getMaxStackSize()) {
-                outputSlotStack.setCount(outputSlotStack.getMaxStackSize());
-            }
+        bar.put("Ingredients", ContainerHelper.saveAllItems(new CompoundTag(), stored, true, provider));
+        if (!result.isEmpty()) {
+            bar.put("Result", result.save(provider));
         }
-        consumeIngredients(recipe);
+        bar.putInt("Shakes", shakes);
+        bar.putLong("LastShake", lastShake);
+        bar.putInt("LeftoverCount", leftovers.size());
+        bar.put("Leftovers", ContainerHelper.saveAllItems(new CompoundTag(), leftovers, true, provider));
+        nbt.put("Bar", bar);
     }
 
-    private ItemStack getRemainderItem(ItemStack stack) {
-        if (stack.getItem().hasCraftingRemainingItem()) {
-            return new ItemStack(Objects.requireNonNull(stack.getItem().getCraftingRemainingItem()));
-        }
-        return ItemStack.EMPTY;
-    }
-
-    private void consumeIngredients(PalmBarRecipe recipe) {
-        for (Ingredient ingredient : recipe.getIngredients()) {
-            for (int i = 1; i <= 4; i++) {
-                ItemStack slotItem = this.getItem(i);
-                if (ingredient.test(slotItem)) {
-                    ItemStack remainder = getRemainderItem(slotItem);
-                    slotItem.shrink(1);
-                    if (slotItem.isEmpty() && !remainder.isEmpty()) {
-                        this.setItem(i, remainder);
-                    } else if (slotItem.isEmpty()) {
-                        this.setItem(i, ItemStack.EMPTY);
-                    }
-                    break;
-                }
-            }
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        if (this.level != null && !this.level.isClientSide) {
+            this.level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
         }
     }
 
     @Override
-    public @NotNull ItemStack getItem(int i) {
-        return this.inventory.get(i);
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public @NotNull ItemStack removeItem(int i, int j) {
-        return ContainerHelper.removeItem(this.inventory, i, j);
-    }
-
-    @Override
-    public @NotNull ItemStack removeItemNoUpdate(int i) {
-        return this.inventory.remove(i);
-    }
-
-    @Override
-    public int @NotNull [] getSlotsForFace(Direction side) {
-        if (side.equals(Direction.UP)) {
-            return SLOTS_FOR_UP;
-        } else if (side.equals(Direction.DOWN)) {
-            return SLOTS_FOR_DOWN;
-        } else return SLOTS_FOR_SIDE;
-    }
-
-    @Override
-    public boolean canPlaceItemThroughFace(int i, ItemStack itemStack, @Nullable Direction direction) {
-        return false;
-    }
-
-    @Override
-    public boolean canTakeItemThroughFace(int i, ItemStack itemStack, Direction direction) {
-        return false;
-    }
-
-    @Override
-    public int getContainerSize() {
-        return CAPACITY;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return this.inventory.stream().allMatch(Predicate.isEqual(ItemStack.EMPTY));
-    }
-
-    @Override
-    public void setItem(int slot, ItemStack stack) {
-        this.inventory.set(slot, stack);
-        if (stack.getCount() > this.getMaxStackSize()) {
-            stack.setCount(this.getMaxStackSize());
-        }
-        if (slot >= 1 && slot <= 4) {
-            this.totalShakingTime = 50;
-            this.shakingTime = 0;
-            setChanged();
-        }
-    }
-
-    @Override
-    public boolean stillValid(Player player) {
-        return this.level != null && this.level.getBlockEntity(this.worldPosition) == this && player.distanceToSqr(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5) <= 64.0;
-    }
-
-    @Override
-    public @NotNull Component getDisplayName() {
-        return ObjectRegistry.PALM_BAR.get().getName();
-    }
-
-    @Nullable
-    @Override
-    public AbstractContainerMenu createMenu(int syncId, Inventory inv, Player player) {
-        return new PalmBarGuiHandler(syncId, inv, this, this.propertyDelegate);
-    }
-
-    @Override
-    public void clearContent() {
-        this.inventory.clear();
-    }
-
-    private PalmBarRecipe getRecipe(List<RecipeHolder<PalmBarRecipe>> recipes) {
-        recipeLoop:
-        for (RecipeHolder<PalmBarRecipe> holder : recipes) {
-            PalmBarRecipe recipe = holder.value();
-            for (Ingredient ingredient : recipe.getIngredients()) {
-                boolean ok = false;
-                for (int slotIndex = 1; slotIndex < inventory.size(); slotIndex++) {
-                    ItemStack slotItem = inventory.get(slotIndex);
-                    if (ingredient.test(slotItem)) {
-                        ok = true;
-                        break;
-                    }
-                }
-                if (!ok) continue recipeLoop;
-            }
-            return recipe;
-        }
-        return null;
+    public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        return saveWithoutMetadata(provider);
     }
 }

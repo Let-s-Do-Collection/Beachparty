@@ -2,60 +2,43 @@ package net.satisfy.beachparty.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
+import org.jetbrains.annotations.NotNull;
 
-public class TrunksModel<T extends Entity> extends EntityModel<T> implements LeggingsModel {
+public class TrunksModel<T extends LivingEntity> extends HumanoidModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BeachpartyIdentifier.identifier("trunks"), "main");
-    private final ModelPart body;
-    private final ModelPart right_leg;
-    private final ModelPart left_leg;
 
     public TrunksModel(ModelPart root) {
-        this.body = root.getChild("body");
-        this.right_leg = root.getChild("right_leg");
-        this.left_leg = root.getChild("left_leg");
+        super(root);
     }
 
-    @SuppressWarnings("unused")
     public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
+        MeshDefinition meshDefinition = new MeshDefinition();
+        PartDefinition root = meshDefinition.getRoot();
+        root.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
+        root.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+        root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 14).addBox(-4.0F, 9.6F, -2.0F, 8.0F, 1.0F, 4.0F, new CubeDeformation(0.325F)), PartPose.ZERO);
+        root.addOrReplaceChild("right_arm", CubeListBuilder.create(), PartPose.ZERO);
+        root.addOrReplaceChild("left_arm", CubeListBuilder.create(), PartPose.ZERO);
+        root.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.3F)), PartPose.offset(-1.9F, 12.0F, 0.0F));
+        root.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(16, 0).mirror().addBox(-2.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.3F)).mirror(false), PartPose.offset(1.9F, 12.0F, 0.0F));
 
-        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 14).addBox(-4.0F, 9.6F, -2.0F, 8.0F, 1.0F, 4.0F, new CubeDeformation(0.325F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-
-        PartDefinition right_leg = partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.3F)), PartPose.offset(-1.9F, 12.0F, 0.0F));
-
-        PartDefinition left_leg = partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(16, 0).mirror().addBox(-2.0F, -1.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.3F)).mirror(false), PartPose.offset(1.9F, 12.0F, 0.0F));
-
-        return LayerDefinition.create(meshdefinition, 32, 32);
+        return LayerDefinition.create(meshDefinition, 32, 32);
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.right_leg.xRot = (float) Math.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        this.left_leg.xRot = (float) Math.cos(limbSwing * 0.6662F + Math.PI) * 1.4F * limbSwingAmount;
-    }
-
-    @Override
-    public void copyBody(ModelPart model, ModelPart left_leg, ModelPart right_leg) {
-        this.body.copyFrom(model);
-        this.right_leg.copyFrom(right_leg);
-        this.left_leg.copyFrom(left_leg);
-    }
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int buffer, int packedLight, int color) {
+    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, int packedColor) {
         poseStack.pushPose();
         poseStack.scale(1.1F, 1.1F, 1.1F);
-        body.render(poseStack, vertexConsumer, buffer, packedLight, color);
-        right_leg.render(poseStack, vertexConsumer, buffer, packedLight, color);
-        left_leg.render(poseStack, vertexConsumer, buffer, packedLight, color);
+        body.render(poseStack, buffer, packedLight, packedOverlay, packedColor);
+        rightLeg.render(poseStack, buffer, packedLight, packedOverlay, packedColor);
+        leftLeg.render(poseStack, buffer, packedLight, packedOverlay, packedColor);
         poseStack.popPose();
     }
 }

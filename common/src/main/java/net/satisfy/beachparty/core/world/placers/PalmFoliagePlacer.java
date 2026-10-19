@@ -18,6 +18,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class PalmFoliagePlacer extends FoliagePlacer {
     public static final MapCodec<PalmFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec((placer) -> foliagePlacerParts(placer).apply(placer, PalmFoliagePlacer::new));
+    private static final int LONG_FROND_CHANCE = 3;
+    private static final int HANGING_TIP_CHANCE = 2;
+    private static final int SHORT_SIDE_FROND_CHANCE = 3;
 
     public PalmFoliagePlacer(IntProvider pRadius, IntProvider pOffset) {
         super(pRadius, pOffset);
@@ -40,9 +43,14 @@ public class PalmFoliagePlacer extends FoliagePlacer {
             }
         }
 
-        for (int i = 0; i < 2; i++) {
+        boolean longFrond = pRandom.nextInt(LONG_FROND_CHANCE) == 0;
+        for (int i = 0; i < (longFrond ? 3 : 2); i++) {
             pos.move(direction);
             tryPlaceLeaf(pLevel, foliageSetter, pRandom, pConfig, pos);
+            pos.move(Direction.DOWN);
+            tryPlaceLeaf(pLevel, foliageSetter, pRandom, pConfig, pos);
+        }
+        if (!longFrond && pRandom.nextInt(HANGING_TIP_CHANCE) == 0) {
             pos.move(Direction.DOWN);
             tryPlaceLeaf(pLevel, foliageSetter, pRandom, pConfig, pos);
         }
@@ -54,7 +62,8 @@ public class PalmFoliagePlacer extends FoliagePlacer {
         tryPlaceLeaf(pLevel, foliageSetter, pRandom, pConfig, pos);
         pos.move(direction);
         tryPlaceLeaf(pLevel, foliageSetter, pRandom, pConfig, pos.relative(direction.getClockWise()));
-        for (int i = 0; i < 3; i++) {
+        int sideDroop = pRandom.nextInt(SHORT_SIDE_FROND_CHANCE) == 0 ? 2 : 3;
+        for (int i = 0; i < sideDroop; i++) {
             tryPlaceLeaf(pLevel, foliageSetter, pRandom, pConfig, pos);
             pos.move(Direction.DOWN);
         }

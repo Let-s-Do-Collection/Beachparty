@@ -1,81 +1,73 @@
 package net.satisfy.beachparty.core.block.entity;
 
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-import net.satisfy.beachparty.client.gui.handler.MiniFridgeGuiHandler;
+import net.satisfy.beachparty.core.block.MiniFridgeBlock;
 import net.satisfy.beachparty.core.recipe.MiniFridgeRecipe;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
-import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.registry.RecipeTypeRegistry;
-import net.satisfy.beachparty.core.world.ImplementedInventory;
+import net.satisfy.foundation.util.ImplementedInventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 
-public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInventory, BlockEntityTicker<MiniFridgeBlockEntity>, MenuProvider {
+public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInventory, BlockEntityTicker<MiniFridgeBlockEntity> {
     public static final int CAPACITY = 2;
-    private static final int[] SLOTS_FOR_INPUT = new int[]{1};
-    private static final int[] SLOTS_FOR_OUTPUT = new int[]{0};
-    private static final int OUTPUT_SLOT = 0;
-    private static final int INPUT_SLOT = 1;
-    protected float experience;
-    private NonNullList<ItemStack> inventory;
-    private int fermentationTime = 0;
+    public static final int OUTPUT_SLOT = 0;
+    public static final int INPUT_SLOT = 1;
+    private static final int[] SLOTS_FOR_INPUT = new int[]{INPUT_SLOT};
+    private static final int[] SLOTS_FOR_OUTPUT = new int[]{OUTPUT_SLOT};
+    private NonNullList<ItemStack> inventory = NonNullList.withSize(CAPACITY, ItemStack.EMPTY);
+    private int fermentationTime;
     private int totalFermentationTime;
-
-    private final ContainerData propertyDelegate = new ContainerData() {
-        @Override
-        public int get(int index) {
-            return switch (index) {
-                case 0 -> fermentationTime;
-                case 1 -> totalFermentationTime;
-                default -> 0;
-            };
-        }
-
-        @Override
-        public void set(int index, int value) {
-            switch (index) {
-                case 0 -> fermentationTime = value;
-                case 1 -> totalFermentationTime = value;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
-    };
+    private ItemStack cachedInput = ItemStack.EMPTY;
+    private Optional<MiniFridgeRecipe> cachedRecipe = Optional.empty();
 
     public MiniFridgeBlockEntity(BlockPos pos, BlockState state) {
         super(EntityTypeRegistry.MINI_FRIDGE_BLOCK_ENTITY.get(), pos, state);
-        this.inventory = NonNullList.withSize(CAPACITY, ItemStack.EMPTY);
+    }
+
+    public static Optional<RecipeHolder<MiniFridgeRecipe>> findRecipe(Level level, ItemStack stack) {
+        if (stack.isEmpty()) {
+            return Optional.empty();
+        }
+        return level.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.MINI_FRIDGE_RECIPE_TYPE.get()).stream()
+                .filter(holder -> !holder.value().getIngredients().isEmpty() && holder.value().getIngredients().getFirst().test(stack))
+                .findFirst();
+    }
+
+    public static List<ItemStack> getStartItems(Level level) {
+        return level.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.MINI_FRIDGE_RECIPE_TYPE.get()).stream()
+                .filter(holder -> !holder.value().getIngredients().isEmpty())
+                .map(holder -> holder.value().getIngredients().getFirst().getItems())
+                .filter(items -> items.length > 0)
+                .map(items -> items[0].copy())
+                .toList();
     }
 
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
         super.loadAdditional(nbt, provider);
-        this.inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        this.inventory = NonNullList.withSize(CAPACITY, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(nbt, this.inventory, provider);
         this.fermentationTime = nbt.getInt("FermentationTime");
         this.totalFermentationTime = nbt.getInt("TotalFermentationTime");
-        this.experience = nbt.getFloat("Experience");
     }
 
     @Override
@@ -84,57 +76,117 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
         ContainerHelper.saveAllItems(compoundTag, this.inventory, provider);
         compoundTag.putInt("FermentationTime", this.fermentationTime);
         compoundTag.putInt("TotalFermentationTime", this.totalFermentationTime);
-        compoundTag.putFloat("Experience", this.experience);
     }
 
     @Override
-    public void tick(Level world, BlockPos pos, BlockState state, MiniFridgeBlockEntity blockEntity) {
-        if (world.isClientSide) return;
-        boolean dirty = false;
-        List<RecipeHolder<MiniFridgeRecipe>> recipes = world.getRecipeManager()
-                .getAllRecipesFor(RecipeTypeRegistry.MINI_FRIDGE_RECIPE_TYPE.get());
-        Optional<MiniFridgeRecipe> recipeType = Optional.ofNullable(getRecipe(recipes, inventory));
-        assert level != null;
-        RegistryAccess access = level.registryAccess();
-        if (recipeType.isPresent() && canCraft(recipeType.get(), access)) {
-            if (this.fermentationTime == 0) {
-                this.totalFermentationTime = recipeType.get().getCraftingTime();
-            }
-            this.fermentationTime++;
-            if (this.fermentationTime >= this.totalFermentationTime) {
+    public void tick(Level level, BlockPos pos, BlockState state, MiniFridgeBlockEntity blockEntity) {
+        Optional<MiniFridgeRecipe> recipe = currentRecipe(level);
+        boolean freezing = recipe.isPresent() && canCraft(recipe.get(), level);
+        if (!level.isClientSide && state.getValue(MiniFridgeBlock.FREEZING) != freezing) {
+            level.setBlock(pos, state.setValue(MiniFridgeBlock.FREEZING, freezing), Block.UPDATE_ALL);
+        }
+        if (!freezing) {
+            if (this.fermentationTime != 0 && !level.isClientSide) {
                 this.fermentationTime = 0;
-                craft(recipeType.get(), access);
-                dirty = true;
+                setChanged();
             }
-        } else {
-            this.fermentationTime = 0;
-        }
-        if (dirty) {
-            setChanged();
-        }
-    }
-
-    private boolean canCraft(MiniFridgeRecipe recipe, RegistryAccess access) {
-        if (recipe == null || recipe.getResultItem(access).isEmpty()) {
-            return false;
-        }
-        ItemStack inputStack = this.getItem(INPUT_SLOT);
-        ItemStack outputStack = this.getItem(OUTPUT_SLOT);
-        return !inputStack.isEmpty() && (outputStack.isEmpty() || outputStack == recipe.getResultItem(access));
-    }
-
-    private void craft(MiniFridgeRecipe recipe, RegistryAccess access) {
-        if (!canCraft(recipe, access)) {
             return;
         }
-        final ItemStack recipeOutput = recipe.getResultItem(access);
-        final ItemStack outputSlotStack = this.getItem(OUTPUT_SLOT);
-        if (outputSlotStack.isEmpty()) {
-            setItem(OUTPUT_SLOT, recipeOutput.copy());
+        this.totalFermentationTime = recipe.get().getCraftingTime();
+        if (level.isClientSide) {
+            this.fermentationTime = Math.min(this.fermentationTime + 1, this.totalFermentationTime);
+            return;
         }
-        ItemStack inputStack = this.getItem(INPUT_SLOT);
-        inputStack.shrink(1);
-        setItem(INPUT_SLOT, inputStack.isEmpty() ? ItemStack.EMPTY : inputStack);
+        this.fermentationTime++;
+        if (this.fermentationTime >= this.totalFermentationTime) {
+            this.fermentationTime = 0;
+            craft(recipe.get(), level);
+        }
+    }
+
+    private Optional<MiniFridgeRecipe> currentRecipe(Level level) {
+        ItemStack input = getItem(INPUT_SLOT);
+        if (input.isEmpty()) {
+            return Optional.empty();
+        }
+        if (!ItemStack.isSameItemSameComponents(input, cachedInput)) {
+            cachedInput = input.copyWithCount(1);
+            cachedRecipe = findRecipe(level, input).map(RecipeHolder::value);
+        }
+        return cachedRecipe;
+    }
+
+    private boolean canCraft(MiniFridgeRecipe recipe, Level level) {
+        ItemStack result = recipe.getResultItem(level.registryAccess());
+        if (result.isEmpty()) {
+            return false;
+        }
+        ItemStack output = getItem(OUTPUT_SLOT);
+        if (output.isEmpty()) {
+            return true;
+        }
+        return ItemStack.isSameItemSameComponents(output, result) && output.getCount() + result.getCount() <= output.getMaxStackSize();
+    }
+
+    private void craft(MiniFridgeRecipe recipe, Level level) {
+        ItemStack result = recipe.getResultItem(level.registryAccess());
+        ItemStack output = getItem(OUTPUT_SLOT);
+        if (output.isEmpty()) {
+            this.inventory.set(OUTPUT_SLOT, result.copy());
+        } else {
+            output.grow(result.getCount());
+        }
+        getItem(INPUT_SLOT).shrink(1);
+        setChanged();
+    }
+
+    public boolean tryInsert(ItemStack stack) {
+        if (this.level == null || findRecipe(this.level, stack).isEmpty()) {
+            return false;
+        }
+        ItemStack input = getItem(INPUT_SLOT);
+        if (input.isEmpty()) {
+            this.inventory.set(INPUT_SLOT, stack.split(stack.getMaxStackSize()));
+            this.fermentationTime = 0;
+            setChanged();
+            return true;
+        }
+        if (!ItemStack.isSameItemSameComponents(input, stack) || input.getCount() >= input.getMaxStackSize()) {
+            return false;
+        }
+        input.grow(stack.split(input.getMaxStackSize() - input.getCount()).getCount());
+        setChanged();
+        return true;
+    }
+
+    public ItemStack takeOut() {
+        int slot = !getItem(OUTPUT_SLOT).isEmpty() ? OUTPUT_SLOT : INPUT_SLOT;
+        ItemStack stack = getItem(slot);
+        if (stack.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+        this.inventory.set(slot, ItemStack.EMPTY);
+        if (slot == INPUT_SLOT) {
+            this.fermentationTime = 0;
+        }
+        setChanged();
+        return stack;
+    }
+
+    public ItemStack getInput() {
+        return getItem(INPUT_SLOT);
+    }
+
+    public ItemStack getOutput() {
+        return getItem(OUTPUT_SLOT);
+    }
+
+    public int getProgress() {
+        return this.totalFermentationTime <= 0 ? 0 : Math.min(100, this.fermentationTime * 100 / this.totalFermentationTime);
+    }
+
+    public boolean isOutputBlocked() {
+        return this.level != null && findRecipe(this.level, getInput()).map(holder -> !canCraft(holder.value(), this.level)).orElse(false);
     }
 
     @Override
@@ -144,26 +196,27 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
 
     @Override
     public int @NotNull [] getSlotsForFace(Direction side) {
-        if (side == Direction.DOWN) {
-            return SLOTS_FOR_OUTPUT;
-        } else {
-            return SLOTS_FOR_INPUT;
-        }
+        return side == Direction.DOWN ? SLOTS_FOR_OUTPUT : SLOTS_FOR_INPUT;
     }
 
     @Override
     public void setItem(int slot, ItemStack stack) {
+        boolean changedInput = slot == INPUT_SLOT && !ItemStack.isSameItemSameComponents(getItem(INPUT_SLOT), stack);
         this.inventory.set(slot, stack);
-        if (slot == INPUT_SLOT) {
-            this.totalFermentationTime = 50;
+        if (changedInput) {
             this.fermentationTime = 0;
-            setChanged();
         }
+        setChanged();
+    }
+
+    @Override
+    public boolean canPlaceItem(int slot, ItemStack stack) {
+        return slot == INPUT_SLOT && this.level != null && findRecipe(this.level, stack).isPresent();
     }
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction dir) {
-        return slot == INPUT_SLOT;
+        return canPlaceItem(slot, stack);
     }
 
     @Override
@@ -172,42 +225,20 @@ public class MiniFridgeBlockEntity extends BlockEntity implements ImplementedInv
     }
 
     @Override
-    public boolean stillValid(Player player) {
-        assert this.level != null;
-        return this.level.getBlockEntity(this.worldPosition) == this &&
-                player.distanceToSqr(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5) <= 64.0;
-    }
-
-    @Override
-    public @NotNull Component getDisplayName() {
-        return ObjectRegistry.MINI_FRIDGE.get().getName();
-    }
-
-    @Nullable
-    @Override
-    public AbstractContainerMenu createMenu(int syncId, Inventory inv, Player player) {
-        return new MiniFridgeGuiHandler(syncId, inv, this, this.propertyDelegate);
-    }
-
-    private MiniFridgeRecipe getRecipe(List<RecipeHolder<MiniFridgeRecipe>> recipes, NonNullList<ItemStack> inventory) {
-        recipeLoop:
-        for (RecipeHolder<MiniFridgeRecipe> recipeHolder : recipes) {
-            MiniFridgeRecipe recipe = recipeHolder.value();
-            for (Ingredient ingredient : recipe.getIngredients()) {
-                boolean ingredientFound = false;
-                for (int slotIndex = 1; slotIndex < inventory.size(); slotIndex++) {
-                    ItemStack slotItem = inventory.get(slotIndex);
-                    if (ingredient.test(slotItem)) {
-                        ingredientFound = true;
-                        break;
-                    }
-                }
-                if (!ingredientFound) {
-                    continue recipeLoop;
-                }
-            }
-            return recipe;
+    public void setChanged() {
+        super.setChanged();
+        if (this.level != null && !this.level.isClientSide) {
+            this.level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
         }
-        return null;
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        return saveWithoutMetadata(provider);
     }
 }

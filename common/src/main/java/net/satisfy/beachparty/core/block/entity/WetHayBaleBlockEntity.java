@@ -1,11 +1,14 @@
 package net.satisfy.beachparty.core.block.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -13,26 +16,28 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
+import org.jetbrains.annotations.NotNull;
 
 public class WetHayBaleBlockEntity extends BlockEntity {
     public static final TagKey<Biome> HOT_BIOME = TagKey.create(Registries.BIOME, BeachpartyIdentifier.identifier("hot_biome"));
-    private int timer;
+    private static final int UNSET = -1;
+    private int timer = UNSET;
     private boolean isProtected = false;
+    private Boolean hot;
 
     public WetHayBaleBlockEntity(BlockPos pos, BlockState state) {
         super(EntityTypeRegistry.WET_HAY_BALE_BLOCK_ENTITY.get(), pos, state);
-        timer = initializeTimer();
     }
 
     public static void tick(ServerLevel level, BlockPos pos, BlockState state, WetHayBaleBlockEntity be) {
         if (be.isProtected) {
-            level.scheduleTick(pos, state.getBlock(), 1);
             return;
         }
         if (level.dimensionType().ultraWarm()) {
@@ -40,51 +45,49 @@ public class WetHayBaleBlockEntity extends BlockEntity {
             return;
         }
         if (!level.canSeeSky(pos.above()) || level.getFluidState(pos).is(net.minecraft.world.level.material.Fluids.WATER)) {
-            level.scheduleTick(pos, state.getBlock(), 1);
             return;
         }
-        boolean hot = isHotBiome(level, pos);
-        RandomSource random = level.getRandom();
-        Direction direction = Direction.getRandom(random);
-        if (direction != Direction.UP) {
-            BlockPos pos2 = pos.relative(direction);
-            if (!state.canOcclude() || !level.getBlockState(pos2).isFaceSturdy(level, pos2, direction.getOpposite())) {
-                if (random.nextFloat() < 0.3f) {
-                    double d = pos.getX(), e = pos.getY(), f = pos.getZ();
-                    if (direction == Direction.DOWN) {
-                        e -= 0.05;
-                        d += random.nextDouble();
-                        f += random.nextDouble();
-                    } else {
-                        e += random.nextDouble() * 0.8;
-                        d += direction.getAxis() == Direction.Axis.X ? (direction == Direction.EAST ? 1 : 0.05) : random.nextDouble();
-                        f += direction.getAxis() == Direction.Axis.X ? random.nextDouble() : (direction == Direction.SOUTH ? 1 : 0.05);
-                    }
-                    level.sendParticles(ParticleTypes.DRIPPING_WATER, d, e, f, 1, 0.0, 0.0, 0.0, 0.0);
-                }
-            }
-        }
-        if (hot && random.nextFloat() < 0.25f) {
-            level.sendParticles(ParticleTypes.SMOKE, pos.getX() + 0.6, pos.getY() + 1.25, pos.getZ() + 0.5, 1, 0.05, 0.1875, 0.05, 0.0);
+        boolean hot = be.isHot(level);
+        if (be.timer == UNSET) {
+            be.timer = initialTimer(level.getRandom(), hot);
         }
         be.timer--;
         if (be.timer <= 0) {
             level.setBlock(pos, hot ? ObjectRegistry.THATCH.get().defaultBlockState() : net.minecraft.world.level.block.Blocks.HAY_BLOCK.defaultBlockState(), 3);
-        } else {
-            level.scheduleTick(pos, state.getBlock(), 1);
         }
     }
 
-    private static boolean isHotBiome(ServerLevel level, BlockPos pos) {
-        Holder<Biome> biomeHolder = level.getBiome(pos);
-        return biomeHolder.is(HOT_BIOME);
+    private boolean isHot(Level level) {
+        if (hot == null) {
+            hot = level.getBiome(getBlockPos()).is(HOT_BIOME);
+        }
+        return hot;
     }
 
-    private int initializeTimer() {
-        Level level = getLevel();
-        return level instanceof ServerLevel serverLevel && isHotBiome(serverLevel, getBlockPos())
-                ? 1200 + level.random.nextInt(601)
-                : 600 + (level != null ? level.random.nextInt(601) : 600);
+    public boolean isDrying() {
+        return level != null && !isProtected && level.canSeeSky(worldPosition.above()) && !level.getFluidState(worldPosition).is(net.minecraft.world.level.material.Fluids.WATER);
+    }
+
+    public boolean isHot() {
+        return level != null && isHot(level);
+    }
+
+    private static int initialTimer(RandomSource random, boolean hot) {
+        return (hot ? 1200 : 600) + random.nextInt(601);
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.loadAdditional(tag, provider);
+        timer = tag.contains("Timer") ? tag.getInt("Timer") : UNSET;
+        isProtected = tag.getBoolean("Protected");
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+        super.saveAdditional(tag, provider);
+        tag.putInt("Timer", timer);
+        tag.putBoolean("Protected", isProtected);
     }
 
     public void preventDrying() {
@@ -95,6 +98,7 @@ public class WetHayBaleBlockEntity extends BlockEntity {
             serverLevel.playSound(null, getBlockPos(), SoundEvents.SLIME_BLOCK_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);
         }
         isProtected = true;
+        sync();
     }
 
     public void removeProtection() {
@@ -105,6 +109,28 @@ public class WetHayBaleBlockEntity extends BlockEntity {
             serverLevel.playSound(null, getBlockPos(), SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0f, 1.0f);
         }
         isProtected = false;
-        timer = initializeTimer();
+        timer = UNSET;
+        sync();
+    }
+
+    public boolean isProtected() {
+        return isProtected;
+    }
+
+    private void sync() {
+        setChanged();
+        if (level != null && !level.isClientSide) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+        }
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        return saveWithoutMetadata(provider);
     }
 }

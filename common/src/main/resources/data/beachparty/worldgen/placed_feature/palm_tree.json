@@ -2,22 +2,6 @@
   "feature": "beachparty:palm_tree",
   "placement": [
     {
-      "type": "minecraft:count",
-      "count": {
-        "type": "minecraft:weighted_list",
-        "distribution": [
-          {
-            "weight": 4,
-            "data": 0
-          },
-          {
-            "weight": 1,
-            "data": 1
-          }
-        ]
-      }
-    },
-    {
       "type": "minecraft:in_square"
     },
     {
@@ -27,6 +11,10 @@
     {
       "type": "minecraft:heightmap",
       "heightmap": "OCEAN_FLOOR"
+    },
+    {
+      "type": "beachparty:near_water",
+      "radius": 6
     },
     {
       "type": "minecraft:block_predicate_filter",
@@ -39,6 +27,10 @@
           }
         }
       }
+    },
+    {
+      "type": "beachparty:palm_spacing",
+      "radius": 12
     },
     {
       "type": "minecraft:biome"

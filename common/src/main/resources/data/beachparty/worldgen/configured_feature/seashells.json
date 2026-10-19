@@ -1,8 +1,8 @@
 {
   "type": "minecraft:random_patch",
   "config": {
-    "tries": 32,
-    "xz_spread": 11,
+    "tries": 16,
+    "xz_spread": 7,
     "y_spread": 3,
     "feature": {
       "feature": {
@@ -11,10 +11,7 @@
           "to_place": {
             "type": "minecraft:simple_state_provider",
             "state": {
-              "Name": "beachparty:seashell_block",
-              "Properties": {
-                "half": "lower"
-              }
+              "Name": "beachparty:seashell_block"
             }
           }
         }

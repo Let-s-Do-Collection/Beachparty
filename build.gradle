@@ -31,6 +31,17 @@ allprojects {
     group = rootProject.maven_group
 
     repositories {
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = "Let's Do Maven"
+                    url = "https://raw.githubusercontent.com/Let-s-Do-Collection/Foundation/1.21.1/maven"
+                }
+            }
+            filter {
+                includeGroup "net.satisfy.foundation"
+            }
+        }
         maven { url = "https://maven.blamejared.com/" }
         maven { url "https://cursemaven.com" }
 		maven { url = 'https://maven.neoforged.net/releases' }
@@ -38,6 +49,8 @@ allprojects {
             name = "Curios"
             url = uri("https://maven.theillusivec4.top/")
         }
+        maven { url = "https://maven.wispforest.io/releases" }
+        maven { url = "https://maven.terraformersmc.com/releases/" }
     }
 
     tasks.withType(JavaCompile) {

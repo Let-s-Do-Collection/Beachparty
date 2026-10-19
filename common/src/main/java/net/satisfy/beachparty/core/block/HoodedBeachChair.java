@@ -1,5 +1,9 @@
 package net.satisfy.beachparty.core.block;
 
+import net.satisfy.foundation.block.LineConnectingBlock;
+import net.satisfy.foundation.block.LineConnectingType;
+import net.satisfy.foundation.seat.SeatUtil;
+import net.satisfy.foundation.util.ShapeUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,7 +31,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -57,14 +60,14 @@ public class HoodedBeachChair extends LineConnectingBlock {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             VoxelShape shape = direction == Direction.NORTH || direction == Direction.SOUTH
                     ? topLeftShapeSupplier.get() : topRightShapeSupplier.get();
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, shape));
+            map.put(direction, ShapeUtil.rotateShape(Direction.SOUTH, direction, shape));
         }
     });
     public static final Map<Direction, VoxelShape> TOP_LEFT_SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             VoxelShape shape = direction == Direction.NORTH || direction == Direction.SOUTH
                     ? topRightShapeSupplier.get() : topLeftShapeSupplier.get();
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, shape));
+            map.put(direction, ShapeUtil.rotateShape(Direction.SOUTH, direction, shape));
         }
     });
     private static final Supplier<VoxelShape> topMiddleShapeSupplier = () -> {
@@ -76,7 +79,7 @@ public class HoodedBeachChair extends LineConnectingBlock {
     };
     public static final Map<Direction, VoxelShape> TOP_MIDDLE_SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, topMiddleShapeSupplier.get()));
+            map.put(direction, ShapeUtil.rotateShape(Direction.SOUTH, direction, topMiddleShapeSupplier.get()));
         }
     });
     private static final Supplier<VoxelShape> bottomRightShapeSupplier = () -> {
@@ -97,14 +100,14 @@ public class HoodedBeachChair extends LineConnectingBlock {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             VoxelShape shape = direction == Direction.NORTH || direction == Direction.SOUTH
                     ? bottomLeftShapeSupplier.get() : bottomRightShapeSupplier.get();
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, shape));
+            map.put(direction, ShapeUtil.rotateShape(Direction.SOUTH, direction, shape));
         }
     });
     public static final Map<Direction, VoxelShape> BOTTOM_LEFT_SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             VoxelShape shape = direction == Direction.NORTH || direction == Direction.SOUTH
                     ? bottomRightShapeSupplier.get() : bottomLeftShapeSupplier.get();
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, shape));
+            map.put(direction, ShapeUtil.rotateShape(Direction.SOUTH, direction, shape));
         }
     });
     private static final Supplier<VoxelShape> bottomMiddleShapeSupplier = () -> {
@@ -115,7 +118,7 @@ public class HoodedBeachChair extends LineConnectingBlock {
     };
     public static final Map<Direction, VoxelShape> BOTTOM_MIDDLE_SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, bottomMiddleShapeSupplier.get()));
+            map.put(direction, ShapeUtil.rotateShape(Direction.SOUTH, direction, bottomMiddleShapeSupplier.get()));
         }
     });
     private static final Supplier<VoxelShape> topShapeSupplier = () -> {
@@ -129,7 +132,7 @@ public class HoodedBeachChair extends LineConnectingBlock {
     };
     public static final Map<Direction, VoxelShape> TOP_SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, topShapeSupplier.get()));
+            map.put(direction, ShapeUtil.rotateShape(Direction.SOUTH, direction, topShapeSupplier.get()));
         }
     });
     private static final Supplier<VoxelShape> bottomShapeSupplier = () -> {
@@ -143,7 +146,7 @@ public class HoodedBeachChair extends LineConnectingBlock {
     };
     public static final Map<Direction, VoxelShape> BOTTOM_SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.SOUTH, direction, bottomShapeSupplier.get()));
+            map.put(direction, ShapeUtil.rotateShape(Direction.SOUTH, direction, bottomShapeSupplier.get()));
         }
     });
 
@@ -153,14 +156,15 @@ public class HoodedBeachChair extends LineConnectingBlock {
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(HALF, DoubleBlockHalf.LOWER)
                 .setValue(FACING, Direction.NORTH)
-                .setValue(TYPE, BeachpartyUtil.LineConnectingType.NONE)
+                .setValue(TYPE, LineConnectingType.NONE)
+                .setValue(DyeableFurniture.COLOR, DyeableFurniture.DEFAULT_COLOR)
         );
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(HALF);
+        builder.add(HALF, DyeableFurniture.COLOR);
     }
 
     @Override
@@ -197,8 +201,11 @@ public class HoodedBeachChair extends LineConnectingBlock {
     @Override
     protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         DoubleBlockHalf half = blockState.getValue(HALF);
+        if (DyeableFurniture.canDye(itemStack, blockState)) {
+            return DyeableFurniture.dye(itemStack, blockState, level, blockPos, player, half == DoubleBlockHalf.LOWER ? blockPos.above() : blockPos.below());
+        }
         BlockPos basePos = (half == DoubleBlockHalf.LOWER) ? blockPos : blockPos.below();
-        return BeachpartyUtil.onUse(level, player, interactionHand, new BlockHitResult(blockHitResult.getLocation(), blockHitResult.getDirection(), basePos, blockHitResult.isInside()), 0.2);
+        return SeatUtil.onUse(level, player, interactionHand, new BlockHitResult(blockHitResult.getLocation(), blockHitResult.getDirection(), basePos, blockHitResult.isInside()), -0.4);
     }
 
     @Override
@@ -236,13 +243,13 @@ public class HoodedBeachChair extends LineConnectingBlock {
 
     private void updateTypeProperty(Level world, BlockPos pos, BlockState state) {
         Direction facing = state.getValue(FACING);
-        BeachpartyUtil.LineConnectingType type = getType(state, world, pos, facing);
+        LineConnectingType type = getType(state, world, pos, facing);
         if (state.getValue(TYPE) != type) {
             world.setBlock(pos, state.setValue(TYPE, type), 3);
         }
     }
 
-    private BeachpartyUtil.LineConnectingType getType(BlockState state, Level world, BlockPos pos, Direction facing) {
+    private LineConnectingType getType(BlockState state, Level world, BlockPos pos, Direction facing) {
         BlockPos leftPos;
         BlockPos rightPos;
         DoubleBlockHalf half = state.getValue(HALF);
@@ -277,18 +284,18 @@ public class HoodedBeachChair extends LineConnectingBlock {
         return determineType(state, leftState, rightState);
     }
 
-    private BeachpartyUtil.LineConnectingType determineType(BlockState state, BlockState leftState, BlockState rightState) {
+    private LineConnectingType determineType(BlockState state, BlockState leftState, BlockState rightState) {
         boolean connectLeft = isConnectable(state, leftState);
         boolean connectRight = isConnectable(state, rightState);
 
         if (connectLeft && connectRight) {
-            return BeachpartyUtil.LineConnectingType.MIDDLE;
+            return LineConnectingType.MIDDLE;
         } else if (connectLeft) {
-            return BeachpartyUtil.LineConnectingType.RIGHT;
+            return LineConnectingType.RIGHT;
         } else if (connectRight) {
-            return BeachpartyUtil.LineConnectingType.LEFT;
+            return LineConnectingType.LEFT;
         } else {
-            return BeachpartyUtil.LineConnectingType.NONE;
+            return LineConnectingType.NONE;
         }
     }
 
@@ -321,7 +328,7 @@ public class HoodedBeachChair extends LineConnectingBlock {
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction direction = state.getValue(FACING);
         DoubleBlockHalf half = state.getValue(HALF);
-        BeachpartyUtil.LineConnectingType type = state.getValue(TYPE);
+        LineConnectingType type = state.getValue(TYPE);
 
         if (half == DoubleBlockHalf.UPPER) {
             return switch (type) {

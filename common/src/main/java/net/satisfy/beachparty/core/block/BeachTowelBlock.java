@@ -1,9 +1,12 @@
 package net.satisfy.beachparty.core.block;
 
+import net.satisfy.foundation.util.ShapeUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -36,7 +39,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +53,7 @@ public class BeachTowelBlock extends BedBlock {
 
     public BeachTowelBlock(DyeColor color, Properties properties) {
         super(color, properties.forceSolidOn());
-        this.registerDefaultState(this.stateDefinition.any().setValue(PART, BedPart.FOOT).setValue(OCCUPIED, Boolean.FALSE).setValue(CAN_DROP, Boolean.TRUE));
+        this.registerDefaultState(this.stateDefinition.any().setValue(PART, BedPart.FOOT).setValue(OCCUPIED, Boolean.FALSE).setValue(CAN_DROP, Boolean.TRUE).setValue(DyeableFurniture.COLOR, DyeableFurniture.DEFAULT_COLOR));
     }
 
     private static Direction getNeighbourDirection(BedPart part, Direction direction) {
@@ -60,7 +62,7 @@ public class BeachTowelBlock extends BedBlock {
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-        return state.getValue(PART) == BedPart.HEAD ? BeachpartyUtil.rotateShape(Direction.NORTH, state.getValue(FACING), BEACH_TOWEL_SHAPE) : BEACH_TOWEL_SHAPE;
+        return state.getValue(PART) == BedPart.HEAD ? ShapeUtil.rotateShape(Direction.NORTH, state.getValue(FACING), BEACH_TOWEL_SHAPE) : BEACH_TOWEL_SHAPE;
     }
 
     @Override
@@ -91,6 +93,14 @@ public class BeachTowelBlock extends BedBlock {
             }
             return InteractionResult.SUCCESS;
         }
+    }
+
+    @Override
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (DyeableFurniture.canDye(itemStack, blockState)) {
+            return DyeableFurniture.dye(itemStack, blockState, level, blockPos, player, blockPos.relative(getNeighbourDirection(blockState.getValue(PART), blockState.getValue(FACING))));
+        }
+        return super.useItemOn(itemStack, blockState, level, blockPos, player, interactionHand, blockHitResult);
     }
 
     private boolean kickVillagerOutOfBed(Level level, BlockPos pos) {
@@ -155,7 +165,7 @@ public class BeachTowelBlock extends BedBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, PART, OCCUPIED, CAN_DROP);
+        builder.add(FACING, PART, OCCUPIED, CAN_DROP, DyeableFurniture.COLOR);
     }
 
     @Override
@@ -190,6 +200,6 @@ public class BeachTowelBlock extends BedBlock {
 
     @Override
     public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        tooltip.add(Component.translatable("tooltip.beachparty.canbeplaced").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))));
+        tooltip.add(Component.translatable("tooltip.foundation.canbeplaced").withStyle(ChatFormatting.GRAY));
     }
 }

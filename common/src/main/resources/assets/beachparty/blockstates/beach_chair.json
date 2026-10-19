@@ -1,19 +1,82 @@
 {
-  "variants": {
-    "facing=east": {
-      "model": "beachparty:block/beach_chair",
-      "y": 90
+  "multipart": [
+    {
+      "when": {
+        "facing": "east",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_chair",
+        "y": 90
+      }
     },
-    "facing=north": {
-      "model": "beachparty:block/beach_chair"
+    {
+      "when": {
+        "facing": "east",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_chair_dyed",
+        "y": 90
+      }
     },
-    "facing=south": {
-      "model": "beachparty:block/beach_chair",
-      "y": 180
+    {
+      "when": {
+        "facing": "north",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_chair"
+      }
     },
-    "facing=west": {
-      "model": "beachparty:block/beach_chair",
-      "y": 270
+    {
+      "when": {
+        "facing": "north",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_chair_dyed"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_chair",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_chair_dyed",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_chair",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_chair_dyed",
+        "y": 270
+      }
     }
-  }
+  ]
 }

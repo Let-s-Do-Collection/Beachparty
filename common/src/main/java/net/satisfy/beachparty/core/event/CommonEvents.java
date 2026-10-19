@@ -1,7 +1,6 @@
 package net.satisfy.beachparty.core.event;
 
 import dev.architectury.event.EventResult;
-import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import net.minecraft.core.BlockPos;
@@ -27,14 +26,13 @@ import net.minecraft.world.phys.Vec3;
 import net.satisfy.beachparty.core.block.BeachParasolBlock;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
+import net.satisfy.beachparty.platform.PlatformHelper;
 import org.jetbrains.annotations.Nullable;
 
 public class CommonEvents {
-
     public static void init() {
         LootEvent.MODIFY_LOOT_TABLE.register(CommonEvents::onModifyLootTable);
         PlayerEvent.ATTACK_ENTITY.register(CommonEvents::onPlayerAttack);
-        EntityEvent.LIVING_HURT.register(CommonEvents::onLivingHurt);
     }
 
     private static void onModifyLootTable(ResourceKey<LootTable> id, LootEvent.LootTableModificationContext ctx, boolean b) {
@@ -56,16 +54,9 @@ public class CommonEvents {
         return EventResult.pass();
     }
 
-    private static EventResult onLivingHurt(LivingEntity entity, DamageSource source, float amount) {
-        if (entity.level().isClientSide()) return EventResult.pass();
-
-        if (isFireDamage(source) && isNearBeachParasol(entity)) {
-            float reducedDamage = amount * 0.96f;
-            entity.setHealth(entity.getHealth() + (amount - reducedDamage));
-            return EventResult.interruptFalse();
-        }
-
-        return EventResult.pass();
+    public static float modifyDamage(LivingEntity entity, DamageSource source, float amount) {
+        if (entity.level().isClientSide() || !isFireDamage(source) || !isNearBeachParasol(entity)) return amount;
+        return amount * (1 - PlatformHelper.getParasolFireProtection());
     }
 
     private static boolean isFireDamage(DamageSource source) {
@@ -91,9 +82,9 @@ public class CommonEvents {
     }
 
     public static class LoottableInjector {
-        public static void InjectLoot(ResourceKey id, LootEvent.LootTableModificationContext context) {
+        public static void InjectLoot(ResourceKey<LootTable> id, LootEvent.LootTableModificationContext context) {
             String prefix = "minecraft:chests/";
-            String name = id.toString();
+            String name = id.location().toString();
 
             if (name.startsWith(prefix)) {
                 String file = name.substring(name.indexOf(prefix) + prefix.length());

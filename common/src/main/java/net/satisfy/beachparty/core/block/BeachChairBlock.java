@@ -1,5 +1,7 @@
 package net.satisfy.beachparty.core.block;
 
+import net.satisfy.foundation.seat.SeatUtil;
+import net.satisfy.foundation.util.ShapeUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,7 +23,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.satisfy.beachparty.core.util.BeachpartyUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -43,12 +44,13 @@ public class BeachChairBlock extends Block {
     };
     public static final Map<Direction, VoxelShape> SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
+            map.put(direction, ShapeUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
         }
     });
 
     public BeachChairBlock(Properties settings) {
         super(settings);
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(DyeableFurniture.COLOR, DyeableFurniture.DEFAULT_COLOR));
     }
 
     @Override
@@ -58,18 +60,21 @@ public class BeachChairBlock extends Block {
 
     @Override
     protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        return BeachpartyUtil.onUse(level, player, interactionHand, blockHitResult, 0.05);
+        if (DyeableFurniture.canDye(itemStack, blockState)) {
+            return DyeableFurniture.dye(itemStack, blockState, level, blockPos, player);
+        }
+        return SeatUtil.onUse(level, player, interactionHand, blockHitResult, -0.55);
     }
 
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
         super.onRemove(state, world, pos, newState, moved);
-        BeachpartyUtil.onStateReplaced(world, pos);
+        SeatUtil.onStateReplaced(world, pos);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, DyeableFurniture.COLOR);
     }
 
     @Override

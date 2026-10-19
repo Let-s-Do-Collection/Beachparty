@@ -1,20 +1,84 @@
 {
-  "variants": {
-    "half=lower,open=false": {
-      "model": "beachparty:block/beach_parasol_bottom"
+  "multipart": [
+    {
+      "when": {
+        "half": "lower",
+        "open": "false",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_parasol_bottom"
+      }
     },
-    "half=lower,open=true": {
-      "model": "beachparty:block/beach_parasol_bottom"
+    {
+      "when": {
+        "half": "lower",
+        "open": "false",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_parasol_bottom"
+      }
     },
-    "half=upper,open=false": {
-      "model": "beachparty:block/beach_parasol_top_closed"
+    {
+      "when": {
+        "half": "lower",
+        "open": "true",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_parasol_bottom"
+      }
     },
-    "half=upper,open=true": {
-      "model": "beachparty:block/beach_parasol_top_open"
+    {
+      "when": {
+        "half": "lower",
+        "open": "true",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_parasol_bottom"
+      }
+    },
+    {
+      "when": {
+        "half": "upper",
+        "open": "false",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_parasol_top_closed"
+      }
+    },
+    {
+      "when": {
+        "half": "upper",
+        "open": "false",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_parasol_top_closed_dyed"
+      }
+    },
+    {
+      "when": {
+        "half": "upper",
+        "open": "true",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_parasol_top_open"
+      }
+    },
+    {
+      "when": {
+        "half": "upper",
+        "open": "true",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/beach_parasol_top_open_dyed"
+      }
     }
-  }
-}
-
-
-
+  ]
 }

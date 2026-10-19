@@ -8,24 +8,18 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.trading.ItemCost;
-import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.core.registry.PoiTypeKeys;
 import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
+import net.satisfy.foundation.trade.SellItemFactory;
 
 @SuppressWarnings("deprecation, unused")
 public class VillagerTrades {
     private static final ResourceLocation SANDYMERCHANT_POI_IDENTIFIER = BeachpartyIdentifier.identifier("sandymerchant_poi");
     public static final PoiType SANDYMERCHANT_POI = PointOfInterestHelper.register(SANDYMERCHANT_POI_IDENTIFIER, 1, 12, ObjectRegistry.PALM_BAR.get());
+    public static final PoiType SANDCASTLE_POI = PointOfInterestHelper.register(PoiTypeKeys.SANDCASTLE.location(), 0, 1, ObjectRegistry.SANDCASTLE.get());
     public static final VillagerProfession SANDYMERCHANT = Registry.register(BuiltInRegistries.VILLAGER_PROFESSION, BeachpartyIdentifier.identifier("sandymerchant"), VillagerProfessionBuilder.create().id(BeachpartyIdentifier.identifier("sandymerchant")).workstation(ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, SANDYMERCHANT_POI_IDENTIFIER)).build());
 
     public static void init() {
@@ -65,72 +59,5 @@ public class VillagerTrades {
             factories.add(new SellItemFactory(ObjectRegistry.FLOATY_BOAT.get(), 39, 1, 8));
             factories.add(new SellItemFactory(ObjectRegistry.BEACH_HAT.get(), 45, 1, 8));
         });
-    }
-
-    static class BuyForOneEmeraldFactory implements net.minecraft.world.entity.npc.VillagerTrades.ItemListing {
-        private final Item buy;
-        private final int price;
-        private final int maxUses;
-        private final int experience;
-        private final float multiplier;
-
-        public BuyForOneEmeraldFactory(ItemLike item, int price, int maxUses, int experience) {
-            this.buy = item.asItem();
-            this.price = price;
-            this.maxUses = maxUses;
-            this.experience = experience;
-            this.multiplier = 0.05F;
-        }
-
-        @Override
-        public MerchantOffer getOffer(Entity entity, RandomSource random) {
-            ItemStack itemStack = new ItemStack(this.buy, this.price);
-            return new MerchantOffer(new ItemCost(Items.EMERALD), itemStack, this.maxUses, this.experience, this.multiplier);
-        }
-    }
-
-    static class SellItemFactory implements net.minecraft.world.entity.npc.VillagerTrades.ItemListing {
-        private final ItemStack sell;
-        private final int price;
-        private final int count;
-        private final int maxUses;
-        private final int experience;
-        private final float multiplier;
-
-        public SellItemFactory(Block block, int price, int count, int maxUses, int experience) {
-            this(new ItemStack(block), price, count, maxUses, experience);
-        }
-
-        public SellItemFactory(Block item, int price, int count, int experience) {
-            this(new ItemStack(item), price, count, 12, experience);
-        }
-
-        public SellItemFactory(Item item, int price, int count, int experience) {
-            this(new ItemStack(item), price, count, 12, experience);
-        }
-
-        public SellItemFactory(Item item, int price, int count, int maxUses, int experience) {
-            this(new ItemStack(item), price, count, maxUses, experience);
-        }
-
-        public SellItemFactory(ItemStack stack, int price, int count, int maxUses, int experience) {
-            this(stack, price, count, maxUses, experience, 0.05F);
-        }
-
-        public SellItemFactory(ItemStack stack, int price, int count, int maxUses, int experience, float multiplier) {
-            this.sell = stack;
-            this.price = price;
-            this.count = count;
-            this.maxUses = maxUses;
-            this.experience = experience;
-            this.multiplier = multiplier;
-        }
-
-        @Override
-        public MerchantOffer getOffer(Entity entity, RandomSource random) {
-            return new MerchantOffer(new ItemCost(Items.EMERALD, this.price),
-                    new ItemStack(this.sell.getItem(), this.count), this.maxUses, this.experience, this.multiplier
-            );
-        }
     }
 }

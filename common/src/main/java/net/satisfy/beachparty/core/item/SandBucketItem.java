@@ -1,10 +1,14 @@
 package net.satisfy.beachparty.core.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -19,6 +23,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
@@ -71,6 +76,12 @@ public class SandBucketItem extends BlockItem {
                 } else if (this == ObjectRegistry.SAND_BUCKET_FILLED.get() && user.mayUseItemAt(offsetPos, direction, itemStack)) {
                     if (world.getBlockState(offsetPos).isAir() && ObjectRegistry.SANDCASTLE.get().defaultBlockState().canSurvive(world, offsetPos)) {
                         world.setBlock(offsetPos, ObjectRegistry.SANDCASTLE.get().defaultBlockState(), 3);
+                        if (world.isClientSide) {
+                            for (int i = 0; i < 8; i++) {
+                                world.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SAND.defaultBlockState()), offsetPos.getX() + 0.5 + (world.random.nextDouble() - 0.5) * 0.5, offsetPos.getY() + 0.5, offsetPos.getZ() + 0.5 + (world.random.nextDouble() - 0.5) * 0.5, 0, 0.1, 0);
+                            }
+                            world.playLocalSound(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ(), SoundEvents.SAND_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f, false);
+                        }
                         ItemStack returnStack = exchangeStack(itemStack, user, getEmptiedStack(itemStack, user));
                         return InteractionResultHolder.sidedSuccess(returnStack, world.isClientSide());
                     }
@@ -105,6 +116,6 @@ public class SandBucketItem extends BlockItem {
 
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        tooltip.add(Component.translatable("tooltip.beachparty.canbeplaced").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))));
+        tooltip.add(Component.translatable("tooltip.foundation.canbeplaced").withStyle(ChatFormatting.GRAY));
     }
 }

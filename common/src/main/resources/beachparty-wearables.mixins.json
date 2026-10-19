@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "net.satisfy.beachparty.core.mixin.wearable",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "mixins": [
+    "LivingEntityWearableMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

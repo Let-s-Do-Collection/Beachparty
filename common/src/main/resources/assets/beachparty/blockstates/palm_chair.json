@@ -1,34 +1,176 @@
 {
-  "variants": {
-    "facing=north,half=lower": {
-      "model": "beachparty:block/palm_chair_bottom"
+  "multipart": [
+    {
+      "when": {
+        "facing": "north",
+        "half": "lower",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_chair_bottom"
+      }
     },
-    "facing=west,half=upper": {
-      "y": 270,
-      "model": "beachparty:block/palm_chair_top"
+    {
+      "when": {
+        "facing": "north",
+        "half": "lower",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_chair_bottom_dyed"
+      }
     },
-    "facing=west,half=lower": {
-      "y": 270,
-      "model": "beachparty:block/palm_chair_bottom"
+    {
+      "when": {
+        "facing": "west",
+        "half": "upper",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 270,
+        "model": "beachparty:block/palm_chair_top"
+      }
     },
-    "facing=north,half=upper": {
-      "model": "beachparty:block/palm_chair_top"
+    {
+      "when": {
+        "facing": "west",
+        "half": "upper",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 270,
+        "model": "beachparty:block/palm_chair_top"
+      }
     },
-    "facing=south,half=upper": {
-      "y": 180,
-      "model": "beachparty:block/palm_chair_top"
+    {
+      "when": {
+        "facing": "west",
+        "half": "lower",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 270,
+        "model": "beachparty:block/palm_chair_bottom"
+      }
     },
-    "facing=east,half=upper": {
-      "y": 90,
-      "model": "beachparty:block/palm_chair_top"
+    {
+      "when": {
+        "facing": "west",
+        "half": "lower",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 270,
+        "model": "beachparty:block/palm_chair_bottom_dyed"
+      }
     },
-    "facing=south,half=lower": {
-      "y": 180,
-      "model": "beachparty:block/palm_chair_bottom"
+    {
+      "when": {
+        "facing": "north",
+        "half": "upper",
+        "color": "light_blue"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_chair_top"
+      }
     },
-    "facing=east,half=lower": {
-      "y": 90,
-      "model": "beachparty:block/palm_chair_bottom"
+    {
+      "when": {
+        "facing": "north",
+        "half": "upper",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "model": "beachparty:block/palm_chair_top"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "half": "upper",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 180,
+        "model": "beachparty:block/palm_chair_top"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "half": "upper",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 180,
+        "model": "beachparty:block/palm_chair_top"
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "half": "upper",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 90,
+        "model": "beachparty:block/palm_chair_top"
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "half": "upper",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 90,
+        "model": "beachparty:block/palm_chair_top"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "half": "lower",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 180,
+        "model": "beachparty:block/palm_chair_bottom"
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "half": "lower",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 180,
+        "model": "beachparty:block/palm_chair_bottom_dyed"
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "half": "lower",
+        "color": "light_blue"
+      },
+      "apply": {
+        "y": 90,
+        "model": "beachparty:block/palm_chair_bottom"
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "half": "lower",
+        "color": "white|orange|magenta|yellow|lime|pink|gray|light_gray|cyan|purple|blue|brown|green|red|black"
+      },
+      "apply": {
+        "y": 90,
+        "model": "beachparty:block/palm_chair_bottom_dyed"
+      }
     }
-  }
+  ]
 }

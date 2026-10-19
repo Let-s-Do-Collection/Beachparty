@@ -26,18 +26,181 @@ public class PlatformHelperImpl {
     public static void addSeashellTooltip(ItemStack itemStack, Level world, List<Component> tooltip, TooltipFlag tooltipContext) {
     }
 
-    public static boolean allowBottleSpawning() {
-        return BeachpartyNeoForgeConfig.ALLOW_BOTTLE_SPAWNING.get();
+    public static boolean isPalmTreeGeneration() {
+        return BeachpartyNeoForgeConfig.enablePalmTrees;
     }
 
-    public static int getBottleMaxCount() {
-        return BeachpartyNeoForgeConfig.BOTTLE_MAX_COUNT.get();
+    public static boolean isSeashellGeneration() {
+        return BeachpartyNeoForgeConfig.enableSeashells;
     }
 
-    public static int getBottleSpawnInterval() {
-        return BeachpartyNeoForgeConfig.BOTTLE_SPAWN_INTERVAL.get();
+    public static boolean isSandwaveGeneration() {
+        return BeachpartyNeoForgeConfig.enableSandwaves;
     }
 
+    public static boolean isMessageInABottleEnabled() {
+        return BeachpartyNeoForgeConfig.enableMessageInABottle;
+    }
+
+    public static int getMessageInABottleMaxCount() {
+        return BeachpartyNeoForgeConfig.messageInABottleMaxCount;
+    }
+
+    public static int getMessageInABottleInterval() {
+        return BeachpartyNeoForgeConfig.messageInABottleInterval;
+    }
+
+    public static boolean isSandcastleTrampling() {
+        return BeachpartyNeoForgeConfig.enableSandcastleTrampling;
+    }
+
+    public static float getParasolFireProtection() {
+        return BeachpartyNeoForgeConfig.parasolFireProtection / 100.0f;
+    }
+
+    public static float getBeachHatFireProtection() {
+        return BeachpartyNeoForgeConfig.beachHatFireProtection / 100.0f;
+    }
+
+    public static float getSunglassesFireProtection() {
+        return BeachpartyNeoForgeConfig.sunglassesFireProtection / 100.0f;
+    }
+
+    public static float getSwimWingsFallProtection() {
+        return BeachpartyNeoForgeConfig.swimWingsFallProtection / 100.0f;
+    }
+
+    public static double getSwimSuitSpeedMultiplier() {
+        return BeachpartyNeoForgeConfig.swimSuitSpeedMultiplier;
+    }
+
+    public static double getRubberRingSpeedMultiplier() {
+        return BeachpartyNeoForgeConfig.rubberRingSpeedMultiplier;
+    }
+
+    public static boolean showMiniFridgeInfo() {
+        return BeachpartyNeoForgeConfig.showMiniFridgeInfo;
+    }
+
+    public static boolean showPalmBarInfo() {
+        return BeachpartyNeoForgeConfig.showPalmBarInfo;
+    }
+
+    public static boolean showRadioInfo() {
+        return BeachpartyNeoForgeConfig.showRadioInfo;
+    }
+
+    public static boolean showSunLoungerInfo() {
+        return BeachpartyNeoForgeConfig.showSunLoungerInfo;
+    }
+
+    public static boolean showWetHayBaleInfo() {
+        return BeachpartyNeoForgeConfig.showWetHayBaleInfo;
+    }
+
+    public static int getBannerEffectRadius() {
+        return BeachpartyNeoForgeConfig.bannerEffectRadius;
+    }
+
+    public static int getBannerEffectAmplifier() {
+        return BeachpartyNeoForgeConfig.bannerEffectAmplifier;
+    }
+
+    public static int getCoconutOpenNutrition() {
+        return BeachpartyNeoForgeConfig.COCONUT_OPEN_NUTRITION.get();
+    }
+
+    public static float getCoconutOpenSaturation() {
+        return BeachpartyNeoForgeConfig.COCONUT_OPEN_SATURATION.get().floatValue();
+    }
+
+    public static int getRawMusselMeatNutrition() {
+        return BeachpartyNeoForgeConfig.RAW_MUSSEL_MEAT_NUTRITION.get();
+    }
+
+    public static float getRawMusselMeatSaturation() {
+        return BeachpartyNeoForgeConfig.RAW_MUSSEL_MEAT_SATURATION.get().floatValue();
+    }
+
+    public static int getCookedMusselMeatNutrition() {
+        return BeachpartyNeoForgeConfig.COOKED_MUSSEL_MEAT_NUTRITION.get();
+    }
+
+    public static float getCookedMusselMeatSaturation() {
+        return BeachpartyNeoForgeConfig.COOKED_MUSSEL_MEAT_SATURATION.get().floatValue();
+    }
+
+    public static int getCoconutCocktailNutrition() {
+        return BeachpartyNeoForgeConfig.COCONUT_COCKTAIL_NUTRITION.get();
+    }
+
+    public static float getCoconutCocktailSaturation() {
+        return BeachpartyNeoForgeConfig.COCONUT_COCKTAIL_SATURATION.get().floatValue();
+    }
+
+    public static int getCoconutCocktailEffectDuration() {
+        return BeachpartyNeoForgeConfig.COCONUT_COCKTAIL_EFFECT_DURATION.get();
+    }
+
+    public static int getSweetberriesCocktailNutrition() {
+        return BeachpartyNeoForgeConfig.SWEETBERRIES_COCKTAIL_NUTRITION.get();
+    }
+
+    public static float getSweetberriesCocktailSaturation() {
+        return BeachpartyNeoForgeConfig.SWEETBERRIES_COCKTAIL_SATURATION.get().floatValue();
+    }
+
+    public static int getSweetberriesCocktailEffectDuration() {
+        return BeachpartyNeoForgeConfig.SWEETBERRIES_COCKTAIL_EFFECT_DURATION.get();
+    }
+
+    public static int getCocoaCocktailNutrition() {
+        return BeachpartyNeoForgeConfig.COCOA_COCKTAIL_NUTRITION.get();
+    }
+
+    public static float getCocoaCocktailSaturation() {
+        return BeachpartyNeoForgeConfig.COCOA_COCKTAIL_SATURATION.get().floatValue();
+    }
+
+    public static int getCocoaCocktailEffectDuration() {
+        return BeachpartyNeoForgeConfig.COCOA_COCKTAIL_EFFECT_DURATION.get();
+    }
+
+    public static int getPumpkinCocktailNutrition() {
+        return BeachpartyNeoForgeConfig.PUMPKIN_COCKTAIL_NUTRITION.get();
+    }
+
+    public static float getPumpkinCocktailSaturation() {
+        return BeachpartyNeoForgeConfig.PUMPKIN_COCKTAIL_SATURATION.get().floatValue();
+    }
+
+    public static int getPumpkinCocktailEffectDuration() {
+        return BeachpartyNeoForgeConfig.PUMPKIN_COCKTAIL_EFFECT_DURATION.get();
+    }
+
+    public static int getHoneyCocktailNutrition() {
+        return BeachpartyNeoForgeConfig.HONEY_COCKTAIL_NUTRITION.get();
+    }
+
+    public static float getHoneyCocktailSaturation() {
+        return BeachpartyNeoForgeConfig.HONEY_COCKTAIL_SATURATION.get().floatValue();
+    }
+
+    public static int getHoneyCocktailEffectDuration() {
+        return BeachpartyNeoForgeConfig.HONEY_COCKTAIL_EFFECT_DURATION.get();
+    }
+
+    public static int getMelonCocktailNutrition() {
+        return BeachpartyNeoForgeConfig.MELON_COCKTAIL_NUTRITION.get();
+    }
+
+    public static float getMelonCocktailSaturation() {
+        return BeachpartyNeoForgeConfig.MELON_COCKTAIL_SATURATION.get().floatValue();
+    }
+
+    public static int getMelonCocktailEffectDuration() {
+        return BeachpartyNeoForgeConfig.MELON_COCKTAIL_EFFECT_DURATION.get();
+    }
 
     public static <T extends Entity> Supplier<EntityType<T>> registerBoatType(String name, EntityType.EntityFactory<T> factory, MobCategory category, float width, float height, int clientTrackingRange) {
         return ENTITY_TYPES.register(name, () -> EntityType.Builder.of(factory, category).sized(width, height).build(name));

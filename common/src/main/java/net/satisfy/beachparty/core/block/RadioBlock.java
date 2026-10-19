@@ -1,12 +1,14 @@
 package net.satisfy.beachparty.core.block;
 
+import net.satisfy.foundation.util.ShapeUtil;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
@@ -36,7 +38,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.satisfy.beachparty.core.block.entity.RadioBlockEntity;
 import net.satisfy.beachparty.core.registry.EntityTypeRegistry;
 import net.satisfy.beachparty.core.registry.SoundEventRegistry;
-import net.satisfy.beachparty.core.util.BeachpartyUtil;
+import net.satisfy.foundation.overlay.BlockNotice;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -94,7 +96,7 @@ public class RadioBlock extends BaseEntityBlock {
 
     public static final Map<Direction, VoxelShape> SHAPE = Util.make(new HashMap<>(), map -> {
         for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
-            map.put(direction, BeachpartyUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
+            map.put(direction, ShapeUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
         }
     });
 
@@ -115,9 +117,13 @@ public class RadioBlock extends BaseEntityBlock {
 
         level.playSound(null, pos, SoundEventRegistry.RADIO_CLICK.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
 
+        boolean wasOn = state.getValue(ON);
         if (player.isShiftKeyDown()) {
             radio.stop();
             level.setBlock(pos, state.setValue(ON, false).setValue(SEARCHING, true), 3);
+            if (wasOn && player instanceof ServerPlayer serverPlayer) {
+                BlockNotice.send(serverPlayer, pos, Component.translatable("hud.beachparty.radio.off"));
+            }
         } else {
             boolean started = radio.toggleOrNext();
             if (started) {
@@ -125,6 +131,9 @@ public class RadioBlock extends BaseEntityBlock {
 
             }
             level.setBlock(pos, state.setValue(ON, started).setValue(SEARCHING, true), 3);
+            if (started && player instanceof ServerPlayer serverPlayer) {
+                BlockNotice.send(serverPlayer, pos, Component.translatable(wasOn ? "hud.beachparty.radio.next" : "hud.beachparty.radio.on"));
+            }
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide);
@@ -137,7 +146,7 @@ public class RadioBlock extends BaseEntityBlock {
 
     @Override
     public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        tooltip.add(Component.translatable("tooltip.beachparty.canbeplaced").withStyle(style -> style.withColor(TextColor.fromRgb(0xD4B483))));
+        tooltip.add(Component.translatable("tooltip.foundation.canbeplaced").withStyle(ChatFormatting.GRAY));
     }
 
     @Override

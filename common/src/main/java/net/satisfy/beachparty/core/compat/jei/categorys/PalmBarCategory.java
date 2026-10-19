@@ -14,14 +14,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.satisfy.beachparty.Beachparty;
-import net.satisfy.beachparty.client.gui.PalmBarGui;
 import net.satisfy.beachparty.core.recipe.PalmBarRecipe;
 import net.satisfy.beachparty.core.registry.ObjectRegistry;
+import net.satisfy.beachparty.core.util.BeachpartyIdentifier;
 import org.jetbrains.annotations.NotNull;
 
 public class PalmBarCategory implements IRecipeCategory<PalmBarRecipe> {
     public static final RecipeType<PalmBarRecipe> PALM_BAR = RecipeType.create(Beachparty.MOD_ID, "palm_bar_mixing", PalmBarRecipe.class);
+    private static final ResourceLocation BACKGROUND = BeachpartyIdentifier.identifier("textures/gui/palm_bar_gui.png");
     public static final int WIDTH = 124;
     public static final int HEIGHT = 60;
     public static final int WIDTH_OF = 26;
@@ -31,8 +33,8 @@ public class PalmBarCategory implements IRecipeCategory<PalmBarRecipe> {
     private final IDrawableAnimated arrow;
 
     public PalmBarCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(PalmBarGui.BG, WIDTH_OF, HEIGHT_OF, WIDTH, HEIGHT);
-        this.arrow = helper.drawableBuilder(PalmBarGui.BG, 176, 14, 24, 17).buildAnimated(250, IDrawableAnimated.StartDirection.LEFT, false);
+        this.background = helper.createDrawable(BACKGROUND, WIDTH_OF, HEIGHT_OF, WIDTH, HEIGHT);
+        this.arrow = helper.drawableBuilder(BACKGROUND, 176, 14, 24, 17).buildAnimated(250, IDrawableAnimated.StartDirection.LEFT, false);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, ObjectRegistry.PALM_BAR.get().asItem().getDefaultInstance());
     }
 
